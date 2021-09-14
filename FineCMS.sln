@@ -11,7 +11,12 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DAL", "src\DAL\DAL.csproj",
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Utilities", "src\Utilities\Utilities.csproj", "{D8DA3573-7D1C-4082-A9F7-996E49F476C0}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NUnit.Tests", "tests\NUnit.Tests\NUnit.Tests.csproj", "{7F61B344-8FCD-4B31-9D72-9898147684FF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NUnit.Tests", "tests\NUnit.Tests\NUnit.Tests.csproj", "{7F61B344-8FCD-4B31-9D72-9898147684FF}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SolutionFolder", "SolutionFolder", "{4E4D8AA4-072B-49B5-8BB1-491A8B101A00}"
+	ProjectSection(SolutionItems) = preProject
+		LICENSE.md = LICENSE.md
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

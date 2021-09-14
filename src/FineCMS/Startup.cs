@@ -45,6 +45,18 @@ namespace FineCMS
             services.AddRazorPages();
             services.AddServerSideBlazor();
 
+            //services.AddMvc().WithRazorPagesRoot("/Views");
+
+            //services.AddLogging(loggingBuilder =>
+            //{
+            //    // configure Logging with NLog
+            //    //loggingBuilder.ClearProviders();
+            //    loggingBuilder.SetMinimumLevel(LogLevel.Information);
+            //    loggingBuilder.AddNLog("NLog.config");
+            //});
+            ////var appSettingsSection = Configuration.GetSection("AppSettings");
+            ////services.Configure<AppSettings>(appSettingsSection);
+
             RegisterServices(services);
             RegisterViewModels(services);
         }

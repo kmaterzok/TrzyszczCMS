@@ -1,6 +1,6 @@
 using System;
 
-namespace FineCMS.Data
+namespace TrzyszczCMS.Data
 {
     public class WeatherForecast
     {

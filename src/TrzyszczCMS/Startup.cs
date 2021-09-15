@@ -45,7 +45,7 @@ namespace TrzyszczCMS
             services.AddRazorPages();
             services.AddServerSideBlazor();
 
-            //services.AddMvc().WithRazorPagesRoot("/Views");
+            services.AddMvc().WithRazorPagesRoot("/Views");
 
             //services.AddLogging(loggingBuilder =>
             //{

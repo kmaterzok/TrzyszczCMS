@@ -6,6 +6,9 @@ using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using FluentMigrator.Runner;
+using DAL.Migrations;
+using System.Reflection;
 
 namespace TrzyszczCMS
 {
@@ -35,7 +38,7 @@ namespace TrzyszczCMS
         {
             // This function has done nothing thus far.
         }
-        #endregion
+        #endregion  
 
         #region Configuring methods
         // This method gets called by the runtime. Use this method to add services to the container.
@@ -56,9 +59,26 @@ namespace TrzyszczCMS
             //});
             ////var appSettingsSection = Configuration.GetSection("AppSettings");
             ////services.Configure<AppSettings>(appSettingsSection);
+            
+            this.ConfigureMigrations(services);
+            services.MigrateDatabase();
 
             RegisterServices(services);
             RegisterViewModels(services);
+        }
+
+        /// <summary>
+        /// Configure services for executing migrations.
+        /// </summary>
+        /// <param name="services">Service collection interface</param>
+        private void ConfigureMigrations(IServiceCollection services)
+        {
+            services.AddLogging(c => c.AddFluentMigratorConsole())
+                .AddFluentMigratorCore()
+                .ConfigureRunner(c => c.AddPostgres()
+                    .WithGlobalConnectionString(Configuration.GetConnectionString("ModifyDbSqlConnection"))
+                    .ScanIn(Assembly.GetAssembly(typeof(MigrationManager))).For.Migrations()
+                );
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

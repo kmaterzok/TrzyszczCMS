@@ -33,7 +33,6 @@ namespace TrzyszczCMS
         private static void RegisterServices(IServiceCollection services)
         {
             services.AddBlazoredLocalStorage();
-            services.AddSingleton<WeatherForecastService>();
             
         }
         /// <summary>

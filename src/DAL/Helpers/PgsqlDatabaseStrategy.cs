@@ -1,5 +1,6 @@
 ﻿using DAL.Helpers.Interfaces;
 using System;
+using System.Data;
 using System.Data.Common;
 
 namespace DAL.Helpers
@@ -28,7 +29,7 @@ namespace DAL.Helpers
         #endregion
 
         #region Public methods
-        public DbConnection GetDbConnection()
+        public IDbConnection GetDbConnection()
         {
             return this._dbConnectionFactoryMethod.Invoke();
         }

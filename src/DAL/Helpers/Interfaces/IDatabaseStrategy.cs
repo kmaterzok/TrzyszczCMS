@@ -1,4 +1,5 @@
-﻿using System.Data.Common;
+﻿using System.Data;
+using System.Data.Common;
 
 namespace DAL.Helpers.Interfaces
 {
@@ -11,6 +12,6 @@ namespace DAL.Helpers.Interfaces
         /// Get an instance of <see cref="DbConnection"/> object for executing queries in the DB server.
         /// </summary>
         /// <returns>DB connection object instance fopr connection with a concrete database.</returns>
-        DbConnection GetDbConnection();
+        IDbConnection GetDbConnection();
     }
 }

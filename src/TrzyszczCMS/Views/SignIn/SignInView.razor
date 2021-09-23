@@ -1,0 +1,59 @@
+@page "/sign-in"
+
+@using System.Security.Claims
+@using ViewModels.SignIn
+
+@inject NavigationManager NavigationManager
+@inject SignInViewModel ViewModel
+
+
+<div class="col">
+    <div class="col-12 row">
+        <EditForm Model="@ViewModel" OnValidSubmit="@(() => ViewModel.SignInUser(() => NavigationManager.NavigateTo("/dashboard")))">
+            <div class="col-12 row">
+                <input class="form-control col-12" @bind="@ViewModel.Username" placeholder="username" />
+            </div>
+            <br />
+            <div class="col-12 row">
+                <input type="password" class="form-control col-12" @bind="@ViewModel.Password" placeholder="password" />
+            </div>
+            <br />
+            <div class="col-12 row">
+                <div class="col-12"></div>
+
+                <div class="col-6" style="font-size: 0.8em; text-align: left; padding-top: 8px; padding-left: 0;">
+                    <a href="/sign-up">I have no account yet.</a>
+                </div>
+
+                <button type="submit" class="form-control col-6 btn btn-primary">
+                    <span class="oi oi-account-login" aria-hidden="true"></span>&nbsp;Sign in
+                </button>
+            </div>
+            <br />
+            <div class="col-12 row" style="text-align:left; font-weight:bold">
+                <span class="col-12">@ViewModel.ErrorMessage</span>
+            </div>
+        </EditForm>
+    </div>
+</div>
+
+
+@code {
+    [CascadingParameter]
+    private Task<AuthenticationState> authenticationStateTask { get; set; }
+
+    protected async override Task OnInitializedAsync()
+    {
+        ClaimsPrincipal claimsPrincipal = (await authenticationStateTask).User;
+
+        if (claimsPrincipal.Identity.IsAuthenticated)
+        {
+            NavigationManager.NavigateTo("/");
+        }
+        else
+        {
+            ViewModel.Username = string.Empty;
+            ViewModel.Password = string.Empty;
+        }
+    }
+}

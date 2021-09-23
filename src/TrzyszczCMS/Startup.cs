@@ -9,6 +9,8 @@ using Microsoft.Extensions.Hosting;
 using FluentMigrator.Runner;
 using DAL.Migrations;
 using System.Reflection;
+using TrzyszczCMS.ViewModels.SignIn;
+using Blazored.LocalStorage;
 
 namespace TrzyszczCMS
 {
@@ -21,14 +23,18 @@ namespace TrzyszczCMS
 
         public IConfiguration Configuration { get; }
 
-        #region Dependency Injection
+
+
+        #region --- Dependency Injection ---
         /// <summary>
         /// Register services for the following application.
         /// </summary>
         /// <param name="services">Service collection</param>
         private static void RegisterServices(IServiceCollection services)
         {
+            services.AddBlazoredLocalStorage();
             services.AddSingleton<WeatherForecastService>();
+            
         }
         /// <summary>
         /// Register ViewModels for the application.
@@ -36,9 +42,11 @@ namespace TrzyszczCMS
         /// <param name="services">Service collection</param>
         private static void RegisterViewModels(IServiceCollection services)
         {
-            // This function has done nothing thus far.
+            services.AddTransient<SignInViewModel>();
         }
         #endregion  
+
+
 
         #region Configuring methods
         // This method gets called by the runtime. Use this method to add services to the container.

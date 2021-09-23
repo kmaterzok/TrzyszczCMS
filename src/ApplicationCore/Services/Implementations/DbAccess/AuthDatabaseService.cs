@@ -57,8 +57,10 @@ namespace ApplicationCore.Services.Implementations.DbAccess
             {
                 var userInfo = await conn.QuerySingleOrDefaultAsync<Auth_User>
                     (@"SELECT usr.""Id"", usr.""PasswordHash"", usr.""PasswordSalt"", usr.""Auth_RoleId""
-                       FROM ""Auth_User"" WHERE usr.""Username"" = @Username;", new { Username = username });
+                       FROM ""Auth_User"" usr WHERE usr.""Username"" = @Username;", new { Username = username });
 
+                if (userInfo == null) { return null; }
+                
                 // TODO: Validate password.
                 bool passwordIsValid = true;
                 if (!passwordIsValid) { return null; }
@@ -67,7 +69,7 @@ namespace ApplicationCore.Services.Implementations.DbAccess
                 {
                     Auth_UserId = userInfo.Id,
                     Token = Guid.NewGuid().ToString("N"), // TODO: Change generating of token.
-                    UtcExpiryTime = DateTime.UtcNow.AddDays(182)
+                    UtcExpiryTime = remember ? DateTime.UtcNow.AddDays(182) : DateTime.UtcNow.AddHours(2)
                 };    
                 using (var ts = conn.BeginTransaction())
                 {

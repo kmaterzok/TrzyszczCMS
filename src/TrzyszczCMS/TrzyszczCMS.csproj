@@ -21,6 +21,8 @@
 
   <ItemGroup>
     <Folder Include="Data\Models\" />
+    <Folder Include="ViewModels\Administration\" />
+    <Folder Include="Views\Administration\" />
   </ItemGroup>
 
   <ItemGroup>

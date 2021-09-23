@@ -11,6 +11,14 @@ using DAL.Migrations;
 using System.Reflection;
 using TrzyszczCMS.ViewModels.SignIn;
 using Blazored.LocalStorage;
+using TrzyszczCMS.Services.Implementations;
+using TrzyszczCMS.Services.Interfaces;
+using ApplicationCore.Services.Implementations.DbAccess;
+using ApplicationCore.Services.Interfaces.DbAccess;
+using DAL.Helpers.Interfaces;
+using DAL.Helpers;
+using TrzyszczCMS.Other;
+using Microsoft.AspNetCore.Components.Authorization;
 
 namespace TrzyszczCMS
 {
@@ -30,10 +38,15 @@ namespace TrzyszczCMS
         /// Register services for the following application.
         /// </summary>
         /// <param name="services">Service collection</param>
-        private static void RegisterServices(IServiceCollection services)
+        private void RegisterServices(IServiceCollection services)
         {
             services.AddBlazoredLocalStorage();
-            
+            services.AddSingleton(_ => (IAuthDatabaseService) new AuthDatabaseService(
+                new PgsqlDatabaseStrategy(Configuration.GetConnectionString("AuthDbSqlConnection"))
+            ));
+            services.AddScoped<ITokenService, TokenService>();
+            services.AddScoped<IAuthService,  AuthService>();
+            services.AddScoped<AuthenticationStateProvider, ApplicationAuthenticationStateProvider>();
         }
         /// <summary>
         /// Register ViewModels for the application.

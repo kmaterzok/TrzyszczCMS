@@ -3,10 +3,12 @@
 @using System.Security.Claims
 @using ViewModels.SignIn
 
+@inject AuthenticationStateProvider AuthStateProvider 
 @inject NavigationManager NavigationManager
 @inject SignInViewModel ViewModel
 
-
+@if (authChecked)
+{
 <div class="col">
     <div class="col-12 row">
         <EditForm Model="@ViewModel" OnValidSubmit="@(() => ViewModel.SignInUser(() => NavigationManager.NavigateTo("/dashboard")))">
@@ -17,6 +19,8 @@
             <div class="col-12 row">
                 <input type="password" class="form-control col-12" @bind="@ViewModel.Password" placeholder="password" />
             </div>
+            <br />
+            <InputCheckbox @bind-Value="ViewModel.RememberMe" />&nbsp;Remmeber me
             <br />
             <div class="col-12 row">
                 <div class="col-12"></div>
@@ -36,24 +40,27 @@
         </EditForm>
     </div>
 </div>
+}
 
 
 @code {
-    [CascadingParameter]
-    private Task<AuthenticationState> authenticationStateTask { get; set; }
+    bool authChecked;
 
     protected async override Task OnInitializedAsync()
     {
-        ClaimsPrincipal claimsPrincipal = (await authenticationStateTask).User;
+        authChecked = false;
+    }
+
+    protected async override Task OnAfterRenderAsync(bool firstRender)
+    {
+        ClaimsPrincipal claimsPrincipal = (await AuthStateProvider.GetAuthenticationStateAsync()).User;
 
         if (claimsPrincipal.Identity.IsAuthenticated)
         {
-            NavigationManager.NavigateTo("/");
+            NavigationManager.NavigateTo("/dashboard");
         }
-        else
-        {
-            ViewModel.Username = string.Empty;
-            ViewModel.Password = string.Empty;
-        }
+        authChecked = true;
+        this.StateHasChanged();
+        await base.OnAfterRenderAsync(firstRender);
     }
 }

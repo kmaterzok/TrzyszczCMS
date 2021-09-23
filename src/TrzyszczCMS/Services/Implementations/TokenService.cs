@@ -21,19 +21,25 @@ namespace TrzyszczCMS.Services.Implementations
 
         public async Task<string> GetTokenAsync()
         {
-            return await _localStorage.GetItemAsync<string>(Constants.LOCAL_STORAGE_ACCESS_TOKEN_VAR_NAME);
+            if (await _localStorage.ContainKeyAsync(Constants.LOCAL_STORAGE_ACCESS_TOKEN_VAR_NAME))
+            {
+                return await _localStorage.GetItemAsStringAsync(Constants.LOCAL_STORAGE_ACCESS_TOKEN_VAR_NAME);
+            }
+            return null;
         }
 
         public async Task RevokeTokenAsync()
         {
-            await _localStorage.RemoveItemAsync("accessToken");
-
+            if (await _localStorage.ContainKeyAsync(Constants.LOCAL_STORAGE_ACCESS_TOKEN_VAR_NAME))
+            {
+                await _localStorage.RemoveItemAsync(Constants.LOCAL_STORAGE_ACCESS_TOKEN_VAR_NAME);
+            }
             // TODO: Remove from database.
         }
 
         public async Task SetTokenAsync(string accessToken)
         {
-            await this._localStorage.SetItemAsync<string>(Constants.LOCAL_STORAGE_ACCESS_TOKEN_VAR_NAME, accessToken);
+            await this._localStorage.SetItemAsStringAsync(Constants.LOCAL_STORAGE_ACCESS_TOKEN_VAR_NAME, accessToken);
         }
     }
 }

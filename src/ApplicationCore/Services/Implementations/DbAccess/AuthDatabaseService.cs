@@ -32,17 +32,20 @@ namespace ApplicationCore.Services.Implementations.DbAccess
         {
             using (var conn = _databaseStrategy.GetDbConnection())
             {
+                conn.Open();
                 var tokenInfo = await conn.QuerySingleOrDefaultAsync<AuthUserInfo>(
-                    @"SELECT usr.""Id"" AS ""UserId"", usr.""Username"" AS ""Username"", tkn.""Token"" AS ""AccessToken""
+                    @"SELECT usr.""Id"" AS ""UserId"", usr.""Username"" AS ""Username"", tkn.""Token"" AS ""AccessToken"",
                              rl.""Name"" AS ""AssignedRoleName"", rl.""Id"" AS ""AssignedRoleId""
                       FROM ""Auth_User"" usr
                       INNER JOIN ""Auth_Token"" tkn ON usr.""Id"" = tkn.""Auth_UserId""
                       INNER JOIN ""Auth_Role"" rl ON usr.""Auth_RoleId"" = rl.""Id""
-                      WHERE tkn.""Token"" = @AccessToken AND tkn.UtcExpiryTime < timeszone('UTC', now());", new { AccessToken = accessToken });
+                      WHERE tkn.""Token"" = @AccessToken AND tkn.""UtcExpiryTime"" > @UtcTime;", new { AccessToken = accessToken, UtcTime = DateTime.UtcNow });
 
-                var assignedPolicies = conn.Query(@"SELECT pl.Name AS ""PolicyName"" FROM ""Auth_Policy"" pl
-                                                    INNER JOIN ""Auth_Role_Policy_Assign"" ras ON pl.""Id"" = pl.""Auth_PolicyId""
-                                                    WHERE pl.""Auth_RoleId"" = @AssignedRoleId;", new { AssignedRoleId = tokenInfo.AssignedRoleId })
+                if (tokenInfo == null) { return null; }
+
+                var assignedPolicies = conn.Query(@"SELECT pl.""Name"" AS ""PolicyName"" FROM ""Auth_Policy"" pl
+                                                    INNER JOIN ""Auth_Role_Policy_Assign"" ras ON pl.""Id"" = ras.""Auth_PolicyId""
+                                                    WHERE ras.""Auth_RoleId"" = @AssignedRoleId;", new { AssignedRoleId = tokenInfo.AssignedRoleId })
                                             .Select(i => (string)i.PolicyName).ToList();
 
                 tokenInfo.AssignedPoliciesNames = assignedPolicies;
@@ -55,6 +58,7 @@ namespace ApplicationCore.Services.Implementations.DbAccess
         {
             using (var conn = _databaseStrategy.GetDbConnection())
             {
+                conn.Open();
                 var userInfo = await conn.QuerySingleOrDefaultAsync<Auth_User>
                     (@"SELECT usr.""Id"", usr.""PasswordHash"", usr.""PasswordSalt"", usr.""Auth_RoleId""
                        FROM ""Auth_User"" usr WHERE usr.""Username"" = @Username;", new { Username = username });
@@ -62,6 +66,9 @@ namespace ApplicationCore.Services.Implementations.DbAccess
                 if (userInfo == null) { return null; }
                 
                 // TODO: Validate password.
+
+                if (password != userInfo.PasswordHash + userInfo.PasswordSalt) { return null; }
+
                 bool passwordIsValid = true;
                 if (!passwordIsValid) { return null; }
 

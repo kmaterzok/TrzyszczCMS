@@ -1,5 +1,8 @@
 ﻿namespace ApplicationCore.Helpers
 {
+    /// <summary>
+    /// The class of validation methods.
+    /// </summary>
     public static class PasswordValidationHelper
     {
         /// <summary>

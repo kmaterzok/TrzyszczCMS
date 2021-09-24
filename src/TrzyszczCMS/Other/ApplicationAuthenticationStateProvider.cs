@@ -71,14 +71,18 @@ namespace TrzyszczCMS.Other
 
             ClaimsIdentity identity;
 
-            if (accessToken != null && accessToken != string.Empty)
+            if (string.IsNullOrEmpty(accessToken))
             {
-                AuthUserInfo user = await this._authDbService.GetAuthData(accessToken);
-                identity = GetClaimsIdentity(user);
+                identity = new ClaimsIdentity();
             }
             else
             {
-                identity = new ClaimsIdentity();
+                AuthUserInfo user = await this._authDbService.GetAuthData(accessToken);
+                if (user == null)
+                {
+                    await this._tokenService.RevokeTokenAsync();
+                }
+                identity = GetClaimsIdentity(user);
             }
 
             var claimsPrincipal = new ClaimsPrincipal(identity);

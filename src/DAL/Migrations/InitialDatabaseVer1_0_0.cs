@@ -7,8 +7,8 @@ namespace DAL.Migrations
     /// <summary>
     /// The migration initialising a database to its very first version.
     /// </summary>
-    [Migration(1000)]
-    public class InitialDatabaseVer1_0 : Migration
+    [Migration(1000000)]
+    public class InitialDatabaseVer1_0_0 : Migration
     {
         public override void Up()
         {

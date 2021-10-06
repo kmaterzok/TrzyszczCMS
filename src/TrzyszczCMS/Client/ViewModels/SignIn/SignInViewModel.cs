@@ -13,7 +13,7 @@ namespace TrzyszczCMS.Client.ViewModels.SignIn
     /// </summary>
     public class SignInViewModel : ViewModelBase
     {
-        #region
+        #region Fields
         /// <summary>
         /// The service used for user authentication.
         /// </summary>

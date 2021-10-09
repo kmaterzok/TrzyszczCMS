@@ -18,25 +18,25 @@
             </div>
             <div class="card-body bg-transparent">
                 <EditForm Model="@ViewModel" OnValidSubmit="@(() => ViewModel.SignInUser(() => NavigationManager.NavigateTo("/dashboard")))">
-                    <div class="my-2">
-                        <label class="mb-1">Login</label>
-                        <InputText class="form-control w-100" @bind-Value="@ViewModel.Username" />
+                    <div class="form-floating my-3">
+                        <InputText id="usernameInput" class="form-control w-100" @bind-Value="@ViewModel.Username" />
+                        <label    for="usernameInput">Login</label>
                     </div>
-                    <div class="my-2">
-                        <label class="mb-1">Password</label>
-                        <input type="password" class="form-control w-100" @bind="@ViewModel.Password" />
+                    <div class="form-floating my-3">
+                        <input id="userPassword" type="password" class="form-control w-100" @bind="@ViewModel.Password" />
+                        <label for="userPassword">Password</label>
                     </div>
-                    <div class="my-2">
+                    <div class="my-3">
                         <label>
                             <InputCheckbox @bind-Value="ViewModel.RememberMe" />&nbsp;Remember me
                         </label>
                     </div>
-                    <div class="my-2">
+                    <div class="my-3">
                         <button type="submit" class="form-control w-100 btn btn-primary">
                             <span class="oi oi-account-login" aria-hidden="true"></span>&nbsp;Sign in
                         </button>
                     </div>
-                    <div class="alert alert-danger my-2" role="alert"
+                    <div class="alert alert-danger my-3" role="alert"
                             style="text-align:left; font-weight:bold; visibility: @(string.IsNullOrEmpty(@ViewModel.ErrorMessage) ? "collapse" : "visible");">
                         <span class="col-12">@ViewModel.ErrorMessage</span>
                     </div>

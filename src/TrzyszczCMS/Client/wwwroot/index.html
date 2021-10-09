@@ -11,13 +11,20 @@
     <link href="css/bootstrap/css/bootstrap-reboot.min.css" rel="stylesheet" />
     <link href="css/bootstrap/css/bootstrap-utilities.min.css" rel="stylesheet" />
     <link href="css/app.css" rel="stylesheet" />
+    <link href="css/own.css" rel="stylesheet" />
     <link href="TrzyszczCMS.Client.styles.css" rel="stylesheet" />
     <link href="manifest.json" rel="manifest" />
     <link rel="apple-touch-icon" sizes="512x512" href="icon-512.png" />
 </head>
 
 <body>
-    <div id="app">Loading...</div>
+    <div id="app">
+        <div class="d-flex vh-100 w-100">
+            <svg class="spinner m-auto" viewBox="0 0 50 50">
+                <circle class="path" cx="25" cy="25" r="20" fill="none" stroke-width="5"></circle>
+            </svg>
+        </div>
+    </div>
 
     <div id="blazor-error-ui">
         An unhandled error has occurred.

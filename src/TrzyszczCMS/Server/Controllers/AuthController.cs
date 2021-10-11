@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Utilities;
 
 namespace TrzyszczCMS.Server.Controllers
 {
@@ -60,7 +61,7 @@ namespace TrzyszczCMS.Server.Controllers
             {
                 return Forbid();
             }
-            var result = await this._authService.GetAuthData(token);
+            var result = await this._authService.GetAuthData(ConvertEx.Base64ReplaceFromUriSafeChars(token));
             return (result != null) ?
                 Ok(new GenerateAuthDataResponse() { AuthUserInfo = result }) :
                 Forbid();

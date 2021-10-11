@@ -11,6 +11,7 @@ using System.Net.Http;
 using System.Net.Http.Json;
 using System.Text;
 using System.Threading.Tasks;
+using Utilities;
 
 namespace Core.Application.Services.Implementation.Rest
 {
@@ -32,7 +33,7 @@ namespace Core.Application.Services.Implementation.Rest
         #region Methods
         public async Task<AuthUserInfo> GetAuthData(string accessToken)
         {
-            var response = await this._noauthHttpClient.GetAsync($"Auth/GetData/{accessToken}");
+            var response = await this._noauthHttpClient.GetAsync($"Auth/GetData/{ConvertEx.Base64ReplaceToUriSafeChars(accessToken)}");
 
             if (response.IsSuccessStatusCode)
             {

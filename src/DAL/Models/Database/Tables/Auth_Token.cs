@@ -14,7 +14,7 @@ namespace DAL.Models.Database.Tables
         /// <summary>
         /// Access token used for authorisation
         /// </summary>
-        public string Token { get; set; }
+        public byte[] HashedToken { get; set; }
         /// <summary>
         /// Row ID of the authenticated user.
         /// </summary>

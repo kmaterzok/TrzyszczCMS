@@ -1,4 +1,7 @@
+using Core.Server.Models.Settings;
+using Core.Server.Services.Implementation;
 using Core.Server.Services.Implementations.DbAccess;
+using Core.Server.Services.Interfaces;
 using Core.Server.Services.Interfaces.DbAccess;
 using DAL.Helpers;
 using DAL.Migrations;
@@ -36,8 +39,14 @@ namespace TrzyszczCMS.Server
         /// <param name="services">Service collection</param>
         private void RegisterServices(IServiceCollection services)
         {
-            services.AddScoped(_ => (IAuthDatabaseService)new AuthDatabaseService(
-                new PgsqlDatabaseStrategy(Configuration.GetConnectionString("AuthDbSqlConnection"))
+            Configuration.GetSection("CryptoSettings");
+            services.Configure<CryptoSettings>(Configuration.GetSection("CryptoSettings"));
+
+            services.AddScoped<ICryptoService, CryptoService>();
+
+            services.AddScoped(s => (IAuthDatabaseService)new AuthDatabaseService(
+                new PgsqlDatabaseStrategy(Configuration.GetConnectionString("AuthDbSqlConnection")),
+                s.GetRequiredService<ICryptoService>()
             ));
         }
         #endregion

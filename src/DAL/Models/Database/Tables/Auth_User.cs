@@ -20,12 +20,23 @@
         /// <summary>
         /// Argon2 password hash
         /// </summary>
-        public string PasswordHash { get; set; }
+        public byte[] PasswordHash { get; set; }
         /// <summary>
         /// A salt used for generating Argon2 password hash
         /// </summary>
-        public string PasswordSalt { get; set; }
-
+        public byte[] PasswordSalt { get; set; }
+        /// <summary>
+        /// Argon2 iterations of hashing
+        /// </summary>
+        public int Argon2Iterations { get; set; }
+        /// <summary>
+        /// Argon2 parallelism factor
+        /// </summary>
+        public int Argon2Parallelism { get; set; }
+        /// <summary>
+        /// Argon2 memory usage for hashing
+        /// </summary>
+        public int Argon2MemoryCost { get; set; }
         /// <summary>
         /// Row ID of the role the user has been assigned to.
         /// </summary>

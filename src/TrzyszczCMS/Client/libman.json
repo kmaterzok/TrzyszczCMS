@@ -11,6 +11,10 @@
         "css/bootstrap-reboot.min.css",
         "css/bootstrap-grid.min.css"
       ]
+    },
+    {
+      "library": "font-awesome@5.15.4",
+      "destination": "wwwroot/css/font-awesome/"
     }
   ]
 }

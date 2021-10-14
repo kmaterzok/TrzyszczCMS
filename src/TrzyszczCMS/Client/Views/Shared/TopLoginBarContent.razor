@@ -1,0 +1,25 @@
+﻿@using System.Threading.Tasks
+@using TrzyszczCMS.Client.Services.Interfaces
+
+@inject AuthenticationStateProvider AuthenticationStateProvider
+@inject NavigationManager NavigationManager
+@inject IAuthService Auth
+
+
+<AuthorizeView Context="AuthContext">
+    <Authorized>
+        <button class="btn btn-outline-dark ms-md-auto" @onclick="@this.SignOutAsync"><i class="fas fa-sign-out-alt"></i>&nbsp;Sign out</button>
+    </Authorized>
+    <NotAuthorized>
+    </NotAuthorized>
+</AuthorizeView>
+
+
+@code {
+
+    private async Task SignOutAsync()
+    {
+        await this.Auth.RevokeAuthenticationAsync();
+        this.NavigationManager.NavigateTo("/sign-in");
+    }
+}

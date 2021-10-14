@@ -17,7 +17,7 @@
                 <span aria-hidden="true">TRZYSZCZ CMS</span>
             </div>
             <div class="card-body bg-transparent">
-                <EditForm Model="@ViewModel" OnValidSubmit="@(() => ViewModel.SignInUser(() => NavigationManager.NavigateTo("/dashboard")))">
+                <EditForm Model="@ViewModel" OnValidSubmit="@(() => ViewModel.SignInUser(() => { NavigationManager.NavigateTo("/dashboard"); this.StateHasChanged(); }))">
                     <div class="form-floating my-3">
                         <InputText id="usernameInput" class="form-control w-100" @bind-Value="@ViewModel.Username" />
                         <label    for="usernameInput">Login</label>
@@ -41,6 +41,9 @@
                         <span class="col-12">@ViewModel.ErrorMessage</span>
                     </div>
                 </EditForm>
+            </div>
+            <div class="card-footer bg-transparent border-0">
+                <a href="/">Back to home page</a>
             </div>
         </section>
     </div>

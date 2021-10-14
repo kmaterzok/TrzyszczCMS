@@ -2,6 +2,8 @@
 using Core.Application.Services.Interfaces.Rest;
 using TrzyszczCMS.Client.Services.Interfaces;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Components.Authorization;
+using TrzyszczCMS.Client.Other;
 
 namespace TrzyszczCMS.Client.Services.Implementations
 {
@@ -16,13 +18,18 @@ namespace TrzyszczCMS.Client.Services.Implementations
         /// Used for verifying credentials and getting auth data.
         /// </summary>
         private readonly IRestAuthService _authRestService;
+        /// <summary>
+        /// Application's provider of authentication state. 
+        /// </summary>
+        private readonly ApplicationAuthenticationStateProvider _authStateProvider;
         #endregion
 
         #region Ctor
-        public AuthService(ITokenService tokenService, IRestAuthService authRestService)
+        public AuthService(ITokenService tokenService, IRestAuthService authRestService, AuthenticationStateProvider authStateProvider)
         {
             this._tokenService = tokenService;
             this._authRestService = authRestService;
+            this._authStateProvider = (ApplicationAuthenticationStateProvider)authStateProvider;
         }
         #endregion
 
@@ -33,6 +40,7 @@ namespace TrzyszczCMS.Client.Services.Implementations
             if (null != authUserInfo)
             {
                 await this._tokenService.SetTokenAsync(authUserInfo.AccessToken);
+                await this._authStateProvider.NotifyAuthenticationStateChange();
                 return true;
             }
             else
@@ -43,6 +51,7 @@ namespace TrzyszczCMS.Client.Services.Implementations
         public async Task RevokeAuthenticationAsync()
         {
             await this._tokenService.RevokeTokenAsync();
+            await this._authStateProvider.NotifyAuthenticationStateChange();
         }
         #endregion
     }

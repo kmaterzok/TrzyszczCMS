@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel;
 using System.Linq;
 
-namespace TrzyszczCMS.Client.ViewModels.Bases
+namespace TrzyszczCMS.Client.ViewModels.Shared
 {
     /// <summary>
     /// The base class for creating viewmodels.

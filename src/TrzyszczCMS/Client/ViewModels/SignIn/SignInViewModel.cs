@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using TrzyszczCMS.Client.Services.Interfaces;
-using TrzyszczCMS.Client.ViewModels.Bases;
+using TrzyszczCMS.Client.ViewModels.Shared;
 
 namespace TrzyszczCMS.Client.ViewModels.SignIn
 {
@@ -86,18 +86,20 @@ namespace TrzyszczCMS.Client.ViewModels.SignIn
         /// </summary>
         /// <param name="afterSuccess">What to to after success ful sign in.</param>
         /// <returns></returns>
-        public async Task SignInUser(Action afterSuccess)
+        public async Task<bool> SignInUser(Action afterSuccess)
         {
             if(!PasswordValidationHelper.CheckCredentials(this.Username, this.Password, out string error))
             {
                 this.ErrorMessage = error;
-                return;
+                return false;
             }
 
             var success = await this._authService.AuthenticateWithCredentialsAsync(this.Username, this.Password, this.RememberMe);
 
             if (success) { afterSuccess?.Invoke(); }
             else         { this.ErrorMessage = "You have typed wrong username or password."; }
+
+            return success;
         }
         #endregion
 

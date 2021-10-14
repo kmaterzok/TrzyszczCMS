@@ -89,6 +89,16 @@ namespace TrzyszczCMS.Client.Other
 
             return await Task.FromResult(new AuthenticationState(claimsPrincipal));
         }
+
+        /// <summary>
+        /// Asynchronously notifies about change in authentication state.
+        /// </summary>
+        /// <returns>A task of notification</returns>
+        public async Task NotifyAuthenticationStateChange()
+        {
+            var authState = await this.GetAuthenticationStateAsync();
+            NotifyAuthenticationStateChanged(Task.FromResult(authState));
+        }
         #endregion
     }
 }

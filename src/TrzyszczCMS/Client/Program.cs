@@ -15,6 +15,7 @@ using System.Threading.Tasks;
 using TrzyszczCMS.Client.Other;
 using TrzyszczCMS.Client.Services.Implementations;
 using TrzyszczCMS.Client.Services.Interfaces;
+using TrzyszczCMS.Client.ViewModels.Shared;
 using TrzyszczCMS.Client.ViewModels.SignIn;
 
 namespace TrzyszczCMS.Client

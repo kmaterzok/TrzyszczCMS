@@ -1,4 +1,12 @@
-﻿/***************************************/
+﻿.vertical-center {
+    margin: 0;
+    position: absolute;
+    top: 50%;
+    -ms-transform: translateY(-50%);
+    transform: translateY(-50%);
+}
+
+/***************************************/
 /*     Spinner by Fabio Ottaviani:     */
 /* https://codepen.io/supah/pen/BjYLdW */
 /***************************************/
@@ -14,7 +22,7 @@
     height: 50px;
 }
 .spinner .path {
-    stroke: #7714e8;
+    stroke: #136000;
     stroke-linecap: round;
     -webkit-animation: dash 1.5s ease-in-out infinite;
     animation: dash 1.5s ease-in-out infinite;
@@ -57,3 +65,4 @@
         stroke-dashoffset: -124;
     }
 }
+/***************************************/

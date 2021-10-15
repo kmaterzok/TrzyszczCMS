@@ -17,7 +17,7 @@
                 <span aria-hidden="true">TRZYSZCZ CMS</span>
             </div>
             <div class="card-body bg-transparent">
-                <EditForm Model="@ViewModel" OnValidSubmit="@(() => ViewModel.SignInUser(() => { NavigationManager.NavigateTo("/dashboard"); this.StateHasChanged(); }))">
+                <EditForm Model="@ViewModel" OnValidSubmit="@(() => ViewModel.SignInUser(() => { NavigationManager.NavigateTo("/manage/dashboard"); this.StateHasChanged(); }))">
                     <div class="form-floating my-3">
                         <InputText id="usernameInput" class="form-control w-100" @bind-Value="@ViewModel.Username" />
                         <label    for="usernameInput">Login</label>
@@ -57,7 +57,7 @@
 
         if (claimsPrincipal.Identity.IsAuthenticated)
         {
-            NavigationManager.NavigateTo("/dashboard");
+            NavigationManager.NavigateTo("/manage/dashboard");
         }
 
         await base.OnAfterRenderAsync(firstRender);

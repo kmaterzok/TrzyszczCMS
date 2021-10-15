@@ -91,9 +91,9 @@ namespace TrzyszczCMS.Client.Other
         }
 
         /// <summary>
-        /// Asynchronously notifies about change in authentication state.
+        /// Asynchronously notifies about change in the authentication state.
         /// </summary>
-        /// <returns>A task of notification</returns>
+        /// <returns>A task for notification</returns>
         public async Task NotifyAuthenticationStateChange()
         {
             var authState = await this.GetAuthenticationStateAsync();

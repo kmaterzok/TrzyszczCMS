@@ -1,7 +1,19 @@
-﻿@layout AdminLayout
-@page "/dashboard"
+﻿@page "/manage/dashboard"
+@layout AdminLayout
 
-<h3>Dashboard</h3>
+
+<AuthorizeView>
+    <Authorized>
+        <h3>Dashboard</h3>
+    </Authorized>
+    <NotAuthorized>
+        <LayoutView Layout="@typeof(ViewportMiddleYLayout)">
+            <ErrorPage/>
+        </LayoutView>
+    </NotAuthorized>
+</AuthorizeView>
+
+
 
 @code {
 

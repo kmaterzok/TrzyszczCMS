@@ -1,17 +1,25 @@
 ﻿@inherits LayoutComponentBase
+@*--- This a layout displaying menu for those who administer the website ---*@
 
-<div class="page">
-    <div class="sidebar">
-        <AdminNavMenu />
-    </div>
+<AuthorizeView>
+    <Authorized>
+        <div class="page">
+            <div class="sidebar">
+                <AdminNavMenu />
+            </div>
 
-    <div class="main">
-        <div class="top-row px-4">
-            <TopLoginBarContent />
+            <div class="main">
+                <div class="top-row px-4">
+                    <TopLoginBarContent />
+                </div>
+
+                <div class="content px-4">
+                    @Body
+                </div>
+            </div>
         </div>
-
-        <div class="content px-4">
-            @Body
-        </div>
-    </div>
-</div>
+    </Authorized>
+    <NotAuthorized>
+        @Body
+    </NotAuthorized>
+</AuthorizeView>

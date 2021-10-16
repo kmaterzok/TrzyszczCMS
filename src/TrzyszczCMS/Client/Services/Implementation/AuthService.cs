@@ -50,6 +50,7 @@ namespace TrzyszczCMS.Client.Services.Implementations
         }
         public async Task RevokeAuthenticationAsync()
         {
+            await this._authRestService.RevokeToken(await this._tokenService.GetTokenAsync());
             await this._tokenService.RevokeTokenAsync();
             await this._authStateProvider.NotifyAuthenticationStateChange();
         }

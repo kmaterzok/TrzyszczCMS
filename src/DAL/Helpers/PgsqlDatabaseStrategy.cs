@@ -29,9 +29,14 @@ namespace DAL.Helpers
         #endregion
 
         #region Public methods
-        public IDbConnection GetDbConnection()
+        public IDbConnection GetDbConnection(bool openConnection = true)
         {
-            return this._dbConnectionFactoryMethod.Invoke();
+            var connection = this._dbConnectionFactoryMethod.Invoke();
+            if (openConnection)
+            {
+                connection.Open();
+            }
+            return connection;
         }
         #endregion
     }

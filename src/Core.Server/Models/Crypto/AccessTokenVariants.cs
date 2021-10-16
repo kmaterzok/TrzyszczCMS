@@ -1,4 +1,4 @@
-﻿using System;
+﻿using Microsoft.IdentityModel.Tokens;
 
 namespace Core.Server.Models.Crypto
 {
@@ -15,10 +15,13 @@ namespace Core.Server.Models.Crypto
         /// Token data for user.
         /// </summary>
         public byte[] PlainToken { get; set; }
-
+        /// <summary>
+        /// Get token formatted as URL safe Base64 string.
+        /// </summary>
+        /// <returns>Base64Url token</returns>
         public string GetPlainTokenForBrowserStorage()
         {
-            return Convert.ToBase64String(PlainToken);
+            return Base64UrlEncoder.Encode(PlainToken);
         }
     }
 }

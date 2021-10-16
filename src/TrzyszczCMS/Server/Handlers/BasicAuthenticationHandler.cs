@@ -8,6 +8,7 @@ using System.Net.Http.Headers;
 using System.Security.Claims;
 using System.Text.Encodings.Web;
 using System.Threading.Tasks;
+using Core.Shared.Models;
 
 namespace TrzyszczCMS.Server.Handlers
 {
@@ -32,15 +33,15 @@ namespace TrzyszczCMS.Server.Handlers
         #region Methods
         protected override async Task<AuthenticateResult> HandleAuthenticateAsync()
         {
-            if (!Request.Headers.ContainsKey(Constants.AUTHENTICATION_HEADER_NAME))
+            if (!Request.Headers.ContainsKey(CommonConstants.HEADER_AUTHORIZATION_NAME))
             {
                 return AuthenticateResult.Fail("Authorization header not found.");
             }
             try
             {
-                var authHeaderValue = AuthenticationHeaderValue.Parse(Request.Headers[Constants.AUTHENTICATION_HEADER_NAME]);
+                var authHeaderValue = AuthenticationHeaderValue.Parse(Request.Headers[CommonConstants.HEADER_AUTHORIZATION_NAME]);
 
-                var accessToken = authHeaderValue.Parameter;
+                var accessToken = authHeaderValue.Scheme;
 
                 var authUserInfo = await _authService.GetAuthData(accessToken);
                 if (authUserInfo == null)
@@ -48,7 +49,9 @@ namespace TrzyszczCMS.Server.Handlers
                     return AuthenticateResult.Fail("The token is invalid or expired.");
                 }
 
-                var claims    = new[] { new Claim(ClaimTypes.Name, authUserInfo.Username) };
+                var claims    = new[] { new Claim(ClaimTypes.Name, authUserInfo.Username),
+                                        new Claim(ClaimTypes.NameIdentifier, authUserInfo.UserId.ToString())
+                                      };
                 var identity  = new ClaimsIdentity(claims, Scheme.Name);
                 var principal = new ClaimsPrincipal(identity);
                 var ticket    = new AuthenticationTicket(principal, Scheme.Name);

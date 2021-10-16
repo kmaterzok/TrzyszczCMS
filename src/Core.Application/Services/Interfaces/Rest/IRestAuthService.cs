@@ -23,5 +23,11 @@ namespace Core.Application.Services.Interfaces.Rest
         /// <param name="remember">It says if the user wants to be signed in for a long time</param>
         /// <returns>Data about authorised user. <c>null</c> if credentials invalid.</returns>
         Task<AuthUserInfo> GenerateAuthData(string username, string password, bool remember);
+        /// <summary>
+        /// Revoke token in the backend - remove from the database.
+        /// </summary>
+        /// <param name="accessToken">Revoked access token</param>
+        /// <returns></returns>
+        Task RevokeToken(string accessToken);
     }
 }

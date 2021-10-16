@@ -28,7 +28,7 @@ namespace Core.Shared.Models.Auth
         /// </summary>
         public List<string> AssignedPoliciesNames { get; set; }
         /// <summary>
-        /// Access token for authentication.
+        /// Plain access token for authentication.
         /// </summary>
         public string AccessToken { get; set; }
 

@@ -99,7 +99,6 @@ namespace DAL.Migrations
                 Argon2Parallelism = 2
             });
             
-
             #endregion
         }
 

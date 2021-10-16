@@ -43,7 +43,6 @@ namespace Core.Server.Services.Implementations.DbAccess
 
             using (var conn = _databaseStrategy.GetDbConnection())
             {
-                conn.Open();
                 var tokenInfo = await conn.QuerySingleOrDefaultAsync<AuthUserInfo>(
                     @"SELECT usr.""Id"" AS ""UserId"", usr.""Username"" AS ""Username"",
                              rl.""Name"" AS ""AssignedRoleName"", rl.""Id"" AS ""AssignedRoleId""
@@ -67,7 +66,6 @@ namespace Core.Server.Services.Implementations.DbAccess
                 return tokenInfo;
             }
         }
-
         public async Task<AuthUserInfo> GenerateAuthData(string username, string password, bool remember)
         {
             if (string.IsNullOrEmpty(username) || string.IsNullOrEmpty(password))
@@ -76,7 +74,6 @@ namespace Core.Server.Services.Implementations.DbAccess
             }
             using (var conn = _databaseStrategy.GetDbConnection())
             {
-                conn.Open();
                 var userInfo = await conn.QuerySingleOrDefaultAsync<Auth_User>
                     (@"SELECT usr.""Id"", usr.""PasswordHash"", usr.""PasswordSalt"", usr.""Auth_RoleId"",
                        usr.""Argon2Iterations"", usr.""Argon2Parallelism"", usr.""Argon2MemoryCost""
@@ -118,6 +115,22 @@ namespace Core.Server.Services.Implementations.DbAccess
                     AssignedRoleName = roleName,
                     AssignedPoliciesNames = policiesNames
                 };
+            }
+        }
+
+        public async Task RevokeAccessToken(int userId, string token)
+        {
+            string sql = $@"DELETE FROM ""{nameof(Auth_Token)}""
+                            WHERE ""{nameof(Auth_Token.Auth_UserId)}"" = @Id AND ""{nameof(Auth_Token.HashedToken)}"" = @HashedToken;";
+
+            using (var conn = this._databaseStrategy.GetDbConnection())
+            {
+                using (var ts = conn.BeginTransaction())
+                {
+                    byte[] hashedToken = _cryptoService.GenerateHashFromPlainAccessToken(token);
+                    await conn.ExecuteAsync(sql, new { Id = userId, HashedToken = hashedToken });
+                    ts.Commit();
+                }
             }
         }
         #endregion

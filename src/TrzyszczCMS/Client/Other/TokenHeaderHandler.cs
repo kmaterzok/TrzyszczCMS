@@ -1,4 +1,5 @@
 ﻿using Core.Application.Services.Interfaces;
+using Core.Shared.Models;
 using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
@@ -33,14 +34,14 @@ namespace TrzyszczCMS.Client.Other
         protected override async Task<HttpResponseMessage> SendAsync(
             HttpRequestMessage request, CancellationToken cancellationToken)
         {
-            if (!request.Headers.Contains("Authorization"))
+            if (!request.Headers.Contains(CommonConstants.HEADER_AUTHORIZATION_NAME))
             {
                 var token = await _tokenService.GetTokenAsync();
-
                 if (!string.IsNullOrWhiteSpace(token))
-                    request.Headers.Add("Authorization", token);
+                {
+                    request.Headers.Add(CommonConstants.HEADER_AUTHORIZATION_NAME, token);
+                }
             }
-
             return await base.SendAsync(request, cancellationToken);
         }
     }

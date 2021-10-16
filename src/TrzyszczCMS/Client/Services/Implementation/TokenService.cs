@@ -34,7 +34,6 @@ namespace TrzyszczCMS.Client.Services.Implementations
             {
                 await _localStorage.RemoveItemAsync(Constants.LOCAL_STORAGE_ACCESS_TOKEN_VAR_NAME);
             }
-            // TODO: Remove from database.
         }
 
         public async Task SetTokenAsync(string accessToken)

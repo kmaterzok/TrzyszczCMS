@@ -22,5 +22,12 @@ namespace Core.Server.Services.Interfaces.DbAccess
         /// <param name="remember">It says if the user wants to be signed in for a long time</param>
         /// <returns>Data about authorised user. <c>null</c> if credentials invalid.</returns>
         Task<AuthUserInfo> GenerateAuthData(string username, string password, bool remember);
+        /// <summary>
+        /// Revoke the <paramref name="token"/> for the user identified by <paramref name="userId"/>.
+        /// </summary>
+        /// <param name="userId">Database ID of the user</param>
+        /// <param name="token">Access token that will be revoked (removed from the database)</param>
+        /// <returns></returns>
+        Task RevokeAccessToken(int userId, string token);
     }
 }

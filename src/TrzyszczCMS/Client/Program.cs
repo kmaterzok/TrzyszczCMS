@@ -41,6 +41,7 @@ namespace TrzyszczCMS.Client
             services.AddBlazoredLocalStorage();
             services.AddScoped<ITokenService, TokenService>();
             services.AddScoped(sp => new HttpClient { BaseAddress = new Uri(clientBaseAddress) });
+            services.AddScoped<TokenHeaderHandler>();
             services.AddHttpClient(Core.Application.Models.Constants.HTTP_CLIENT_ANON_NAME, client => client.BaseAddress = new Uri(clientBaseAddress));
             services.AddHttpClient(Core.Application.Models.Constants.HTTP_CLIENT_AUTH_NAME, client => client.BaseAddress = new Uri(clientBaseAddress))
                 .AddHttpMessageHandler<TokenHeaderHandler>();

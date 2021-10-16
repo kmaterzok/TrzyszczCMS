@@ -5,6 +5,7 @@ using Core.Server.Models.Settings;
 using Core.Server.Services.Interfaces;
 using Konscious.Security.Cryptography;
 using Microsoft.Extensions.Options;
+using Microsoft.IdentityModel.Tokens;
 using System;
 using System.Linq;
 using System.Text;
@@ -70,7 +71,7 @@ namespace Core.Server.Services.Implementation
 
         public byte[] GenerateHashFromPlainAccessToken(string plainAccessTokenFromBrowser)
         {
-            var plain = Convert.FromBase64String(plainAccessTokenFromBrowser);
+            var plain = Base64UrlEncoder.DecodeBytes(plainAccessTokenFromBrowser);
             return CryptoHelper.GenerateKeccak512(plain, _cryptoSettings.TokenHashIterations);
         }
         #endregion

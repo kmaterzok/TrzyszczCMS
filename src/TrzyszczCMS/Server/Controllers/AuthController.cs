@@ -1,12 +1,12 @@
 ﻿using Core.Server.Services.Interfaces.DbAccess;
+using Core.Shared.Models;
 using Core.Shared.Models.Rest.Requests.Auth;
 using Core.Shared.Models.Rest.Responses.Auth;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Utilities;
+using TrzyszczCMS.Server.Helpers.Extensions;
 
 namespace TrzyszczCMS.Server.Controllers
 {
@@ -61,11 +61,31 @@ namespace TrzyszczCMS.Server.Controllers
             {
                 return Forbid();
             }
-            var result = await this._authService.GetAuthData(ConvertEx.Base64ReplaceFromUriSafeChars(token));
+            var result = await this._authService.GetAuthData(token);
             return (result != null) ?
                 Ok(new GenerateAuthDataResponse() { AuthUserInfo = result }) :
                 Forbid();
         }
+
+        [Authorize]
+        [HttpDelete]
+        [Route("[action]")]
+        public async Task<ActionResult> RevokeAccessToken()
+        {
+            var userId = HttpContext.GetUserIdByAccessToken();
+            var accessToken = HttpContext.GetAccessToken();
+            if (userId.HasValue && !string.IsNullOrEmpty(accessToken))
+            {
+                await this._authService.RevokeAccessToken(userId.Value, accessToken);
+                return Ok();
+            }
+            else
+            {
+                return BadRequest("Token cannot be found.");
+            }
+        }
+
+
         #endregion
     }
 }

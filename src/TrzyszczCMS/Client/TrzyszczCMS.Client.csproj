@@ -7,6 +7,7 @@
 
   <ItemGroup>
     <PackageReference Include="Blazored.LocalStorage" Version="4.1.5" />
+    <PackageReference Include="Markdig" Version="0.26.0" />
     <PackageReference Include="Microsoft.AspNetCore.Components.Authorization" Version="5.0.11" />
     <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="5.0.10" />
     <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="5.0.10" PrivateAssets="all" />
@@ -18,7 +19,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Data\Models\" />
     <Folder Include="ViewModels\Administration\" />
   </ItemGroup>
 

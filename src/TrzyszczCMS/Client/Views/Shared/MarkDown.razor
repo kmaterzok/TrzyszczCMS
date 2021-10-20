@@ -1,0 +1,18 @@
+﻿@* convertedMarkdown is a MarkupString so it won't be encoded *@
+@* Copied from https://www.meziantou.net/rendering-raw-unescaped-html-in-blazor.htm *@
+@convertedMarkdown
+
+@code{
+    // Use MarkupString type to prevent Blazor from using HtmlEncoder.Encode
+    private MarkupString convertedMarkdown;
+
+    [Parameter]
+    public string Text { get; set; }
+
+    protected override void OnParametersSet()
+    {
+        // Required Markdig https://www.nuget.org/packages/Markdig/
+        var html = Markdig.Markdown.ToHtml(Text ?? string.Empty);
+        convertedMarkdown = (MarkupString)html; // or new MarkupString(html)
+    }
+}

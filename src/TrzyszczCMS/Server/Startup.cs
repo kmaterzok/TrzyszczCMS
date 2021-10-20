@@ -48,6 +48,9 @@ namespace TrzyszczCMS.Server
                 new PgsqlDatabaseStrategy(Configuration.GetConnectionString("AuthDbSqlConnection")),
                 s.GetRequiredService<ICryptoService>()
             ));
+
+
+            // TODO: Add service for token revoking (removing expired tokens from database)
         }
         #endregion
 

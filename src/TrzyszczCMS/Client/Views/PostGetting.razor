@@ -1,0 +1,12 @@
+﻿@page "/post/{postName}"
+@layout EmptyLayout
+@using TrzyszczCMS.Client.Views.SiteContent
+@using Core.Application.Enums
+
+<ModularPageComponent PageName="@PostName" PageType="@PageType.Post" />
+
+
+@code {
+    [Parameter]
+    public string PostName { get; set; }
+}

@@ -1,7 +1,8 @@
 ﻿@page "/"
 @layout EmptyLayout
-@*--- This an empty layout for most of the website pages visible for any user ---*@
+@using TrzyszczCMS.Client.Views.SiteContent
+@using Core.Application.Enums
 
-<h1>Landing page</h1>
 
-There's a place for a landing page and its content.
+@*--- Page with URI params for displaying most of the content-rich user-visible pages ---*@
+<ModularPageComponent PageType="@PageType.HomePage" />

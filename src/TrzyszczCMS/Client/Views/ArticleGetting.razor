@@ -1,0 +1,12 @@
+﻿@page "/article/{articleName}"
+@layout EmptyLayout
+@using TrzyszczCMS.Client.Views.SiteContent
+@using Core.Application.Enums
+
+<ModularPageComponent PageName="@ArticleName" PageType="@PageType.Article" />
+
+
+@code {
+    [Parameter]
+    public string ArticleName { get; set; }
+}

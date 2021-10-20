@@ -1,0 +1,45 @@
+﻿@using System.ComponentModel
+@using TrzyszczCMS.Client.ViewModels.SiteContent.Modules
+@using Core.Application.Enums.Extensions 
+
+<div class="w-100 d-block pb-3">
+    <aside class="@ViewModel.SectionWidth.SectionWidthCssClass() px-2">
+        @if (string.IsNullOrEmpty(ViewModel.LeftAsideMarkDown))
+        {
+            <span aria-hidden="true">&nbsp;</span>
+        }
+        else
+        {
+            <MarkDown Text="@ViewModel.LeftAsideMarkDown" />
+        }
+    </aside>
+    <section class="@ViewModel.SectionWidth.SectionWidthCssClass() px-2 mb-0">
+        <MarkDown Text="@ViewModel.SectionMarkDown" />
+    </section>
+    <aside class="@ViewModel.SectionWidth.SectionWidthCssClass() px-2">
+        @if (string.IsNullOrEmpty(ViewModel.RightAsideMarkDown))
+        {
+            <span aria-hidden="true">&nbsp;</span>
+        }
+        else
+        {
+            <MarkDown Text="@ViewModel.RightAsideMarkDown" />
+        }
+    </aside>
+    <div aria-hidden="true" style="clear: both"></div>
+</div>
+
+@code {
+
+    [Parameter]
+    public TextWallModuleViewModel ViewModel { get; set; }
+
+    protected override void OnInitialized()
+    {
+        this.ViewModel.PropertyChanged += new PropertyChangedEventHandler(
+            async (s, e) => await this.InvokeAsync(() => this.StateHasChanged())
+        );
+
+        base.OnInitialized();
+    }
+}

@@ -61,8 +61,7 @@ namespace DAL.Migrations
                 .FromTable(nameof(Auth_User))               .ForeignColumn(nameof(Auth_User.Auth_RoleId))
                 .ToTable(  nameof(Auth_Role))               .PrimaryColumn(nameof(Auth_Role.Id));
 
-            // TODO: !!!     Check if all required table columns are present     !!!
-
+            
             Insert.IntoTable(nameof(Auth_Policy)).Row(new { Id =  1, Name = "CreateBlogPost" })
                                                  .Row(new { Id =  2, Name = "EditBlogPost"   })
                                                  .Row(new { Id =  3, Name = "DeleteBlogPost" })

@@ -1,6 +1,7 @@
 ﻿using Core.Server.Services.Interfaces;
 using Core.Server.Services.Interfaces.DbAccess;
 using Core.Shared.Models.Auth;
+using DAL.Enums;
 using DAL.Helpers.Interfaces;
 using DAL.Models.Database.Tables;
 using Dapper;
@@ -26,9 +27,9 @@ namespace Core.Server.Services.Implementations.DbAccess
         #endregion
 
         #region Ctor
-        public AuthDatabaseService(IDatabaseStrategy databaseStrategy, ICryptoService cryptoService)
+        public AuthDatabaseService(IDatabaseStrategyFactory databaseStrategyFactory, ICryptoService cryptoService)
         {
-            this._databaseStrategy = databaseStrategy;
+            this._databaseStrategy = databaseStrategyFactory.GetStrategy(ConnectionStringDbType.Modify);
             this._cryptoService = cryptoService;
         }
         #endregion

@@ -6,8 +6,10 @@ using Core.Server.Services.Interfaces;
 using Core.Server.Services.Interfaces.DbAccess;
 using Core.Server.Services.Interfaces.DbAccess.Read;
 using DAL.Helpers;
+using DAL.Helpers.Interfaces;
 using DAL.Migrations;
-using FluentMigrator.Runner;
+using DAL.Migrations.Extensions;
+using DAL.Models.Config;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -41,41 +43,22 @@ namespace TrzyszczCMS.Server
         /// <param name="services">Service collection</param>
         private void RegisterServices(IServiceCollection services)
         {
-            Configuration.GetSection("CryptoSettings");
             services.Configure<CryptoSettings>(Configuration.GetSection("CryptoSettings"));
+            services.Configure<ConnectionStrings>(Configuration.GetSection("ConnectionStrings"));
 
             services.AddScoped<ICryptoService, CryptoService>();
+            services.AddScoped<IDatabaseStrategyFactory, DatabaseStrategyFactory>();
+            services.AddScoped<IAuthDatabaseService, AuthDatabaseService>();
             services.AddScoped<ILoadPageDbService, LoadPageDbService>();
-
-            services.AddScoped(s => (IAuthDatabaseService)new AuthDatabaseService(
-                new PgsqlDatabaseStrategy(Configuration.GetConnectionString("AuthDbSqlConnection")),
-                s.GetRequiredService<ICryptoService>()
-            ));
-
-            // TODO: Add service for token revoking (removing expired tokens from database)
         }
         #endregion
 
-        /// <summary>
-        /// Configure services for executing migrations.
-        /// </summary>
-        /// <param name="services">Service collection interface</param>
-        private void ConfigureMigrations(IServiceCollection services)
-        {
-            // TODO: Move the following method to another project, eg. DAL.
-            services.AddLogging(c => c.AddFluentMigratorConsole())
-                .AddFluentMigratorCore()
-                .ConfigureRunner(c => c.AddPostgres()
-                    .WithGlobalConnectionString(Configuration.GetConnectionString("ModifyDbSqlConnection"))
-                    .ScanIn(Assembly.GetAssembly(typeof(MigrationManager))).For.Migrations()
-                );
-        }
 
         // This method gets called by the runtime. Use this method to add services to the container.
         // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
         public void ConfigureServices(IServiceCollection services)
         {
-            this.ConfigureMigrations(services);
+            services.AddMigrations();
             services.MigrateDatabase();
 
             var corsOrigins = Configuration.GetValue<string>("CorsOrigins")

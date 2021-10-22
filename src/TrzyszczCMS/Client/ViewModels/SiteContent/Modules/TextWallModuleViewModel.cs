@@ -1,4 +1,4 @@
-﻿using Core.Application.Enums;
+﻿using Core.Shared.Enums;
 using TrzyszczCMS.Client.ViewModels.Shared;
 
 namespace TrzyszczCMS.Client.ViewModels.SiteContent.Modules

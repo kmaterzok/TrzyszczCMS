@@ -23,4 +23,9 @@
     <ProjectReference Include="..\Utilities\Utilities.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Services\Implementation\DbAccess\Modify\" />
+    <Folder Include="Services\Interfaces\DbAccess\Modify\" />
+  </ItemGroup>
+
 </Project>

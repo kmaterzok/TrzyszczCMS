@@ -1,6 +1,6 @@
 ﻿@using System.ComponentModel;
 @using TrzyszczCMS.Client.Views.SiteContent
-@using Core.Application.Enums
+@using Core.Shared.Enums
 @using TrzyszczCMS.Client.ViewModels.SiteContent
 @using TrzyszczCMS.Client.ViewModels.SiteContent.Modules
 @using TrzyszczCMS.Client.Views.SiteContent.Modules
@@ -23,6 +23,7 @@ else if (PageType == PageType.Post)
     <h1>Post</h1>
 }
 
+
 @foreach (var moduleVM in ViewModel.ViewModelsForModules)
 {
     if (moduleVM.As(out TextWallModuleViewModel textWallVM))
@@ -31,9 +32,10 @@ else if (PageType == PageType.Post)
     }
     else
     {
-        <section><strong>Error:</strong> There is content type (@moduleVM.GetType().Name) that cannot be displayed. </section>
+        <section><strong>Error:</strong> There is content type (@moduleVM.GetType().Name) that cannot be displayed.</section>
     }
 }
+
 
 <CommonFooter />
 
@@ -46,16 +48,14 @@ else if (PageType == PageType.Post)
     [Parameter]
     public PageType PageType { get; set; }
 
-    protected override void OnInitialized()
+    protected override async Task OnInitializedAsync()
     {
-
         this.ViewModel.PropertyChanged += new PropertyChangedEventHandler(
             async (s, e) => await this.InvokeAsync(() => this.StateHasChanged())
         );
+        await this.ViewModel.PrepareModules(this.PageType, this.PageName);
 
-        this.ViewModel.PrepareModules(this.PageType, this.PageName);
-
-        base.OnInitialized();
+        await base.OnInitializedAsync();
     }
 
 }

@@ -1,4 +1,4 @@
-﻿using Core.Server.Models.Exceptions;
+﻿using Core.Shared.Exceptions;
 
 namespace Core.Server.Models.Settings
 {

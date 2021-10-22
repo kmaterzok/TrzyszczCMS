@@ -1,4 +1,4 @@
-﻿namespace Core.Application.Enums
+﻿namespace Core.Shared.Enums
 {
     /// <summary>
     /// The precised type of page to be presented

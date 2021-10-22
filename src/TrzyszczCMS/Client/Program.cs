@@ -50,6 +50,7 @@ namespace TrzyszczCMS.Client
 
             services.AddScoped<IAuthService, AuthService>();
             services.AddScoped<IRestAuthService, RestAuthService>();
+            services.AddScoped<ILoadPageService, LoadPageService>();
 
 
             services.AddScoped<AuthenticationStateProvider, ApplicationAuthenticationStateProvider>();

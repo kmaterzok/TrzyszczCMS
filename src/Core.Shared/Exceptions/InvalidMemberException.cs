@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Core.Server.Models.Exceptions
+namespace Core.Shared.Exceptions
 {
     /// <summary>
     /// The exception thrown when a member of a class does not have a valid value and it is noticed by a checker method.

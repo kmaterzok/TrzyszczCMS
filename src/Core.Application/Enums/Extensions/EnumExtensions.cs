@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Core.Shared.Enums;
+using System;
 
 namespace Core.Application.Enums.Extensions
 {

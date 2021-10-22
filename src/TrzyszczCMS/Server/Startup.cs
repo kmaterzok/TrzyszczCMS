@@ -1,8 +1,10 @@
 using Core.Server.Models.Settings;
 using Core.Server.Services.Implementation;
+using Core.Server.Services.Implementation.DbAccess.Read;
 using Core.Server.Services.Implementations.DbAccess;
 using Core.Server.Services.Interfaces;
 using Core.Server.Services.Interfaces.DbAccess;
+using Core.Server.Services.Interfaces.DbAccess.Read;
 using DAL.Helpers;
 using DAL.Migrations;
 using FluentMigrator.Runner;
@@ -43,12 +45,12 @@ namespace TrzyszczCMS.Server
             services.Configure<CryptoSettings>(Configuration.GetSection("CryptoSettings"));
 
             services.AddScoped<ICryptoService, CryptoService>();
+            services.AddScoped<ILoadPageDbService, LoadPageDbService>();
 
             services.AddScoped(s => (IAuthDatabaseService)new AuthDatabaseService(
                 new PgsqlDatabaseStrategy(Configuration.GetConnectionString("AuthDbSqlConnection")),
                 s.GetRequiredService<ICryptoService>()
             ));
-
 
             // TODO: Add service for token revoking (removing expired tokens from database)
         }
@@ -60,7 +62,7 @@ namespace TrzyszczCMS.Server
         /// <param name="services">Service collection interface</param>
         private void ConfigureMigrations(IServiceCollection services)
         {
-            // TODO: Move the following method it to another project, eg. DAL.
+            // TODO: Move the following method to another project, eg. DAL.
             services.AddLogging(c => c.AddFluentMigratorConsole())
                 .AddFluentMigratorCore()
                 .ConfigureRunner(c => c.AddPostgres()

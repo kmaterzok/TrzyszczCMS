@@ -84,8 +84,6 @@ namespace TrzyszczCMS.Server.Controllers
                 return BadRequest("Token cannot be found.");
             }
         }
-
-
         #endregion
     }
 }

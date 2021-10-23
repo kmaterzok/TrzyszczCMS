@@ -31,6 +31,16 @@ namespace TrzyszczCMS.Client.ViewModels.SiteContent
             get => _viewModelsOfModules;
             set => Set(ref _viewModelsOfModules, value, nameof(ViewModelsForModules));
         }
+
+        private bool? _contentFound;
+        /// <summary>
+        /// Expresses if the page's content has actually been found and loaded so bropwser may display it.
+        /// </summary>
+        public bool? ContentFound
+        {
+            get => _contentFound;
+            set => Set(ref _contentFound, value, nameof(ContentFound));
+        }
         #endregion
 
 
@@ -39,6 +49,7 @@ namespace TrzyszczCMS.Client.ViewModels.SiteContent
         {
             this._loadPageService = loadPageService;
             this.ViewModelsForModules = new List<IModuleViewModelBase>();
+            this.ContentFound = null;
         }
         #endregion
 
@@ -53,6 +64,8 @@ namespace TrzyszczCMS.Client.ViewModels.SiteContent
         {
             this.ViewModelsForModules = (await this._loadPageService.GetPageContentAsync(type, name))
                                                    .CreateViewModels();
+
+            this.ContentFound = this.ViewModelsForModules.Count > 0;
         }
         #endregion
     }

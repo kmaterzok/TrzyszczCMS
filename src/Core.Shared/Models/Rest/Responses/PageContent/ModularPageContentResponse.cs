@@ -1,4 +1,5 @@
 ﻿using Core.Shared.Models.SiteContent;
+using System.Collections.Generic;
 
 namespace Core.Shared.Models.Rest.Responses.PageContent
 {
@@ -10,6 +11,6 @@ namespace Core.Shared.Models.Rest.Responses.PageContent
         /// <summary>
         /// The array of data for all of modules that are displayed on the page.
         /// </summary>
-        public ModuleContent[] ModuleContents { get; set; }
+        public List<ModuleContent> ModuleContents { get; set; }
     }
 }

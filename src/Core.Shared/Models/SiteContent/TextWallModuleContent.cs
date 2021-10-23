@@ -20,7 +20,7 @@ namespace Core.Shared.Models.SiteContent
         /// </summary>
         public string SectionMarkDownContent { get; set; }
         /// <summary>
-        /// Main contect section width.
+        /// Main content section width.
         /// </summary>
         public TextWallSectionWidth SectionWidth { get; set; }
     }

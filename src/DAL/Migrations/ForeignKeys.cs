@@ -22,6 +22,12 @@
 
             public const string AUTHUSER_AUTHROLE_ASSIGNEDROLEID
                 = "AuthUser_AuthRole_AssignedRoleId";
+
+            public const string CONTTEXTWALLMODULEID_CONTMODULEID_ASSIGNEDMODULEID
+                = "ContTextWallModuleId_ContModuleId_AssignedModuleId";
+
+            public const string CONTMODULE_PAGE_ASSIGNEDID
+                = "ContModule_Page_AssignedId";
         }
         /// <summary>
         /// Names of all obsolete (unused) foreign keys.

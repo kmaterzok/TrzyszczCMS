@@ -3,7 +3,7 @@
     /// <summary>
     /// The precised type of page to be presented
     /// </summary>
-    public enum PageType
+    public enum PageType : byte
     {
         /// <summary>
         /// The top page of the whole website.

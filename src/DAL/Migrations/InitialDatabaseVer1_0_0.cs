@@ -12,6 +12,7 @@ namespace DAL.Migrations
     {
         public override void Up()
         {
+
             #region --- Auth tables ---
             Create.Table(   nameof(Auth_User))
                 .WithColumn(nameof(Auth_User.Id))                .AsInt32().NotNullable().PrimaryKey().Identity()
@@ -78,7 +79,7 @@ namespace DAL.Migrations
                                                  .Row(new { Id = 14, Name = "EditAnyUser"     })
                                                  .Row(new { Id = 15, Name = "DeleteAnyUser"   })
                                                  .Row(new { Id = 16, Name = "PromoteAnyUser"  })
-                                                 .Row(new { Id = 17, Name = "ChangeOwnUsername" }); // TODO: Add more policies / permissiosns.
+                                                 .Row(new { Id = 17, Name = "ChangeOwnUsername" }); // TODO: Add more policies / permissions.
 
             Insert.IntoTable(nameof(Auth_Role)).Row(new { FactoryRole = true, Name = "Admin" });
             for (int i=1; i <= 17; ++i)
@@ -88,17 +89,73 @@ namespace DAL.Migrations
 
             Insert.IntoTable(nameof(Auth_User)).Row(new
             {
-                Auth_RoleId = 1,
-                Description = "Default administrator",
-                Username = "admin",
+                Auth_RoleId  = 1,
+                Description  = "Default administrator",
+                Username     = "admin",
                 PasswordSalt = Convert.FromBase64String(@"yxOUhd3MwieTjhJjYJ8j0g=="), // Password for admin: Testing123$
                 PasswordHash = Convert.FromBase64String(@"/8YcqyYE3901ny4MVWNwKPMGuDwo4Fb78rdMCCMALZgKjlTmlavHYPkCh7pmHV/iQr51Bc/wbWL0OIatYU8hCw=="),
-                Argon2Iterations = 16,
-                Argon2MemoryCost = 64,
-                Argon2Parallelism = 2
+                Argon2Iterations  = 16,
+                Argon2MemoryCost  = 64,
+                Argon2Parallelism =  2
             });
-            
+
             #endregion
+
+
+            #region --- Content tables ---
+            Create.Table(   nameof(Cont_Module))
+                .WithColumn(nameof(Cont_Module.Id))           .AsInt32().NotNullable().PrimaryKey()
+                .WithColumn(nameof(Cont_Module.Type))         .AsByte().NotNullable()
+                .WithColumn(nameof(Cont_Module.Cont_PageId))  .AsInt32().NotNullable();
+
+            Create.Table(   nameof(Cont_TextWallModule))
+                .WithColumn(nameof(Cont_TextWallModule.Id))                .AsInt32().NotNullable().PrimaryKey()
+                .WithColumn(nameof(Cont_TextWallModule.LeftAsideContent))  .AsString().Nullable().WithDefaultValue(null)
+                .WithColumn(nameof(Cont_TextWallModule.RightAsideContent)) .AsString().Nullable().WithDefaultValue(null)
+                .WithColumn(nameof(Cont_TextWallModule.SectionContent))    .AsString().Nullable().WithDefaultValue(null)
+                .WithColumn(nameof(Cont_TextWallModule.SectionWidth))      .AsInt16().NotNullable().WithDefaultValue(800);
+
+            Create.ForeignKey(ForeignKeys.Current.CONTTEXTWALLMODULEID_CONTMODULEID_ASSIGNEDMODULEID)
+                .FromTable(nameof(Cont_TextWallModule))       .ForeignColumn(nameof(Cont_TextWallModule.Id))
+                .ToTable(  nameof(Cont_Module))               .PrimaryColumn(nameof(Cont_Module.Id));
+
+            Create.Table(   nameof(Cont_Page))
+                .WithColumn(nameof(Cont_Page.Id))                          .AsInt32().NotNullable().PrimaryKey()
+                .WithColumn(nameof(Cont_Page.Name))                        .AsString(255).NotNullable().Unique()
+                .WithColumn(nameof(Cont_Page.Type))                        .AsByte().NotNullable().WithDefaultValue(3)
+                .WithColumn(nameof(Cont_Page.CreateUtcTimestamp))          .AsDateTime().NotNullable();
+
+            Create.ForeignKey(ForeignKeys.Current.CONTMODULE_PAGE_ASSIGNEDID)
+                .FromTable(nameof(Cont_Module))   .ForeignColumn(nameof(Cont_Module.Cont_PageId))
+                .ToTable(  nameof(Cont_Page))     .PrimaryColumn(nameof(Cont_Page.Id));
+
+
+            Insert.IntoTable(nameof(Cont_Page)).Row(new Cont_Page()
+            {
+                Id = 1,
+                Name = string.Empty,
+                Type = 1,
+                CreateUtcTimestamp = new DateTime(2021, 10, 1, 18, 15, 0)
+            });
+            for (int i = 1; i <= 5; ++i)
+            {
+                Insert.IntoTable(nameof(Cont_Module)).Row(new Cont_Module()
+                {
+                    Id = i,
+                    Type = 1,
+                    Cont_PageId = 1
+                });
+                Insert.IntoTable(nameof(Cont_TextWallModule)).Row(new Cont_TextWallModule()
+                {
+                    Id = i,
+                    LeftAsideContent = null,
+                    RightAsideContent = null,
+                    SectionWidth = 600,
+                    SectionContent = "**Accusantium consequatur et maiores.** Est quia iste consectetur illum repellendus officia quia quam. Perspiciatis nihil dignissimos est et beatae qui ex ipsa. Dolorem est at molestias aut architecto quis non. Vel unde sequi itaque. Deserunt est numquam quia harum voluptatem excepturi. Sunt expedita sequi veniam optio et voluptate quia voluptatem. Vel corporis deleniti dolorem accusantium. Eos vel modi qui eos. At sed et dolorum ad temporibus vel. Omnis illum quam fugit. Officiis officia quia autem laudantium aut impedit. Asperiores laborum neque quaerat excepturi autem et. Ad id fugit error voluptas sed eum architecto. Error non commodi in delectus. Harum veritatis rerum eum quos et aperiam et vel. Est et nemo similique nam quos necessitatibus tempore commodi. Minima sunt dolorem velit aut omnis eaque repudiandae qui. Atque assumenda voluptas assumenda sint quia deleniti. Corporis aliquam dolorem aut quasi fuga est inventore deleniti. Ratione sit est totam facere libero. In quaerat et consequuntur."
+                });
+            }
+            #endregion
+
         }
 
         #region Unused

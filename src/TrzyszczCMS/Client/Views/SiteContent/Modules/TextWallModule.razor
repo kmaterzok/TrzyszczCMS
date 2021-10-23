@@ -6,7 +6,7 @@
     <aside class="@ViewModel.SectionWidth.SectionWidthCssClass() px-2">
         @if (string.IsNullOrEmpty(ViewModel.LeftAsideMarkDown))
         {
-            <span aria-hidden="true">&nbsp;</span>
+            <span class="user-select-none" aria-hidden="true">&nbsp;</span>
         }
         else
         {
@@ -19,7 +19,7 @@
     <aside class="@ViewModel.SectionWidth.SectionWidthCssClass() px-2">
         @if (string.IsNullOrEmpty(ViewModel.RightAsideMarkDown))
         {
-            <span aria-hidden="true">&nbsp;</span>
+            <span class="user-select-none" aria-hidden="true">&nbsp;</span>
         }
         else
         {

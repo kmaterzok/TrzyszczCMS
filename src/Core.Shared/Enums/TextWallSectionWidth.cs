@@ -3,7 +3,7 @@
     /// <summary>
     /// Max width of displayed text on the screen in pixels.
     /// </summary>
-    public enum TextWallSectionWidth
+    public enum TextWallSectionWidth : short
     {
         _600 = 600,
         _800  = 800,

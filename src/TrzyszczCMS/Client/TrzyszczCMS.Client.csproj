@@ -20,6 +20,7 @@
 
   <ItemGroup>
     <Folder Include="ViewModels\Administration\" />
+    <Folder Include="Views\Shared\Grids\" />
   </ItemGroup>
 
   <ItemGroup>

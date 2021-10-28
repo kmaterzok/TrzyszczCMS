@@ -4,7 +4,7 @@ using Core.Shared.Models.Auth;
 using DAL.Enums;
 using DAL.Helpers.Interfaces;
 using DAL.Models.Database.Tables;
-using Dapper;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -42,29 +42,39 @@ namespace Core.Server.Services.Implementations.DbAccess
                 return null;
             }
 
-            using (var conn = _databaseStrategy.GetDbConnection())
+            var hashedToken = _cryptoService.GenerateHashFromPlainAccessToken(accessToken);
+            var timestamp = DateTime.UtcNow;
+
+            using (var ctx = _databaseStrategy.GetContext())
             {
-                var tokenInfo = await conn.QuerySingleOrDefaultAsync<AuthUserInfo>(
-                    @"SELECT usr.""Id"" AS ""UserId"", usr.""Username"" AS ""Username"",
-                             rl.""Name"" AS ""AssignedRoleName"", rl.""Id"" AS ""AssignedRoleId""
-                      FROM ""Auth_User"" usr
-                      INNER JOIN ""Auth_Token"" tkn ON usr.""Id"" = tkn.""Auth_UserId""
-                      INNER JOIN ""Auth_Role"" rl ON usr.""Auth_RoleId"" = rl.""Id""
-                      WHERE tkn.""HashedToken"" = @HashedToken AND tkn.""UtcExpiryTime"" > @UtcTime;",
-                    new { HashedToken = _cryptoService.GenerateHashFromPlainAccessToken(accessToken), UtcTime = DateTime.UtcNow }
-                );
+                using (var conn = ctx.Database.GetDbConnection())
+                {
+                    var tokenInfo = await (from usr in ctx.Auth_User.AsNoTracking()
+                                    join tkn in ctx.Auth_Token.AsNoTracking() on usr.Id equals tkn.Auth_UserId
+                                    join rl in ctx.Auth_Role.AsNoTracking() on usr.Auth_RoleId equals rl.Id
+                                    where tkn.HashedToken == hashedToken && tkn.UtcExpiryTime > timestamp
+                                    select new AuthUserInfo()
+                                    {
+                                        UserId = usr.Id,
+                                        Username = usr.Username,
+                                        AssignedRoleName = rl.Name,
+                                        AssignedRoleId = rl.Id
+                                    }).SingleOrDefaultAsync();
+                                    
+                    
+                    if (tokenInfo == null) { return null; }
 
-                if (tokenInfo == null) { return null; }
+                    tokenInfo.AccessToken = accessToken;
 
-                tokenInfo.AccessToken = accessToken;
-                var assignedPolicies = (await conn.QueryAsync(@"SELECT pl.""Name"" AS ""PolicyName"" FROM ""Auth_Policy"" pl
-                                                                INNER JOIN ""Auth_Role_Policy_Assign"" ras ON pl.""Id"" = ras.""Auth_PolicyId""
-                                                                WHERE ras.""Auth_RoleId"" = @AssignedRoleId;", new { AssignedRoleId = tokenInfo.AssignedRoleId }))
-                                            .Select(i => (string)i.PolicyName).ToList();
+                    var assignedPolicies = await (from pl in ctx.Auth_Policy.AsNoTracking()
+                                                  join ras in ctx.Auth_Role_Policy_Assign.AsNoTracking() on pl.Id equals ras.Auth_PolicyId
+                                                  where ras.Auth_RoleId == tokenInfo.AssignedRoleId
+                                                  select pl.Name).ToListAsync();
 
-                tokenInfo.AssignedPoliciesNames = assignedPolicies;
+                    tokenInfo.AssignedPoliciesNames = assignedPolicies;
 
-                return tokenInfo;
+                    return tokenInfo;
+                }
             }
         }
         public async Task<AuthUserInfo> GenerateAuthData(string username, string password, bool remember)
@@ -73,17 +83,14 @@ namespace Core.Server.Services.Implementations.DbAccess
             {
                 return null;
             }
-            using (var conn = _databaseStrategy.GetDbConnection())
+            using (var ctx = _databaseStrategy.GetContext())
             {
-                var userInfo = await conn.QuerySingleOrDefaultAsync<Auth_User>
-                    (@"SELECT usr.""Id"", usr.""PasswordHash"", usr.""PasswordSalt"", usr.""Auth_RoleId"",
-                       usr.""Argon2Iterations"", usr.""Argon2Parallelism"", usr.""Argon2MemoryCost""
-                       FROM ""Auth_User"" usr WHERE usr.""Username"" = @Username;", new { Username = username });
+                var userInfo = await ctx.Auth_User.AsNoTracking().SingleOrDefaultAsync(i => i.Username == username);
 
                 if (userInfo == null) { return null; }
                 
                 if (!this._cryptoService.PasswordValid(userInfo.PasswordHash, userInfo.PasswordSalt, password,
-                                                      userInfo.Argon2Parallelism, userInfo.Argon2Iterations, userInfo.Argon2MemoryCost))
+                                                       userInfo.Argon2Parallelism, userInfo.Argon2Iterations, userInfo.Argon2MemoryCost))
                     { return null; }
 
                 var tokenVariants = _cryptoService.GenerateAccessToken();
@@ -94,19 +101,20 @@ namespace Core.Server.Services.Implementations.DbAccess
                     HashedToken = tokenVariants.HashedToken,
                     UtcExpiryTime = remember ? DateTime.UtcNow.AddDays(182) : DateTime.UtcNow.AddHours(2)
                 };    
-                using (var ts = conn.BeginTransaction())
+                using (var ts = ctx.Database.BeginTransaction())
                 {
-                    await conn.ExecuteAsync(@"INSERT INTO ""Auth_Token""(""Auth_UserId"", ""HashedToken"", ""UtcExpiryTime"")
-                                              VALUES (@Auth_UserId, @HashedToken, @UtcExpiryTime);", dbAuthToken);
+                    await ctx.Auth_Token.AddAsync(dbAuthToken);
+                    await ctx.SaveChangesAsync();
                     ts.Commit();
                 }
-                var roleName = (string)(await conn.QuerySingleAsync(@$"SELECT rl.""Name"" FROM ""Auth_Role"" rl WHERE rl.""Id"" = @Id;",
-                    new { Id = userInfo.Auth_RoleId })).Name;
+                
+                var roleName = (await ctx.Auth_Role.AsNoTracking().SingleAsync(i => i.Id == userInfo.Auth_RoleId)).Name;
 
-                var policiesNames = (await conn.QueryAsync($@"SELECT pl.""Name"" FROM ""Auth_Policy"" pl
-                                                              INNER JOIN ""Auth_Role_Policy_Assign"" asg ON pl.""Id"" = asg.""Auth_PolicyId""
-                                                              WHERE asg.""Auth_RoleId"" = @RoleId;", new { RoleId = userInfo.Auth_RoleId }))
-                                               .Select(i => (string)i.Name).ToList();
+                var policiesNames = await (from pl in ctx.Auth_Policy.AsNoTracking()
+                                           join asg in ctx.Auth_Role_Policy_Assign.AsNoTracking() on pl.Id equals asg.Auth_PolicyId
+                                           where asg.Auth_RoleId == userInfo.Auth_RoleId
+                                           select pl.Name).ToListAsync();
+
                 return new AuthUserInfo()
                 {
                     AccessToken = tokenVariants.GetPlainTokenForBrowserStorage(),
@@ -121,15 +129,17 @@ namespace Core.Server.Services.Implementations.DbAccess
 
         public async Task RevokeAccessToken(int userId, string token)
         {
-            string sql = $@"DELETE FROM ""{nameof(Auth_Token)}""
-                            WHERE ""{nameof(Auth_Token.Auth_UserId)}"" = @Id AND ""{nameof(Auth_Token.HashedToken)}"" = @HashedToken;";
+            byte[] hashedToken = _cryptoService.GenerateHashFromPlainAccessToken(token);
 
-            using (var conn = this._databaseStrategy.GetDbConnection())
+            using (var ctx = this._databaseStrategy.GetContext())
             {
-                using (var ts = conn.BeginTransaction())
+                using (var ts = ctx.Database.BeginTransaction())
                 {
-                    byte[] hashedToken = _cryptoService.GenerateHashFromPlainAccessToken(token);
-                    await conn.ExecuteAsync(sql, new { Id = userId, HashedToken = hashedToken });
+                    var foundToken = await ctx.Auth_Token.FirstOrDefaultAsync(i => i.Id == userId && i.HashedToken == hashedToken);
+                    if (foundToken != null)
+                    {
+                        ctx.Auth_Token.Remove(foundToken);
+                    }
                     ts.Commit();
                 }
             }

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace DAL.Models.Database.Tables
 {
@@ -23,5 +24,8 @@ namespace DAL.Models.Database.Tables
         /// UTC+0 timestamp of creating the page.
         /// </summary>
         public DateTime CreateUtcTimestamp { get; set; }
+
+
+        public List<Cont_Module> ContModules { get; set; }
     }
 }

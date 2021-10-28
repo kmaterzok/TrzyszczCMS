@@ -6,7 +6,7 @@ using Core.Shared.Models.SiteContent;
 using DAL.Enums;
 using DAL.Helpers.Interfaces;
 using DAL.Models.Database.Tables;
-using Dapper;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -31,27 +31,27 @@ namespace Core.Server.Services.Implementation.DbAccess.Read
         #region Methods
         public async Task<ModularPageContentResponse> GetPageContentAsync(PageType type, string name)
         {
-            string sql = @"SELECT m.""Id"", m.""Type"" FROM ""Cont_Page"" p
-                           INNER JOIN ""Cont_Module"" m ON p.""Id"" = m.""Cont_PageId""
-                           WHERE p.""Name"" = @Name AND p.""Type"" = @Type;";
-
             var moduleContents = new List<ModuleContent>();
             string queriedName = type == PageType.HomePage ? string.Empty : name;
 
-            using (var conn = _databaseStrategy.GetDbConnection())
+            using (var ctx = _databaseStrategy.GetContext())
             {
-                var moduleInfos = (await conn.QueryAsync(sql, new { Type = (byte)type, Name = queriedName })).ToList();
+                var rawValueOfType = (byte)type;
+                var moduleInfos = await (from p in ctx.Cont_Page.AsNoTracking()
+                                         join m in ctx.Cont_Module.AsNoTracking() on p.Id equals m.Cont_PageId
+                                         where p.Name == queriedName && p.Type == rawValueOfType
+                                         select new
+                                         {
+                                             Id = m.Id,
+                                             Type = m.Type
+                                         }).ToListAsync();
 
-                foreach(var moduleInfo in moduleInfos)
+                foreach (var moduleInfo in moduleInfos)
                 {
                     switch ((PageModuleType)(byte)moduleInfo.Type)
                     {
                         case PageModuleType.TextWall:
-                            string textWallSql = @"SELECT * FROM ""Cont_TextWallModule"" m WHERE m.""Id"" = @Id;";
-                            var textWallModule = await conn.QueryFirstAsync<Cont_TextWallModule>(
-                                textWallSql, new { Id = moduleInfo.Id }
-                            );
-
+                            var textWallModule = await ctx.Cont_TextWallModule.AsNoTracking().FirstAsync(i => i.Id == moduleInfo.Id);
                             moduleContents.Add(textWallModule.ToModuleContent());
                             break;
 

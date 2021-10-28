@@ -1,4 +1,6 @@
-﻿namespace DAL.Models.Database.Tables
+﻿using System.Collections.Generic;
+
+namespace DAL.Models.Database.Tables
 {
     /// <summary>
     /// The class containing a policy (permission) data used in the application.
@@ -13,5 +15,7 @@
         /// Name of the policy (permission)
         /// </summary>
         public string Name { get; set; }
+
+        public List<Auth_Role_Policy_Assign> Auth_Role_Policy_Assigns { get; set; }
     }
 }

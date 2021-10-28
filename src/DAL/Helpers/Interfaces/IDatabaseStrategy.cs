@@ -1,5 +1,4 @@
-﻿using System.Data;
-using System.Data.Common;
+﻿using DAL.Models.Database;
 
 namespace DAL.Helpers.Interfaces
 {
@@ -9,10 +8,9 @@ namespace DAL.Helpers.Interfaces
     public interface IDatabaseStrategy
     {
         /// <summary>
-        /// Get an instance of <see cref="DbConnection"/> object for executing queries in the DB server.
+        /// Get an instance of <see cref="CmsDbContext"/> used for connection with database and commiting EF Core based queries.
         /// </summary>
-        /// <param name="openConnection">Open connection just before returning the object reference</param>
-        /// <returns>DB connection object instance fopr connection with a concrete database.</returns>
-        IDbConnection GetDbConnection(bool openConnection = true);
+        /// <returns>DFatabase context</returns>
+        CmsDbContext GetContext();
     }
 }

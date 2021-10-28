@@ -1,4 +1,6 @@
-﻿namespace DAL.Models.Database.Tables
+﻿using System.Collections.Generic;
+
+namespace DAL.Models.Database.Tables
 {
     /// <summary>
     /// The class for storing role data.
@@ -22,5 +24,13 @@
         /// be removed at any circumstance.
         /// </summary>
         public bool FactoryRole { get; set; }
+
+
+
+
+
+        public List<Auth_Role_Policy_Assign> Auth_Role_Policy_Assigns { get; set; }
+
+        public List<Auth_User> Auth_Users { get; set; }
     }
 }

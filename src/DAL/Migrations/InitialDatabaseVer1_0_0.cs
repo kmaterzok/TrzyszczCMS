@@ -35,8 +35,6 @@ namespace DAL.Migrations
                 .FromTable(nameof(Auth_Token))              .ForeignColumn(nameof(Auth_Token.Auth_UserId))
                 .ToTable(  nameof(Auth_User))               .PrimaryColumn(nameof(Auth_User.Id));
 
-
-
             Create.Table(   nameof(Auth_Policy))
                 .WithColumn(nameof(Auth_Policy.Id))         .AsInt32().NotNullable().PrimaryKey()
                 .WithColumn(nameof(Auth_Policy.Name))       .AsString(50).NotNullable();

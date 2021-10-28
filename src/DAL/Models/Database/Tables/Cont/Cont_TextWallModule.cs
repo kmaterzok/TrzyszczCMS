@@ -25,5 +25,9 @@
         /// Main content section width. Expressed as enum's value.
         /// </summary>
         public short SectionWidth { get; set; }
+
+
+
+        public Cont_Module ContModule { get; set; }
     }
 }

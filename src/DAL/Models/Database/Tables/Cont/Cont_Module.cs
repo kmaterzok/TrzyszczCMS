@@ -17,5 +17,10 @@
         /// Row ID expressing which page it is referring to.
         /// </summary>
         public int Cont_PageId { get; set; }
+
+
+        public Cont_TextWallModule ContTextWallModule { get; set; }
+
+        public Cont_Page ContPage { get; set; }
     }
 }

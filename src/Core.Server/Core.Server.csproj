@@ -13,6 +13,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Services\Implementation\DbAccess\AuthDatabaseService.cs~RFc2706d.TMP" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="BouncyCastle" Version="1.8.9" />
     <PackageReference Include="Konscious.Security.Cryptography.Argon2" Version="1.2.1" />
   </ItemGroup>

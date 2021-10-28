@@ -1,7 +1,6 @@
 ﻿using DAL.Helpers.Interfaces;
+using DAL.Models.Database;
 using System;
-using System.Data;
-using System.Data.Common;
 
 namespace DAL.Helpers
 {
@@ -12,9 +11,9 @@ namespace DAL.Helpers
     {
         #region Fields
         /// <summary>
-        /// A factory methods for generating <see cref="DbConnection"/> objects.
+        /// A factory methods for generating <see cref="CmsDbContext"/> objects.
         /// </summary>
-        private readonly Func<DbConnection> _dbConnectionFactoryMethod;
+        private readonly Func<CmsDbContext> _dbContextFactoryMethod;
         #endregion
 
         #region Ctor
@@ -24,19 +23,14 @@ namespace DAL.Helpers
         /// <param name="connectionString">Connection string for database access.</param>
         public PgsqlDatabaseStrategy(string connectionString)
         {
-            this._dbConnectionFactoryMethod = () => DALHelper.CreatePgsqlDbConnection(connectionString);
+            this._dbContextFactoryMethod = () => new CmsDbContext(connectionString);
         }
         #endregion
 
         #region Public methods
-        public IDbConnection GetDbConnection(bool openConnection = true)
+        public CmsDbContext GetContext()
         {
-            var connection = this._dbConnectionFactoryMethod.Invoke();
-            if (openConnection)
-            {
-                connection.Open();
-            }
-            return connection;
+            return this._dbContextFactoryMethod.Invoke();
         }
         #endregion
     }

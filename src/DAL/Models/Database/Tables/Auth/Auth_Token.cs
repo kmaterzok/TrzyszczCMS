@@ -23,5 +23,10 @@ namespace DAL.Models.Database.Tables
         /// UTC time of the token expiriation.
         /// </summary>
         public DateTime UtcExpiryTime { get; set; }
+
+
+
+
+        public Auth_User Auth_User { get; set; }
     }
 }

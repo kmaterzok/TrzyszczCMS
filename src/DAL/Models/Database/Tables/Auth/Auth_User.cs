@@ -1,4 +1,6 @@
-﻿namespace DAL.Models.Database.Tables
+﻿using System.Collections.Generic;
+
+namespace DAL.Models.Database.Tables
 {
     /// <summary>
     /// The class describing the table of user data stored in the database.
@@ -41,5 +43,10 @@
         /// Row ID of the role the user has been assigned to.
         /// </summary>
         public int Auth_RoleId { get; set; }
+
+
+        public List<Auth_Token> AuthTokens { get; set; }
+
+        public Auth_Role AuthRole { get; set; }
     }
 }

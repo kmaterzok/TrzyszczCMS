@@ -14,5 +14,9 @@
         /// Row ID of the policy that has been assigned to a role.
         /// </summary>
         public int Auth_PolicyId { get; set; }
+
+
+        public Auth_Policy Auth_Policy { get; set; }
+        public Auth_Role Auth_Role { get; set; }
     }
 }

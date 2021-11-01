@@ -1,8 +1,28 @@
 ﻿@layout AdminLayout
 @page "/manage/pages"
+@using TrzyszczCMS.Client.Views.Shared.Grids
+@using TrzyszczCMS.Client.ViewModels.Administering  
+@inject ManagePagesViewModel ViewModel 
 
-<h3>Pages</h3>
-
-@code {
-
-}
+<nav class="d-flex">
+    <div class="me-auto">
+        <h3 class="d-inline-block"><a class="@PostsButtonLinkEnableClasses" @onclick="@DisplayPosts" role="button">Posts</a></h3>
+        <div class="inline-gapper-50"></div>
+        <h3 class="d-inline-block"><a class="@ArticlesButtonLinkEnableClasses" @onclick="@DisplayArticles" role="button">Articles</a></h3>
+    </div>
+    <div>
+        <button class="btn btn-primary"><i class="fas fa-minus"></i>&nbsp;Delete</button>
+        <button class="btn btn-primary"><i class="fas fa-search"></i>&nbsp;Search</button>
+        <button class="btn btn-primary"><i class="fas fa-plus"></i>&nbsp;Create...</button>
+    </div>
+</nav>
+<section>
+    <Grid Items="ViewModel.Posts">
+        <Header>
+            <GridColHeader Title="Text" OnSearchTextChanged="@(e => ViewModel.OnPublisherSearchTextChanged(e, "Text"))" />
+        </Header>
+        <RowTemplate Context="row">
+            <td>@row.Data</td>
+        </RowTemplate>
+    </Grid>
+</section>

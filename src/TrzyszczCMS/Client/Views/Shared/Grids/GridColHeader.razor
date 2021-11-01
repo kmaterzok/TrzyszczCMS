@@ -1,0 +1,34 @@
+﻿<th>
+    <div class="w-100 p-1">
+        @if (!string.IsNullOrEmpty(Title))
+        {
+            <div class="ps-1">@Title</div>
+        }
+        else
+        {
+            <span class="user-select-none" aria-hidden="true">&nbsp;</span>
+        }
+        @if (SearchBox)
+        {
+            <input class="form-control form-control-sm mt-1" placeholder="search" @oninput="OnSearchTextChanged" />
+        }
+    </div>
+</th>
+
+@code {
+    /// <summary>
+    /// Displayed header title.
+    /// </summary>
+    [Parameter]
+    public string Title { get; set; } = string.Empty;
+    /// <summary>
+    /// Display search box.
+    /// </summary>
+    [Parameter]
+    public bool SearchBox { get; set; } = true;
+    /// <summary>
+    /// Invoked whenever search text is changed.
+    /// </summary>
+    [Parameter]
+    public EventCallback<ChangeEventArgs> OnSearchTextChanged { get; set; }
+}

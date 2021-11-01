@@ -1,0 +1,39 @@
+﻿@using TrzyszczCMS.Client.Data.Model
+@typeparam TItem
+
+<div class="w-100">
+    <table class="table table-bordered table-striped mb-0">
+        <thead class="bg-success text-white">
+            <th></th>
+            @Header
+        </thead>
+        <tbody>
+            @foreach (var item in Items)
+            {
+                <tr>
+                    <td><input type="checkbox" @bind="@item.Checked" /></td>
+                    @RowTemplate(item)
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+
+@code {
+    /// <summary>
+    /// Header of the table
+    /// </summary>
+    [Parameter]
+    public RenderFragment Header { get; set; }
+    /// <summary>
+    /// Template for a row
+    /// </summary>
+    [Parameter]
+    public RenderFragment<GridItem<TItem>> RowTemplate { get; set; }
+    /// <summary>
+    /// Items currently displayed in the grid.
+    /// </summary>
+    [Parameter]
+    public List<GridItem<TItem>> Items { get; set; }
+}

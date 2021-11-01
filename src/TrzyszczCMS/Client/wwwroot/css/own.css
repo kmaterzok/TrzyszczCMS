@@ -6,6 +6,15 @@
     transform: translateY(-50%);
 }
 
+.inline-gapper-50 {
+    display: inline-block;
+    width: 45px;
+}
+
+.cursor-default {
+    cursor: default;
+}
+
 /***************************************/
 /*     Spinner by Fabio Ottaviani:     */
 /* https://codepen.io/supah/pen/BjYLdW */
@@ -22,7 +31,7 @@
     height: 50px;
 }
 .spinner .path {
-    stroke: #136000;
+    stroke: #111;
     stroke-linecap: round;
     -webkit-animation: dash 1.5s ease-in-out infinite;
     animation: dash 1.5s ease-in-out infinite;

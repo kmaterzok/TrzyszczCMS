@@ -15,6 +15,7 @@ using System.Threading.Tasks;
 using TrzyszczCMS.Client.Other;
 using TrzyszczCMS.Client.Services.Implementations;
 using TrzyszczCMS.Client.Services.Interfaces;
+using TrzyszczCMS.Client.ViewModels.Administering;
 using TrzyszczCMS.Client.ViewModels.Shared;
 using TrzyszczCMS.Client.ViewModels.SignIn;
 using TrzyszczCMS.Client.ViewModels.SiteContent;
@@ -63,6 +64,7 @@ namespace TrzyszczCMS.Client
         {
             services.AddTransient<SignInViewModel>();
             services.AddTransient<ModularPageViewModel>();
+            services.AddTransient<ManagePagesViewModel>();
         }
         #endregion
     }

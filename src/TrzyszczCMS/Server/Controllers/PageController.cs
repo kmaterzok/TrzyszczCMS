@@ -2,9 +2,6 @@
 using Core.Shared.Enums;
 using Core.Shared.Models.Rest.Responses.PageContent;
 using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace TrzyszczCMS.Server.Controllers

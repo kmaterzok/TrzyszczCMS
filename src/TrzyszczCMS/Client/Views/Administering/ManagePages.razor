@@ -1,28 +1,60 @@
 ﻿@layout AdminLayout
 @page "/manage/pages"
+@using Core.Shared.Enums; 
+@using Core.Shared.Models.ManagePage
 @using TrzyszczCMS.Client.Views.Shared.Grids
-@using TrzyszczCMS.Client.ViewModels.Administering  
-@inject ManagePagesViewModel ViewModel 
+@using TrzyszczCMS.Client.ViewModels.Administering
+@inject ManagePagesViewModel ViewModel
 
 <nav class="d-flex">
     <div class="me-auto">
-        <h3 class="d-inline-block"><a class="@PostsButtonLinkEnableClasses" @onclick="@DisplayPosts" role="button">Posts</a></h3>
+        <a class="nav-manage-link @PostsButtonLinkEnableClasses" @onclick="@DisplayPosts" role="button">Posts</a>
         <div class="inline-gapper-50"></div>
-        <h3 class="d-inline-block"><a class="@ArticlesButtonLinkEnableClasses" @onclick="@DisplayArticles" role="button">Articles</a></h3>
+        <a class="nav-manage-link @ArticlesButtonLinkEnableClasses" @onclick="@DisplayArticles" role="button">Articles</a>
+        <div class="inline-gapper-50"></div>
+        <a class="nav-manage-link" @onclick="@GoToManagingHomepage" role="button">Homepage</a>
     </div>
     <div>
-        <button class="btn btn-primary"><i class="fas fa-minus"></i>&nbsp;Delete</button>
-        <button class="btn btn-primary"><i class="fas fa-search"></i>&nbsp;Search</button>
-        <button class="btn btn-primary"><i class="fas fa-plus"></i>&nbsp;Create...</button>
+        <button class="btn btn-primary btn-sm"><i class="fas fa-minus"></i>&nbsp;Delete</button>
+        <button class="btn btn-primary btn-sm" @onclick="@ApplySearchAsync"><i class="fas fa-search"></i>&nbsp;Search</button>
+        <button class="btn btn-primary btn-sm"><i class="fas fa-plus"></i>&nbsp;Create...</button>
     </div>
 </nav>
 <section>
-    <Grid Items="ViewModel.Posts">
-        <Header>
-            <GridColHeader Title="Text" OnSearchTextChanged="@(e => ViewModel.OnPublisherSearchTextChanged(e, "Text"))" />
-        </Header>
-        <RowTemplate Context="row">
-            <td>@row.Data</td>
-        </RowTemplate>
-    </Grid>
+    @if (!this.postsButtonEnabled)
+    {
+        <Grid Items="ViewModel.Posts">
+            <Header>
+                <GridColHeader Title="Title"   OnSearchTextChanged="@(e => ViewModel.OnPostsSearch(e, FilteredGridField.ManagePages_Posts_Title))" />
+                <GridColHeader Title="Created" OnSearchTextChanged="@(e => ViewModel.OnPostsSearch(e, FilteredGridField.ManagePages_Posts_Created))" />
+                <GridColHeader Title="Actions" SearchBox="false" />
+            </Header>
+            <RowTemplate Context="row">
+                <td>@row.Data.Title</td>
+                <td>@row.Data.CreateUtcTimestamp.ToString()</td>
+                <td>Actions</td>
+            </RowTemplate>
+            <NoRowsTemplate>
+                No data loaded.
+            </NoRowsTemplate>
+        </Grid>
+    }
+    else if (!this.articlesButtonEnabled)
+    {
+        <Grid Items="ViewModel.Articles">
+            <Header>
+                <GridColHeader Title="Title"   OnSearchTextChanged="@(e => ViewModel.OnArticlesSearch(e, FilteredGridField.ManagePages_Articles_Title))" />
+                <GridColHeader Title="Created" OnSearchTextChanged="@(e => ViewModel.OnArticlesSearch(e, FilteredGridField.ManagePages_Articles_Created))" />
+                <GridColHeader Title="Actions" SearchBox="false" />
+            </Header>
+            <RowTemplate Context="row">
+                <td>@row.Data.Title</td>
+                <td>@row.Data.CreateUtcTimestamp.ToString()</td>
+                <td>Actions</td>
+            </RowTemplate>
+            <NoRowsTemplate>
+                No data loaded.
+            </NoRowsTemplate>
+        </Grid>
+    }
 </section>

@@ -1,4 +1,4 @@
-﻿using Core.Shared.Models.SiteContent;
+﻿using Core.Shared.Models.PageContent;
 using System.Collections.Generic;
 
 namespace Core.Shared.Models.Rest.Responses.PageContent

@@ -2,7 +2,7 @@
 using Core.Server.Services.Interfaces.DbAccess.Read;
 using Core.Shared.Enums;
 using Core.Shared.Models.Rest.Responses.PageContent;
-using Core.Shared.Models.SiteContent;
+using Core.Shared.Models.PageContent;
 using DAL.Enums;
 using DAL.Helpers.Interfaces;
 using DAL.Models.Database.Tables;

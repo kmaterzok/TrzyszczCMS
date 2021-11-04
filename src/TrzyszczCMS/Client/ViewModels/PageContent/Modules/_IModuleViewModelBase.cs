@@ -1,6 +1,6 @@
 ﻿using Core.Shared.Enums;
 
-namespace TrzyszczCMS.Client.ViewModels.SiteContent.Modules
+namespace TrzyszczCMS.Client.ViewModels.PageContent.Modules
 {
     /// <summary>
     /// The interface for viewmodels that apply for modules of parts of pages.

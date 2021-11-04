@@ -7,10 +7,10 @@ using System.Linq;
 using System.Threading.Tasks;
 using TrzyszczCMS.Client.Helpers;
 using TrzyszczCMS.Client.ViewModels.Shared;
-using TrzyszczCMS.Client.ViewModels.SiteContent.Modules;
-using TrzyszczCMS.Client.Views.SiteContent;
+using TrzyszczCMS.Client.ViewModels.PageContent.Modules;
+using TrzyszczCMS.Client.Views.PageContent;
 
-namespace TrzyszczCMS.Client.ViewModels.SiteContent
+namespace TrzyszczCMS.Client.ViewModels.PageContent
 {
     /// <summary>
     /// The viewmodel for <see cref="ModularPageComponent"/> displaying various modules (parts) of the page.

@@ -11,5 +11,6 @@ namespace Core.Shared.Models.Rest.Responses.Auth
         /// Data returned for user that has signed in with concrete credentials.
         /// </summary>
         public AuthUserInfo AuthUserInfo { get; set; }
+        // TODO: Remove this Response.
     }
 }

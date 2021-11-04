@@ -12,8 +12,4 @@
     <OutputPath>..\..\artifacts\Debug\</OutputPath>
   </PropertyGroup>
 
-  <ItemGroup>
-    <Folder Include="Models\Rest\Requests\PageContent\" />
-  </ItemGroup>
-
 </Project>

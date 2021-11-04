@@ -18,7 +18,8 @@ using TrzyszczCMS.Client.Services.Interfaces;
 using TrzyszczCMS.Client.ViewModels.Administering;
 using TrzyszczCMS.Client.ViewModels.Shared;
 using TrzyszczCMS.Client.ViewModels.SignIn;
-using TrzyszczCMS.Client.ViewModels.SiteContent;
+using TrzyszczCMS.Client.ViewModels.PageContent;
+using TrzyszczCMS.Client.ViewModels.Administering.Edit;
 
 namespace TrzyszczCMS.Client
 {
@@ -52,6 +53,7 @@ namespace TrzyszczCMS.Client
             services.AddScoped<IAuthService, AuthService>();
             services.AddScoped<IRestAuthService, RestAuthService>();
             services.AddScoped<ILoadPageService, LoadPageService>();
+            services.AddScoped<IManagePageService, ManagePageService>();
 
 
             services.AddScoped<AuthenticationStateProvider, ApplicationAuthenticationStateProvider>();
@@ -65,6 +67,7 @@ namespace TrzyszczCMS.Client
             services.AddTransient<SignInViewModel>();
             services.AddTransient<ModularPageViewModel>();
             services.AddTransient<ManagePagesViewModel>();
+            services.AddTransient<PageEditorViewModel>();
         }
         #endregion
     }

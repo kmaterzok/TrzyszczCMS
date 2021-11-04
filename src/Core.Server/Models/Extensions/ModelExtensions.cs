@@ -1,5 +1,5 @@
 ﻿using Core.Shared.Enums;
-using Core.Shared.Models.SiteContent;
+using Core.Shared.Models.PageContent;
 using DAL.Models.Database.Tables;
 
 namespace Core.Server.Models.Extensions

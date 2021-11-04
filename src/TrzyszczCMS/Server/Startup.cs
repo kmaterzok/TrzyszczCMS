@@ -1,9 +1,11 @@
 using Core.Server.Models.Settings;
 using Core.Server.Services.Implementation;
+using Core.Server.Services.Implementation.DbAccess.Modify;
 using Core.Server.Services.Implementation.DbAccess.Read;
 using Core.Server.Services.Implementations.DbAccess;
 using Core.Server.Services.Interfaces;
 using Core.Server.Services.Interfaces.DbAccess;
+using Core.Server.Services.Interfaces.DbAccess.Modify;
 using Core.Server.Services.Interfaces.DbAccess.Read;
 using DAL.Helpers;
 using DAL.Helpers.Interfaces;
@@ -50,6 +52,7 @@ namespace TrzyszczCMS.Server
             services.AddScoped<IDatabaseStrategyFactory, DatabaseStrategyFactory>();
             services.AddScoped<IAuthDatabaseService, AuthDatabaseService>();
             services.AddScoped<ILoadPageDbService, LoadPageDbService>();
+            services.AddScoped<IManagePageDbService, ManagePageDbService>();
         }
         #endregion
 

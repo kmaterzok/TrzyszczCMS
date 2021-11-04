@@ -4,7 +4,7 @@
 <div class="w-100">
     <table class="table table-bordered table-striped mb-0">
         <thead class="bg-success text-white">
-            <th></th>
+            <th style="width: 30px;"></th>
             @Header
         </thead>
         <tbody>
@@ -17,6 +17,10 @@
             }
         </tbody>
     </table>
+    @if (Items == null || Items.Count == 0)
+    {
+        <div class="alert alert-warning p-2 text-center">@NoRowsTemplate</div>
+    }
 </div>
 
 
@@ -36,4 +40,10 @@
     /// </summary>
     [Parameter]
     public List<GridItem<TItem>> Items { get; set; }
+    /// <summary>
+    /// Displayed when there is no row in <seealso cref="Items"/>.
+    /// </summary>
+    [Parameter]
+    public RenderFragment NoRowsTemplate { get; set; }
+
 }

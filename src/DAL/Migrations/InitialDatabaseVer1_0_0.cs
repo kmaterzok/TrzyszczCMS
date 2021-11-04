@@ -128,7 +128,7 @@ namespace DAL.Migrations
                 .ToTable(  nameof(Cont_Page))     .PrimaryColumn(nameof(Cont_Page.Id));
 
 
-            Insert.IntoTable(nameof(Cont_Page)).Row(new Cont_Page()
+            Insert.IntoTable(nameof(Cont_Page)).Row(new
             {
                 Id = 1,
                 Name = string.Empty,
@@ -137,21 +137,45 @@ namespace DAL.Migrations
             });
             for (int i = 1; i <= 5; ++i)
             {
-                Insert.IntoTable(nameof(Cont_Module)).Row(new Cont_Module()
+                Insert.IntoTable(nameof(Cont_Module)).Row(new
                 {
                     Id = i,
                     Type = 1,
                     Cont_PageId = 1
                 });
-                Insert.IntoTable(nameof(Cont_TextWallModule)).Row(new Cont_TextWallModule()
+                Insert.IntoTable(nameof(Cont_TextWallModule)).Row(new
                 {
                     Id = i,
-                    LeftAsideContent = null,
-                    RightAsideContent = null,
+                    LeftAsideContent = (string)null,
+                    RightAsideContent = (string)null,
                     SectionWidth = 600,
                     SectionContent = "**Accusantium consequatur et maiores.** Est quia iste consectetur illum repellendus officia quia quam. Perspiciatis nihil dignissimos est et beatae qui ex ipsa. Dolorem est at molestias aut architecto quis non. Vel unde sequi itaque. Deserunt est numquam quia harum voluptatem excepturi. Sunt expedita sequi veniam optio et voluptate quia voluptatem. Vel corporis deleniti dolorem accusantium. Eos vel modi qui eos. At sed et dolorum ad temporibus vel. Omnis illum quam fugit. Officiis officia quia autem laudantium aut impedit. Asperiores laborum neque quaerat excepturi autem et. Ad id fugit error voluptas sed eum architecto. Error non commodi in delectus. Harum veritatis rerum eum quos et aperiam et vel. Est et nemo similique nam quos necessitatibus tempore commodi. Minima sunt dolorem velit aut omnis eaque repudiandae qui. Atque assumenda voluptas assumenda sint quia deleniti. Corporis aliquam dolorem aut quasi fuga est inventore deleniti. Ratione sit est totam facere libero. In quaerat et consequuntur."
                 });
             }
+
+
+            Insert.IntoTable(nameof(Cont_Page)).Row(new
+            {
+                Id = 2,
+                Name = "simple-article",
+                Type = 2,
+                CreateUtcTimestamp = new DateTime(2021, 10, 1, 18, 30, 0)
+            });
+            Insert.IntoTable(nameof(Cont_Module)).Row(new
+            {
+                Id = 6,
+                Type = 1,
+                Cont_PageId = 2
+            });
+            Insert.IntoTable(nameof(Cont_TextWallModule)).Row(new
+            {
+                Id = 6,
+                LeftAsideContent = (string)null,
+                RightAsideContent = (string)null,
+                SectionWidth = 800,
+                SectionContent = "**Accusantium consequatur et maiores.** Est quia iste consectetur illum repellendus officia quia quam. Perspiciatis nihil dignissimos est et beatae qui ex ipsa. Dolorem est at molestias aut architecto quis non. Vel unde sequi itaque. Deserunt est numquam quia harum voluptatem excepturi. Sunt expedita sequi veniam optio et voluptate quia voluptatem. Vel corporis deleniti dolorem accusantium. Eos vel modi qui eos. At sed et dolorum ad temporibus vel. Omnis illum quam fugit. Officiis officia quia autem laudantium aut impedit. Asperiores laborum neque quaerat excepturi autem et. Ad id fugit error voluptas sed eum architecto. Error non commodi in delectus. Harum veritatis rerum eum quos et aperiam et vel. Est et nemo similique nam quos necessitatibus tempore commodi. Minima sunt dolorem velit aut omnis eaque repudiandae qui. Atque assumenda voluptas assumenda sint quia deleniti. Corporis aliquam dolorem aut quasi fuga est inventore deleniti. Ratione sit est totam facere libero. In quaerat et consequuntur."
+            });
+            
             #endregion
 
         }

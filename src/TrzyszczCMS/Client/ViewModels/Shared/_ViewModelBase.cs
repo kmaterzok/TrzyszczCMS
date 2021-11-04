@@ -1,4 +1,5 @@
-﻿using System.ComponentModel;
+﻿using Microsoft.AspNetCore.Components;
+using System.ComponentModel;
 using System.Linq;
 
 namespace TrzyszczCMS.Client.ViewModels.Shared
@@ -67,6 +68,8 @@ namespace TrzyszczCMS.Client.ViewModels.Shared
                 this.NotifyPropertyChanged(property.Name);
             }
         }
+
+        // TODO: Add method assigning PorpertyChanged event.
         #endregion
     }
 }

@@ -1,7 +1,8 @@
-﻿using Core.Shared.Enums;
+﻿
+using Core.Shared.Enums;
 using Core.Shared.Exceptions;
 
-namespace Core.Shared.Models.SiteContent
+namespace Core.Shared.Models.PageContent
 {
     /// <summary>
     /// The content of a single module that is embedded into the displayed page.

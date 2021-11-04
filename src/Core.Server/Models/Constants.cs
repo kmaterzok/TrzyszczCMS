@@ -17,5 +17,9 @@
         /// Quantity of bytes in the access token sent to the user.
         /// </summary>
         public const int ACCESS_TOKEN_BYTES_QUANTITY = 64;
+        /// <summary>
+        /// The quantity of page info entries per single paginated page.
+        /// </summary>
+        public const int PAGINATION_PAGE_INFO_SIZE = 100;
     }
 }

@@ -1,7 +1,7 @@
 ﻿using Core.Shared.Enums;
 using TrzyszczCMS.Client.ViewModels.Shared;
 
-namespace TrzyszczCMS.Client.ViewModels.SiteContent.Modules
+namespace TrzyszczCMS.Client.ViewModels.PageContent.Modules
 {
     /// <summary>
     /// The viewmodel for text wall page module.

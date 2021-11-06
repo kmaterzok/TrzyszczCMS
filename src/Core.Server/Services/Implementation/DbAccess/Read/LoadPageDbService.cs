@@ -39,7 +39,9 @@ namespace Core.Server.Services.Implementation.DbAccess.Read
                 var rawValueOfType = (byte)type;
                 var moduleInfos = await (from p in ctx.Cont_Page.AsNoTracking()
                                          join m in ctx.Cont_Module.AsNoTracking() on p.Id equals m.Cont_PageId
-                                         where p.Name == queriedName && p.Type == rawValueOfType
+                                         where p.Name == queriedName &&
+                                            p.Type == rawValueOfType &&
+                                            p.PublishUtcTimestamp <= DateTime.UtcNow
                                          select new
                                          {
                                              Id = m.Id,

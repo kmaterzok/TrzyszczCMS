@@ -54,7 +54,8 @@ namespace Core.Server.Services.Implementation.DbAccess.Modify
                                                  {
                                                      Id = i.Id,
                                                      Title = i.Name,
-                                                     CreateUtcTimestamp = i.CreateUtcTimestamp
+                                                     CreateUtcTimestamp = i.CreateUtcTimestamp,
+                                                     PublishUtcTimestamp = i.PublishUtcTimestamp
                                                      // TODO: Displaying local time whilst using UTC on the server
                                                  }).ToListAsync();
 

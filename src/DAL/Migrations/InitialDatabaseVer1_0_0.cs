@@ -121,7 +121,8 @@ namespace DAL.Migrations
                 .WithColumn(nameof(Cont_Page.Id))                          .AsInt32().NotNullable().PrimaryKey()
                 .WithColumn(nameof(Cont_Page.Name))                        .AsString(255).NotNullable().Unique()
                 .WithColumn(nameof(Cont_Page.Type))                        .AsByte().NotNullable().WithDefaultValue(3)
-                .WithColumn(nameof(Cont_Page.CreateUtcTimestamp))          .AsDateTime().NotNullable();
+                .WithColumn(nameof(Cont_Page.CreateUtcTimestamp))          .AsDateTime().NotNullable()
+                .WithColumn(nameof(Cont_Page.PublishUtcTimestamp))         .AsDateTime().NotNullable();
 
             Create.ForeignKey(ForeignKeys.Current.CONTMODULE_PAGE_ASSIGNEDID)
                 .FromTable(nameof(Cont_Module))   .ForeignColumn(nameof(Cont_Module.Cont_PageId))
@@ -133,7 +134,8 @@ namespace DAL.Migrations
                 Id = 1,
                 Name = string.Empty,
                 Type = 1,
-                CreateUtcTimestamp = new DateTime(2021, 10, 1, 18, 15, 0)
+                CreateUtcTimestamp = new DateTime(2021, 10, 1, 18, 15, 0),
+                PublishUtcTimestamp = new DateTime(2021, 10, 1, 18, 25, 0)
             });
             for (int i = 1; i <= 5; ++i)
             {
@@ -159,7 +161,8 @@ namespace DAL.Migrations
                 Id = 2,
                 Name = "simple-article",
                 Type = 2,
-                CreateUtcTimestamp = new DateTime(2021, 10, 1, 18, 30, 0)
+                CreateUtcTimestamp = new DateTime(2021, 10, 1, 18, 30, 0),
+                PublishUtcTimestamp = new DateTime(2021, 10, 1, 18, 40, 0)
             });
             Insert.IntoTable(nameof(Cont_Module)).Row(new
             {

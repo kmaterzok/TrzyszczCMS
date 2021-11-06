@@ -25,14 +25,17 @@
     <div class="@(this.postsButtonEnabled ? "collapse" : string.Empty)">
         <Grid Items="ViewModel.Posts">
             <Header>
-                <GridColHeader Title="Title"   OnSearchTextChanged="@(e => ViewModel.OnPostsSearch(e, FilteredGridField.ManagePages_Posts_Title))" />
+                <GridColHeader Title="Title" OnSearchTextChanged="@(e => ViewModel.OnPostsSearch(e, FilteredGridField.ManagePages_Posts_Title))" />
                 <GridColHeader Title="Created" OnSearchDateChanged="@(e => ViewModel.OnPostsSearch(e, FilteredGridField.ManagePages_Posts_Created))"
+                               SearchBoxType="SearchBoxType.DateInputs" />
+                <GridColHeader Title="Published" OnSearchDateChanged="@(e => ViewModel.OnPostsSearch(e, FilteredGridField.ManagePages_Posts_Published))"
                                SearchBoxType="SearchBoxType.DateInputs" />
                 <GridColHeader Title="Actions" SearchBoxType="SearchBoxType.None" />
             </Header>
             <RowTemplate Context="row">
                 <td>@row.Data.Title</td>
                 <td>@row.Data.CreateUtcTimestamp.ToGenericNotation()</td>
+                <td>@row.Data.PublishUtcTimestamp.ToGenericNotation()</td>
                 <td>Actions</td>
             </RowTemplate>
             <NoRowsTemplate>
@@ -43,14 +46,17 @@
     <div class="@(this.articlesButtonEnabled ? "collapse" : string.Empty)">
         <Grid Items="ViewModel.Articles">
             <Header>
-                <GridColHeader Title="Title"   OnSearchTextChanged="@(e => ViewModel.OnArticlesSearch(e, FilteredGridField.ManagePages_Articles_Title))" />
+                <GridColHeader Title="Title" OnSearchTextChanged="@(e => ViewModel.OnArticlesSearch(e, FilteredGridField.ManagePages_Articles_Title))" />
                 <GridColHeader Title="Created" OnSearchDateChanged="@(e => ViewModel.OnArticlesSearch(e, FilteredGridField.ManagePages_Articles_Created))"
+                               SearchBoxType="SearchBoxType.DateInputs" />
+                <GridColHeader Title="Published" OnSearchDateChanged="@(e => ViewModel.OnArticlesSearch(e, FilteredGridField.ManagePages_Articles_Published))"
                                SearchBoxType="SearchBoxType.DateInputs" />
                 <GridColHeader Title="Actions" SearchBoxType="SearchBoxType.None" />
             </Header>
             <RowTemplate Context="row">
                 <td>@row.Data.Title</td>
                 <td>@row.Data.CreateUtcTimestamp.ToGenericNotation()</td>
+                <td>@row.Data.PublishUtcTimestamp.ToGenericNotation()</td>
                 <td>Actions</td>
             </RowTemplate>
             <NoRowsTemplate>

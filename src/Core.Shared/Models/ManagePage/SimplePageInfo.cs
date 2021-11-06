@@ -20,5 +20,10 @@ namespace Core.Shared.Models.ManagePage
         /// Creation timestamp of the page.
         /// </summary>
         public DateTime CreateUtcTimestamp { get; set; }
+        /// <summary>
+        /// Timestamp of the publishing the page.
+        /// </summary>
+        public DateTime PublishUtcTimestamp { get; set; }
+
     }
 }

@@ -62,6 +62,13 @@ namespace Core.Server.Helpers.Extensions
                     if (range.End.HasValue)   { source = source.Where<Cont_Page, T>(t => t.CreateUtcTimestamp <= range.End.Value);   }
                     return source;
 
+                case FilteredGridField.ManagePages_Articles_Published:
+                case FilteredGridField.ManagePages_Posts_Published:
+                    var range2 = FilterDataParser.ToDateRange(filterText);
+                    if (range2.Start.HasValue) { source = source.Where<Cont_Page, T>(t => t.PublishUtcTimestamp >= range2.Start.Value); }
+                    if (range2.End.HasValue)   { source = source.Where<Cont_Page, T>(t => t.PublishUtcTimestamp <= range2.End.Value);   }
+                    return source;
+
                 default:
                     throw new NotImplementedException("There are some enums that are not handled at all.");
                     // TODO: Write a test checking all the cases.

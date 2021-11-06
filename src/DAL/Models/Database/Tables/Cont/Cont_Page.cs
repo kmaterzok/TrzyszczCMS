@@ -24,6 +24,11 @@ namespace DAL.Models.Database.Tables
         /// UTC+0 timestamp of creating the page.
         /// </summary>
         public DateTime CreateUtcTimestamp { get; set; }
+        /// <summary>
+        /// UTC+0 timestamp of the official publication on the website.
+        /// </summary>
+        public DateTime PublishUtcTimestamp { get; set; }
+
 
 
         public List<Cont_Module> ContModules { get; set; }

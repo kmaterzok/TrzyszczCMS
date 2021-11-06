@@ -8,27 +8,17 @@
         {
             <span class="user-select-none" aria-hidden="true">&nbsp;</span>
         }
-        @if (SearchBox)
+        @if (SearchBoxType == SearchBoxType.TextInput)
         {
             <input class="form-control form-control-sm mt-1" placeholder="search" @oninput="OnSearchTextChanged" />
         }
+        else if (SearchBoxType == SearchBoxType.DateInputs)
+        {
+            <input class="d-inline-block form-control form-control-sm mt-1" type="date" style="width: calc(50% - 12px);"
+                   @bind-value="@startDate"  @oninput="OnStartDateChanging">
+            <div   class="d-inline-block text-center">–</div>
+            <input class="d-inline-block form-control form-control-sm mt-1" type="date" style="width: calc(50% - 12px);"
+                   @bind-value="@endDate" @oninput="OnEndDateChanging">
+        }
     </div>
 </th>
-
-@code {
-    /// <summary>
-    /// Displayed header title.
-    /// </summary>
-    [Parameter]
-    public string Title { get; set; } = string.Empty;
-    /// <summary>
-    /// Display search box.
-    /// </summary>
-    [Parameter]
-    public bool SearchBox { get; set; } = true;
-    /// <summary>
-    /// Invoked whenever search text is changed.
-    /// </summary>
-    [Parameter]
-    public EventCallback<ChangeEventArgs> OnSearchTextChanged { get; set; }
-}

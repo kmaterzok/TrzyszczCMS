@@ -4,6 +4,7 @@
 @using Core.Shared.Models.ManagePage
 @using TrzyszczCMS.Client.Views.Shared.Grids
 @using TrzyszczCMS.Client.ViewModels.Administering
+@using Core.Shared.Helpers.Extensions
 @inject ManagePagesViewModel ViewModel
 
 <nav class="d-flex">
@@ -21,40 +22,40 @@
     </div>
 </nav>
 <section>
-    @if (!this.postsButtonEnabled)
-    {
+    <div class="@(this.postsButtonEnabled ? "collapse" : string.Empty)">
         <Grid Items="ViewModel.Posts">
             <Header>
                 <GridColHeader Title="Title"   OnSearchTextChanged="@(e => ViewModel.OnPostsSearch(e, FilteredGridField.ManagePages_Posts_Title))" />
-                <GridColHeader Title="Created" OnSearchTextChanged="@(e => ViewModel.OnPostsSearch(e, FilteredGridField.ManagePages_Posts_Created))" />
-                <GridColHeader Title="Actions" SearchBox="false" />
+                <GridColHeader Title="Created" OnSearchDateChanged="@(e => ViewModel.OnPostsSearch(e, FilteredGridField.ManagePages_Posts_Created))"
+                               SearchBoxType="SearchBoxType.DateInputs" />
+                <GridColHeader Title="Actions" SearchBoxType="SearchBoxType.None" />
             </Header>
             <RowTemplate Context="row">
                 <td>@row.Data.Title</td>
-                <td>@row.Data.CreateUtcTimestamp.ToString()</td>
+                <td>@row.Data.CreateUtcTimestamp.ToGenericNotation()</td>
                 <td>Actions</td>
             </RowTemplate>
             <NoRowsTemplate>
                 No data loaded.
             </NoRowsTemplate>
         </Grid>
-    }
-    else if (!this.articlesButtonEnabled)
-    {
+    </div>
+    <div class="@(this.articlesButtonEnabled ? "collapse" : string.Empty)">
         <Grid Items="ViewModel.Articles">
             <Header>
                 <GridColHeader Title="Title"   OnSearchTextChanged="@(e => ViewModel.OnArticlesSearch(e, FilteredGridField.ManagePages_Articles_Title))" />
-                <GridColHeader Title="Created" OnSearchTextChanged="@(e => ViewModel.OnArticlesSearch(e, FilteredGridField.ManagePages_Articles_Created))" />
-                <GridColHeader Title="Actions" SearchBox="false" />
+                <GridColHeader Title="Created" OnSearchDateChanged="@(e => ViewModel.OnArticlesSearch(e, FilteredGridField.ManagePages_Articles_Created))"
+                               SearchBoxType="SearchBoxType.DateInputs" />
+                <GridColHeader Title="Actions" SearchBoxType="SearchBoxType.None" />
             </Header>
             <RowTemplate Context="row">
                 <td>@row.Data.Title</td>
-                <td>@row.Data.CreateUtcTimestamp.ToString()</td>
+                <td>@row.Data.CreateUtcTimestamp.ToGenericNotation()</td>
                 <td>Actions</td>
             </RowTemplate>
             <NoRowsTemplate>
                 No data loaded.
             </NoRowsTemplate>
         </Grid>
-    }
+    </div>
 </section>

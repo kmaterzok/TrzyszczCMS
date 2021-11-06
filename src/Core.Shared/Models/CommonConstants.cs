@@ -9,5 +9,10 @@
         /// The name for header containing access token.
         /// </summary>
         public const string HEADER_AUTHORIZATION_NAME = "Authorization";
+        /// <summary>
+        /// The format used for getting date range filter strings.
+        /// It provides format for a single date only.
+        /// </summary>
+        public const string DATE_RANGE_FILTER_FORMAT = "yyyy-MM-dd";
     }
 }

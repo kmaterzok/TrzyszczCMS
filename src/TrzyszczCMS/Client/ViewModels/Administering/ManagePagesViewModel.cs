@@ -1,6 +1,8 @@
-﻿using Core.Application.Helpers.Interfaces;
+﻿using Core.Application.Helpers;
+using Core.Application.Helpers.Interfaces;
 using Core.Application.Services.Interfaces.Rest;
 using Core.Shared.Enums;
+using Core.Shared.Models;
 using Core.Shared.Models.ManagePage;
 using Microsoft.AspNetCore.Components;
 using System;
@@ -113,12 +115,17 @@ namespace TrzyszczCMS.Client.ViewModels.Administering
             this.CanFetchArticles = this._articlesFetcher.HasNext;
             this._articlesLoaded = true;
         }
+        public void OnPostsSearch(ValueRange<DateTime?> range, FilteredGridField columnTitle) =>
+            this._postSearchParams.AddOrUpdate(columnTitle, range.MakeDateRangeFilterString());
 
         public void OnPostsSearch(ChangeEventArgs changeEventArgs, FilteredGridField columnTitle) =>
             this._postSearchParams.AddOrUpdate(columnTitle, changeEventArgs.Value.ToString());
         
         public void OnArticlesSearch(ChangeEventArgs changeEventArgs, FilteredGridField columnTitle) =>
             this._articleSearchParams.AddOrUpdate(columnTitle, changeEventArgs.Value.ToString());
+
+        public void OnArticlesSearch(ValueRange<DateTime?> range, FilteredGridField columnTitle) =>
+            this._articleSearchParams.AddOrUpdate(columnTitle, range.MakeDateRangeFilterString());
 
         public async Task ApplySearchAsync(PageType type)
         {

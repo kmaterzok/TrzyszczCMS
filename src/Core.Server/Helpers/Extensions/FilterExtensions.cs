@@ -55,9 +55,12 @@ namespace Core.Server.Helpers.Extensions
                 case FilteredGridField.ManagePages_Posts_Title:
                     return source.Where<Cont_Page, T>(t => t.Name.Contains(filterText));
 
-                //case FilteredGridField.ManagePages_Articles_Created:
-                //case FilteredGridField.ManagePages_Posts_Created:
-                //    break;
+                case FilteredGridField.ManagePages_Articles_Created:
+                case FilteredGridField.ManagePages_Posts_Created:
+                    var range = FilterDataParser.ToDateRange(filterText);
+                    if (range.Start.HasValue) { source = source.Where<Cont_Page, T>(t => t.CreateUtcTimestamp >= range.Start.Value); }
+                    if (range.End.HasValue)   { source = source.Where<Cont_Page, T>(t => t.CreateUtcTimestamp <= range.End.Value);   }
+                    return source;
 
                 default:
                     throw new NotImplementedException("There are some enums that are not handled at all.");

@@ -1,4 +1,4 @@
-﻿namespace Utilities.Extensions
+﻿namespace Core.Shared.Helpers.Extensions
 {
     /// <summary>
     /// The class containing additional helper methods to ease usage of objects

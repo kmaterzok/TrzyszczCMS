@@ -13,7 +13,7 @@ using TrzyszczCMS.Client.Data.Model;
 using TrzyszczCMS.Client.Data.Model.Extensions;
 using TrzyszczCMS.Client.ViewModels.Shared;
 using TrzyszczCMS.Client.Views.Administering;
-using Utilities.Extensions;
+using Core.Shared.Helpers.Extensions;
 
 namespace TrzyszczCMS.Client.ViewModels.Administering
 {

@@ -11,7 +11,6 @@
   <ItemGroup>
     <ProjectReference Include="..\..\Core.Server\Core.Server.csproj" />
     <ProjectReference Include="..\..\DAL\DAL.csproj" />
-    <ProjectReference Include="..\..\Utilities\Utilities.csproj" />
     <ProjectReference Include="..\Client\TrzyszczCMS.Client.csproj" />
   </ItemGroup>
 

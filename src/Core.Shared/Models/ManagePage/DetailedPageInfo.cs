@@ -19,6 +19,10 @@ namespace Core.Shared.Models.ManagePage
         /// </summary>
         public string Title { get; set; }
         /// <summary>
+        /// SEO friendly name of the page used in its URI.
+        /// </summary>
+        public string UriName { get; set; }
+        /// <summary>
         /// Timestamp of the publishing the page
         /// </summary>
         public DateTime PublishUtcTimestamp { get; set; }

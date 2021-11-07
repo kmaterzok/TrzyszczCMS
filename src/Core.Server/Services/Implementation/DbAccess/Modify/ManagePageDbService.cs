@@ -82,7 +82,8 @@ namespace Core.Server.Services.Implementation.DbAccess.Modify
                 {
                     Id = rawPageInfo.Id,
                     PageType = (PageType)rawPageInfo.Type,
-                    Title = rawPageInfo.UriName,
+                    Title = rawPageInfo.Title,
+                    UriName = rawPageInfo.UriName,
                     PublishUtcTimestamp = rawPageInfo.PublishUtcTimestamp
                 };
 

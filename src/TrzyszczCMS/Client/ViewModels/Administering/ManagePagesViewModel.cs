@@ -14,6 +14,9 @@ using TrzyszczCMS.Client.Data.Model.Extensions;
 using TrzyszczCMS.Client.ViewModels.Shared;
 using TrzyszczCMS.Client.Views.Administering;
 using Core.Shared.Helpers.Extensions;
+using Core.Application.Services.Interfaces;
+using Core.Application.Models.Deposits;
+using Core.Application.Enums;
 
 namespace TrzyszczCMS.Client.ViewModels.Administering
 {
@@ -23,6 +26,7 @@ namespace TrzyszczCMS.Client.ViewModels.Administering
     public class ManagePagesViewModel : ViewModelBase
     {
         #region Fields
+        private readonly IDataDepository _depository;
         private readonly IManagePageService _managePageService;
         private readonly Dictionary<FilteredGridField, string> _postSearchParams;
         private readonly Dictionary<FilteredGridField, string> _articleSearchParams;
@@ -77,7 +81,7 @@ namespace TrzyszczCMS.Client.ViewModels.Administering
         #endregion
 
         #region Ctor
-        public ManagePagesViewModel(IManagePageService managePageService)
+        public ManagePagesViewModel(IDataDepository depository, IManagePageService managePageService)
         {
             // TODO: Create a type that contains property data for display and manage.
             this.Posts = new List<GridItem<SimplePageInfo>>();
@@ -86,6 +90,7 @@ namespace TrzyszczCMS.Client.ViewModels.Administering
             this._articleSearchParams = new Dictionary<FilteredGridField, string>();
             this._postsLoaded = this._articlesLoaded = this.CanFetchArticles = this.CanFetchPosts = false;
 
+            this._depository = depository;
             this._managePageService = managePageService;
 
             this.PreparePostsFetcher();
@@ -142,6 +147,24 @@ namespace TrzyszczCMS.Client.ViewModels.Administering
                     break;
             }
         }
+
+        public async Task SendDataToDepositoryAsync(PageType pagetype)
+        {
+            switch (pagetype)
+            {
+                case PageType.HomePage:
+                    var homepageInfo = await this._managePageService.GetDetailedPageInfoOfHomepage();
+                    this._depository.AddOrUpdate(new EditedPageDeposit()
+                    {
+                        PageEditorMode = PageEditorMode.Edit,
+                        PageDetails = homepageInfo
+                    });
+                    break;
+
+                default:
+                    throw new NotImplementedException();
+            }
+        }
         #endregion
 
         #region Helpers
@@ -150,7 +173,6 @@ namespace TrzyszczCMS.Client.ViewModels.Administering
         
         private void PrepareArticlesFetcher() =>
             this._articlesFetcher = this._managePageService.GetSimplePageInfos(PageType.Article, this._articleSearchParams);
-        
         #endregion
     }
 }

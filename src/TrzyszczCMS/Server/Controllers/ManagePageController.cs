@@ -30,7 +30,6 @@ namespace TrzyszczCMS.Server.Controllers
         #endregion
 
         #region Methods
-
         [HttpPost]
         [Produces("application/json")]
         [Route("[action]")]
@@ -38,6 +37,24 @@ namespace TrzyszczCMS.Server.Controllers
         {
             var pageContent = await this._managePageService.GetSimplePageInfoPage(request.Type, request.PageNumber, request.Filters);
             return null != pageContent ? Ok(pageContent) : NotFound();
+        }
+
+        [HttpGet]
+        [Produces("application/json")]
+        [Route("[action]/{id}")]
+        public async Task<ActionResult<DetailedPageInfo>> DetailedPageInfo(int id)
+        {
+            var pageDetails = await this._managePageService.GetDetailedPageInfo(id);
+            return null != pageDetails ? Ok(pageDetails) : NotFound();
+        }
+
+        [HttpGet]
+        [Produces("application/json")]
+        [Route("[action]")]
+        public async Task<ActionResult<DetailedPageInfo>> DetailedPageInfoOfHomepage()
+        {
+            var pageDetails = await this._managePageService.GetDetailedPageInfoOfHomepage();
+            return null != pageDetails ? Ok(pageDetails) : NotFound();
         }
         #endregion
     }

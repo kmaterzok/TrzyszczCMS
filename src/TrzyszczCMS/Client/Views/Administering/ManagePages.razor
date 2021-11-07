@@ -6,6 +6,8 @@
 @using TrzyszczCMS.Client.ViewModels.Administering
 @using Core.Shared.Helpers.Extensions
 @inject ManagePagesViewModel ViewModel
+@inject NavigationManager NavigationManager
+
 
 <nav class="d-flex">
     <div class="me-auto">
@@ -13,7 +15,7 @@
         <div class="inline-gapper-50"></div>
         <a class="nav-manage-link @ArticlesButtonLinkEnableClasses" @onclick="@DisplayArticles" role="button">Articles</a>
         <div class="inline-gapper-50"></div>
-        <a class="nav-manage-link" @onclick="@GoToManagingHomepage" role="button">Homepage</a>
+        <a class="nav-manage-link" @onclick="@GoToManagingHomepageAsync" role="button">Homepage</a>
     </div>
     <div>
         <button class="btn btn-primary btn-sm"><i class="fas fa-minus"></i>&nbsp;Delete</button>
@@ -21,6 +23,8 @@
         <button class="btn btn-primary btn-sm"><i class="fas fa-plus"></i>&nbsp;Create...</button>
     </div>
 </nav>
+
+
 <section>
     <div class="@(this.postsButtonEnabled ? "collapse" : string.Empty)">
         <Grid Items="ViewModel.Posts">
@@ -43,6 +47,8 @@
             </NoRowsTemplate>
         </Grid>
     </div>
+
+
     <div class="@(this.articlesButtonEnabled ? "collapse" : string.Empty)">
         <Grid Items="ViewModel.Articles">
             <Header>

@@ -1,4 +1,5 @@
-﻿using Core.Server.Helpers.Extensions;
+﻿using Core.Server.Helpers;
+using Core.Server.Helpers.Extensions;
 using Core.Server.Models;
 using Core.Server.Services.Interfaces.DbAccess.Modify;
 using Core.Shared.Enums;
@@ -67,6 +68,46 @@ namespace Core.Server.Services.Implementation.DbAccess.Modify
                     HasNextPage = (skippedPages + entries.Count) < allPagesCount
                 };
             }
+        }
+
+        public async Task<DetailedPageInfo> GetDetailedPageInfo(int id)
+        {
+            using (var ctx = _databaseStrategy.GetContext())
+            {
+                var rawPageInfo = ctx.Cont_Page.AsNoTracking()
+                                               .First(i => i.Id == id);
+                
+                var returnedDetails = new DetailedPageInfo()
+                {
+                    Id = rawPageInfo.Id,
+                    PageType = (PageType)rawPageInfo.Type,
+                    Title = rawPageInfo.Name,
+                    PublishUtcTimestamp = rawPageInfo.PublishUtcTimestamp
+                };
+
+                var moduleInfos = await ctx.Cont_Module.AsNoTracking()
+                                                       .Where(i => i.Cont_PageId == id)
+                                                       .Select(i => new ModuleTypeValueInfo()
+                                                       {
+                                                           Id   = i.Id,
+                                                           Type = i.Type
+                                                       }).ToListAsync();
+
+                returnedDetails.ModuleContents = await moduleInfos.GetModuleContentsAsync(ctx);
+                return returnedDetails;
+            }
+        }
+
+        public async Task<DetailedPageInfo> GetDetailedPageInfoOfHomepage()
+        {
+            int homepageId;
+            var homepageType = (byte)PageType.HomePage;
+            
+            using (var ctx = _databaseStrategy.GetContext())
+            {
+                homepageId = ctx.Cont_Page.First(i => i.Type == homepageType).Id;
+            }
+            return await this.GetDetailedPageInfo(homepageId);
         }
         #endregion
     }

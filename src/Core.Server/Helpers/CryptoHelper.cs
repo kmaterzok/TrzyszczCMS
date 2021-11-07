@@ -22,12 +22,12 @@ namespace Core.Server.Helpers
             }
         }
         /// <summary>
-        /// Generate a Keccak512 (SHA3-512) hash of <paramref name="data"/>
+        /// Generate a SHA3-512 hash of <paramref name="data"/>
         /// </summary>
         /// <param name="data">Data for hashing</param>
         /// <param name="iterations">Quantity of hashing iterations for resistance against brute force</param>
         /// <returns>Hashed of data</returns>
-        public static byte[] GenerateKeccak512(byte[] data, uint iterations = 1)
+        public static byte[] GenerateSha3_512(byte[] data, uint iterations = 1)
         {
             var keccak = new Org.BouncyCastle.Crypto.Digests.Sha3Digest(512);
             byte[] finalHash = new byte[64]; // 512 / 8 = 64

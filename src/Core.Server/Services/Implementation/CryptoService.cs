@@ -60,7 +60,7 @@ namespace Core.Server.Services.Implementation
         public AccessTokenVariants GenerateAccessToken()
         {
             byte[] plainAccessToken  = CryptoHelper.GenerateRandomBytes(Constants.ACCESS_TOKEN_BYTES_QUANTITY);
-            byte[] hashedAccessToken = CryptoHelper.GenerateKeccak512(plainAccessToken, _cryptoSettings.TokenHashIterations);
+            byte[] hashedAccessToken = CryptoHelper.GenerateSha3_512(plainAccessToken, _cryptoSettings.TokenHashIterations);
 
             return new AccessTokenVariants()
             {
@@ -72,7 +72,7 @@ namespace Core.Server.Services.Implementation
         public byte[] GenerateHashFromPlainAccessToken(string plainAccessTokenFromBrowser)
         {
             var plain = Base64UrlEncoder.DecodeBytes(plainAccessTokenFromBrowser);
-            return CryptoHelper.GenerateKeccak512(plain, _cryptoSettings.TokenHashIterations);
+            return CryptoHelper.GenerateSha3_512(plain, _cryptoSettings.TokenHashIterations);
         }
         #endregion
 

@@ -19,5 +19,17 @@ namespace Core.Application.Services.Interfaces.Rest
         /// <param name="filters">Filters applied to fetched data</param>
         /// <returns>The fetcher getting data from the backend</returns>
         IPageFetcher<SimplePageInfo> GetSimplePageInfos(PageType type, [NotNull] Dictionary<FilteredGridField, string> filters, int desiredPageNumber = 1);
+
+        /// <summary>
+        /// Get detaild information about a specific page.
+        /// </summary>
+        /// <param name="id">ID of the page</param>
+        /// <returns>Task returning page details</returns>
+        Task<DetailedPageInfo> GetDetailedPageInfo(int id);
+        /// <summary>
+        /// Get detailed information about the homepage.
+        /// </summary>
+        /// <returns></returns>
+        Task<DetailedPageInfo> GetDetailedPageInfoOfHomepage();
     }
 }

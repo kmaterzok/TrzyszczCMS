@@ -61,9 +61,10 @@ namespace TrzyszczCMS.Client.Views.Administering
             articlesButtonEnabled = false;
             await this.ViewModel.LoadFirstPageOfArticles();
         }
-        private void GoToManagingHomepage()
+        private async Task GoToManagingHomepageAsync()
         {
-            // TODO: To implementation.
+            await this.ViewModel.SendDataToDepositoryAsync(PageType.HomePage);
+            this.NavigationManager.NavigateTo("/manage/edit-page");
         }
         #endregion
 

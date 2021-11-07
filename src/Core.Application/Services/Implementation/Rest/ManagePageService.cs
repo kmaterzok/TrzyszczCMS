@@ -33,6 +33,17 @@ namespace Core.Application.Services.Implementation.Rest
         {
             return new PageFetcher<SimplePageInfo>(desiredPageNumber, i => GetDataPageHandlerAsync(type, filters, i));
         }
+        public async Task<DetailedPageInfo> GetDetailedPageInfo(int id)
+        {
+            return await this._authHttpClient.GetFromJsonAsync<DetailedPageInfo>($"/ManagePage/DetailedPageInfo/{id}");
+        }
+        public async Task<DetailedPageInfo> GetDetailedPageInfoOfHomepage()
+        {
+            return await this._authHttpClient.GetFromJsonAsync<DetailedPageInfo>($"/ManagePage/DetailedPageInfoOfHomepage");
+        }
+        #endregion
+
+        #region Helper methods
         /// <summary>
         /// A handler method for getting pages of data. Used by fetchers.
         /// </summary>

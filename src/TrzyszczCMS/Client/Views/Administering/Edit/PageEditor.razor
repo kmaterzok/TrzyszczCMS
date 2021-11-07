@@ -1,8 +1,18 @@
-﻿@using TrzyszczCMS.Client.ViewModels.Administering.Edit 
+﻿@layout AdminLayout
+@page "/manage/edit-page"
+
+@using System.ComponentModel;
+@using TrzyszczCMS.Client.ViewModels.Administering.Edit
 @inject PageEditorViewModel ViewModel
 
 <h3>PageEditor</h3>
 
 @code {
-
+    protected override void OnInitialized()
+    {
+        base.OnInitialized();
+        this.ViewModel.PropertyChanged += new PropertyChangedEventHandler(
+            async (s, e) => await this.InvokeAsync(() => this.StateHasChanged())
+        );
+    }
 }

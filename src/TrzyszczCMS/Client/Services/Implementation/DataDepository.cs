@@ -44,7 +44,7 @@ namespace TrzyszczCMS.Client.Services.Implementations
         public async Task RemoveAsync<T>() where T : class =>
             await this._lock.InvokeAsync(async () => await this.UnguardedRemoveAsync<T>());
 
-        public async Task<T> TryGetAsync<T>() where T : class
+        public async Task<T> GetAsync<T>() where T : class
         {
             return await this._lock.InvokeAsync(async () =>
             {

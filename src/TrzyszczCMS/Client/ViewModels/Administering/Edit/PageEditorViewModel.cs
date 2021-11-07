@@ -36,7 +36,7 @@ namespace TrzyszczCMS.Client.ViewModels.Administering.Edit
         }
         public async Task LoadDataFromDeposit()
         {
-            _editedPageDeposit = await this._depository.TryGetAsync<EditedPageDeposit>();
+            _editedPageDeposit = await this._depository.GetAsync<EditedPageDeposit>();
             IsManagingPossible = _editedPageDeposit != null;
         }
         #endregion

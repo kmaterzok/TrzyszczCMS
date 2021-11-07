@@ -29,6 +29,6 @@ namespace TrzyszczCMS.Client.Services.Interfaces
         /// </summary>
         /// <typeparam name="T">Returned data type</typeparam>
         /// <returns>Task returning the found object</returns>
-        Task<T> TryGetAsync<T>() where T : class;
+        Task<T> GetAsync<T>() where T : class;
     }
 }

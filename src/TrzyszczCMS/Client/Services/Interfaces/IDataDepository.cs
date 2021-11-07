@@ -1,4 +1,6 @@
-﻿namespace Core.Application.Services.Interfaces
+﻿using System.Threading.Tasks;
+
+namespace TrzyszczCMS.Client.Services.Interfaces
 {
     /// <summary>
     /// Interface for a data storage that stores
@@ -13,18 +15,20 @@
         /// </summary>
         /// <typeparam name="T">Stored data type</typeparam>
         /// <param name="objectToStore">Object to store</param>
-        void AddOrUpdate<T>(T objectToStore);
+        /// <param name="surviveRefresh">Added object survives page refresh and still exists</param>
+        /// <returns>Task adding the data</returns>
+        Task AddOrUpdateAsync<T>(T objectToStore, bool surviveRefresh = true) where T : class;
         /// <summary>
         /// Remove object from the depository if it has been already added.
         /// </summary>
         /// <typeparam name="T">Removed data type</typeparam>
-        void Remove<T>();
+        /// <returns>Task removing the data</returns>
+        Task RemoveAsync<T>() where T : class;
         /// <summary>
         /// Get object from the depository.
         /// </summary>
         /// <typeparam name="T">Returned data type</typeparam>
-        /// <param name="gotObject">Returned object</param>
-        /// <returns>Object exists in the depository</returns>
-        bool TryGet<T>(out T gotObject);
+        /// <returns>Task returning the found object</returns>
+        Task<T> TryGetAsync<T>() where T : class;
     }
 }

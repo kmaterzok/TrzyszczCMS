@@ -1,4 +1,5 @@
 using Blazored.LocalStorage;
+using Blazored.SessionStorage;
 using Core.Application.Services.Implementation.Rest;
 using Core.Application.Services.Interfaces;
 using Core.Application.Services.Interfaces.Rest;
@@ -20,7 +21,6 @@ using TrzyszczCMS.Client.ViewModels.Shared;
 using TrzyszczCMS.Client.ViewModels.SignIn;
 using TrzyszczCMS.Client.ViewModels.PageContent;
 using TrzyszczCMS.Client.ViewModels.Administering.Edit;
-using Core.Application.Services.Implementation;
 
 namespace TrzyszczCMS.Client
 {
@@ -43,6 +43,7 @@ namespace TrzyszczCMS.Client
         private static void RegisterServices(IServiceCollection services, string clientBaseAddress)
         {
             services.AddBlazoredLocalStorage();
+            services.AddBlazoredSessionStorage();
             services.AddScoped<ITokenService, TokenService>();
             services.AddScoped(sp => new HttpClient { BaseAddress = new Uri(clientBaseAddress) });
             services.AddScoped<TokenHeaderHandler>();
@@ -51,7 +52,7 @@ namespace TrzyszczCMS.Client
                 .AddHttpMessageHandler<TokenHeaderHandler>();
             services.AddAuthorizationCore();
 
-            services.AddSingleton<IDataDepository, DataDepository>();
+            services.AddScoped<IDataDepository, DataDepository>();
             services.AddScoped<IAuthService, AuthService>();
             services.AddScoped<IRestAuthService, RestAuthService>();
             services.AddScoped<ILoadPageService, LoadPageService>();

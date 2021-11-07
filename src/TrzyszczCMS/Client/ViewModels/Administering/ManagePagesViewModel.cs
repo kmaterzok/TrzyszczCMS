@@ -14,9 +14,9 @@ using TrzyszczCMS.Client.Data.Model.Extensions;
 using TrzyszczCMS.Client.ViewModels.Shared;
 using TrzyszczCMS.Client.Views.Administering;
 using Core.Shared.Helpers.Extensions;
-using Core.Application.Services.Interfaces;
 using Core.Application.Models.Deposits;
 using Core.Application.Enums;
+using TrzyszczCMS.Client.Services.Interfaces;
 
 namespace TrzyszczCMS.Client.ViewModels.Administering
 {
@@ -154,7 +154,7 @@ namespace TrzyszczCMS.Client.ViewModels.Administering
             {
                 case PageType.HomePage:
                     var homepageInfo = await this._managePageService.GetDetailedPageInfoOfHomepage();
-                    this._depository.AddOrUpdate(new EditedPageDeposit()
+                    await this._depository.AddOrUpdateAsync(new EditedPageDeposit()
                     {
                         PageEditorMode = PageEditorMode.Edit,
                         PageDetails = homepageInfo

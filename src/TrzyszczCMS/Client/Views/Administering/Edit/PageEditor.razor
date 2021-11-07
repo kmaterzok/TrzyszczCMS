@@ -5,7 +5,14 @@
 @using TrzyszczCMS.Client.ViewModels.Administering.Edit
 @inject PageEditorViewModel ViewModel
 
-<h3>PageEditor</h3>
+@if (this.ViewModel.IsManagingPossible)
+{
+    <h1>MarkDown editor</h1>
+}
+else
+{
+    <span>If you want to create or edit a page, select one.</span>
+}
 
 @code {
     protected override void OnInitialized()
@@ -14,5 +21,14 @@
         this.ViewModel.PropertyChanged += new PropertyChangedEventHandler(
             async (s, e) => await this.InvokeAsync(() => this.StateHasChanged())
         );
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        await base.OnAfterRenderAsync(firstRender);
+        if (firstRender)
+        {
+            await this.ViewModel.LoadDataFromDeposit();
+        }
     }
 }

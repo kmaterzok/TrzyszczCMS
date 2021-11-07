@@ -53,7 +53,7 @@ namespace Core.Server.Helpers.Extensions
             {
                 case FilteredGridField.ManagePages_Articles_Title:
                 case FilteredGridField.ManagePages_Posts_Title:
-                    return source.Where<Cont_Page, T>(t => t.Name.Contains(filterText));
+                    return source.Where<Cont_Page, T>(t => t.Title.ToLower().Contains(filterText.ToLower()));
 
                 case FilteredGridField.ManagePages_Articles_Created:
                 case FilteredGridField.ManagePages_Posts_Created:

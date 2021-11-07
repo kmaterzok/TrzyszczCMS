@@ -119,7 +119,8 @@ namespace DAL.Migrations
 
             Create.Table(   nameof(Cont_Page))
                 .WithColumn(nameof(Cont_Page.Id))                          .AsInt32().NotNullable().PrimaryKey()
-                .WithColumn(nameof(Cont_Page.Name))                        .AsString(255).NotNullable().Unique()
+                .WithColumn(nameof(Cont_Page.UriName))                     .AsString(255).NotNullable().Unique()
+                .WithColumn(nameof(Cont_Page.Title))                       .AsString(255).NotNullable().Unique()
                 .WithColumn(nameof(Cont_Page.Type))                        .AsByte().NotNullable().WithDefaultValue(3)
                 .WithColumn(nameof(Cont_Page.CreateUtcTimestamp))          .AsDateTime().NotNullable()
                 .WithColumn(nameof(Cont_Page.PublishUtcTimestamp))         .AsDateTime().NotNullable();
@@ -132,7 +133,8 @@ namespace DAL.Migrations
             Insert.IntoTable(nameof(Cont_Page)).Row(new
             {
                 Id = 1,
-                Name = string.Empty,
+                UriName = string.Empty,
+                Title = "Homepage",
                 Type = 1,
                 CreateUtcTimestamp = new DateTime(2021, 10, 1, 18, 15, 0),
                 PublishUtcTimestamp = new DateTime(2021, 10, 1, 18, 25, 0)
@@ -159,7 +161,8 @@ namespace DAL.Migrations
             Insert.IntoTable(nameof(Cont_Page)).Row(new
             {
                 Id = 2,
-                Name = "simple-article",
+                UriName = "simple-article",
+                Title = "A simple article",
                 Type = 2,
                 CreateUtcTimestamp = new DateTime(2021, 10, 1, 18, 30, 0),
                 PublishUtcTimestamp = new DateTime(2021, 10, 1, 18, 40, 0)

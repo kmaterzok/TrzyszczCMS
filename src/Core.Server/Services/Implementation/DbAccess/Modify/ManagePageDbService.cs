@@ -54,7 +54,8 @@ namespace Core.Server.Services.Implementation.DbAccess.Modify
                                                  .Select(i => new SimplePageInfo()
                                                  {
                                                      Id = i.Id,
-                                                     Title = i.Name,
+                                                     Title = i.Title,
+                                                     UriName = i.UriName,
                                                      CreateUtcTimestamp = i.CreateUtcTimestamp,
                                                      PublishUtcTimestamp = i.PublishUtcTimestamp
                                                      // TODO: Displaying local time whilst using UTC on the server
@@ -81,7 +82,7 @@ namespace Core.Server.Services.Implementation.DbAccess.Modify
                 {
                     Id = rawPageInfo.Id,
                     PageType = (PageType)rawPageInfo.Type,
-                    Title = rawPageInfo.Name,
+                    Title = rawPageInfo.UriName,
                     PublishUtcTimestamp = rawPageInfo.PublishUtcTimestamp
                 };
 

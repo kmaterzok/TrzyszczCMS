@@ -13,6 +13,10 @@ namespace Core.Shared.Models.ManagePage
         /// </summary>
         public int Id { get; set; }
         /// <summary>
+        /// SEO friendly name of the page used in its URI.
+        /// </summary>
+        public string UriName { get; set; }
+        /// <summary>
         /// The page's dipslayed title.
         /// </summary>
         public string Title { get; set; }

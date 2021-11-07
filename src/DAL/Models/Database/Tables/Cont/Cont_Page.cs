@@ -13,9 +13,13 @@ namespace DAL.Models.Database.Tables
         /// </summary>
         public int Id { get; set; }
         /// <summary>
-        /// SEO friendly name of the page.
+        /// SEO friendly name of the page used in its URI.
         /// </summary>
-        public string Name { get; set; }
+        public string UriName { get; set; }
+        /// <summary>
+        /// Proper name of the page for display.
+        /// </summary>
+        public string Title { get; set; }
         /// <summary>
         /// Page type
         /// </summary>

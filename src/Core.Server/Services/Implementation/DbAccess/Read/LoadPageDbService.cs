@@ -10,7 +10,6 @@ using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using Core.Server.Helpers;
 
@@ -39,7 +38,7 @@ namespace Core.Server.Services.Implementation.DbAccess.Read
                 var rawValueOfType = (byte)type;
                 var moduleInfos = await (from p in ctx.Cont_Page.AsNoTracking()
                                          join m in ctx.Cont_Module.AsNoTracking() on p.Id equals m.Cont_PageId
-                                         where p.Name == queriedName &&
+                                         where p.UriName == queriedName &&
                                             p.Type == rawValueOfType &&
                                             p.PublishUtcTimestamp <= DateTime.UtcNow
                                          select new ModuleTypeValueInfo()

@@ -7,13 +7,13 @@ namespace TrzyszczCMS.Client.Helpers
     /// <summary>
     /// A simple monitor for invoking tasks within async methods.
     /// </summary>
-    public class SemaphoredMonitor
+    public class SemaphoredMonitor : IDisposable
     {
         #region Fields
         /// <summary>
         /// The semaphore guarding concurrent execution of methods.
         /// </summary>
-        private readonly SemaphoreSlim _semaphore;
+        private SemaphoreSlim _semaphore;
         #endregion
 
         #region Ctor
@@ -69,6 +69,18 @@ namespace TrzyszczCMS.Client.Helpers
                 this._semaphore.Release();
             }
         }
+        #endregion
+
+        #region Dispose
+        public void Dispose()
+        {
+            if (null != this._semaphore)
+            {
+                this._semaphore.Dispose();
+                this._semaphore = null;
+            }
+        }
+        ~SemaphoredMonitor() => Dispose();
         #endregion
     }
 }

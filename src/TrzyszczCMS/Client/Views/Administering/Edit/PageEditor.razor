@@ -3,11 +3,12 @@
 
 @using System.ComponentModel;
 @using TrzyszczCMS.Client.ViewModels.Administering.Edit
+@using TrzyszczCMS.Client.Views.Shared.Editors
 @inject PageEditorViewModel ViewModel
 
 @if (this.ViewModel.IsManagingPossible)
 {
-    <h1>MarkDown editor</h1>
+    <MarkDownEditor />
 }
 else
 {

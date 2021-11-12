@@ -21,6 +21,7 @@ using TrzyszczCMS.Client.ViewModels.Shared;
 using TrzyszczCMS.Client.ViewModels.SignIn;
 using TrzyszczCMS.Client.ViewModels.PageContent;
 using TrzyszczCMS.Client.ViewModels.Administering.Edit;
+using TrzyszczCMS.Client.Services.Implementation;
 
 namespace TrzyszczCMS.Client
 {
@@ -53,6 +54,7 @@ namespace TrzyszczCMS.Client
             services.AddAuthorizationCore();
 
             services.AddScoped<IDataDepository, DataDepository>();
+            services.AddScoped<IJSInteropService, JSInteropService>();
             services.AddScoped<IAuthService, AuthService>();
             services.AddScoped<IRestAuthService, RestAuthService>();
             services.AddScoped<ILoadPageService, LoadPageService>();

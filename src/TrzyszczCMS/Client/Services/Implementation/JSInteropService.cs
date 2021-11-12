@@ -23,7 +23,7 @@ namespace TrzyszczCMS.Client.Services.Implementation
         public async Task<SelectionRange> GetSelectionRangeAsync(string componentId) =>
             await _jsRuntime.InvokeAsync<SelectionRange>("getSelectionRange", new[] { componentId });
 
-        public async Task SelectTextRangeAsync(string componentId, int index, Action stateHasChanged) =>
+        public async Task SelectTextIndexAsync(string componentId, int index, Action stateHasChanged) =>
             await SelectTextRangeAsync(componentId, index, index, stateHasChanged);
 
         public async Task SelectTextRangeAsync(string componentId, int start, int end, Action stateHasChanged)

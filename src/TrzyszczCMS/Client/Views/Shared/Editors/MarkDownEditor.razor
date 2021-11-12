@@ -1,29 +1,30 @@
-﻿@using TrzyszczCMS.Client.Data
-@using TrzyszczCMS.Client.Views.Shared
-@using TrzyszczCMS.Client.Services.Interfaces 
+﻿@using TrzyszczCMS.Client.Views.Shared
+@using TrzyszczCMS.Client.Services.Interfaces
+@using TrzyszczCMS.Client.Other.MarkDown
+@using TrzyszczCMS.Client.Other.MarkDown.Strategies
 @inject IJSInteropService JSInterop
 
 <div>
     <div class="d-flex btn-toolbar" role="toolbar" aria-label="Customise content">
         @*<div class="btn-group me-2" role="group" aria-label="Changes">
-            <button class="btn btn-light"><i class="fas fa-undo" aria-label="Undo"></i></button>
-            <button class="btn btn-light"><i class="fas fa-redo" aria-label="Redo"></i></button>
-        </div>*@
+                <button class="btn btn-light"><i class="fas fa-undo" aria-label="Undo"></i></button>
+                <button class="btn btn-light"><i class="fas fa-redo" aria-label="Redo"></i></button>
+            </div>*@
         <div class="btn-group me-2" role="group" aria-label="Character format">
             <button class="btn btn-light" disabled="@EditorButtonsDisabled" @onclick="@(() => AddFormattingAsterisks(AsteriskSuffixFormat.Bold))"><i class="fas fa-bold" aria-label="Bold"></i></button>
             <button class="btn btn-light" disabled="@EditorButtonsDisabled" @onclick="@(() => AddFormattingAsterisks(AsteriskSuffixFormat.Italic))"><i class="fas fa-italic" aria-label="Italic"></i></button>
-            <button class="btn btn-light" disabled="@EditorButtonsDisabled" @onclick="@(() => AddFormattingSuffixes(Constants.MarkDown.STRIKETHROUGH_TEXT_SUFFIX))"><i class="fas fa-strikethrough" aria-label="Striked"></i></button>
-            <button class="btn btn-light" disabled="@EditorButtonsDisabled" @onclick="@(() => AddFormattingSuffixesLeft(charSuffix: Constants.MarkDown.HEADING_SUFFIX, charSuffixRepeatability: 6))"><i class="fas fa-heading" aria-label="Heading"></i></button>
+            <button class="btn btn-light" disabled="@EditorButtonsDisabled" @onclick="@(() => AddFormattingSuffixes(MarkDownConstants.STRIKETHROUGH_TEXT_SUFFIX))"><i class="fas fa-strikethrough" aria-label="Striked"></i></button>
+            <button class="btn btn-light" disabled="@EditorButtonsDisabled" @onclick="@(() => AddFormattingSuffixesLeft(LeftSuffixType.Heading))"><i class="fas fa-heading" aria-label="Heading"></i></button>
         </div>
         <div class="btn-group me-2" role="group" aria-label="Lists">
-            <button class="btn btn-light" disabled="@EditorButtonsDisabled" @onclick="@(() => AddFormattingSuffixesLeft())"><i class="fas fa-list-ol" aria-label="Ordered list"></i></button>
-            <button class="btn btn-light" disabled="@EditorButtonsDisabled" @onclick="@(() => AddFormattingSuffixesLeft(charSuffix: Constants.MarkDown.UNORDERED_LIST_SUFFIX))"><i class="fas fa-list-ul"aria-label="Unordered list"></i></button>
-            <button class="btn btn-light" disabled="@EditorButtonsDisabled" @onclick="@(() => AddFormattingSuffixesLeft(stringSuffix: Constants.MarkDown.CHECKLIST_POINT_CHECKED))"><i class="fas fa-tasks" aria-label="Checklist"></i></button>
+            <button class="btn btn-light" disabled="@EditorButtonsDisabled" @onclick="@(() => AddFormattingSuffixesLeft(LeftSuffixType.OrderedList))"><i class="fas fa-list-ol" aria-label="Ordered list"></i></button>
+            <button class="btn btn-light" disabled="@EditorButtonsDisabled" @onclick="@(() => AddFormattingSuffixesLeft(LeftSuffixType.UnorderedList))"><i class="fas fa-list-ul" aria-label="Unordered list"></i></button>
+            <button class="btn btn-light" disabled="@EditorButtonsDisabled" @onclick="@(() => AddFormattingSuffixesLeft(LeftSuffixType.Checklist))"><i class="fas fa-tasks" aria-label="Checklist"></i></button>
         </div>
         <div class="btn-group me-2" role="group" aria-label="Specifying text">
-            <button class="btn btn-light" disabled="@EditorButtonsDisabled" @onclick="@(() => AddFormattingSuffixesLeft(charSuffix: Constants.MarkDown.QUOTE_BLOCK_PART))"><i class="fas fa-quote-left" aria-label="Quote"></i></button>
+            <button class="btn btn-light" disabled="@EditorButtonsDisabled" @onclick="@(() => AddFormattingSuffixesLeft(LeftSuffixType.QuoteBlock))"><i class="fas fa-quote-left" aria-label="Quote"></i></button>
             <button class="btn btn-light" disabled="@EditorButtonsDisabled" @onclick="@(() => AddLinkBasedText(LinkBasedContentType.Hyperlink))"><i class="fas fa-link" aria-label="Hyperlink"></i></button>
-            <button class="btn btn-light" disabled="@EditorButtonsDisabled" @onclick="@(() => AddFormattingSuffixes(Constants.MarkDown.CODE_TEXT_SUFFIX))"><i class="fas fa-code" aria-label="Preformatted code"></i></button>
+            <button class="btn btn-light" disabled="@EditorButtonsDisabled" @onclick="@(() => AddFormattingSuffixes(MarkDownConstants.CODE_TEXT_SUFFIX))"><i class="fas fa-code" aria-label="Preformatted code"></i></button>
         </div>
         <div class="btn-group me-2" role="group" aria-label="Table & image">
             <button class="btn btn-light" disabled="@EditorButtonsDisabled" @onclick="@(() => AddLinkBasedText(LinkBasedContentType.ImageSource))"><i class="fas fa-image" aria-label="Image"></i></button>
@@ -37,11 +38,11 @@
     <div class="container-fluid pt-2 g-0">
         <div class="row g-0">
             <div class="@CssClassesForEditor" style="height: calc(100vh - 160px);" aria-label="Content editor">
-                <textarea id="txarMarkDownEditedText" class="form-control h-100" value="@markDownCode" @oninput="@OnInputChanged"
-                          style="font-family: Consolas, monospace; resize: none;"/>
+                <textarea id="txarMarkDownEditedText" class="form-control h-100" value="@markDownFormatter.MarkDownCode" @oninput="@OnInputChanged"
+                          style="font-family: Consolas, monospace; resize: none;" />
             </div>
             <div class="@CssClassesForPreview overflow-auto" style="height: calc(100vh - 160px);" aria-label="Preview of changes">
-                <MarkDown Text="@markDownCode" />
+                <MarkDown Text="@markDownFormatter.MarkDownCode" />
             </div>
         </div>
     </div>

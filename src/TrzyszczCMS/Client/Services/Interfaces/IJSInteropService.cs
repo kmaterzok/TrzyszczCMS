@@ -22,7 +22,7 @@ namespace TrzyszczCMS.Client.Services.Interfaces
         /// <param name="index">Index of cursor in the text</param>
         /// <param name="stateHasChanged">Invoked for indicating change in the component, that invokes this method.</param>
         /// <returns>Task that executes JS</returns>
-        Task SelectTextRangeAsync(string componentId, int index, Action stateHasChanged);
+        Task SelectTextIndexAsync(string componentId, int index, Action stateHasChanged);
         /// <summary>
         /// Set range of text selection.
         /// </summary>

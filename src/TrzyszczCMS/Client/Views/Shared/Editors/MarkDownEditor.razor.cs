@@ -5,6 +5,7 @@ using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using TrzyszczCMS.Client.Data;
 using TrzyszczCMS.Client.Data.Enums;
 using TrzyszczCMS.Client.Data.Enums.Extensions;
 using TrzyszczCMS.Client.Data.Model.JSInterop;
@@ -28,6 +29,8 @@ namespace TrzyszczCMS.Client.Views.Shared.Editors
             CssClassesHelper.ClassesForMarkDownEditor(editorWorkMode).PreviewCss;
         private bool EditorButtonsDisabled =>
             editorWorkMode == ToggledMarkDownViewMode.Preview;
+
+        public string MarkDownCode => markDownFormatter.MarkDownCode;
         #endregion
 
         #region Init
@@ -36,7 +39,20 @@ namespace TrzyszczCMS.Client.Views.Shared.Editors
             this.markDownFormatter.GetSelectionRangeAsync = this.GetSelectionRangeAsync;
             this.markDownFormatter.SelectTextRangeAsync   = this.SelectTextRangeAsync;
             this.markDownFormatter.SelectTextIndexAsync   = this.SelectTextIndexAsync;
+            this.markDownFormatter.OnChangeContent       += this.NotifyChangeContent;
             base.OnInitialized();
+        }
+        #endregion
+
+        #region Events
+        /// <summary>
+        /// Fired when the MarkDown content was changed.
+        /// </summary>
+        public event ChangeContentHandler<string> OnChangeContent;
+
+        private void NotifyChangeContent(string newContent)
+        {
+            this.OnChangeContent?.Invoke(newContent);
         }
         #endregion
 
@@ -44,10 +60,8 @@ namespace TrzyszczCMS.Client.Views.Shared.Editors
         private void OnInputChanged(ChangeEventArgs args) =>
             this.markDownFormatter.MarkDownCode = args.Value.ToString();
 
-        private void ToggleView()
-        {
+        private void ToggleView() =>
             editorWorkMode = editorWorkMode.NextValue();
-        }
 
         private async Task AddFormattingAsterisks(AsteriskSuffixFormat format) =>
             await this.markDownFormatter.AddFormattingAsterisks(format);

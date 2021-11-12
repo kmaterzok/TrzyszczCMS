@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using TrzyszczCMS.Client.Data;
 using TrzyszczCMS.Client.Data.Model.JSInterop;
@@ -41,7 +40,23 @@ namespace TrzyszczCMS.Client.Other.MarkDown
     public class MarkDownFormatter
     {
         #region Properties
-        public string MarkDownCode { get; set; }
+        private string _markDownCode;
+        public string MarkDownCode
+        {
+            get => _markDownCode;
+            set
+            {
+                _markDownCode = value;
+                OnChangeContent.Invoke(value);
+            }
+        }
+        #endregion
+
+        #region Events
+        /// <summary>
+        /// Fired when the MarkDown content was changed.
+        /// </summary>
+        public event ChangeContentHandler<string> OnChangeContent;
         #endregion
 
         #region JSInterop textarea handling
@@ -87,18 +102,16 @@ namespace TrzyszczCMS.Client.Other.MarkDown
                 return;
             }
 
-            MarkDownCode += " ";
-            // --- Formatting ---
             bool reverse = false;
 
-            if (range.End + suffix.Length < MarkDownCode.Length &&
-                MarkDownCode.Substring(range.End, suffix.Length) == suffix && // Check for suffix.
-                MarkDownCode[range.End + suffix.Length] != suffix[0])         // Check for next char.
+            if (range.End + suffix.Length <= MarkDownCode.Length &&
+                MarkDownCode.Substring(range.End, suffix.Length) == suffix &&                                               // Check for suffix.
+                (range.End + suffix.Length == MarkDownCode.Length || MarkDownCode[range.End + suffix.Length] != suffix[0])) // Check for next char.
             {
                 MarkDownCode = MarkDownCode.Remove(range.End, suffix.Length);
                 reverse = true;
             }
-            if (range.Start > 0 &&
+            if (range.Start > 0 && range.Start - suffix.Length >= 0 &&
                 MarkDownCode.Substring(range.Start - suffix.Length, suffix.Length) == suffix &&
                 (range.Start - suffix.Length - 1 < 0 || MarkDownCode[range.Start - suffix.Length - 1] != suffix[0]))
             {
@@ -111,10 +124,8 @@ namespace TrzyszczCMS.Client.Other.MarkDown
                 MarkDownCode = this.MarkDownCode.Insert(range.End, suffix)
                                                 .Insert(range.Start, suffix);
             }
-            // ------------------
-            MarkDownCode = MarkDownCode.Remove(MarkDownCode.Length - 1, 1);
-
-
+            
+            
             var selectionStartingIndex = range.Start + ((reverse ? -1 : 1) * suffix.Length);
             await this.SelectTextRangeAsync(selectionStartingIndex, selectionStartingIndex + range.GetLength());
         }

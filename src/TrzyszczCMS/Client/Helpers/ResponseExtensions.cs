@@ -20,7 +20,7 @@ namespace TrzyszczCMS.Client.Helpers
             var viewModels = new List<IModuleViewModelBase>();
             foreach (var singleModuleData in pageContent.ModuleContents)
             {
-                switch (singleModuleData.GetPageType())
+                switch (singleModuleData.GetModuleType())
                 {
                     case PageModuleType.TextWall:
 

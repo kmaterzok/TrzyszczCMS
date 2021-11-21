@@ -5,9 +5,9 @@ using System.Threading.Tasks;
 namespace TrzyszczCMS.Client.Helpers
 {
     /// <summary>
-    /// A simple monitor for invoking tasks within async methods.
+    /// A simple lock / mutex for invoking tasks within async methods.
     /// </summary>
-    public class SemaphoredMonitor : IDisposable
+    public class SemaphoredLock : IDisposable
     {
         #region Fields
         /// <summary>
@@ -17,7 +17,7 @@ namespace TrzyszczCMS.Client.Helpers
         #endregion
 
         #region Ctor
-        public SemaphoredMonitor()
+        public SemaphoredLock()
         {
             this._semaphore = new SemaphoreSlim(1, 1);
         }
@@ -80,7 +80,7 @@ namespace TrzyszczCMS.Client.Helpers
                 this._semaphore = null;
             }
         }
-        ~SemaphoredMonitor() => Dispose();
+        ~SemaphoredLock() => Dispose();
         #endregion
     }
 }

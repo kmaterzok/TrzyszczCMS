@@ -33,6 +33,12 @@ namespace TrzyszczCMS.Client.Views.Shared.Grids
         [Parameter]
         public SearchBoxType SearchBoxType { get; set; } = SearchBoxType.TextInput;
         /// <summary>
+        /// It defines width of the column in pixels.
+        /// If the value is equal to 0 then the width is default.
+        /// </summary>
+        [Parameter]
+        public int Width { get; set; }
+        /// <summary>
         /// Invoked whenever search text is changed.
         /// </summary>
         [Parameter]

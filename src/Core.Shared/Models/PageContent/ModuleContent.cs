@@ -1,6 +1,7 @@
 ﻿
 using Core.Shared.Enums;
 using Core.Shared.Exceptions;
+using System;
 
 namespace Core.Shared.Models.PageContent
 {
@@ -26,10 +27,10 @@ namespace Core.Shared.Models.PageContent
 
         #region Methods
         /// <summary>
-        /// Determine the type of page module.
+        /// Determine the type of the page module.
         /// </summary>
         /// <returns>Page module enum value</returns>
-        public PageModuleType GetPageType()
+        public PageModuleType GetModuleType()
         {
             if (this.TextWallModuleContent != null)
             {
@@ -42,24 +43,24 @@ namespace Core.Shared.Models.PageContent
         }
 
 
-        ///// <summary>
-        ///// Set module data object.
-        ///// </summary>
-        ///// <typeparam name="T">The type of the set object</typeparam>
-        ///// <param name="module">THe module that is set</param>
-        //public void SetModule<T>(T module)
-        //{
-        //    this.NullifyContentHolders();
+        /// <summary>
+        /// Set module data object.
+        /// </summary>
+        /// <typeparam name="T">The type of the set object</typeparam>
+        /// <param name="module">The module that is set</param>
+        public void SetModule<T>(T module)
+        {
+            this.NullifyContentHolders();
 
-        //    if (typeof(T) == typeof(TextWallModuleContent))
-        //    {
-        //        this.TextWallModuleContent = (TextWallModuleContent)(object)module;
-        //    }
-        //    else
-        //    {
-        //        throw new ArgumentException("The assigned object is of unsupported class type.", nameof(module));
-        //    }
-        //}
+            if (typeof(T) == typeof(TextWallModuleContent))
+            {
+                this.TextWallModuleContent = (TextWallModuleContent)(object)module;
+            }
+            else
+            {
+                throw new ArgumentException("The assigned object is of unsupported class type.", nameof(module));
+            }
+        }
 
         /// <summary>
         /// Clear all references of data holders.

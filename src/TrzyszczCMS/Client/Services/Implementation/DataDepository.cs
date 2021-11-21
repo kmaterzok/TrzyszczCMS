@@ -12,7 +12,7 @@ namespace TrzyszczCMS.Client.Services.Implementations
         #region Fields
         private readonly ISessionStorageService _sessionStorage;
         private readonly Lazy<Dictionary<Type, object>> _deposits;
-        private readonly SemaphoredMonitor _lock;
+        private readonly SemaphoredLock _lock;
         #endregion
 
         #region Ctor
@@ -20,7 +20,7 @@ namespace TrzyszczCMS.Client.Services.Implementations
         {
             this._sessionStorage = sessionStorage;
             this._deposits = new Lazy<Dictionary<Type, object>>();
-            this._lock = new SemaphoredMonitor();
+            this._lock = new SemaphoredLock();
         }
         #endregion
 

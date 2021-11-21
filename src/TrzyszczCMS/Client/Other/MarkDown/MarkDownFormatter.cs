@@ -47,7 +47,7 @@ namespace TrzyszczCMS.Client.Other.MarkDown
             set
             {
                 _markDownCode = value;
-                OnChangeContent.Invoke(value);
+                OnChangeContent?.Invoke(value);
             }
         }
         #endregion

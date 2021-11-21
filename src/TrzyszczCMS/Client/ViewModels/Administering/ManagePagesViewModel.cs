@@ -157,7 +157,9 @@ namespace TrzyszczCMS.Client.ViewModels.Administering
                     await this._depository.AddOrUpdateAsync(new EditedPageDeposit()
                     {
                         PageEditorMode = PageEditorMode.Edit,
-                        PageDetails = homepageInfo
+                        PageDetails = homepageInfo,
+                        EditedModuleListIndex = 0,
+                        CurrentManagementTool = PageManagementTool.PageLayoutComposer
                     });
                     break;
 

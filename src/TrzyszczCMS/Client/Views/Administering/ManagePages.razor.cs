@@ -14,14 +14,10 @@ namespace TrzyszczCMS.Client.Views.Administering
         private bool postsButtonEnabled;
         private bool articlesButtonEnabled;
 
-        private string PostsButtonLinkEnableClasses
-        {
-            get => CssClassesHelper.ClassesForLink(this.postsButtonEnabled);
-        }
-        private string ArticlesButtonLinkEnableClasses
-        {
-            get => CssClassesHelper.ClassesForLink(this.articlesButtonEnabled);
-        }
+        private string PostsButtonLinkEnableClasses =>
+            CssClassesHelper.ClassesForLink(this.postsButtonEnabled);
+        private string ArticlesButtonLinkEnableClasses =>
+            CssClassesHelper.ClassesForLink(this.articlesButtonEnabled);
         #endregion
 
         #region Init

@@ -4,14 +4,20 @@
 <div class="w-100">
     <table class="table table-bordered table-striped mb-0">
         <thead class="bg-success text-white">
-            <th style="width: 30px;"></th>
+            @if (MultiSelect)
+            {
+                <th style="width: 30px;"></th>
+            }
             @Header
         </thead>
         <tbody>
             @foreach (var item in Items)
             {
                 <tr>
-                    <td><input type="checkbox" @bind="@item.Checked" /></td>
+                    @if (MultiSelect)
+                    {
+                        <td><input type="checkbox" @bind="@item.Checked" /></td>
+                    } 
                     @RowTemplate(item)
                 </tr>
             }
@@ -45,5 +51,9 @@
     /// </summary>
     [Parameter]
     public RenderFragment NoRowsTemplate { get; set; }
-
+    /// <summary>
+    /// Display checkboxes for selecting multiple items.
+    /// </summary>
+    [Parameter]
+    public bool MultiSelect { get; set; } = true;
 }

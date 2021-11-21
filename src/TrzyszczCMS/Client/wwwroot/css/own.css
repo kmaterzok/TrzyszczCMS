@@ -5,25 +5,20 @@
     -ms-transform: translateY(-50%);
     transform: translateY(-50%);
 }
-
 .inline-gapper-50 {
     display: inline-block;
     width: 45px;
 }
-
 .cursor-default {
     cursor: default;
 }
-
 .nav-manage-link {
     font-size: 1.5rem;
     display: inline-block;
 }
-
 th {
     vertical-align: text-top;
 }
-
 /***************************************/
 /*     Spinner by Fabio Ottaviani:     */
 /* https://codepen.io/supah/pen/BjYLdW */

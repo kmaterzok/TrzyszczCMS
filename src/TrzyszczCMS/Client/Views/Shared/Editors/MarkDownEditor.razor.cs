@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Components;
+﻿using Core.Shared.Enums;
+using Microsoft.AspNetCore.Components;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
@@ -29,8 +30,38 @@ namespace TrzyszczCMS.Client.Views.Shared.Editors
             CssClassesHelper.ClassesForMarkDownEditor(editorWorkMode).PreviewCss;
         private bool EditorButtonsDisabled =>
             editorWorkMode == ToggledMarkDownViewMode.Preview;
+        #endregion
 
-        public string MarkDownCode => markDownFormatter.MarkDownCode;
+        #region Properties :: Parameters
+        /// <summary>
+        /// MarkDown code applied for page content.
+        /// </summary>
+        [Parameter]
+        public string MarkDownCode
+        {
+            get => markDownFormatter.MarkDownCode;
+            set => markDownFormatter.MarkDownCode = value;
+        }
+        /// <summary>
+        /// Show select combobox for existing widths of page content.
+        /// </summary>
+        [Parameter]
+        public bool ShowSizingSelect { get; set; }
+        /// <summary>
+        /// Fired when exit button is pressed
+        /// </summary>
+        [Parameter]
+        public EventHandler OnEditorExiting { get; set; }
+        /// <summary>
+        /// Fired when changes were applied to the MarkDown code.
+        /// </summary>
+        [Parameter]
+        public EventHandler<string> OnMarkDownChanged { get; set; }
+        /// <summary>
+        /// Width of the previewed content after rendering MarkDown code.
+        /// </summary>
+        [Parameter]
+        public TextWallSectionWidth? MaxPreviewedPageWidth { get; set; }
         #endregion
 
         #region Init
@@ -45,15 +76,8 @@ namespace TrzyszczCMS.Client.Views.Shared.Editors
         #endregion
 
         #region Events
-        /// <summary>
-        /// Fired when the MarkDown content was changed.
-        /// </summary>
-        public event ChangeContentHandler<string> OnChangeContent;
-
-        private void NotifyChangeContent(string newContent)
-        {
-            this.OnChangeContent?.Invoke(newContent);
-        }
+        private void NotifyChangeContent(string newContent) =>
+            this.OnMarkDownChanged?.Invoke(this, newContent);
         #endregion
 
         #region Handles
@@ -77,6 +101,8 @@ namespace TrzyszczCMS.Client.Views.Shared.Editors
 
         private async Task AddLinkBasedText(LinkBasedContentType type) =>
             await this.markDownFormatter.AddLinkBasedText(type);
+
+        private void ExitEditor() => this.OnEditorExiting?.Invoke(this, EventArgs.Empty);
         #endregion
 
         #region JSInterop

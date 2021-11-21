@@ -18,15 +18,17 @@
         <a class="nav-manage-link" @onclick="@GoToManagingHomepageAsync" role="button">Homepage</a>
     </div>
     <div>
-        <button class="btn btn-primary btn-sm"><i class="fas fa-minus"></i>&nbsp;Delete</button>
-        <button class="btn btn-primary btn-sm" @onclick="@ApplySearchAsync"><i class="fas fa-search"></i>&nbsp;Search</button>
-        <button class="btn btn-primary btn-sm"><i class="fas fa-plus"></i>&nbsp;Create...</button>
+        <div class="input-group input-group-sm">
+            <button class="btn btn-primary btn-sm"><i class="fas fa-trash"></i>&nbsp;Delete</button>
+            <button class="btn btn-primary btn-sm" @onclick="@ApplySearchAsync"><i class="fas fa-search"></i>&nbsp;Search</button>
+            <button class="btn btn-primary btn-sm"><i class="fas fa-plus"></i>&nbsp;Create...</button>
+        </div>
     </div>
 </nav>
 
 
 <section>
-    <div class="@(this.postsButtonEnabled ? "collapse" : string.Empty)">
+    <div class="@(!this.postsButtonEnabled && this.articlesButtonEnabled ? string.Empty : "collapse")">
         <Grid Items="ViewModel.Posts">
             <Header>
                 <GridColHeader Title="Title" OnSearchTextChanged="@(e => ViewModel.OnPostsSearch(e, FilteredGridField.ManagePages_Posts_Title))" />
@@ -34,7 +36,7 @@
                                SearchBoxType="SearchBoxType.DateInputs" />
                 <GridColHeader Title="Published" OnSearchDateChanged="@(e => ViewModel.OnPostsSearch(e, FilteredGridField.ManagePages_Posts_Published))"
                                SearchBoxType="SearchBoxType.DateInputs" />
-                <GridColHeader Title="Actions" SearchBoxType="SearchBoxType.None" />
+                <GridColHeader Title="Actions" SearchBoxType="SearchBoxType.None" Width="200" />
             </Header>
             <RowTemplate Context="row">
                 <td>@row.Data.Title</td>
@@ -49,7 +51,7 @@
     </div>
 
 
-    <div class="@(this.articlesButtonEnabled ? "collapse" : string.Empty)">
+    <div class="@(this.postsButtonEnabled && !this.articlesButtonEnabled ? string.Empty : "collapse")">
         <Grid Items="ViewModel.Articles">
             <Header>
                 <GridColHeader Title="Title" OnSearchTextChanged="@(e => ViewModel.OnArticlesSearch(e, FilteredGridField.ManagePages_Articles_Title))" />
@@ -57,13 +59,18 @@
                                SearchBoxType="SearchBoxType.DateInputs" />
                 <GridColHeader Title="Published" OnSearchDateChanged="@(e => ViewModel.OnArticlesSearch(e, FilteredGridField.ManagePages_Articles_Published))"
                                SearchBoxType="SearchBoxType.DateInputs" />
-                <GridColHeader Title="Actions" SearchBoxType="SearchBoxType.None" />
+                <GridColHeader Title="Actions" SearchBoxType="SearchBoxType.None" Width="200" />
             </Header>
             <RowTemplate Context="row">
                 <td>@row.Data.Title</td>
                 <td>@row.Data.CreateUtcTimestamp.ToGenericNotation()</td>
                 <td>@row.Data.PublishUtcTimestamp.ToGenericNotation()</td>
-                <td>Actions</td>
+                <td>
+                    <div class="input-group input-group-sm">
+                        <button class="btn btn-sm btn-primary"><i class="fas fa-edit"></i>&nbsp;Edit</button>
+                        <button class="btn btn-sm btn-primary"><i class="fas fa-trash"></i>&nbsp;Delete</button>
+                    </div>
+                </td>
             </RowTemplate>
             <NoRowsTemplate>
                 No data loaded.

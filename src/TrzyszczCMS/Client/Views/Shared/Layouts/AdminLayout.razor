@@ -20,6 +20,8 @@
         </div>
     </Authorized>
     <NotAuthorized>
-        @Body
+        <LayoutView Layout="@typeof(ViewportMiddleYLayout)">
+            <ErrorPage />
+        </LayoutView>
     </NotAuthorized>
 </AuthorizeView>

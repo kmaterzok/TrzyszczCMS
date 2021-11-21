@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Components;
+using System;
 using System.ComponentModel;
 using System.Linq;
 
@@ -40,6 +41,16 @@ namespace TrzyszczCMS.Client.ViewModels.Shared
         protected void Set<T>(ref T field, T value, string name)
         {
             field = value;
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
+        }
+        /// <summary>
+        /// Assign a parameter to the value using <paramref name="assigner"/> and fire <see cref="PropertyChanged"/> event.
+        /// </summary>
+        /// <param name="assigner">Action assigning a new value to the specified field or property</param>
+        /// <param name="name">Name of the property</param>
+        protected void Set(Action assigner, string name)
+        {
+            assigner.Invoke();
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
         }
         /// <summary>

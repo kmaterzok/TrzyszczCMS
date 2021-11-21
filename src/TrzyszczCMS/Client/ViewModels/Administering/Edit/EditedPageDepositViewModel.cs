@@ -91,12 +91,6 @@ namespace TrzyszczCMS.Client.ViewModels.Administering.Edit
         /// The index of the module that is being edited.
         /// </summary>
         public int EditedModuleListIndex { get; set; }
-        ///// <summary>
-        ///// Modify <see cref="ModuleContents"/> and notify the change.
-        ///// </summary>
-        ///// <param name="modifier">Action for modifying the <see cref="ModuleContents"/> </param>
-        //public void ModifyModuleContents(Action<List<GridItem<ModuleContent>>> modifier) =>
-        //    Set(() => modifier.Invoke(_moduleContents), nameof(ModuleContents));
         #endregion
 
         #region Ctor

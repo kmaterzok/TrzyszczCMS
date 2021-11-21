@@ -1,7 +1,5 @@
-﻿using Microsoft.AspNetCore.Components;
-using System;
+﻿using System;
 using System.ComponentModel;
-using System.Linq;
 
 namespace TrzyszczCMS.Client.ViewModels.Shared
 {
@@ -61,26 +59,6 @@ namespace TrzyszczCMS.Client.ViewModels.Shared
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
         }
-        /// <summary>
-        /// Invoke event responsible for notifying changes
-        /// for every property defined in the viewmodel.
-        /// </summary>
-        public void ModelUpdated()
-        {
-            var properties = this.GetType().GetProperties().Where(p => p.CanWrite && p.CanRead);
-
-            if (properties == null || properties.Count() == 0)
-            {
-                return;
-            }
-
-            foreach (var property in properties)
-            {
-                this.NotifyPropertyChanged(property.Name);
-            }
-        }
-
-        // TODO: Add method assigning PorpertyChanged event.
         #endregion
     }
 }

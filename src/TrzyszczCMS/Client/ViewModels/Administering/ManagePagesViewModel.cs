@@ -83,7 +83,6 @@ namespace TrzyszczCMS.Client.ViewModels.Administering
         #region Ctor
         public ManagePagesViewModel(IDataDepository depository, IManagePageService managePageService)
         {
-            // TODO: Create a type that contains property data for display and manage.
             this.Posts = new List<GridItem<SimplePageInfo>>();
             this.Articles = new List<GridItem<SimplePageInfo>>();
             this._postSearchParams    = new Dictionary<FilteredGridField, string>();

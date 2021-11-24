@@ -1,4 +1,4 @@
-﻿using System;
+﻿using Core.Shared.Helpers;
 
 namespace TrzyszczCMS.Client.Other.MarkDown.Strategies
 {
@@ -27,7 +27,7 @@ namespace TrzyszczCMS.Client.Other.MarkDown.Strategies
                 case LeftSuffixType.QuoteBlock:
                     return new LeftCharSuffixFormatStrategy(MarkDownConstants.QUOTE_BLOCK_SAMPLE, 0, MarkDownConstants.QUOTE_BLOCK_SUFFIX);
                 default:
-                    throw new ArgumentException($"Unsupported value {nameof(type)} of enum {nameof(LeftSuffixType)}", nameof(type));
+                    throw ExceptionMaker.Argument.Unsupported(type, nameof(type));
             }
         }
     }

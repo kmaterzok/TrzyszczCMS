@@ -2,6 +2,7 @@
 using Core.Application.Models;
 using Core.Application.Services.Interfaces.Rest;
 using Core.Shared.Enums;
+using Core.Shared.Helpers;
 using Core.Shared.Models.Rest.Requests.Auth;
 using Core.Shared.Models.Rest.Responses.Auth;
 using Core.Shared.Models.Rest.Responses.PageContent;
@@ -45,7 +46,7 @@ namespace Core.Application.Services.Implementation.Rest
                     break;
 
                 default:
-                    throw new ArgumentException("Unsupported enum.", nameof(type));
+                    throw ExceptionMaker.Argument.Unsupported(type, nameof(type));
             }
             return await response.ContentOrDefaultAsync<ModularPageContentResponse>();
         }

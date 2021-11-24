@@ -1,5 +1,6 @@
 ﻿using Core.Application.Enums;
 using Core.Shared.Enums;
+using Core.Shared.Helpers;
 using System;
 using System.Linq;
 
@@ -47,7 +48,7 @@ namespace TrzyszczCMS.Client.Data.Enums.Extensions
                 case PageModuleType.Gallery: return "Gallery";
                 case PageModuleType.HeadingBanner: return "Heading banner";
                 default:
-                    throw new ArgumentException($"The value {type} of type {nameof(PageModuleType)} is not handled.", nameof(type));
+                    throw ExceptionMaker.Argument.Unsupported(type, nameof(type));
             }
         }
         /// <summary>
@@ -63,7 +64,7 @@ namespace TrzyszczCMS.Client.Data.Enums.Extensions
                 case TextWallEditedPart.LeftAside:  return "Left extra";
                 case TextWallEditedPart.RightAside: return "Right extra";
                 default:
-                    throw new ArgumentException($"The value {type} of type {nameof(TextWallEditedPart)} is not handled.", nameof(type));
+                    throw ExceptionMaker.Argument.Unsupported(type, nameof(type));
             }
         }
         /// <summary>
@@ -96,7 +97,7 @@ namespace TrzyszczCMS.Client.Data.Enums.Extensions
                 case TextWallEditedPart.RightAside: return PageManagementTool.TextWallRightAsideEditor;
                 case TextWallEditedPart.Section:    return PageManagementTool.TextWallSectionEditor;
                 default:
-                    throw new ArgumentException($"The value {source} of type {nameof(TextWallEditedPart)} cannot be handled.", nameof(source));
+                    throw ExceptionMaker.Argument.Unsupported(source, nameof(source));
             }
         }
 

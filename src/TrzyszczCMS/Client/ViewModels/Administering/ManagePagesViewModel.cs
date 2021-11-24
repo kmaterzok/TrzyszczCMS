@@ -17,6 +17,8 @@ using Core.Shared.Helpers.Extensions;
 using Core.Application.Models.Deposits;
 using Core.Application.Enums;
 using TrzyszczCMS.Client.Services.Interfaces;
+using TrzyszczCMS.Client.Helpers;
+using Core.Shared.Helpers;
 
 namespace TrzyszczCMS.Client.ViewModels.Administering
 {
@@ -78,6 +80,17 @@ namespace TrzyszczCMS.Client.ViewModels.Administering
             set => Set(ref _canFetchArticles, value, nameof(CanFetchArticles));
         }
 
+        /// <summary>
+        /// Indicates whether there are more articles to be fetched.
+        /// </summary>
+        public string CssClassForLoadMoreArticles =>
+            CssClassesHelper.ClassCollapsingElement(this._articlesFetcher.HasNext);
+
+        /// <summary>
+        /// Indicates whether there are more articles to be fetched.
+        /// </summary>
+        public string CssClassForLoadMorePosts =>
+            CssClassesHelper.ClassCollapsingElement(this._postsFetcher.HasNext);
         #endregion
 
         #region Ctor
@@ -163,7 +176,29 @@ namespace TrzyszczCMS.Client.ViewModels.Administering
                     break;
 
                 default:
+                    // TODO: Implement handling of other page types.
                     throw new NotImplementedException();
+            }
+        }
+
+        public async Task FetchPageDataNextPage(PageType type)
+        {
+            switch (type)
+            {
+                case PageType.Article:
+                    var nextArticles = await this._articlesFetcher.GetNext();
+                    this.Articles.AddRangeAndPack(nextArticles.Entries);
+                    this.NotifyPropertyChanged(nameof(this.Articles));
+                    break;
+
+                case PageType.Post:
+                    var nextPosts = await this._postsFetcher.GetNext();
+                    this.Posts.AddRangeAndPack(nextPosts.Entries);
+                    this.NotifyPropertyChanged(nameof(this.Posts));
+                    break;
+
+                default:
+                    throw ExceptionMaker.Argument.Unsupported(type, nameof(type));
             }
         }
         #endregion

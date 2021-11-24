@@ -1,12 +1,8 @@
 ﻿using Core.Shared.Enums;
 using Microsoft.AspNetCore.Components;
 using System;
-using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
-using TrzyszczCMS.Client.Data;
 using TrzyszczCMS.Client.Data.Enums;
 using TrzyszczCMS.Client.Data.Enums.Extensions;
 using TrzyszczCMS.Client.Data.Model.JSInterop;

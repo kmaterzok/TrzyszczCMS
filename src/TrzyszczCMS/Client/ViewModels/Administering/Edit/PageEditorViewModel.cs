@@ -3,6 +3,7 @@ using Core.Application.Helpers;
 using Core.Application.Models.Deposits;
 using Core.Shared.Enums;
 using Core.Shared.Exceptions;
+using Core.Shared.Helpers;
 using Core.Shared.Models.PageContent;
 using System;
 using System.Collections.Generic;
@@ -65,7 +66,7 @@ namespace TrzyszczCMS.Client.ViewModels.Administering.Edit
                     case PageManagementTool.TextWallRightAsideEditor:
                         return this.EditedPageDepositVM.ModuleContents[editedModuleListIndex].Data.TextWallModuleContent.RightAsideMarkDownContent;
                     default:
-                        throw new InvalidMemberException($"The value {this.EditedPageDepositVM.CurrentManagementTool} of enum {nameof(PageManagementTool)} is not handled.");
+                        throw ExceptionMaker.Member.Invalid(this.EditedPageDepositVM.CurrentManagementTool, nameof(this.EditedPageDepositVM.CurrentManagementTool));
                 }
             }
             set
@@ -86,7 +87,7 @@ namespace TrzyszczCMS.Client.ViewModels.Administering.Edit
                         this.EditedPageDepositVM.ModuleContents[editedModuleListIndex].Data.TextWallModuleContent.RightAsideMarkDownContent = value;
                         break;
                     default:
-                        throw new InvalidMemberException($"The value {this.EditedPageDepositVM.CurrentManagementTool} of enum {nameof(PageManagementTool)} is not handled.");
+                        throw ExceptionMaker.Member.Invalid(this.EditedPageDepositVM.CurrentManagementTool, nameof(this.EditedPageDepositVM.CurrentManagementTool));
                 }
                 Console.WriteLine($"Writing end. Len: {value.Length}");
             }
@@ -108,7 +109,7 @@ namespace TrzyszczCMS.Client.ViewModels.Administering.Edit
                     case PageManagementTool.TextWallSectionEditor:
                         return this.EditedPageDepositVM.ModuleContents[editedModuleListIndex].Data.TextWallModuleContent.SectionWidth;
                     default:
-                        throw new InvalidMemberException($"The value {this.EditedPageDepositVM.CurrentManagementTool} of enum {nameof(PageManagementTool)} is not handled.");
+                        throw ExceptionMaker.Member.Invalid(this.EditedPageDepositVM.CurrentManagementTool, nameof(this.EditedPageDepositVM.CurrentManagementTool));
                 }
             }
             set
@@ -127,7 +128,7 @@ namespace TrzyszczCMS.Client.ViewModels.Administering.Edit
                                 value.Value : Constants.DEFAULT_TEXT_WALL_SECTION_WIDTH;
                             break;
                         default:
-                            throw new InvalidMemberException($"The value {this.EditedPageDepositVM.CurrentManagementTool} of enum {nameof(PageManagementTool)} is not handled.");
+                            throw ExceptionMaker.Member.Invalid(this.EditedPageDepositVM.CurrentManagementTool, nameof(this.EditedPageDepositVM.CurrentManagementTool));
                     }
                 }, nameof(CurrentlyEditedSectionWidth));
             }
@@ -246,6 +247,13 @@ namespace TrzyszczCMS.Client.ViewModels.Administering.Edit
         {
             this.CurrentlyEditedMarkDownCode = code;
             this._delayedDepositoryUpdateInvoker.Invoke();
+        }
+        /// <summary>
+        /// Apply all changes of the page.
+        /// </summary>
+        public void ApplyChanges()
+        {
+            throw new NotImplementedException();
         }
         #endregion
 

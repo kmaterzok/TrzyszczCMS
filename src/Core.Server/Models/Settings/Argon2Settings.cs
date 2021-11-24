@@ -21,7 +21,7 @@ namespace Core.Server.Models.Settings
         public int Parallelism { get; set; }
 
         /// <summary>
-        /// Check if the security settings complies with minimum security values.
+        /// Check if the security settings complies with the minimum security values.
         /// </summary>
         public void EnsureMinimumSecurity()
         {

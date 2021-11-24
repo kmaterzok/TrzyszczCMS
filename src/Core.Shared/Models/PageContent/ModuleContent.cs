@@ -1,6 +1,7 @@
 ﻿
 using Core.Shared.Enums;
 using Core.Shared.Exceptions;
+using Core.Shared.Helpers;
 using System;
 
 namespace Core.Shared.Models.PageContent
@@ -58,7 +59,7 @@ namespace Core.Shared.Models.PageContent
             }
             else
             {
-                throw new ArgumentException("The assigned object is of unsupported class type.", nameof(module));
+                throw ExceptionMaker.Argument.Unsupported(module, nameof(module));
             }
         }
 

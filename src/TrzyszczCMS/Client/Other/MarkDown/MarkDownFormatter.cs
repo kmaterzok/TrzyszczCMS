@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Core.Shared.Helpers;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
@@ -238,7 +239,7 @@ namespace TrzyszczCMS.Client.Other.MarkDown
                 case LinkBasedContentType.ImageSource: return MarkDownConstants.IMAGE_SOURCE_FORMAT;
                 case LinkBasedContentType.Table:       return MarkDownConstants.TABLE_BLOCK_SAMPLE;
                 default:
-                    throw new ArgumentException($"Value of the enum {nameof(LinkBasedContentType)} ({type}) is unhandled.", nameof(type));
+                    throw ExceptionMaker.Argument.Unsupported(type, nameof(type));
             }
         }
         #endregion

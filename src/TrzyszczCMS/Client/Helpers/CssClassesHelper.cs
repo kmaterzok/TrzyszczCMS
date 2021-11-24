@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Core.Shared.Helpers;
+using System;
 using TrzyszczCMS.Client.Data.Enums;
 using TrzyszczCMS.Client.Data.Model;
 
@@ -14,10 +15,9 @@ namespace TrzyszczCMS.Client.Helpers
         /// </summary>
         /// <param name="enabled">Is the link enabled</param>
         /// <returns>CSS classes string</returns>
-        public static string ClassesForLink(bool enabled)
-        {
-            return enabled ? string.Empty : "disabled text-decoration-none cursor-default opacity-50";
-        }
+        public static string ClassesForLink(bool enabled) =>
+            enabled ? string.Empty : "disabled text-decoration-none cursor-default opacity-50";
+        
         /// <summary>
         /// Get CSS classes for MarkDown editor
         /// </summary>
@@ -43,9 +43,15 @@ namespace TrzyszczCMS.Client.Helpers
                     PreviewCss = "col-12 px-0"
                 };
                 default:
-                    throw new ArgumentException($"Value of enum {nameof(ToggledMarkDownViewMode)} ({mode}) is unsupported.", nameof(mode));
+                    throw ExceptionMaker.Argument.Unsupported(mode, nameof(mode));
             }
         }
-
+        /// <summary>
+        /// Get CSS class for collapsing an item
+        /// </summary>
+        /// <param name="enabled">Is the object visible</param>
+        /// <returns>CSS class for collapsing the item</returns>
+        public static string ClassCollapsingElement(bool enabled) =>
+            enabled ? string.Empty : "collapse";
     }
 }

@@ -214,7 +214,7 @@ namespace TrzyszczCMS.Client.ViewModels.Administering.Edit
 
         #region Helper methods
         /// <summary>
-        /// Clear all the m,essages that were set programatically withing this class.
+        /// Clear all the messages that were set programatically within this class.
         /// </summary>
         private void ClearReachableMessages() =>
             this.UriNameValidationMessage = string.Empty;

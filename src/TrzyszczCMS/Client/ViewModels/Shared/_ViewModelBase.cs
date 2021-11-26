@@ -42,16 +42,6 @@ namespace TrzyszczCMS.Client.ViewModels.Shared
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
         }
         /// <summary>
-        /// Assign a parameter to the value using <paramref name="assigner"/> and fire <see cref="PropertyChanged"/> event.
-        /// </summary>
-        /// <param name="assigner">Action assigning a new value to the specified field or property</param>
-        /// <param name="name">Name of the property</param>
-        protected void Set(Action assigner, string name)
-        {
-            assigner.Invoke();
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
-        }
-        /// <summary>
         /// Notify change of the property.
         /// </summary>
         /// <param name="name">Name of the property</param>

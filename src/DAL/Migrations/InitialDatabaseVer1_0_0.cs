@@ -133,7 +133,7 @@ namespace DAL.Migrations
             Insert.IntoTable(nameof(Cont_Page)).Row(new
             {
                 Id = 1,
-                UriName = string.Empty,
+                UriName = "homepage",
                 Title = "Homepage",
                 Type = 1,
                 CreateUtcTimestamp = new DateTime(2021, 10, 1, 18, 15, 0),

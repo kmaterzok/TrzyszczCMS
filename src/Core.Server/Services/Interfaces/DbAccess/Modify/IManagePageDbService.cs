@@ -1,10 +1,7 @@
 ﻿using Core.Shared.Enums;
 using Core.Shared.Models;
 using Core.Shared.Models.ManagePage;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace Core.Server.Services.Interfaces.DbAccess.Modify
@@ -30,5 +27,11 @@ namespace Core.Server.Services.Interfaces.DbAccess.Modify
         /// </summary>
         /// <returns>Task returning details about the homepage</returns>
         Task<DetailedPageInfo> GetDetailedPageInfoOfHomepage();
+        /// <summary>
+        /// Check if there is a URI name that has been already used for any existing page.
+        /// </summary>
+        /// <param name="checkedUriName">URI name to be checked</param>
+        /// <returns>URI name is still in use</returns>
+        Task<bool> PageUriNameExists(string checkedUriName);
     }
 }

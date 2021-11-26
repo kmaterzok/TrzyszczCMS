@@ -1,14 +1,17 @@
 ﻿using Core.Application.Enums;
 using Core.Application.Models.Deposits;
+using Core.Application.Services.Interfaces.Rest;
 using Core.Shared.Enums;
 using Core.Shared.Models.ManagePage;
 using Core.Shared.Models.PageContent;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 using TrzyszczCMS.Client.Data.Model;
 using TrzyszczCMS.Client.Data.Model.Extensions;
+using TrzyszczCMS.Client.Helpers.Extensions;
 using TrzyszczCMS.Client.ViewModels.Shared;
 
 namespace TrzyszczCMS.Client.ViewModels.Administering.Edit
@@ -19,6 +22,11 @@ namespace TrzyszczCMS.Client.ViewModels.Administering.Edit
     /// </summary>
     public class EditedPageDepositViewModel : ViewModelBase
     {
+        #region Fields
+        private readonly IManagePageService _managePageService;
+        private string _oldUriName;
+        #endregion
+
         #region Properties :: Work & modes
         private PageEditorMode _pageEditorMode;
         /// <summary>
@@ -38,6 +46,10 @@ namespace TrzyszczCMS.Client.ViewModels.Administering.Edit
             get => _currentManagementTool;
             set => Set(ref _currentManagementTool, value, nameof(CurrentManagementTool));
         }
+        /// <summary>
+        /// Fired when any displayed data are modified.
+        /// </summary>
+        public EventHandler OnDataSet { get; set; }
         #endregion
 
         #region Properties :: Edited data
@@ -54,28 +66,53 @@ namespace TrzyszczCMS.Client.ViewModels.Administering.Edit
         /// <summary>
         /// The page's dipslayed title
         /// </summary>
+        [Required(ErrorMessage = "Required")]
         public string Title
         {
             get => _title;
-            set => Set(ref _title, value, nameof(Title));
+            set { Set(ref _title, value, nameof(Title)); this.OnDataSet?.Invoke(this, EventArgs.Empty); }
         }
         /// <summary>
         /// SEO friendly name of the page used in its URI.
         /// </summary>
         private string _uriName;
+        [Required(ErrorMessage = "Required")]
         public string UriName
         {
             get => _uriName;
-            set => Set(ref _uriName, value, nameof(UriName));
+            set { Set(ref _uriName, value, nameof(UriName)); this.OnDataSet?.Invoke(this, EventArgs.Empty); }
         }
+
+        private string _uriNameValidationMessage;
         /// <summary>
-        /// Timestamp of the publishing the page
+        /// The additional message about validation.
         /// </summary>
-        private DateTime _publishUtcTimestamp;
-        public DateTime PublishUtcTimestamp
+        public string UriNameValidationMessage
         {
-            get => _publishUtcTimestamp;
-            set => Set(ref _publishUtcTimestamp, value, nameof(PublishUtcTimestamp));
+            get => _uriNameValidationMessage;
+            set => Set(ref _uriNameValidationMessage, value, nameof(UriNameValidationMessage));
+        }
+
+        private DateTime _publishUtcTimestampTime;
+        /// <summary>
+        /// Timestamp's time of the publishing the page
+        /// </summary>
+        [Required(ErrorMessage = "Required")]
+        public DateTime PublishUtcTimestampTime
+        {
+            get => _publishUtcTimestampTime;
+            set { Set(ref _publishUtcTimestampTime, value, nameof(PublishUtcTimestampTime)); this.OnDataSet?.Invoke(this, EventArgs.Empty); }
+            }
+
+        private DateTime? _publishUtcTimestampDate;
+        /// <summary>
+        /// Timestamp's date of the publishing the page
+        /// </summary>
+        [Required(ErrorMessage = "Required")]
+        public DateTime? PublishUtcTimestampDate
+        {
+            get => _publishUtcTimestampDate;
+            set { Set(ref _publishUtcTimestampDate, value, nameof(PublishUtcTimestampDate)); this.OnDataSet?.Invoke(this, EventArgs.Empty); }
         }
 
         private List<GridItem<ModuleContent>> _moduleContents;
@@ -94,18 +131,22 @@ namespace TrzyszczCMS.Client.ViewModels.Administering.Edit
         #endregion
 
         #region Ctor
-        public EditedPageDepositViewModel(EditedPageDeposit deposit)
+        public EditedPageDepositViewModel(EditedPageDeposit deposit, IManagePageService managePageService)
         {
-            this.PageEditorMode        = deposit.PageEditorMode;
-            this.CurrentManagementTool = deposit.CurrentManagementTool;
-            this.EditedModuleListIndex = deposit.EditedModuleListIndex;
+            this._managePageService      = managePageService;
 
-            this.IdOfPage              = deposit.PageDetails.Id;
-            this.Title                 = deposit.PageDetails.Title;
-            this.UriName               = deposit.PageDetails.UriName;
-            this.PublishUtcTimestamp   = deposit.PageDetails.PublishUtcTimestamp;
-            this.PageType              = deposit.PageDetails.PageType;
-            this.ModuleContents        = deposit.PageDetails.ModuleContents.ToGridItemList();
+            this.PageEditorMode          = deposit.PageEditorMode;
+            this.CurrentManagementTool   = deposit.CurrentManagementTool;
+            this.EditedModuleListIndex   = deposit.EditedModuleListIndex;
+            this._oldUriName             = deposit.OldUriName;
+
+            this.IdOfPage                = deposit.PageDetails.Id;
+            this.Title                   = deposit.PageDetails.Title;
+            this.UriName                 = deposit.PageDetails.UriName;
+            this.PublishUtcTimestampTime = deposit.PageDetails.PublishUtcTimestamp;
+            this.PublishUtcTimestampDate = deposit.PageDetails.PublishUtcTimestamp;
+            this.PageType                = deposit.PageDetails.PageType;
+            this.ModuleContents          = deposit.PageDetails.ModuleContents.ToGridItemList();
         }
         #endregion
 
@@ -116,20 +157,68 @@ namespace TrzyszczCMS.Client.ViewModels.Administering.Edit
         /// <returns>Mapped object</returns>
         public EditedPageDeposit ToDeposit() => new EditedPageDeposit()
         {
-            CurrentManagementTool = this.CurrentManagementTool,
-            PageEditorMode        = this.PageEditorMode,
-            EditedModuleListIndex = this.EditedModuleListIndex,
+            CurrentManagementTool   = this.CurrentManagementTool,
+            PageEditorMode          = this.PageEditorMode,
+            EditedModuleListIndex   = this.EditedModuleListIndex,
+            OldUriName              = this._oldUriName,
 
-            PageDetails           = new DetailedPageInfo()
+            PageDetails             = new DetailedPageInfo()
             {
                 Id                  = this.IdOfPage,
                 ModuleContents      = this.ModuleContents.ToOrdinaryList(),
                 PageType            = this.PageType,
-                PublishUtcTimestamp = this.PublishUtcTimestamp,
+                PublishUtcTimestamp = this.PublishUtcTimestampDate.Value.TruncateHMS().Add(this.PublishUtcTimestampTime.GetHMS()),
                 Title               = this.Title,
                 UriName             = this.UriName
             }
         };
+
+        /// <summary>
+        /// Check validity of the data that cannot be check with <see cref="ValidationAttribute"/>s.
+        /// </summary>
+        /// <returns>Is data valid</returns>
+        public async Task<bool> ValidateAndInformAsync()
+        {
+            this.ClearReachableMessages();
+            bool valid;
+
+            // *** UriName ***
+            if (this._oldUriName == this.UriName)
+            {
+                valid = true;
+            }
+            else if ((await this._managePageService.PageUriNameExists(this.UriName)).GetValue(out Tuple<bool> success, out string error))
+            {
+                if (success.Item1)
+                {
+                    this.UriNameValidationMessage = "Already in use. Change it.";
+                }
+                valid = !success.Item1;
+            }
+            else
+            {
+                if (error == "PatternMismatch")
+                {
+                    this.UriNameValidationMessage = "Forbidden characters. Change it.";
+                }
+                else
+                {
+                    this.UriNameValidationMessage = "Incorrect data.";
+                }
+                valid = false;
+            }
+            // *** ***
+            return valid;
+        }
         #endregion
+
+        #region Helper methods
+        /// <summary>
+        /// Clear all the m,essages that were set programatically withing this class.
+        /// </summary>
+        private void ClearReachableMessages() =>
+            this.UriNameValidationMessage = string.Empty;
+        #endregion
+
     }
 }

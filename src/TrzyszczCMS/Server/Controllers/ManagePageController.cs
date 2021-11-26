@@ -1,14 +1,10 @@
 ﻿using Core.Server.Services.Interfaces.DbAccess.Modify;
-using Core.Shared.Enums;
 using Core.Shared.Models;
 using Core.Shared.Models.ManagePage;
 using Core.Shared.Models.Rest.Requests.ManagePages;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace TrzyszczCMS.Server.Controllers
@@ -56,6 +52,12 @@ namespace TrzyszczCMS.Server.Controllers
             var pageDetails = await this._managePageService.GetDetailedPageInfoOfHomepage();
             return null != pageDetails ? Ok(pageDetails) : NotFound();
         }
+
+        [HttpGet]
+        [Produces("application/json")]
+        [Route("[action]/{id}")]
+        public async Task<ActionResult<bool>> PageUriNameExists(string checkedUriName) =>
+            await this._managePageService.PageUriNameExists(checkedUriName);
         #endregion
     }
 }

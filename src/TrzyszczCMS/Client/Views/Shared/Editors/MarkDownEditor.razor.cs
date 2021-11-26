@@ -43,8 +43,24 @@ namespace TrzyszczCMS.Client.Views.Shared.Editors
         /// </summary>
         [Parameter]
         public bool ShowSizingSelect { get; set; }
+
+
+        private TextWallSectionWidth? _maxPreviewedPageWidth;
         /// <summary>
-        /// Fired when exit button is pressed
+        /// Width of the previewed content after rendering MarkDown code.
+        /// </summary>
+        [Parameter]
+        public TextWallSectionWidth? MaxPreviewedPageWidth
+        {
+            get => _maxPreviewedPageWidth;
+            set
+            {
+                _maxPreviewedPageWidth = value;
+                this.OnMaxPreviewedPageWidthChanged?.Invoke(this, value);
+            }
+        }
+        /// <summary>
+        /// Fired when exit button is pressed.
         /// </summary>
         [Parameter]
         public EventHandler OnEditorExiting { get; set; }
@@ -54,10 +70,10 @@ namespace TrzyszczCMS.Client.Views.Shared.Editors
         [Parameter]
         public EventHandler<string> OnMarkDownChanged { get; set; }
         /// <summary>
-        /// Width of the previewed content after rendering MarkDown code.
+        /// Fired when the display width is changed.
         /// </summary>
         [Parameter]
-        public TextWallSectionWidth? MaxPreviewedPageWidth { get; set; }
+        public EventHandler<TextWallSectionWidth?> OnMaxPreviewedPageWidthChanged { get; set; }
         #endregion
 
         #region Init

@@ -8,12 +8,9 @@ using Core.Shared.Models.ManagePage;
 using DAL.Enums;
 using DAL.Helpers.Interfaces;
 using Microsoft.EntityFrameworkCore;
-using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
-using System.Linq.Expressions;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace Core.Server.Services.Implementation.DbAccess.Modify
@@ -40,9 +37,9 @@ namespace Core.Server.Services.Implementation.DbAccess.Modify
             using (var ctx = _databaseStrategy.GetContext())
             {
                 var typeValue = (byte)type;
-                int allPagesCount = ctx.Cont_Page.AsNoTracking()
-                                                 .Where(i => i.Type == typeValue)
-                                                 .Count();
+                int allPagesCount = await ctx.Cont_Page.AsNoTracking()
+                                                       .Where(i => i.Type == typeValue)
+                                                       .CountAsync();
 
                 int skippedPages = (desiredPageNumber - 1) * Constants.PAGINATION_PAGE_INFO_SIZE;
 
@@ -75,8 +72,8 @@ namespace Core.Server.Services.Implementation.DbAccess.Modify
         {
             using (var ctx = _databaseStrategy.GetContext())
             {
-                var rawPageInfo = ctx.Cont_Page.AsNoTracking()
-                                               .First(i => i.Id == id);
+                var rawPageInfo = await ctx.Cont_Page.AsNoTracking()
+                                                     .FirstAsync(i => i.Id == id);
                 
                 var returnedDetails = new DetailedPageInfo()
                 {
@@ -107,9 +104,17 @@ namespace Core.Server.Services.Implementation.DbAccess.Modify
             
             using (var ctx = _databaseStrategy.GetContext())
             {
-                homepageId = ctx.Cont_Page.First(i => i.Type == homepageType).Id;
+                homepageId = (await ctx.Cont_Page.AsNoTracking().FirstAsync(i => i.Type == homepageType)).Id;
             }
             return await this.GetDetailedPageInfo(homepageId);
+        }
+
+        public async Task<bool> PageUriNameExists(string checkedUriName)
+        {
+            using (var ctx = _databaseStrategy.GetContext())
+            {
+                return await ctx.Cont_Page.AsNoTracking().AnyAsync(i => i.UriName == checkedUriName);
+            }
         }
         #endregion
     }

@@ -1,4 +1,5 @@
-﻿using Core.Server.Services.Interfaces;
+﻿using Core.Server.Models;
+using Core.Server.Services.Interfaces;
 using Core.Server.Services.Interfaces.DbAccess;
 using Core.Shared.Models.Auth;
 using DAL.Enums;
@@ -99,7 +100,9 @@ namespace Core.Server.Services.Implementations.DbAccess
                 {
                     Auth_UserId = userInfo.Id,
                     HashedToken = tokenVariants.HashedToken,
-                    UtcExpiryTime = remember ? DateTime.UtcNow.AddDays(182) : DateTime.UtcNow.AddHours(2)
+                    UtcExpiryTime = remember ?
+                        DateTime.UtcNow.AddDays(Constants.LONG_TERM_ACCESS_TOKEN_VALIDITY_DAYS) :
+                        DateTime.UtcNow.AddHours(Constants.SHORT_TERM_ACCESS_TOKEN_VALIDITY_HOURS)
                 };    
                 using (var ts = ctx.Database.BeginTransaction())
                 {

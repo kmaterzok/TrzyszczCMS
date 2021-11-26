@@ -21,5 +21,15 @@
         /// The quantity of page info entries per single paginated page.
         /// </summary>
         public const int PAGINATION_PAGE_INFO_SIZE = 100;
+        /// <summary>
+        /// Validity time of the access token that has to be valid for
+        /// a short period of time (no remember option during sign in).
+        /// </summary>
+        public const int SHORT_TERM_ACCESS_TOKEN_VALIDITY_HOURS = 2;
+        /// <summary>
+        /// Validity time of the access token that has to be valid for
+        /// a long period of time (remember option checked during sign in).
+        /// </summary>
+        public const int LONG_TERM_ACCESS_TOKEN_VALIDITY_DAYS = 182;
     }
 }

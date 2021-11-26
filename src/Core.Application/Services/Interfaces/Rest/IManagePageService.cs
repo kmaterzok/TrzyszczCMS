@@ -31,5 +31,11 @@ namespace Core.Application.Services.Interfaces.Rest
         /// </summary>
         /// <returns></returns>
         Task<DetailedPageInfo> GetDetailedPageInfoOfHomepage();
+        /// <summary>
+        /// Check if there is a URI name that has been already used for any existing page.
+        /// </summary>
+        /// <param name="checkedUriName">URI name to be checked</param>
+        /// <returns>Task returning if the URI name is still in use or error info</returns>
+        Task<Result<Tuple<bool>, string>> PageUriNameExists(string checkedUriName);
     }
 }

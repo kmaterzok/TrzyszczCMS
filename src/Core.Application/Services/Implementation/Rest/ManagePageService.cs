@@ -4,9 +4,11 @@ using Core.Application.Helpers.Interfaces;
 using Core.Application.Models;
 using Core.Application.Services.Interfaces.Rest;
 using Core.Shared.Enums;
+using Core.Shared.Helpers;
 using Core.Shared.Models;
 using Core.Shared.Models.ManagePage;
 using Core.Shared.Models.Rest.Requests.ManagePages;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Net.Http;
@@ -29,17 +31,23 @@ namespace Core.Application.Services.Implementation.Rest
         #endregion
 
         #region Methods
-        public IPageFetcher<SimplePageInfo> GetSimplePageInfos(PageType type, [NotNull] Dictionary<FilteredGridField, string> filters, int desiredPageNumber = 1)
+        public IPageFetcher<SimplePageInfo> GetSimplePageInfos(PageType type, [NotNull] Dictionary<FilteredGridField, string> filters, int desiredPageNumber = 1) =>
+            new PageFetcher<SimplePageInfo>(desiredPageNumber, i => GetDataPageHandlerAsync(type, filters, i));
+
+        public async Task<DetailedPageInfo> GetDetailedPageInfo(int id) =>
+            await this._authHttpClient.GetFromJsonAsync<DetailedPageInfo>($"/ManagePage/DetailedPageInfo/{id}");
+        
+        public async Task<DetailedPageInfo> GetDetailedPageInfoOfHomepage() =>
+            await this._authHttpClient.GetFromJsonAsync<DetailedPageInfo>($"/ManagePage/DetailedPageInfoOfHomepage");
+
+        public async Task<Result<Tuple<bool>,string>> PageUriNameExists(string checkedUriName)
         {
-            return new PageFetcher<SimplePageInfo>(desiredPageNumber, i => GetDataPageHandlerAsync(type, filters, i));
-        }
-        public async Task<DetailedPageInfo> GetDetailedPageInfo(int id)
-        {
-            return await this._authHttpClient.GetFromJsonAsync<DetailedPageInfo>($"/ManagePage/DetailedPageInfo/{id}");
-        }
-        public async Task<DetailedPageInfo> GetDetailedPageInfoOfHomepage()
-        {
-            return await this._authHttpClient.GetFromJsonAsync<DetailedPageInfo>($"/ManagePage/DetailedPageInfoOfHomepage");
+            if (!RegexHelper.IsValidPageUriName(checkedUriName))
+            {
+                return Result<Tuple<bool>, string>.MakeError("PatternMismatch");
+            }
+            var checkResult = await this._authHttpClient.GetFromJsonAsync<bool>($"/ManagePage/PageUriNameExists/{checkedUriName}");
+            return Result<Tuple<bool>, string>.MakeSuccess(new Tuple<bool>(checkResult));
         }
         #endregion
 

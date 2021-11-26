@@ -1,13 +1,12 @@
 ﻿using Core.Application.Enums;
 using Core.Application.Helpers;
 using Core.Application.Models.Deposits;
+using Core.Application.Services.Interfaces.Rest;
 using Core.Shared.Enums;
-using Core.Shared.Exceptions;
 using Core.Shared.Helpers;
 using Core.Shared.Models.PageContent;
 using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
 using TrzyszczCMS.Client.Data;
@@ -23,6 +22,7 @@ namespace TrzyszczCMS.Client.ViewModels.Administering.Edit
         #region Fields
         private readonly IDataDepository _depository;
         private DelayedInvoker _delayedDepositoryUpdateInvoker;
+        private readonly IManagePageService _managePageService;
         #endregion
 
 
@@ -71,7 +71,6 @@ namespace TrzyszczCMS.Client.ViewModels.Administering.Edit
             }
             set
             {
-                Console.WriteLine($"Writing start. Len: {value.Length}");
                 var editedModuleListIndex = this.EditedPageDepositVM.EditedModuleListIndex;
                 switch (this.EditedPageDepositVM.CurrentManagementTool)
                 {
@@ -89,7 +88,6 @@ namespace TrzyszczCMS.Client.ViewModels.Administering.Edit
                     default:
                         throw ExceptionMaker.Member.Invalid(this.EditedPageDepositVM.CurrentManagementTool, nameof(this.EditedPageDepositVM.CurrentManagementTool));
                 }
-                Console.WriteLine($"Writing end. Len: {value.Length}");
             }
         }
         /// <summary>
@@ -114,32 +112,31 @@ namespace TrzyszczCMS.Client.ViewModels.Administering.Edit
             }
             set
             {
-                Set(() =>
+                var editedModuleListIndex = this.EditedPageDepositVM.EditedModuleListIndex;
+                switch (this.EditedPageDepositVM.CurrentManagementTool)
                 {
-                    var editedModuleListIndex = this.EditedPageDepositVM.EditedModuleListIndex;
-                    switch (this.EditedPageDepositVM.CurrentManagementTool)
-                    {
-                        case PageManagementTool.PageLayoutComposer:
-                        case PageManagementTool.TextWallLeftAsideEditor:
-                        case PageManagementTool.TextWallRightAsideEditor:
-                            break;
-                        case PageManagementTool.TextWallSectionEditor:
-                            this.EditedPageDepositVM.ModuleContents[editedModuleListIndex].Data.TextWallModuleContent.SectionWidth = value.HasValue ?
-                                value.Value : Constants.DEFAULT_TEXT_WALL_SECTION_WIDTH;
-                            break;
-                        default:
-                            throw ExceptionMaker.Member.Invalid(this.EditedPageDepositVM.CurrentManagementTool, nameof(this.EditedPageDepositVM.CurrentManagementTool));
-                    }
-                }, nameof(CurrentlyEditedSectionWidth));
+                    case PageManagementTool.PageLayoutComposer:
+                    case PageManagementTool.TextWallLeftAsideEditor:
+                    case PageManagementTool.TextWallRightAsideEditor:
+                        break;
+                    case PageManagementTool.TextWallSectionEditor:
+                        this.EditedPageDepositVM.ModuleContents[editedModuleListIndex].Data.TextWallModuleContent.SectionWidth = value.HasValue ?
+                            value.Value : Constants.DEFAULT_TEXT_WALL_SECTION_WIDTH;
+                        break;
+                    default:
+                        throw ExceptionMaker.Member.Invalid(this.EditedPageDepositVM.CurrentManagementTool, nameof(this.EditedPageDepositVM.CurrentManagementTool));
+                }
             }
         }
         #endregion
 
 
         #region Ctor & init
-        public PageEditorViewModel(IDataDepository depository)
+        public PageEditorViewModel(IDataDepository depository, IManagePageService managePageService)
         {
             this._depository = depository;
+            this._managePageService = managePageService;
+
             this._delayedDepositoryUpdateInvoker = new DelayedInvoker(
                 Constants.MARKDOWN_EDITOR_DELAY_FOR_UPDATING_DEPOSITORY_MILLIS,
                 this.UpdatePageDeposit
@@ -147,8 +144,9 @@ namespace TrzyszczCMS.Client.ViewModels.Administering.Edit
         }
         public async Task LoadDataFromDeposit()
         {
-            EditedPageDepositVM = new EditedPageDepositViewModel(await this._depository.GetAsync<EditedPageDeposit>());
+            EditedPageDepositVM = new EditedPageDepositViewModel(await this._depository.GetAsync<EditedPageDeposit>(), this._managePageService);
             EditedPageDepositVM.PropertyChanged += (_, e) => this.NotifyPropertyChanged(e.PropertyName);
+            EditedPageDepositVM.OnDataSet += (_, _e) => this._delayedDepositoryUpdateInvoker.DelayedInvoke();
 
             IsManagingPossible = _editedPageDepositVM != null;
         }
@@ -246,18 +244,43 @@ namespace TrzyszczCMS.Client.ViewModels.Administering.Edit
         public void OnMarkDownCodeChanged(object _, string code)
         {
             this.CurrentlyEditedMarkDownCode = code;
-            this._delayedDepositoryUpdateInvoker.Invoke();
+            this._delayedDepositoryUpdateInvoker.DelayedInvoke();
+        }
+        /// <summary>
+        /// Fired when display width is changed.
+        /// </summary>
+        /// <param name="_">Object invoking the event</param>
+        /// <param name="width">New chosen width of display</param>
+        public void OnMaxPreviewedPageWidthChanged(object _, TextWallSectionWidth? width)
+        {
+            this.CurrentlyEditedSectionWidth = width;
+            this.UpdatePageDeposit();
         }
         /// <summary>
         /// Apply all changes of the page.
         /// </summary>
-        public void ApplyChanges()
+        /// <returns>Task executing the apply</returns>
+        public async Task ApplyChanges()
         {
-            throw new NotImplementedException();
+            bool valid = await this.ValidateAndInform();
+
+            if (valid)
+            {
+                // Saving changes. And return back? Or change the editing mode to ediitng if it was adding.
+                throw new NotImplementedException();
+            }
         }
         #endregion
 
         #region Helper methods
+        /// <summary>
+        /// Check validity of the entered data and inform a user
+        /// by setting proper messages.
+        /// </summary>
+        /// <returns>Task returning if data is valid</returns>
+        private async Task<bool> ValidateAndInform() =>
+            await this.EditedPageDepositVM.ValidateAndInformAsync();
+
         /// <summary>
         /// Update data in the edited page's data deposit.
         /// </summary>

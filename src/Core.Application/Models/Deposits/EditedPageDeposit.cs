@@ -24,5 +24,9 @@ namespace Core.Application.Models.Deposits
         /// The index of the module that is being edited.
         /// </summary>
         public int EditedModuleListIndex { get; set; }
+        /// <summary>
+        /// THe original value of the <see cref="DetailedPageInfo.UriName"/>, before modification.
+        /// </summary>
+        public string OldUriName { get; set; }
     }
 }

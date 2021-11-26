@@ -1,9 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel;
-using System.Linq;
 using System.Threading.Tasks;
-using TrzyszczCMS.Client.Views.Shared.Editors;
 
 namespace TrzyszczCMS.Client.Views.Administering.Edit
 {
@@ -30,6 +27,5 @@ namespace TrzyszczCMS.Client.Views.Administering.Edit
         #region Dispose
         public void Dispose() => this.ViewModel?.Dispose();
         #endregion
-
     }
 }

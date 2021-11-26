@@ -171,7 +171,8 @@ namespace TrzyszczCMS.Client.ViewModels.Administering
                         PageEditorMode = PageEditorMode.Edit,
                         PageDetails = homepageInfo,
                         EditedModuleListIndex = 0,
-                        CurrentManagementTool = PageManagementTool.PageLayoutComposer
+                        CurrentManagementTool = PageManagementTool.PageLayoutComposer,
+                        OldUriName = homepageInfo.UriName
                     });
                     break;
 

@@ -15,67 +15,109 @@
     @switch (this.ViewModel.EditedPageDepositVM.CurrentManagementTool)
     {
         case PageManagementTool.PageLayoutComposer:
-            <nav class="d-flex">
-                <h1 class="me-auto">@(this.ViewModel.EditedPageDepositVM.PageEditorMode == PageEditorMode.Create ? "Creating" : "Editing") page</h1>
-                <div class="d-flex mt-auto mb-1">
-                    <div class="input-group input-group-sm">
-                        <span class="input-group-text"><i class="fas fa-plus"></i></span>
-                        <select class="form-select form-select-sm" aria-label="Add module">
-                            <option disabled selected>Add module</option>
-                            @foreach (var sgType in Enum.GetValues(typeof(PageModuleType)).Cast<PageModuleType>().OrderBy(i => i.GetTranslation()))
-                            {
-                                <option value="@sgType" @onclick="@(() => ViewModel.AddModule(sgType))">@sgType.GetTranslation()</option>
-                            }
-                        </select>
-                        <button class="btn btn-sm btn-primary" @onclick="@(() => ViewModel.ApplyChanges())"><i class="fas fa-save"></i>&nbsp;Apply changes</button>
+            <EditForm Model="@ViewModel" OnValidSubmit="@ViewModel.ApplyChanges">
+                <DataAnnotationsValidator />
+
+                <nav class="d-flex">
+                    <h1 class="me-auto">@(this.ViewModel.EditedPageDepositVM.PageEditorMode == PageEditorMode.Create ? "Creating" : "Editing") page</h1>
+                    <div class="d-flex mt-auto mb-1">
+                        <div class="input-group input-group-sm">
+                            <span class="input-group-text"><i class="fas fa-plus"></i></span>
+                            <select class="form-select form-select-sm" aria-label="Add module">
+                                <option disabled selected>Add module</option>
+                                @foreach (var sgType in Enum.GetValues(typeof(PageModuleType)).Cast<PageModuleType>().OrderBy(i => i.GetTranslation()))
+                                {
+                                    <option value="@sgType" @onclick="@(() => ViewModel.AddModule(sgType))">@sgType.GetTranslation()</option>
+                                }
+                            </select>
+                            <button type="submit" class="btn btn-sm btn-primary"><i class="fas fa-save"></i>&nbsp;Apply changes</button>
+                        </div>
                     </div>
-                </div>
-            </nav>
-            <section>
-                <Grid Items="ViewModel.EditedPageDepositVM.ModuleContents" MultiSelect="false">
-                    <Header>
-                        <GridColHeader SearchBoxType="SearchBoxType.None" Title="Module type" />
-                        <GridColHeader SearchBoxType="SearchBoxType.None" Title="Actions" Width="250" />
-                    </Header>
-                    <RowTemplate Context="row">
-                        <td>@row.Data.GetModuleType().GetTranslation() @row.GetHashCode()</td>
-                        <td>
-                            <div class="input-group input-group-sm">
-                                @if (row.Data.GetModuleType() == PageModuleType.TextWall)
-                                {
-                                    <span class="input-group-text"><i class="fas fa-edit"></i></span>
-                                    <select class="form-select form-select-sm" aria-label="Edit">
-                                        <option disabled selected>Edit</option>
-                                        @foreach (var sgType in Enum.GetValues(typeof(TextWallEditedPart)).Cast<TextWallEditedPart>())
+                </nav>
+                <section>
+                    <Grid Items="ViewModel.EditedPageDepositVM.ModuleContents" MultiSelect="false">
+                        <Header>
+                            <GridColHeader SearchBoxType="SearchBoxType.None" Title="Module type" />
+                            <GridColHeader SearchBoxType="SearchBoxType.None" Title="Actions" Width="250" />
+                        </Header>
+                        <RowTemplate Context="row">
+                            <td>@row.Data.GetModuleType().GetTranslation() @row.GetHashCode()</td>
+                            <td>
+                                <div class="input-group input-group-sm">
+                                    @if (row.Data.GetModuleType() == PageModuleType.TextWall)
+                                    {
+                                        <span class="input-group-text"><i class="fas fa-edit"></i></span>
+                                        <select class="form-select form-select-sm" aria-label="Edit">
+                                            <option disabled selected>Edit</option>
+                                            @foreach (var sgType in Enum.GetValues(typeof(TextWallEditedPart)).Cast<TextWallEditedPart>())
+                                            {
+                                                <option value="@sgType" @onclick="@(() => ViewModel.EditModule(row, sgType))">@sgType.GetTranslation()</option>
+                                            }
+                                        </select>
+                                    }
+                                    else
+                                    {
+                                        <button class="btn btn-sm btn-primary" @onclick="@(() => ViewModel.EditModule(row))"><i class="fas fa-edit"></i>&nbsp;Edit</button>
+                                    }
+                                    <button class="btn btn-sm btn-primary" @onclick="@(() => ViewModel.RemoveModule(row))"><i class="fas fa-minus"></i>&nbsp;Remove</button>
+                                </div>
+                            </td>
+                        </RowTemplate>
+                        <NoRowsTemplate>
+                            There are not any modules for this page.
+                        </NoRowsTemplate>
+                    </Grid>                
+                </section>
+
+                @if (ViewModel.EditedPageDepositVM.PageType != PageType.HomePage)
+                {
+                    <h2 class="mt-3">Properties</h2>
+                    <section>
+                        <div class="container-fluid">
+                            <div class="row row-cols-1 row-cols-lg-2">
+                                    <div class="col">
+                                        <ValidationMessage For="@(() => ViewModel.EditedPageDepositVM.UriName)" />
+                                        @if (!string.IsNullOrEmpty(ViewModel.EditedPageDepositVM.UriNameValidationMessage))
                                         {
-                                            <option value="@sgType" @onclick="@(() => ViewModel.EditModule(row, sgType))">@sgType.GetTranslation()</option>
+                                            <div>@ViewModel.EditedPageDepositVM.UriNameValidationMessage</div>
                                         }
-                                    </select>
-                                }
-                                else
-                                {
-                                    <button class="btn btn-sm btn-primary" @onclick="@(() => ViewModel.EditModule(row))"><i class="fas fa-edit"></i>&nbsp;Edit</button>
-                                }
-                                <button class="btn btn-sm btn-primary" @onclick="@(() => ViewModel.RemoveModule(row))"><i class="fas fa-minus"></i>&nbsp;Remove</button>
+                                        <div class="form-floating my-3">
+                                            <InputText id="uriName" class="form-control w-100" @bind-Value="@ViewModel.EditedPageDepositVM.UriName" />
+                                            <label for="uriName">URI name</label>
+                                        </div>
+                                    </div>
+                                    <div class="col">
+                                        <ValidationMessage For="@(() => ViewModel.EditedPageDepositVM.Title)" />
+                                        <div class="form-floating my-3">
+                                            <InputText id="titleName" class="form-control w-100" @bind-Value="@ViewModel.EditedPageDepositVM.Title" />
+                                            <label for="titleName">Title</label>
+                                        </div>
+                                    </div>
+                            
+                                <div class="col">
+                                    <ValidationMessage For="@(() => ViewModel.EditedPageDepositVM.PublishUtcTimestampDate)" />
+                                    <div class="form-floating my-3">
+                                        <InputDate id="publishDate" class="form-control w-100" @bind-Value="@ViewModel.EditedPageDepositVM.PublishUtcTimestampDate" />
+                                        <label for="publishDate">Publish date</label>
+                                    </div>
+                                </div>
+                                <div class="col">
+                                    <ValidationMessage For="@(() => ViewModel.EditedPageDepositVM.PublishUtcTimestampTime)" />
+                                    <div class="form-floating my-3">
+                                        <input type="time" id="publishTime" class="form-control w-100" @bind="@ViewModel.EditedPageDepositVM.PublishUtcTimestampTime" />
+                                        <label for="publishTime">Publish hour</label>
+                                    </div>
+                                </div>
                             </div>
-                        </td>
-                    </RowTemplate>
-                    <NoRowsTemplate>
-                        There are not any modules for this page.
-                    </NoRowsTemplate>
-                </Grid>                
-            </section>
+                        </div>
+                    </section>
 
-            <h2 class="mt-3">Properties</h2>
-            <section>
-                <div class="container-fluid">
-                </div>
-            </section>
-
-            <h2 class="mt-3">Authors</h2>
-            <section>
-                Content
-            </section>
+                    <h2 class="mt-3">Authors</h2>
+                    <section>
+                        Content
+                    </section>
+                }
+            </EditForm>
             break;
 
         case PageManagementTool.TextWallSectionEditor:
@@ -85,6 +127,7 @@
                             ShowSizingSelect="@(this.ViewModel.EditedPageDepositVM.CurrentManagementTool == PageManagementTool.TextWallSectionEditor)"
                             OnEditorExiting="@ViewModel.OnEditorExiting"
                             OnMarkDownChanged="@ViewModel.OnMarkDownCodeChanged"
+                            OnMaxPreviewedPageWidthChanged="@ViewModel.OnMaxPreviewedPageWidthChanged"
                             MaxPreviewedPageWidth="@ViewModel.CurrentlyEditedSectionWidth" />
             break;
 

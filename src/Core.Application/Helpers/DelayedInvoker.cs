@@ -14,7 +14,7 @@ namespace Core.Application.Helpers
         /// </summary>
         private Timer _timer;
         /// <summary>
-        /// Invoked when the set time was elapsed from the last invoke of <seealso cref="Invoke"/>.
+        /// Invoked when the set time was elapsed from the last invoke of <seealso cref="DelayedInvoke"/>.
         /// </summary>
         private readonly Action _action;
         #endregion
@@ -23,7 +23,7 @@ namespace Core.Application.Helpers
         /// <summary>
         /// Constructor
         /// </summary>
-        /// <param name="awaitTimeMs">Time between the latest invokation of <see cref="Invoke"/> and the invoking of <paramref name="action"/>.</param>
+        /// <param name="awaitTimeMs">Time between the latest invokation of <see cref="DelayedInvoke"/> and the invoking of <paramref name="action"/>.</param>
         /// <param name="action">Invoked when <paramref name="awaitTimeMs"/>ms time up.</param>
         public DelayedInvoker(int awaitTimeMs, Action action)
         {
@@ -42,7 +42,7 @@ namespace Core.Application.Helpers
         /// <summary>
         /// Invoke the defined action.
         /// </summary>
-        public void Invoke()
+        public void DelayedInvoke()
         {
             this._timer.Enabled = false;
             this._timer.Enabled = true;

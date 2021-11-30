@@ -3,7 +3,7 @@
     /// <summary>
     /// Constants used in <see cref="Core.Shared"/> project only.
     /// </summary>
-    public static class LocalConstants
+    internal static class LocalConstants
     {
         /// <summary>
         /// The constant for generic notation for <see cref="DateTime"/> as <see cref="string"/>.

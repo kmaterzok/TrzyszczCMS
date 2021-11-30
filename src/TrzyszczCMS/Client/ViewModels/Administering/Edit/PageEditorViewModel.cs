@@ -27,6 +27,11 @@ namespace TrzyszczCMS.Client.ViewModels.Administering.Edit
 
 
         #region Properties
+        /// <summary>
+        /// Fired when there is a need to exit the current view.
+        /// </summary>
+        public Action OnExitingView { get; set; }
+
         private bool _isManagingPossible;
         /// <summary>
         /// It says whether there is data allowing to manage a page.
@@ -262,12 +267,22 @@ namespace TrzyszczCMS.Client.ViewModels.Administering.Edit
         /// <returns>Task executing the apply</returns>
         public async Task ApplyChanges()
         {
-            bool valid = await this.ValidateAndInform();
-
-            if (valid)
+            if (await this.ValidateAndInform())
             {
-                // Saving changes. And return back? Or change the editing mode to ediitng if it was adding.
-                throw new NotImplementedException();
+                switch (this.EditedPageDepositVM.PageEditorMode)
+                {
+                    case PageEditorMode.Create:
+                        await this._managePageService.AddPage(this.EditedPageDepositVM.GetDetailedPageInfo());
+                        break;
+
+                    case PageEditorMode.Edit:
+                        await this._managePageService.UpdatePage(this.EditedPageDepositVM.GetDetailedPageInfo());
+                        break;
+
+                    default:
+                        throw new InvalidOperationException($"{this.EditedPageDepositVM.PageEditorMode} is not allowed.");
+                }
+                this.OnExitingView?.Invoke();
             }
         }
         #endregion

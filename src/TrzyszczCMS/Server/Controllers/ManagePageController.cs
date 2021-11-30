@@ -56,8 +56,20 @@ namespace TrzyszczCMS.Server.Controllers
         [HttpGet]
         [Produces("application/json")]
         [Route("[action]/{id}")]
-        public async Task<ActionResult<bool>> PageUriNameExists(string checkedUriName) =>
-            await this._managePageService.PageUriNameExists(checkedUriName);
+        public async Task<ActionResult> PageUriNameExists(string checkedUriName) =>
+            await this._managePageService.PageUriNameExists(checkedUriName) ? Ok() : NotFound();
+
+        [HttpPost]
+        [Produces("application/json")]
+        [Route("[action]")]
+        public async Task<ActionResult> AddPage([FromBody][NotNull] DetailedPageInfo request) =>
+            await this._managePageService.AddPageAsync(request) ? Ok() : NotFound();
+
+        [HttpPost]
+        [Produces("application/json")]
+        [Route("[action]")]
+        public async Task<ActionResult> UpdatePage([FromBody][NotNull] DetailedPageInfo request) =>
+            await this._managePageService.UpdatePageAsync(request) ? Ok() : NotFound();
         #endregion
     }
 }

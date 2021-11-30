@@ -37,5 +37,19 @@ namespace Core.Application.Services.Interfaces.Rest
         /// <param name="checkedUriName">URI name to be checked</param>
         /// <returns>Task returning if the URI name is still in use or error info</returns>
         Task<Result<Tuple<bool>, string>> PageUriNameExists(string checkedUriName);
+
+        /// <summary>
+        /// Add a new page to the database.
+        /// </summary>
+        /// <param name="page">Page content</param>
+        /// <returns>Task executing the operation</returns>
+        Task AddPage(DetailedPageInfo page);
+
+        /// <summary>
+        /// Apply changes to a page in the database.
+        /// </summary>
+        /// <param name="page">Page content</param>
+        /// <returns>Task executing the operation</returns>
+        Task UpdatePage(DetailedPageInfo page);
     }
 }

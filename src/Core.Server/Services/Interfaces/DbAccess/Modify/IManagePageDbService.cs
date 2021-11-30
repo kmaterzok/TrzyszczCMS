@@ -33,5 +33,17 @@ namespace Core.Server.Services.Interfaces.DbAccess.Modify
         /// <param name="checkedUriName">URI name to be checked</param>
         /// <returns>URI name is still in use</returns>
         Task<bool> PageUriNameExists(string checkedUriName);
+        /// <summary>
+        /// Add page to the database.
+        /// </summary>
+        /// <param name="page">Information about page</param>
+        /// <returns>Task returning if the addition was successful</returns>
+        Task<bool> AddPageAsync(DetailedPageInfo page);
+        /// <summary>
+        /// Update page in the database.
+        /// </summary>
+        /// <param name="page">Information about page</param>
+        /// <returns>Task returning if the update was successful</returns>
+        Task<bool> UpdatePageAsync(DetailedPageInfo page);
     }
 }

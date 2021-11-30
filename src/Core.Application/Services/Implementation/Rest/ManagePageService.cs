@@ -46,9 +46,15 @@ namespace Core.Application.Services.Implementation.Rest
             {
                 return Result<Tuple<bool>, string>.MakeError("PatternMismatch");
             }
-            var checkResult = await this._authHttpClient.GetFromJsonAsync<bool>($"/ManagePage/PageUriNameExists/{checkedUriName}");
-            return Result<Tuple<bool>, string>.MakeSuccess(new Tuple<bool>(checkResult));
+            var checkResponse = await this._authHttpClient.GetAsync($"/ManagePage/PageUriNameExists/{checkedUriName}");
+            return Result<Tuple<bool>, string>.MakeSuccess(new Tuple<bool>(checkResponse.IsSuccessStatusCode));
         }
+
+        public async Task AddPage(DetailedPageInfo page) =>
+            (await this._authHttpClient.PostAsJsonAsync($"/ManagePage/AddPage", page)).EnsureSuccessStatusCode();
+
+        public async Task UpdatePage(DetailedPageInfo page) =>
+            (await this._authHttpClient.PostAsJsonAsync($"/ManagePage/UpdatePage", page)).EnsureSuccessStatusCode();
         #endregion
 
         #region Helper methods

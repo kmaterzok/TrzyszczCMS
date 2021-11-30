@@ -13,6 +13,7 @@ namespace TrzyszczCMS.Client.Views.Administering.Edit
             this.ViewModel.PropertyChanged += new PropertyChangedEventHandler(
                 async (s, e) => await this.InvokeAsync(() => this.StateHasChanged())
             );
+            this.ViewModel.OnExitingView = new Action(() => this.NavigationManager.NavigateTo("/manage/pages"));
         }
         protected override async Task OnAfterRenderAsync(bool firstRender)
         {

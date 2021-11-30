@@ -21,7 +21,7 @@ namespace Core.Server.Helpers
         /// <summary>
         /// Type of the module.
         /// </summary>
-        public byte Type { get; set; }
+        public short Type { get; set; }
     }
 
     /// <summary>
@@ -44,7 +44,7 @@ namespace Core.Server.Helpers
                 switch ((PageModuleType)moduleInfo.Type)
                 {
                     case PageModuleType.TextWall:
-                        var textWallModule = await dbContext.Cont_TextWallModule.AsNoTracking().FirstAsync(i => i.Id == moduleInfo.Id);
+                        var textWallModule = await dbContext.ContTextWallModules.AsNoTracking().FirstAsync(i => i.Id == moduleInfo.Id);
                         moduleContents.Add(textWallModule.ToModuleContent());
                         break;
 

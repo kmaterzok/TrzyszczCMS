@@ -161,16 +161,21 @@ namespace TrzyszczCMS.Client.ViewModels.Administering.Edit
             PageEditorMode          = this.PageEditorMode,
             EditedModuleListIndex   = this.EditedModuleListIndex,
             OldUriName              = this._oldUriName,
+            PageDetails             = this.GetDetailedPageInfo()
+        };
 
-            PageDetails             = new DetailedPageInfo()
-            {
-                Id                  = this.IdOfPage,
-                ModuleContents      = this.ModuleContents.ToOrdinaryList(),
-                PageType            = this.PageType,
-                PublishUtcTimestamp = this.PublishUtcTimestampDate.Value.TruncateHMS().Add(this.PublishUtcTimestampTime.GetHMS()),
-                Title               = this.Title,
-                UriName             = this.UriName
-            }
+        /// <summary>
+        /// Create and get a detailed page info.
+        /// </summary>
+        /// <returns>Midifiable and manageable information about page</returns>
+        public DetailedPageInfo GetDetailedPageInfo() => new DetailedPageInfo()
+        {
+            Id = this.IdOfPage,
+            ModuleContents = this.ModuleContents.ToOrdinaryList(),
+            PageType = this.PageType,
+            PublishUtcTimestamp = this.PublishUtcTimestampDate.Value.TruncateHMS().Add(this.PublishUtcTimestampTime.GetHMS()),
+            Title = this.Title,
+            UriName = this.UriName
         };
 
         /// <summary>

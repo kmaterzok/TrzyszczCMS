@@ -8,6 +8,7 @@
 @using TrzyszczCMS.Client.Views.Shared.Grids
 @using TrzyszczCMS.Client.ViewModels.Administering.Edit
 @inject PageEditorViewModel ViewModel
+@inject NavigationManager NavigationManager
 
 
 @if (this.ViewModel.IsManagingPossible)
@@ -75,24 +76,24 @@
                     <section>
                         <div class="container-fluid">
                             <div class="row row-cols-1 row-cols-lg-2">
-                                    <div class="col">
-                                        <ValidationMessage For="@(() => ViewModel.EditedPageDepositVM.UriName)" />
-                                        @if (!string.IsNullOrEmpty(ViewModel.EditedPageDepositVM.UriNameValidationMessage))
-                                        {
-                                            <div>@ViewModel.EditedPageDepositVM.UriNameValidationMessage</div>
-                                        }
-                                        <div class="form-floating my-3">
-                                            <InputText id="uriName" class="form-control w-100" @bind-Value="@ViewModel.EditedPageDepositVM.UriName" />
-                                            <label for="uriName">URI name</label>
-                                        </div>
+                                <div class="col">
+                                    <ValidationMessage For="@(() => ViewModel.EditedPageDepositVM.UriName)" />
+                                    @if (!string.IsNullOrEmpty(ViewModel.EditedPageDepositVM.UriNameValidationMessage))
+                                    {
+                                        <div>@ViewModel.EditedPageDepositVM.UriNameValidationMessage</div>
+                                    }
+                                    <div class="form-floating my-3">
+                                        <InputText id="uriName" class="form-control w-100" @bind-Value="@ViewModel.EditedPageDepositVM.UriName" />
+                                        <label for="uriName">URI name</label>
                                     </div>
-                                    <div class="col">
-                                        <ValidationMessage For="@(() => ViewModel.EditedPageDepositVM.Title)" />
-                                        <div class="form-floating my-3">
-                                            <InputText id="titleName" class="form-control w-100" @bind-Value="@ViewModel.EditedPageDepositVM.Title" />
-                                            <label for="titleName">Title</label>
-                                        </div>
+                                </div>
+                                <div class="col">
+                                    <ValidationMessage For="@(() => ViewModel.EditedPageDepositVM.Title)" />
+                                    <div class="form-floating my-3">
+                                        <InputText id="titleName" class="form-control w-100" @bind-Value="@ViewModel.EditedPageDepositVM.Title" />
+                                        <label for="titleName">Title</label>
                                     </div>
+                                </div>
                             
                                 <div class="col">
                                     <ValidationMessage For="@(() => ViewModel.EditedPageDepositVM.PublishUtcTimestampDate)" />

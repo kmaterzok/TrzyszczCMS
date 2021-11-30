@@ -1,5 +1,5 @@
 ﻿using Core.Shared.Enums;
-using DAL.Models.Database.Tables;
+using DAL.Models.Database;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -53,20 +53,20 @@ namespace Core.Server.Helpers.Extensions
             {
                 case FilteredGridField.ManagePages_Articles_Title:
                 case FilteredGridField.ManagePages_Posts_Title:
-                    return source.Where<Cont_Page, T>(t => t.Title.ToLower().Contains(filterText.ToLower()));
+                    return source.Where<ContPage, T>(t => t.Title.ToLower().Contains(filterText.ToLower()));
 
                 case FilteredGridField.ManagePages_Articles_Created:
                 case FilteredGridField.ManagePages_Posts_Created:
                     var range = FilterDataParser.ToDateRange(filterText);
-                    if (range.Start.HasValue) { source = source.Where<Cont_Page, T>(t => t.CreateUtcTimestamp >= range.Start.Value); }
-                    if (range.End.HasValue)   { source = source.Where<Cont_Page, T>(t => t.CreateUtcTimestamp <= range.End.Value);   }
+                    if (range.Start.HasValue) { source = source.Where<ContPage, T>(t => t.CreateUtcTimestamp >= range.Start.Value); }
+                    if (range.End.HasValue)   { source = source.Where<ContPage, T>(t => t.CreateUtcTimestamp <= range.End.Value);   }
                     return source;
 
                 case FilteredGridField.ManagePages_Articles_Published:
                 case FilteredGridField.ManagePages_Posts_Published:
                     var range2 = FilterDataParser.ToDateRange(filterText);
-                    if (range2.Start.HasValue) { source = source.Where<Cont_Page, T>(t => t.PublishUtcTimestamp >= range2.Start.Value); }
-                    if (range2.End.HasValue)   { source = source.Where<Cont_Page, T>(t => t.PublishUtcTimestamp <= range2.End.Value);   }
+                    if (range2.Start.HasValue) { source = source.Where<ContPage, T>(t => t.PublishUtcTimestamp >= range2.Start.Value); }
+                    if (range2.End.HasValue)   { source = source.Where<ContPage, T>(t => t.PublishUtcTimestamp <= range2.End.Value);   }
                     return source;
 
                 default:

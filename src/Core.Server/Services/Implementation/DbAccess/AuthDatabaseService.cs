@@ -4,7 +4,7 @@ using Core.Server.Services.Interfaces.DbAccess;
 using Core.Shared.Models.Auth;
 using DAL.Enums;
 using DAL.Helpers.Interfaces;
-using DAL.Models.Database.Tables;
+using DAL.Models.Database;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -50,9 +50,9 @@ namespace Core.Server.Services.Implementations.DbAccess
             {
                 using (var conn = ctx.Database.GetDbConnection())
                 {
-                    var tokenInfo = await (from usr in ctx.Auth_User.AsNoTracking()
-                                    join tkn in ctx.Auth_Token.AsNoTracking() on usr.Id equals tkn.Auth_UserId
-                                    join rl in ctx.Auth_Role.AsNoTracking() on usr.Auth_RoleId equals rl.Id
+                    var tokenInfo = await (from usr in ctx.AuthUsers.AsNoTracking()
+                                    join tkn in ctx.AuthTokens.AsNoTracking() on usr.Id equals tkn.AuthUserId
+                                    join rl in ctx.AuthRoles.AsNoTracking() on usr.AuthRoleId equals rl.Id
                                     where tkn.HashedToken == hashedToken && tkn.UtcExpiryTime > timestamp
                                     select new AuthUserInfo()
                                     {
@@ -67,9 +67,9 @@ namespace Core.Server.Services.Implementations.DbAccess
 
                     tokenInfo.AccessToken = accessToken;
 
-                    var assignedPolicies = await (from pl in ctx.Auth_Policy.AsNoTracking()
-                                                  join ras in ctx.Auth_Role_Policy_Assign.AsNoTracking() on pl.Id equals ras.Auth_PolicyId
-                                                  where ras.Auth_RoleId == tokenInfo.AssignedRoleId
+                    var assignedPolicies = await (from pl in ctx.AuthPolicies.AsNoTracking()
+                                                  join ras in ctx.AuthRolePolicyAssigns.AsNoTracking() on pl.Id equals ras.AuthPolicyId
+                                                  where ras.AuthRoleId == tokenInfo.AssignedRoleId
                                                   select pl.Name).ToListAsync();
 
                     tokenInfo.AssignedPoliciesNames = assignedPolicies;
@@ -86,7 +86,7 @@ namespace Core.Server.Services.Implementations.DbAccess
             }
             using (var ctx = _databaseStrategy.GetContext())
             {
-                var userInfo = await ctx.Auth_User.AsNoTracking().SingleOrDefaultAsync(i => i.Username == username);
+                var userInfo = await ctx.AuthUsers.AsNoTracking().SingleOrDefaultAsync(i => i.Username == username);
 
                 if (userInfo == null) { return null; }
                 
@@ -96,9 +96,9 @@ namespace Core.Server.Services.Implementations.DbAccess
 
                 var tokenVariants = _cryptoService.GenerateAccessToken();
 
-                var dbAuthToken = new Auth_Token()
+                var dbAuthToken = new AuthToken()
                 {
-                    Auth_UserId = userInfo.Id,
+                    AuthUserId = userInfo.Id,
                     HashedToken = tokenVariants.HashedToken,
                     UtcExpiryTime = remember ?
                         DateTime.UtcNow.AddDays(Constants.LONG_TERM_ACCESS_TOKEN_VALIDITY_DAYS) :
@@ -106,16 +106,16 @@ namespace Core.Server.Services.Implementations.DbAccess
                 };    
                 using (var ts = ctx.Database.BeginTransaction())
                 {
-                    await ctx.Auth_Token.AddAsync(dbAuthToken);
+                    await ctx.AuthTokens.AddAsync(dbAuthToken);
                     await ctx.SaveChangesAsync();
                     ts.Commit();
                 }
                 
-                var roleName = (await ctx.Auth_Role.AsNoTracking().SingleAsync(i => i.Id == userInfo.Auth_RoleId)).Name;
+                var roleName = (await ctx.AuthRoles.AsNoTracking().SingleAsync(i => i.Id == userInfo.AuthRoleId)).Name;
 
-                var policiesNames = await (from pl in ctx.Auth_Policy.AsNoTracking()
-                                           join asg in ctx.Auth_Role_Policy_Assign.AsNoTracking() on pl.Id equals asg.Auth_PolicyId
-                                           where asg.Auth_RoleId == userInfo.Auth_RoleId
+                var policiesNames = await (from pl in ctx.AuthPolicies.AsNoTracking()
+                                           join asg in ctx.AuthRolePolicyAssigns.AsNoTracking() on pl.Id equals asg.AuthPolicyId
+                                           where asg.AuthRoleId == userInfo.AuthRoleId
                                            select pl.Name).ToListAsync();
 
                 return new AuthUserInfo()
@@ -123,7 +123,7 @@ namespace Core.Server.Services.Implementations.DbAccess
                     AccessToken = tokenVariants.GetPlainTokenForBrowserStorage(),
                     UserId = userInfo.Id,
                     Username = username,
-                    AssignedRoleId = userInfo.Auth_RoleId,
+                    AssignedRoleId = userInfo.AuthRoleId,
                     AssignedRoleName = roleName,
                     AssignedPoliciesNames = policiesNames
                 };
@@ -138,10 +138,10 @@ namespace Core.Server.Services.Implementations.DbAccess
             {
                 using (var ts = ctx.Database.BeginTransaction())
                 {
-                    var foundToken = await ctx.Auth_Token.FirstOrDefaultAsync(i => i.Id == userId && i.HashedToken == hashedToken);
+                    var foundToken = await ctx.AuthTokens.FirstOrDefaultAsync(i => i.Id == userId && i.HashedToken == hashedToken);
                     if (foundToken != null)
                     {
-                        ctx.Auth_Token.Remove(foundToken);
+                        ctx.AuthTokens.Remove(foundToken);
                     }
                     ts.Commit();
                 }

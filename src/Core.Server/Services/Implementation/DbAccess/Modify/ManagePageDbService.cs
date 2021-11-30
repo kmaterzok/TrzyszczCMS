@@ -1,13 +1,17 @@
 ﻿using Core.Server.Helpers;
 using Core.Server.Helpers.Extensions;
 using Core.Server.Models;
+using Core.Server.Models.Extensions;
 using Core.Server.Services.Interfaces.DbAccess.Modify;
 using Core.Shared.Enums;
+using Core.Shared.Helpers;
 using Core.Shared.Models;
 using Core.Shared.Models.ManagePage;
 using DAL.Enums;
 using DAL.Helpers.Interfaces;
+using DAL.Models.Database;
 using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
@@ -37,13 +41,13 @@ namespace Core.Server.Services.Implementation.DbAccess.Modify
             using (var ctx = _databaseStrategy.GetContext())
             {
                 var typeValue = (byte)type;
-                int allPagesCount = await ctx.Cont_Page.AsNoTracking()
+                int allPagesCount = await ctx.ContPages.AsNoTracking()
                                                        .Where(i => i.Type == typeValue)
                                                        .CountAsync();
 
                 int skippedPages = (desiredPageNumber - 1) * Constants.PAGINATION_PAGE_INFO_SIZE;
 
-                var entries = await ctx.Cont_Page.AsNoTracking()
+                var entries = await ctx.ContPages.AsNoTracking()
                                                  .Where(i => i.Type == typeValue)
                                                  .ApplyFilters(filters)
                                                  .Skip(skippedPages)
@@ -72,7 +76,7 @@ namespace Core.Server.Services.Implementation.DbAccess.Modify
         {
             using (var ctx = _databaseStrategy.GetContext())
             {
-                var rawPageInfo = await ctx.Cont_Page.AsNoTracking()
+                var rawPageInfo = await ctx.ContPages.AsNoTracking()
                                                      .FirstAsync(i => i.Id == id);
                 
                 var returnedDetails = new DetailedPageInfo()
@@ -84,8 +88,8 @@ namespace Core.Server.Services.Implementation.DbAccess.Modify
                     PublishUtcTimestamp = rawPageInfo.PublishUtcTimestamp
                 };
 
-                var moduleInfos = await ctx.Cont_Module.AsNoTracking()
-                                                       .Where(i => i.Cont_PageId == id)
+                var moduleInfos = await ctx.ContModules.AsNoTracking()
+                                                       .Where(i => i.ContPageId == id)
                                                        .Select(i => new ModuleTypeValueInfo()
                                                        {
                                                            Id   = i.Id,
@@ -104,7 +108,7 @@ namespace Core.Server.Services.Implementation.DbAccess.Modify
             
             using (var ctx = _databaseStrategy.GetContext())
             {
-                homepageId = (await ctx.Cont_Page.AsNoTracking().FirstAsync(i => i.Type == homepageType)).Id;
+                homepageId = (await ctx.ContPages.AsNoTracking().FirstAsync(i => i.Type == homepageType)).Id;
             }
             return await this.GetDetailedPageInfo(homepageId);
         }
@@ -113,7 +117,68 @@ namespace Core.Server.Services.Implementation.DbAccess.Modify
         {
             using (var ctx = _databaseStrategy.GetContext())
             {
-                return await ctx.Cont_Page.AsNoTracking().AnyAsync(i => i.UriName == checkedUriName);
+                return await ctx.ContPages.AsNoTracking().AnyAsync(i => i.UriName == checkedUriName);
+            }
+        }
+
+        public async Task<bool> AddPageAsync(DetailedPageInfo page)
+        {
+            if (!RegexHelper.IsValidPageUriName(page.UriName))
+            {
+                return false;
+            }
+
+            using (var ctx = _databaseStrategy.GetContext())
+            {
+                using (var ts = await ctx.Database.BeginTransactionAsync())
+                {
+                    var preparedData = new ContPage()
+                    {
+                        UriName = page.UriName,
+                        Type = (byte)page.PageType,
+                        Title = page.Title,
+                        PublishUtcTimestamp = page.PublishUtcTimestamp,
+                        CreateUtcTimestamp = DateTime.UtcNow,
+                        ContModules = page.ModuleContents.ToContModulesList()
+                    };
+                    await ctx.ContPages.AddAsync(preparedData);
+
+                    await ctx.SaveChangesAsync();
+                    await ts.CommitAsync();
+                    return true;
+                }
+            }
+        }
+        
+        public async Task<bool> UpdatePageAsync(DetailedPageInfo page)
+        {
+            if (!RegexHelper.IsValidPageUriName(page.UriName))
+            {
+                return false;
+            }
+
+            using (var ctx = _databaseStrategy.GetContext())
+            {
+                using (var ts = await ctx.Database.BeginTransactionAsync())
+                {
+                    var updatedData = await ctx.ContPages.SingleAsync(i => i.Id == page.Id);
+
+                    updatedData.PublishUtcTimestamp = page.PublishUtcTimestamp;
+                    updatedData.Title = page.Title;
+                    updatedData.UriName = page.UriName;
+                    ctx.ContModules.RemoveRange(ctx.ContModules.Where(i => i.ContPageId == page.Id));
+
+                    var addedModules = page.ModuleContents.ToContModulesList();
+                    foreach (var module in addedModules)
+                    {
+                        module.ContPageId = page.Id;
+                    }
+                    await ctx.ContModules.AddRangeAsync(addedModules);
+
+                    await ctx.SaveChangesAsync();
+                    await ts.CommitAsync();
+                    return true;
+                }
             }
         }
         #endregion

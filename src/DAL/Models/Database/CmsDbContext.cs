@@ -1,118 +1,172 @@
-﻿using DAL.Models.Database.Tables;
+﻿using System;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata;
+
+#nullable disable
 
 namespace DAL.Models.Database
 {
-    public class CmsDbContext : DbContext
+    public partial class CmsDbContext : DbContext
     {
-        #region --- Fields ---
-        /// <summary>
-        /// The connection string used for connecting with a specific database.
-        /// </summary>
-        private readonly string _connectionString;
-        #endregion
-
-        #region --- Ctor ---
-        public CmsDbContext(string connectionString)
+        public CmsDbContext()
         {
-            this._connectionString = connectionString;
-        }
-        #endregion
-
-        #region --- Protected methods ---
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        {
-            optionsBuilder.UseNpgsql(this._connectionString);
         }
 
+        public CmsDbContext(DbContextOptions<CmsDbContext> options)
+            : base(options)
+        {
+        }
+
+        public virtual DbSet<AuthPolicy> AuthPolicies { get; set; }
+        public virtual DbSet<AuthRole> AuthRoles { get; set; }
+        public virtual DbSet<AuthRolePolicyAssign> AuthRolePolicyAssigns { get; set; }
+        public virtual DbSet<AuthToken> AuthTokens { get; set; }
+        public virtual DbSet<AuthUser> AuthUsers { get; set; }
+        public virtual DbSet<ContModule> ContModules { get; set; }
+        public virtual DbSet<ContPage> ContPages { get; set; }
+        public virtual DbSet<ContTextWallModule> ContTextWallModules { get; set; }
+        public virtual DbSet<VersionInfo> VersionInfos { get; set; }
+
+        
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<Auth_Policy>()
-                .HasKey(c => c.Id);
-            
-            
-            modelBuilder.Entity<Auth_Role>()
-                .HasKey(c => c.Id);
+            modelBuilder.HasAnnotation("Relational:Collation", "Polish_Poland.1250");
 
+            modelBuilder.Entity<AuthPolicy>(entity =>
+            {
+                entity.ToTable("AuthPolicy");
 
-            modelBuilder.Entity<Auth_Role_Policy_Assign>()
-                .HasKey(c => new { c.Auth_PolicyId, c.Auth_RoleId });
-            modelBuilder.Entity<Auth_Role_Policy_Assign>()
-                .HasOne(c => c.Auth_Role)
-                .WithMany(c => c.Auth_Role_Policy_Assigns)
-                .HasForeignKey(c => c.Auth_RoleId)
-                .IsRequired(true)
-                .OnDelete(DeleteBehavior.NoAction);
-            modelBuilder.Entity<Auth_Role_Policy_Assign>()
-                .HasOne(c => c.Auth_Policy)
-                .WithMany(c => c.Auth_Role_Policy_Assigns)
-                .HasForeignKey(c => c.Auth_PolicyId)
-                .IsRequired(true)
-                .OnDelete(DeleteBehavior.NoAction);
+                entity.Property(e => e.Id).ValueGeneratedNever();
 
+                entity.Property(e => e.Name)
+                    .IsRequired()
+                    .HasMaxLength(50);
+            });
 
-            modelBuilder.Entity<Auth_Token>()
-                .HasKey(c => c.Id);
-            modelBuilder.Entity<Auth_Token>()
-                .HasOne(c => c.Auth_User)
-                .WithMany(c => c.AuthTokens)
-                .HasForeignKey(c => c.Auth_UserId)
-                .IsRequired(true)
-                .OnDelete(DeleteBehavior.Cascade);
+            modelBuilder.Entity<AuthRole>(entity =>
+            {
+                entity.ToTable("AuthRole");
 
+                entity.Property(e => e.Name)
+                    .IsRequired()
+                    .HasMaxLength(50);
+            });
 
-            modelBuilder.Entity<Auth_User>()
-                .HasKey(c => c.Id);
-            modelBuilder.Entity<Auth_User>()
-                .HasOne(c => c.AuthRole)
-                .WithMany(c => c.Auth_Users)
-                .HasForeignKey(c => c.Auth_RoleId)
-                .IsRequired(true)
-                .OnDelete(DeleteBehavior.Restrict);
+            modelBuilder.Entity<AuthRolePolicyAssign>(entity =>
+            {
+                entity.HasKey(e => new { e.AuthRoleId, e.AuthPolicyId });
 
+                entity.ToTable("AuthRolePolicyAssign");
 
-            modelBuilder.Entity<Cont_Module>()
-                .HasKey(c => c.Id);
+                entity.HasOne(d => d.AuthPolicy)
+                    .WithMany(p => p.AuthRolePolicyAssigns)
+                    .HasForeignKey(d => d.AuthPolicyId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("AuthRolePolicyAssign_AuthPolicy_AssignedPolicyId");
 
-            modelBuilder.Entity<Cont_Module>()
-                .HasOne(c => c.ContPage)
-                .WithMany(c => c.ContModules)
-                .HasForeignKey(c => c.Cont_PageId)
-                .IsRequired(true)
-                .OnDelete(DeleteBehavior.Cascade);
+                entity.HasOne(d => d.AuthRole)
+                    .WithMany(p => p.AuthRolePolicyAssigns)
+                    .HasForeignKey(d => d.AuthRoleId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("AuthRolePolicyAssign_AuthRole_AssignedRoleId");
+            });
 
+            modelBuilder.Entity<AuthToken>(entity =>
+            {
+                entity.ToTable("AuthToken");
 
+                entity.Property(e => e.HashedToken).IsRequired();
 
-            modelBuilder.Entity<Cont_Page>()
-                .HasKey(c => c.Id);
-            
-            
-            modelBuilder.Entity<Cont_TextWallModule>()
-                .HasKey(c => c.Id);
-            modelBuilder.Entity<Cont_TextWallModule>()
-                .HasOne(c => c.ContModule)
-                .WithOne(c => c.ContTextWallModule)
-                .HasForeignKey<Cont_TextWallModule>(c => c.Id)
-                .IsRequired(false)
-                .OnDelete(DeleteBehavior.Cascade);
+                entity.HasOne(d => d.AuthUser)
+                    .WithMany(p => p.AuthTokens)
+                    .HasForeignKey(d => d.AuthUserId)
+                    .HasConstraintName("AuthToken_AuthUser_AssignedUserId");
+            });
+
+            modelBuilder.Entity<AuthUser>(entity =>
+            {
+                entity.ToTable("AuthUser");
+
+                entity.Property(e => e.Description)
+                    .HasMaxLength(250)
+                    .HasDefaultValueSql("NULL::character varying");
+
+                entity.Property(e => e.PasswordHash).IsRequired();
+
+                entity.Property(e => e.PasswordSalt).IsRequired();
+
+                entity.Property(e => e.Username)
+                    .IsRequired()
+                    .HasMaxLength(40);
+
+                entity.HasOne(d => d.AuthRole)
+                    .WithMany(p => p.AuthUsers)
+                    .HasForeignKey(d => d.AuthRoleId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("AuthUser_AuthRole_AssignedRoleId");
+            });
+
+            modelBuilder.Entity<ContModule>(entity =>
+            {
+                entity.ToTable("ContModule");
+
+                entity.Property(e => e.Id).ValueGeneratedNever();
+
+                entity.HasOne(d => d.ContPage)
+                    .WithMany(p => p.ContModules)
+                    .HasForeignKey(d => d.ContPageId)
+                    .HasConstraintName("ContModule_Page_AssignedId");
+            });
+
+            modelBuilder.Entity<ContPage>(entity =>
+            {
+                entity.ToTable("ContPage");
+
+                entity.HasIndex(e => e.Title, "IX_ContPage_Title")
+                    .IsUnique();
+
+                entity.HasIndex(e => e.UriName, "IX_ContPage_UriName")
+                    .IsUnique();
+
+                entity.Property(e => e.Id).ValueGeneratedNever();
+
+                entity.Property(e => e.Title)
+                    .IsRequired()
+                    .HasMaxLength(255);
+
+                entity.Property(e => e.Type).HasDefaultValueSql("3");
+
+                entity.Property(e => e.UriName)
+                    .IsRequired()
+                    .HasMaxLength(255);
+            });
+
+            modelBuilder.Entity<ContTextWallModule>(entity =>
+            {
+                entity.ToTable("ContTextWallModule");
+
+                entity.Property(e => e.Id).ValueGeneratedNever();
+
+                entity.Property(e => e.SectionWidth).HasDefaultValueSql("800");
+
+                entity.HasOne(d => d.IdNavigation)
+                    .WithOne(p => p.ContTextWallModule)
+                    .HasForeignKey<ContTextWallModule>(d => d.Id)
+                    .HasConstraintName("ContTextWallModuleId_ContModuleId_AssignedModuleId");
+            });
+
+            modelBuilder.Entity<VersionInfo>(entity =>
+            {
+                entity.HasNoKey();
+
+                entity.ToTable("VersionInfo");
+
+                entity.HasIndex(e => e.Version, "UC_Version")
+                    .IsUnique();
+
+                entity.Property(e => e.Description).HasMaxLength(1024);
+            });
         }
-        #endregion
 
-        #region --- Private methods ---
-
-        #endregion
-
-        #region --- DbSets ---
-        public DbSet<Auth_Policy> Auth_Policy { get; set; }
-        public DbSet<Auth_Role> Auth_Role { get; set; }
-        public DbSet<Auth_Role_Policy_Assign> Auth_Role_Policy_Assign { get; set; }
-        public DbSet<Auth_Token> Auth_Token { get; set; }
-        public DbSet<Auth_User> Auth_User { get; set; }
-
-
-        public DbSet<Cont_Module> Cont_Module { get; set; }
-        public DbSet<Cont_Page> Cont_Page { get; set; }
-        public DbSet<Cont_TextWallModule> Cont_TextWallModule { get; set; }
-        #endregion
     }
 }

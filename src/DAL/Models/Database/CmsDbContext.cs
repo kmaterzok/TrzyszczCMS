@@ -27,7 +27,6 @@ namespace DAL.Models.Database
         public virtual DbSet<ContTextWallModule> ContTextWallModules { get; set; }
         public virtual DbSet<VersionInfo> VersionInfos { get; set; }
 
-        
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.HasAnnotation("Relational:Collation", "Polish_Poland.1250");
@@ -110,8 +109,6 @@ namespace DAL.Models.Database
             {
                 entity.ToTable("ContModule");
 
-                entity.Property(e => e.Id).ValueGeneratedNever();
-
                 entity.HasOne(d => d.ContPage)
                     .WithMany(p => p.ContModules)
                     .HasForeignKey(d => d.ContPageId)
@@ -127,8 +124,6 @@ namespace DAL.Models.Database
 
                 entity.HasIndex(e => e.UriName, "IX_ContPage_UriName")
                     .IsUnique();
-
-                entity.Property(e => e.Id).ValueGeneratedNever();
 
                 entity.Property(e => e.Title)
                     .IsRequired()
@@ -166,7 +161,7 @@ namespace DAL.Models.Database
 
                 entity.Property(e => e.Description).HasMaxLength(1024);
             });
-        }
 
+        }
     }
 }

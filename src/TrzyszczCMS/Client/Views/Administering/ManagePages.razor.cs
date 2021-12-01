@@ -18,6 +18,15 @@ namespace TrzyszczCMS.Client.Views.Administering
             CssClassesHelper.ClassesForLink(this.postsButtonEnabled);
         private string ArticlesButtonLinkEnableClasses =>
             CssClassesHelper.ClassesForLink(this.articlesButtonEnabled);
+        private PageType CurrentlyManagedPageType
+        {
+            get
+            {
+                if      (!this.postsButtonEnabled)    { return PageType.Post; }
+                else if (!this.articlesButtonEnabled) { return PageType.Article; }                
+                throw new InvalidOperationException("Current state of page does not let to tell the current type of managed pages.");
+            }
+        }
         #endregion
 
         #region Init
@@ -59,21 +68,43 @@ namespace TrzyszczCMS.Client.Views.Administering
         }
         private async Task GoToManagingHomepageAsync()
         {
-            await this.ViewModel.SendDataToDepositoryAsync(PageType.HomePage);
+            await this.ViewModel.SendDataToDepositoryForEditingAsync(PageType.HomePage);
+            this.NavigationManager.NavigateTo("/manage/edit-page");
+        }
+        private async Task GoToCreatingPageAsync()
+        {
+            await this.ViewModel.SendDataToDepositoryForCreatingAsync(this.CurrentlyManagedPageType);
+            this.NavigationManager.NavigateTo("/manage/edit-page");
+        }
+        private async Task GoToManagingPageAsync(PageType type, int pageId)
+        {
+            await this.ViewModel.SendDataToDepositoryForEditingAsync(type, pageId);
             this.NavigationManager.NavigateTo("/manage/edit-page");
         }
         #endregion
 
         #region Other methods
-        private async Task ApplySearchAsync()
+        private async Task ApplySearchAsync() =>
+            await this.ViewModel.ApplySearchAsync(this.CurrentlyManagedPageType);
+
+        private async Task DeleteSelectedPagesAsync()
         {
-            if (!this.postsButtonEnabled)
+            var anythingDeleted = await this.ViewModel.DeleteSelectedPagesAsync(this.CurrentlyManagedPageType);
+            if (anythingDeleted)
             {
-                await this.ViewModel.ApplySearchAsync(PageType.Post);
-            }
-            else if (!this.articlesButtonEnabled)
-            {
-                await this.ViewModel.ApplySearchAsync(PageType.Article);
+                switch (this.CurrentlyManagedPageType)
+                {
+                    case PageType.Article:
+                        await this.ViewModel.LoadFirstPageOfArticles(true);
+                        break;
+
+                    case PageType.Post:
+                        await this.ViewModel.LoadFirstPageOfPosts(true);
+                        break;
+
+                    default:
+                        break;
+                }
             }
         }
         #endregion

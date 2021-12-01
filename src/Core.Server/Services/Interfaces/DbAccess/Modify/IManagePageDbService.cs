@@ -45,5 +45,11 @@ namespace Core.Server.Services.Interfaces.DbAccess.Modify
         /// <param name="page">Information about page</param>
         /// <returns>Task returning if the update was successful</returns>
         Task<bool> UpdatePageAsync(DetailedPageInfo page);
+        /// <summary>
+        /// Delete pages width specified IDs.
+        /// </summary>
+        /// <param name="pageIds">IDs of the deleted pages</param>
+        /// <returns>Task returning if the update was successful</returns>
+        Task DeletePagesAsync(IEnumerable<int> pageIds);
     }
 }

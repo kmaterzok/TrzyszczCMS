@@ -51,5 +51,12 @@ namespace Core.Application.Services.Interfaces.Rest
         /// <param name="page">Page content</param>
         /// <returns>Task executing the operation</returns>
         Task UpdatePage(DetailedPageInfo page);
+
+        /// <summary>
+        /// Delete pages from the database depending on their IDs.
+        /// </summary>
+        /// <param name="pageIds">IDs of the deleted pages</param>
+        /// <returns>Task executing the operation</returns>
+        Task DeletePages(params int[] pageIds);
     }
 }

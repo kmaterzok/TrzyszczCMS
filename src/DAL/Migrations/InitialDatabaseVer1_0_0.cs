@@ -103,7 +103,7 @@ namespace DAL.Migrations
 
             #region --- Content tables ---
             Create.Table(   nameof(ContModule))
-                .WithColumn(nameof(ContModule.Id))           .AsInt32().NotNullable().PrimaryKey()
+                .WithColumn(nameof(ContModule.Id))           .AsInt32().NotNullable().PrimaryKey().Identity()
                 .WithColumn(nameof(ContModule.Type))         .AsByte().NotNullable()
                 .WithColumn(nameof(ContModule.ContPageId))   .AsInt32().NotNullable();
 
@@ -120,7 +120,7 @@ namespace DAL.Migrations
                 .OnDelete(System.Data.Rule.Cascade);
 
             Create.Table(   nameof(ContPage))
-                .WithColumn(nameof(ContPage.Id))                          .AsInt32().NotNullable().PrimaryKey()
+                .WithColumn(nameof(ContPage.Id))                          .AsInt32().NotNullable().PrimaryKey().Identity()
                 .WithColumn(nameof(ContPage.UriName))                     .AsString(255).NotNullable().Unique()
                 .WithColumn(nameof(ContPage.Title))                       .AsString(255).NotNullable().Unique()
                 .WithColumn(nameof(ContPage.Type))                        .AsByte().NotNullable().WithDefaultValue(3)
@@ -139,7 +139,7 @@ namespace DAL.Migrations
                 UriName = "homepage",
                 Title = "Homepage",
                 Type = 1,
-                CreateUtcTimestamp = new DateTime(2021, 10, 1, 18, 15, 0),
+                CreateUtcTimestamp  = new DateTime(2021, 10, 1, 18, 15, 0),
                 PublishUtcTimestamp = new DateTime(2021, 10, 1, 18, 25, 0)
             });
             for (int i = 1; i <= 5; ++i)
@@ -153,7 +153,7 @@ namespace DAL.Migrations
                 Insert.IntoTable(nameof(ContTextWallModule)).Row(new
                 {
                     Id = i,
-                    LeftAsideContent = (string)null,
+                    LeftAsideContent  = (string)null,
                     RightAsideContent = (string)null,
                     SectionWidth = 600,
                     SectionContent = "**Accusantium consequatur et maiores.** Est quia iste consectetur illum repellendus officia quia quam. Perspiciatis nihil dignissimos est et beatae qui ex ipsa. Dolorem est at molestias aut architecto quis non. Vel unde sequi itaque. Deserunt est numquam quia harum voluptatem excepturi. Sunt expedita sequi veniam optio et voluptate quia voluptatem. Vel corporis deleniti dolorem accusantium. Eos vel modi qui eos. At sed et dolorum ad temporibus vel. Omnis illum quam fugit. Officiis officia quia autem laudantium aut impedit. Asperiores laborum neque quaerat excepturi autem et. Ad id fugit error voluptas sed eum architecto. Error non commodi in delectus. Harum veritatis rerum eum quos et aperiam et vel. Est et nemo similique nam quos necessitatibus tempore commodi. Minima sunt dolorem velit aut omnis eaque repudiandae qui. Atque assumenda voluptas assumenda sint quia deleniti. Corporis aliquam dolorem aut quasi fuga est inventore deleniti. Ratione sit est totam facere libero. In quaerat et consequuntur."
@@ -167,7 +167,7 @@ namespace DAL.Migrations
                 UriName = "simple-article",
                 Title = "A simple article",
                 Type = 2,
-                CreateUtcTimestamp = new DateTime(2021, 10, 1, 18, 30, 0),
+                CreateUtcTimestamp  = new DateTime(2021, 10, 1, 18, 30, 0),
                 PublishUtcTimestamp = new DateTime(2021, 10, 1, 18, 40, 0)
             });
             Insert.IntoTable(nameof(ContModule)).Row(new
@@ -179,7 +179,7 @@ namespace DAL.Migrations
             Insert.IntoTable(nameof(ContTextWallModule)).Row(new
             {
                 Id = 6,
-                LeftAsideContent = (string)null,
+                LeftAsideContent  = (string)null,
                 RightAsideContent = (string)null,
                 SectionWidth = 800,
                 SectionContent = "**Accusantium consequatur et maiores.** Est quia iste consectetur illum repellendus officia quia quam. Perspiciatis nihil dignissimos est et beatae qui ex ipsa. Dolorem est at molestias aut architecto quis non. Vel unde sequi itaque. Deserunt est numquam quia harum voluptatem excepturi. Sunt expedita sequi veniam optio et voluptate quia voluptatem. Vel corporis deleniti dolorem accusantium. Eos vel modi qui eos. At sed et dolorum ad temporibus vel. Omnis illum quam fugit. Officiis officia quia autem laudantium aut impedit. Asperiores laborum neque quaerat excepturi autem et. Ad id fugit error voluptas sed eum architecto. Error non commodi in delectus. Harum veritatis rerum eum quos et aperiam et vel. Est et nemo similique nam quos necessitatibus tempore commodi. Minima sunt dolorem velit aut omnis eaque repudiandae qui. Atque assumenda voluptas assumenda sint quia deleniti. Corporis aliquam dolorem aut quasi fuga est inventore deleniti. Ratione sit est totam facere libero. In quaerat et consequuntur."

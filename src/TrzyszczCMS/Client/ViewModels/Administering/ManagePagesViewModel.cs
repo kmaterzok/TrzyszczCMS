@@ -132,6 +132,8 @@ namespace TrzyszczCMS.Client.ViewModels.Administering
             this.CanFetchArticles = this._articlesFetcher.HasNext;
             this._articlesLoaded = true;
         }
+
+        #region Searching pages
         public void OnPostsSearch(ValueRange<DateTime?> range, FilteredGridField columnTitle) =>
             this._postSearchParams.AddOrUpdate(columnTitle, range.MakeDateRangeFilterString());
 
@@ -143,6 +145,7 @@ namespace TrzyszczCMS.Client.ViewModels.Administering
 
         public void OnArticlesSearch(ValueRange<DateTime?> range, FilteredGridField columnTitle) =>
             this._articleSearchParams.AddOrUpdate(columnTitle, range.MakeDateRangeFilterString());
+        #endregion
 
         public async Task ApplySearchAsync(PageType type)
         {
@@ -160,25 +163,53 @@ namespace TrzyszczCMS.Client.ViewModels.Administering
             }
         }
 
-        public async Task SendDataToDepositoryAsync(PageType pagetype)
+        public async Task SendDataToDepositoryForEditingAsync(PageType pagetype, int? editedPageId = null)
         {
+            DetailedPageInfo pageInfo;
             switch (pagetype)
             {
                 case PageType.HomePage:
-                    var homepageInfo = await this._managePageService.GetDetailedPageInfoOfHomepage();
-                    await this._depository.AddOrUpdateAsync(new EditedPageDeposit()
-                    {
-                        PageEditorMode = PageEditorMode.Edit,
-                        PageDetails = homepageInfo,
-                        EditedModuleListIndex = 0,
-                        CurrentManagementTool = PageManagementTool.PageLayoutComposer,
-                        OldUriName = homepageInfo.UriName
-                    });
+                    pageInfo = await this._managePageService.GetDetailedPageInfoOfHomepage();
+                    break;
+
+                case PageType.Post:
+                case PageType.Article:
+                    pageInfo = await this._managePageService.GetDetailedPageInfo(editedPageId.Value);
                     break;
 
                 default:
-                    // TODO: Implement handling of other page types.
                     throw new NotImplementedException();
+            }
+            await this._depository.AddOrUpdateAsync(new EditedPageDeposit()
+            {
+                PageEditorMode = PageEditorMode.Edit,
+                PageDetails = pageInfo,
+                EditedModuleListIndex = 0,
+                CurrentManagementTool = PageManagementTool.PageLayoutComposer,
+                OldUriName = pageInfo.UriName
+            });
+        }
+
+        public async Task SendDataToDepositoryForCreatingAsync(PageType pagetype)
+        {
+            switch (pagetype)
+            {
+                case PageType.Post:
+                case PageType.Article:
+                    await this._depository.AddOrUpdateAsync(new EditedPageDeposit()
+                    {
+                        PageEditorMode = PageEditorMode.Create,
+                        PageDetails = DetailedPageInfo.MakeEmpty(pagetype),
+                        EditedModuleListIndex = 0,
+                        CurrentManagementTool = PageManagementTool.PageLayoutComposer,
+                        OldUriName = (string)null
+                    });
+                    break;
+
+                case PageType.HomePage:
+                    throw new ArgumentException($"The type {nameof(pagetype)} cannot be supported.");
+                default:
+                    throw ExceptionMaker.Argument.Unsupported(pagetype, nameof(pagetype));
             }
         }
 
@@ -202,6 +233,19 @@ namespace TrzyszczCMS.Client.ViewModels.Administering
                     throw ExceptionMaker.Argument.Unsupported(type, nameof(type));
             }
         }
+
+        public async Task<bool> DeleteSelectedPagesAsync(PageType type)
+        {
+            var deletedPagesIds = this.GetPagesByType(type).Where(i => i.Checked)
+                                                           .Select(i => i.Data.Id)
+                                                           .ToArray();
+            if (deletedPagesIds.Length > 0)
+            {
+                await this._managePageService.DeletePages(deletedPagesIds);
+                return true;
+            }
+            return false;
+        }
         #endregion
 
         #region Helpers
@@ -210,6 +254,17 @@ namespace TrzyszczCMS.Client.ViewModels.Administering
         
         private void PrepareArticlesFetcher() =>
             this._articlesFetcher = this._managePageService.GetSimplePageInfos(PageType.Article, this._articleSearchParams);
+
+        private List<GridItem<SimplePageInfo>> GetPagesByType(PageType type)
+        {
+            switch (type)
+            {
+                case PageType.Article: return this.Articles;
+                case PageType.Post:    return this.Posts;
+                default:
+                    throw ExceptionMaker.Argument.Unsupported(type, nameof(type));
+            }
+        }
         #endregion
     }
 }

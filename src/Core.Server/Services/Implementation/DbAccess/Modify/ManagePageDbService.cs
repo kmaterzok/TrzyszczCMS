@@ -132,7 +132,7 @@ namespace Core.Server.Services.Implementation.DbAccess.Modify
             {
                 using (var ts = await ctx.Database.BeginTransactionAsync())
                 {
-                    var preparedData = new ContPage()
+                    await ctx.ContPages.AddAsync(new ContPage()
                     {
                         UriName = page.UriName,
                         Type = (byte)page.PageType,
@@ -140,8 +140,7 @@ namespace Core.Server.Services.Implementation.DbAccess.Modify
                         PublishUtcTimestamp = page.PublishUtcTimestamp,
                         CreateUtcTimestamp = DateTime.UtcNow,
                         ContModules = page.ModuleContents.ToContModulesList()
-                    };
-                    await ctx.ContPages.AddAsync(preparedData);
+                    });
 
                     await ctx.SaveChangesAsync();
                     await ts.CommitAsync();
@@ -168,6 +167,7 @@ namespace Core.Server.Services.Implementation.DbAccess.Modify
                     updatedData.UriName = page.UriName;
                     ctx.ContModules.RemoveRange(ctx.ContModules.Where(i => i.ContPageId == page.Id));
 
+
                     var addedModules = page.ModuleContents.ToContModulesList();
                     foreach (var module in addedModules)
                     {
@@ -175,9 +175,25 @@ namespace Core.Server.Services.Implementation.DbAccess.Modify
                     }
                     await ctx.ContModules.AddRangeAsync(addedModules);
 
+
                     await ctx.SaveChangesAsync();
                     await ts.CommitAsync();
                     return true;
+                }
+            }
+        }
+
+        public async Task DeletePagesAsync(IEnumerable<int> pageIds)
+        {
+            using (var ctx = _databaseStrategy.GetContext())
+            {
+                using (var ts = await ctx.Database.BeginTransactionAsync())
+                {
+                    var removedOnes = ctx.ContPages.Where(i => pageIds.Contains(i.Id));
+                    ctx.ContPages.RemoveRange(removedOnes);
+
+                    await ctx.SaveChangesAsync();
+                    await ts.CommitAsync();
                 }
             }
         }

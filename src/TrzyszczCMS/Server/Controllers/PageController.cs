@@ -37,6 +37,8 @@ namespace TrzyszczCMS.Server.Controllers
         /// <summary>
         /// Get contents of the page stored in the database.
         /// </summary>
+        /// <param name="pageType">Type of fetched page</param>
+        /// <param name="name">Name of the fetched page</param>
         /// <returns>Page's data for display and preparation</returns>
         [HttpGet]
         [Produces("application/json")]

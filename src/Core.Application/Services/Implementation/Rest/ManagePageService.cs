@@ -55,6 +55,9 @@ namespace Core.Application.Services.Implementation.Rest
 
         public async Task UpdatePage(DetailedPageInfo page) =>
             (await this._authHttpClient.PostAsJsonAsync($"/ManagePage/UpdatePage", page)).EnsureSuccessStatusCode();
+
+        public async Task DeletePages(params int[] pageIds) =>
+            (await this._authHttpClient.PostAsJsonAsync($"/ManagePage/DeletePages", pageIds)).EnsureSuccessStatusCode();
         #endregion
 
         #region Helper methods

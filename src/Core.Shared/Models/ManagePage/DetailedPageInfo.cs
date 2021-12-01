@@ -34,5 +34,22 @@ namespace Core.Shared.Models.ManagePage
         /// All page's modules delivering content
         /// </summary>
         public List<ModuleContent> ModuleContents { get; set; }
+
+
+
+        /// <summary>
+        /// Create a new empty instance of details for creating a new page.
+        /// </summary>
+        /// <param name="type">Desired page type</param>
+        /// <returns>Empty instance</returns>
+        public static DetailedPageInfo MakeEmpty(PageType type) => new DetailedPageInfo()
+        {
+            Id = 0,
+            ModuleContents = new List<ModuleContent>(),
+            PageType = type,
+            PublishUtcTimestamp = DateTime.UtcNow,
+            Title = (string)null,
+            UriName = (string)null
+        };
     }
 }

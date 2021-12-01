@@ -19,9 +19,9 @@
     </div>
     <div>
         <div class="input-group input-group-sm">
-            <button class="btn btn-primary btn-sm"><i class="fas fa-trash"></i>&nbsp;Delete</button>
+            <button class="btn btn-primary btn-sm" @onclick="@DeleteSelectedPagesAsync"><i class="fas fa-trash"></i>&nbsp;Delete</button>
             <button class="btn btn-primary btn-sm" @onclick="@ApplySearchAsync"><i class="fas fa-search"></i>&nbsp;Search</button>
-            <button class="btn btn-primary btn-sm"><i class="fas fa-plus"></i>&nbsp;Create...</button>
+            <button class="btn btn-primary btn-sm" @onclick="@GoToCreatingPageAsync"><i class="fas fa-plus"></i>&nbsp;Create...</button>
         </div>
     </div>
 </nav>
@@ -39,10 +39,15 @@
                 <GridColHeader Title="Actions" SearchBoxType="SearchBoxType.None" Width="200" />
             </Header>
             <RowTemplate Context="row">
-                <td>@row.Data.Title</td>
+                <td><a href="@string.Format("/post/{0}", row.Data.UriName)">@row.Data.Title</a></td>
                 <td>@row.Data.CreateUtcTimestamp.ToGenericNotation()</td>
                 <td>@row.Data.PublishUtcTimestamp.ToGenericNotation()</td>
-                <td>Actions</td>
+                <td>
+                    <div class="input-group input-group-sm">
+                        <button class="btn btn-sm btn-primary" @onclick="@(() => GoToManagingPageAsync(PageType.Post, row.Data.Id))"><i class="fas fa-edit"></i>&nbsp;Edit</button>
+                        <button class="btn btn-sm btn-primary"><i class="fas fa-trash"></i>&nbsp;Delete</button>
+                    </div>
+                </td>
             </RowTemplate>
             <NoRowsTemplate>
                 No data loaded.
@@ -63,12 +68,12 @@
                 <GridColHeader Title="Actions" SearchBoxType="SearchBoxType.None" Width="200" />
             </Header>
             <RowTemplate Context="row">
-                <td>@row.Data.Title</td>
+                <td><a href="@string.Format("/article/{0}", row.Data.UriName)">@row.Data.Title</a></td>
                 <td>@row.Data.CreateUtcTimestamp.ToGenericNotation()</td>
                 <td>@row.Data.PublishUtcTimestamp.ToGenericNotation()</td>
                 <td>
                     <div class="input-group input-group-sm">
-                        <button class="btn btn-sm btn-primary"><i class="fas fa-edit"></i>&nbsp;Edit</button>
+                        <button class="btn btn-sm btn-primary" @onclick="@(() => GoToManagingPageAsync(PageType.Article, row.Data.Id))"><i class="fas fa-edit"></i>&nbsp;Edit</button>
                         <button class="btn btn-sm btn-primary"><i class="fas fa-trash"></i>&nbsp;Delete</button>
                     </div>
                 </td>

@@ -87,25 +87,36 @@ namespace TrzyszczCMS.Client.Views.Administering
         private async Task ApplySearchAsync() =>
             await this.ViewModel.ApplySearchAsync(this.CurrentlyManagedPageType);
 
+        private async Task LoadFirstPageOfPages()
+        {
+            switch (this.CurrentlyManagedPageType)
+            {
+                case PageType.Article:
+                    await this.ViewModel.LoadFirstPageOfArticles(true);
+                    break;
+
+                case PageType.Post:
+                    await this.ViewModel.LoadFirstPageOfPosts(true);
+                    break;
+
+                default:
+                    break;
+            }
+        }
+
         private async Task DeleteSelectedPagesAsync()
         {
             var anythingDeleted = await this.ViewModel.DeleteSelectedPagesAsync(this.CurrentlyManagedPageType);
             if (anythingDeleted)
             {
-                switch (this.CurrentlyManagedPageType)
-                {
-                    case PageType.Article:
-                        await this.ViewModel.LoadFirstPageOfArticles(true);
-                        break;
-
-                    case PageType.Post:
-                        await this.ViewModel.LoadFirstPageOfPosts(true);
-                        break;
-
-                    default:
-                        break;
-                }
+                await this.LoadFirstPageOfPages();
             }
+        }
+
+        private async Task DeletePageAsync(int pageId)
+        {
+            await this.ViewModel.DeletePageAsync(pageId);
+            await this.LoadFirstPageOfPages();
         }
         #endregion
     }

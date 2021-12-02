@@ -20,7 +20,7 @@
         /// <summary>
         /// The quantity of page info entries per single paginated page.
         /// </summary>
-        public const int PAGINATION_PAGE_INFO_SIZE = 1;
+        public const int PAGINATION_PAGE_INFO_SIZE = 100;
         /// <summary>
         /// Validity time of the access token that has to be valid for
         /// a short period of time (no remember option during sign in).

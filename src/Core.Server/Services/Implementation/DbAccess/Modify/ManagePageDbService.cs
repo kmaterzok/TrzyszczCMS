@@ -43,6 +43,7 @@ namespace Core.Server.Services.Implementation.DbAccess.Modify
                 var typeValue = (byte)type;
                 int allPagesCount = await ctx.ContPages.AsNoTracking()
                                                        .Where(i => i.Type == typeValue)
+                                                       .ApplyFilters(filters)
                                                        .CountAsync();
 
                 int skippedPages = (desiredPageNumber - 1) * Constants.PAGINATION_PAGE_INFO_SIZE;

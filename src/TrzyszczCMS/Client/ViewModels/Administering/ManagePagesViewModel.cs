@@ -246,6 +246,9 @@ namespace TrzyszczCMS.Client.ViewModels.Administering
             }
             return false;
         }
+
+        public async Task DeletePageAsync(int pageId) =>
+            await this._managePageService.DeletePages(pageId);
         #endregion
 
         #region Helpers

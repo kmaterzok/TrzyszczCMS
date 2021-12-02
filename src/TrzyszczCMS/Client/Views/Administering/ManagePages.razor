@@ -1,7 +1,6 @@
 ﻿@layout AdminLayout
 @page "/manage/pages"
 @using Core.Shared.Enums; 
-@using Core.Shared.Models.ManagePage
 @using TrzyszczCMS.Client.Views.Shared.Grids
 @using TrzyszczCMS.Client.ViewModels.Administering
 @using Core.Shared.Helpers.Extensions
@@ -45,7 +44,7 @@
                 <td>
                     <div class="input-group input-group-sm">
                         <button class="btn btn-sm btn-primary" @onclick="@(() => GoToManagingPageAsync(PageType.Post, row.Data.Id))"><i class="fas fa-edit"></i>&nbsp;Edit</button>
-                        <button class="btn btn-sm btn-primary"><i class="fas fa-trash"></i>&nbsp;Delete</button>
+                        <button class="btn btn-sm btn-primary" @onclick="@(() => DeletePageAsync(row.Data.Id))"><i class="fas fa-trash"></i>&nbsp;Delete</button>
                     </div>
                 </td>
             </RowTemplate>
@@ -53,7 +52,7 @@
                 No data loaded.
             </NoRowsTemplate>
         </Grid>
-        <button class="btn btn-sm btn-primary w-100 @ViewModel.CssClassForLoadMorePosts">Load more</button>
+        <button class="btn btn-sm btn-primary w-100 @ViewModel.CssClassForLoadMorePosts" @onclick="@(() => ViewModel.FetchPageDataNextPage(PageType.Post))">Load more</button>
     </div>
 
 
@@ -74,7 +73,7 @@
                 <td>
                     <div class="input-group input-group-sm">
                         <button class="btn btn-sm btn-primary" @onclick="@(() => GoToManagingPageAsync(PageType.Article, row.Data.Id))"><i class="fas fa-edit"></i>&nbsp;Edit</button>
-                        <button class="btn btn-sm btn-primary"><i class="fas fa-trash"></i>&nbsp;Delete</button>
+                        <button class="btn btn-sm btn-primary" @onclick="@(() => DeletePageAsync(row.Data.Id))"><i class="fas fa-trash"></i>&nbsp;Delete</button>
                     </div>
                 </td>
             </RowTemplate>
@@ -82,6 +81,6 @@
                 No data loaded.
             </NoRowsTemplate>
         </Grid>
-        <button class="btn btn-sm btn-primary w-100 @ViewModel.CssClassForLoadMoreArticles">Load more</button>
+        <button class="btn btn-sm btn-primary w-100 @ViewModel.CssClassForLoadMoreArticles" @onclick="@(() => ViewModel.FetchPageDataNextPage(PageType.Article))">Load more</button>
     </div>
 </section>

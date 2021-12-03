@@ -19,7 +19,7 @@
             <div class="card-body bg-transparent">
                 <EditForm Model="@ViewModel" OnValidSubmit="@(() => ViewModel.SignInUser(() => { NavigationManager.NavigateTo("/manage/dashboard"); this.StateHasChanged(); }))">
                     <div class="form-floating my-3">
-                        <InputText id="usernameInput" class="form-control w-100" @bind-Value="@ViewModel.Username" />
+                        <input type="text" id="usernameInput" class="form-control w-100" @bind="@ViewModel.Username" />
                         <label    for="usernameInput">Login</label>
                     </div>
                     <div class="form-floating my-3">
@@ -28,7 +28,7 @@
                     </div>
                     <div class="my-3">
                         <label>
-                            <InputCheckbox class="form-check-input" @bind-Value="ViewModel.RememberMe" />&nbsp;Remember me
+                            <input type="checkbox" class="form-check-input" @bind="ViewModel.RememberMe" />&nbsp;Remember me
                         </label>
                     </div>
                     <div class="my-3">

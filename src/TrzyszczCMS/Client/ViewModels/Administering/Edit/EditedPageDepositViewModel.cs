@@ -11,6 +11,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using TrzyszczCMS.Client.Data.Model;
 using TrzyszczCMS.Client.Data.Model.Extensions;
+using TrzyszczCMS.Client.Helpers;
 using TrzyszczCMS.Client.Helpers.Extensions;
 using TrzyszczCMS.Client.ViewModels.Shared;
 
@@ -52,6 +53,48 @@ namespace TrzyszczCMS.Client.ViewModels.Administering.Edit
         public EventHandler OnDataSet { get; set; }
         #endregion
 
+        #region Properties :: Validation messages
+        private string _uriNameValidationMessage;
+        /// <summary>
+        /// The additional message about URI name validation.
+        /// </summary>
+        public string UriNameValidationMessage
+        {
+            get => _uriNameValidationMessage;
+            set => Set(ref _uriNameValidationMessage, value, nameof(UriNameValidationMessage));
+        }
+
+        private string _titleValidationMessage;
+        /// <summary>
+        /// The additional message about title validation.
+        /// </summary>
+        public string TitleValidationMessage
+        {
+            get => _titleValidationMessage;
+            set => Set(ref _titleValidationMessage, value, nameof(TitleValidationMessage));
+        }
+
+        private string _publishUtcTimestampTimeValidationMessage;
+        /// <summary>
+        /// The additional message about publication time validation.
+        /// </summary>
+        public string PublishUtcTimestampTimeValidationMessage
+        {
+            get => _publishUtcTimestampTimeValidationMessage;
+            set => Set(ref _publishUtcTimestampTimeValidationMessage, value, nameof(PublishUtcTimestampTimeValidationMessage));
+        }
+
+        private string _publishUtcTimestampDateValidationMessage;
+        /// <summary>
+        /// The additional message about publication date validation.
+        /// </summary>
+        public string PublishUtcTimestampDateValidationMessage
+        {
+            get => _publishUtcTimestampDateValidationMessage;
+            set => Set(ref _publishUtcTimestampDateValidationMessage, value, nameof(PublishUtcTimestampDateValidationMessage));
+        }
+        #endregion
+
         #region Properties :: Edited data
         /// <summary>
         /// Database row ID of the page
@@ -66,38 +109,26 @@ namespace TrzyszczCMS.Client.ViewModels.Administering.Edit
         /// <summary>
         /// The page's dipslayed title
         /// </summary>
-        [Required(ErrorMessage = "Required")]
         public string Title
         {
             get => _title;
-            set { Set(ref _title, value, nameof(Title)); this.OnDataSet?.Invoke(this, EventArgs.Empty); }
+            set {Console.WriteLine("FIND YOU :)"); Set(ref _title, value, nameof(Title)); this.OnDataSet?.Invoke(this, EventArgs.Empty); }
         }
+        
+        private string _uriName;
         /// <summary>
         /// SEO friendly name of the page used in its URI.
         /// </summary>
-        private string _uriName;
-        [Required(ErrorMessage = "Required")]
         public string UriName
         {
             get => _uriName;
             set { Set(ref _uriName, value, nameof(UriName)); this.OnDataSet?.Invoke(this, EventArgs.Empty); }
         }
 
-        private string _uriNameValidationMessage;
-        /// <summary>
-        /// The additional message about validation.
-        /// </summary>
-        public string UriNameValidationMessage
-        {
-            get => _uriNameValidationMessage;
-            set => Set(ref _uriNameValidationMessage, value, nameof(UriNameValidationMessage));
-        }
-
         private DateTime _publishUtcTimestampTime;
         /// <summary>
         /// Timestamp's time of the publishing the page
         /// </summary>
-        [Required(ErrorMessage = "Required")]
         public DateTime PublishUtcTimestampTime
         {
             get => _publishUtcTimestampTime;
@@ -108,7 +139,6 @@ namespace TrzyszczCMS.Client.ViewModels.Administering.Edit
         /// <summary>
         /// Timestamp's date of the publishing the page
         /// </summary>
-        [Required(ErrorMessage = "Required")]
         public DateTime? PublishUtcTimestampDate
         {
             get => _publishUtcTimestampDate;
@@ -185,12 +215,17 @@ namespace TrzyszczCMS.Client.ViewModels.Administering.Edit
         public async Task<bool> ValidateAndInformAsync()
         {
             this.ClearReachableMessages();
-            bool valid;
+            bool valid = true;
 
             // *** UriName ***
             if (this._oldUriName == this.UriName)
             {
-                valid = true;
+                // Do nothing
+            }
+            this.UriNameValidationMessage = ValidationApplier.CheckRequired(this.UriName, ref valid);
+            if (!valid)
+            {
+                // Do nothing
             }
             else if ((await this._managePageService.PageUriNameExists(this.UriName)).GetValue(out Tuple<bool> success, out string error))
             {
@@ -202,17 +237,20 @@ namespace TrzyszczCMS.Client.ViewModels.Administering.Edit
             }
             else
             {
-                if (error == "PatternMismatch")
-                {
-                    this.UriNameValidationMessage = "Forbidden characters. Change it.";
-                }
-                else
-                {
-                    this.UriNameValidationMessage = "Incorrect data.";
-                }
+                this.UriNameValidationMessage = error == "PatternMismatch" ?
+                    "Forbidden characters. Change it." :
+                    "Incorrect data.";
+                
                 valid = false;
             }
             // *** ***
+
+            // *** Required fields ***
+            this.TitleValidationMessage                   = ValidationApplier.CheckRequired(this.Title, ref valid);
+            this.PublishUtcTimestampDateValidationMessage = ValidationApplier.CheckRequired(this.PublishUtcTimestampDate, ref valid);
+            this.PublishUtcTimestampTimeValidationMessage = ValidationApplier.CheckRequired(this.PublishUtcTimestampTime, ref valid);
+            // *** ***
+
             return valid;
         }
         #endregion
@@ -221,8 +259,13 @@ namespace TrzyszczCMS.Client.ViewModels.Administering.Edit
         /// <summary>
         /// Clear all the messages that were set programatically within this class.
         /// </summary>
-        private void ClearReachableMessages() =>
-            this.UriNameValidationMessage = string.Empty;
+        private void ClearReachableMessages()
+        {
+            this.UriNameValidationMessage                 = string.Empty;
+            this.TitleValidationMessage                   = string.Empty;
+            this.PublishUtcTimestampDateValidationMessage = string.Empty;
+            this.PublishUtcTimestampTimeValidationMessage = string.Empty;
+        }
         #endregion
 
     }

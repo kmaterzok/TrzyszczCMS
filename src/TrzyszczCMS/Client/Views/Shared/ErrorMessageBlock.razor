@@ -1,0 +1,12 @@
+﻿@if (!string.IsNullOrEmpty(Message))
+{
+    <div style="color: red;">@Message</div>
+}
+
+@code {
+    /// <summary>
+    /// The message displayed when an error occurs.
+    /// </summary>
+    [Parameter]
+    public string Message { get; set; }
+}

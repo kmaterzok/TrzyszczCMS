@@ -6,6 +6,7 @@
 @using TrzyszczCMS.Client.Data.Enums.Extensions
 @using TrzyszczCMS.Client.Views.Shared.Editors
 @using TrzyszczCMS.Client.Views.Shared.Grids
+@using TrzyszczCMS.Client.Views.Shared
 @using TrzyszczCMS.Client.ViewModels.Administering.Edit
 @inject PageEditorViewModel ViewModel
 @inject NavigationManager NavigationManager
@@ -46,20 +47,20 @@
                             <td>
                                 <div class="input-group input-group-sm">
                                     @if (row.Data.GetModuleType() == PageModuleType.TextWall)
-                                    {
+                                                {
                                         <span class="input-group-text"><i class="fas fa-edit"></i></span>
                                         <select class="form-select form-select-sm" aria-label="Edit">
                                             <option disabled selected>Edit</option>
                                             @foreach (var sgType in Enum.GetValues(typeof(TextWallEditedPart)).Cast<TextWallEditedPart>())
-                                            {
+                                                        {
                                                 <option value="@sgType" @onclick="@(() => ViewModel.EditModule(row, sgType))">@sgType.GetTranslation()</option>
-                                            }
+                                                        }
                                         </select>
-                                    }
-                                    else
-                                    {
+                                                }
+                                                else
+                                                {
                                         <button class="btn btn-sm btn-primary" @onclick="@(() => ViewModel.EditModule(row))"><i class="fas fa-edit"></i>&nbsp;Edit</button>
-                                    }
+                                                }
                                     <button class="btn btn-sm btn-primary" @onclick="@(() => ViewModel.RemoveModule(row))"><i class="fas fa-minus"></i>&nbsp;Remove</button>
                                 </div>
                             </td>
@@ -67,7 +68,7 @@
                         <NoRowsTemplate>
                             There are not any modules for this page.
                         </NoRowsTemplate>
-                    </Grid>                
+                    </Grid>
                 </section>
 
                 @if (ViewModel.EditedPageDepositVM.PageType != PageType.HomePage)
@@ -77,33 +78,29 @@
                         <div class="container-fluid">
                             <div class="row row-cols-1 row-cols-lg-2">
                                 <div class="col">
-                                    <ValidationMessage For="@(() => ViewModel.EditedPageDepositVM.UriName)" />
-                                    @if (!string.IsNullOrEmpty(ViewModel.EditedPageDepositVM.UriNameValidationMessage))
-                                    {
-                                        <div>@ViewModel.EditedPageDepositVM.UriNameValidationMessage</div>
-                                    }
+                                    <ErrorMessageBlock Message="@ViewModel.EditedPageDepositVM.UriNameValidationMessage" />
                                     <div class="form-floating my-3">
-                                        <InputText id="uriName" class="form-control w-100" @bind-Value="@ViewModel.EditedPageDepositVM.UriName" />
+                                        <input type="text" id="uriName" class="form-control w-100" @bind="@ViewModel.EditedPageDepositVM.UriName" />
                                         <label for="uriName">URI name</label>
                                     </div>
                                 </div>
                                 <div class="col">
-                                    <ValidationMessage For="@(() => ViewModel.EditedPageDepositVM.Title)" />
+                                    <ErrorMessageBlock Message="@ViewModel.EditedPageDepositVM.TitleValidationMessage" />
                                     <div class="form-floating my-3">
-                                        <InputText id="titleName" class="form-control w-100" @bind-Value="@ViewModel.EditedPageDepositVM.Title" />
+                                        <input type="text" id="titleName" class="form-control w-100" @bind="@ViewModel.EditedPageDepositVM.Title" />
                                         <label for="titleName">Title</label>
                                     </div>
                                 </div>
-                            
+
                                 <div class="col">
-                                    <ValidationMessage For="@(() => ViewModel.EditedPageDepositVM.PublishUtcTimestampDate)" />
+                                    <ErrorMessageBlock Message="@ViewModel.EditedPageDepositVM.PublishUtcTimestampDateValidationMessage" />
                                     <div class="form-floating my-3">
-                                        <InputDate id="publishDate" class="form-control w-100" @bind-Value="@ViewModel.EditedPageDepositVM.PublishUtcTimestampDate" />
+                                        <input type="date" id="publishDate" class="form-control w-100" @bind="@ViewModel.EditedPageDepositVM.PublishUtcTimestampDate" />
                                         <label for="publishDate">Publish date</label>
                                     </div>
                                 </div>
                                 <div class="col">
-                                    <ValidationMessage For="@(() => ViewModel.EditedPageDepositVM.PublishUtcTimestampTime)" />
+                                    <ErrorMessageBlock Message="@ViewModel.EditedPageDepositVM.PublishUtcTimestampTimeValidationMessage" />
                                     <div class="form-floating my-3">
                                         <input type="time" id="publishTime" class="form-control w-100" @bind="@ViewModel.EditedPageDepositVM.PublishUtcTimestampTime" />
                                         <label for="publishTime">Publish hour</label>

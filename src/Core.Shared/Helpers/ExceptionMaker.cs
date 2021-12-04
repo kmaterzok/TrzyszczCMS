@@ -39,5 +39,23 @@ namespace Core.Shared.Helpers
             public static InvalidMemberException Invalid<T>(T value, string memberName) =>
                 new($"The member's value {value} of type {nameof(T)} is not supported.");
         }
+
+        /// <summary>
+        /// Throwing exception with a specific information when something was not implemented.
+        /// </summary>
+        public static class NotImplemented
+        {
+            /// <summary>
+            /// Throw <see cref="NotImplementedException"/> when value was not handled and there must be a trace about it.
+            /// </summary>
+            /// <typeparam name="T">Type of the variable</typeparam>
+            /// <param name="value">Unhandled value</param>
+            /// <param name="variableName">Name of the variable holding <paramref name="value"/></param>
+            /// <returns>Prepared exception for throwing</returns>
+            public static NotImplementedException ForHandling<T>(T value, string variableName) =>
+                new NotImplementedException($"Handling of the value {variableName} of type {nameof(T)} has not been implemented.");
+        }
+
+
     }
 }

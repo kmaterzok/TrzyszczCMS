@@ -53,13 +53,14 @@ namespace TrzyszczCMS.Client
                 .AddHttpMessageHandler<TokenHeaderHandler>();
             services.AddAuthorizationCore();
 
-            services.AddScoped<IDataDepository, DataDepository>();
-            services.AddScoped<IJSInteropService, JSInteropService>();
-            services.AddScoped<IAuthService, AuthService>();
-            services.AddScoped<IRestAuthService, RestAuthService>();
-            services.AddScoped<ILoadPageService, LoadPageService>();
+            services.AddScoped<IDataDepository,    DataDepository>();
+            services.AddScoped<IJSInteropService,  JSInteropService>();
+            services.AddScoped<IAuthService,       AuthService>();
+            services.AddScoped<IRestAuthService,   RestAuthService>();
+            services.AddScoped<ILoadPageService,   LoadPageService>();
             services.AddScoped<IManagePageService, ManagePageService>();
-            
+            services.AddScoped<IManageUserService, ManageUserService>();
+
 
             services.AddScoped<AuthenticationStateProvider, ApplicationAuthenticationStateProvider>();
         }
@@ -73,6 +74,7 @@ namespace TrzyszczCMS.Client
             services.AddTransient<ModularPageViewModel>();
             services.AddTransient<ManagePagesViewModel>();
             services.AddTransient<PageEditorViewModel>();
+            services.AddTransient<ManageUsersViewModel>();
         }
         #endregion
     }

@@ -182,7 +182,7 @@ namespace TrzyszczCMS.Client.ViewModels.Administering
             }
             await this._depository.AddOrUpdateAsync(new EditedPageDeposit()
             {
-                PageEditorMode = PageEditorMode.Edit,
+                PageEditorMode = DataEditorMode.Edit,
                 PageDetails = pageInfo,
                 EditedModuleListIndex = 0,
                 CurrentManagementTool = PageManagementTool.PageLayoutComposer,
@@ -198,7 +198,7 @@ namespace TrzyszczCMS.Client.ViewModels.Administering
                 case PageType.Article:
                     await this._depository.AddOrUpdateAsync(new EditedPageDeposit()
                     {
-                        PageEditorMode = PageEditorMode.Create,
+                        PageEditorMode = DataEditorMode.Create,
                         PageDetails = DetailedPageInfo.MakeEmpty(pagetype),
                         EditedModuleListIndex = 0,
                         CurrentManagementTool = PageManagementTool.PageLayoutComposer,

@@ -15,13 +15,12 @@ namespace Core.Server.Models.Crypto
         /// Token data for user.
         /// </summary>
         public byte[] PlainToken { get; set; }
+
         /// <summary>
         /// Get token formatted as URL safe Base64 string.
         /// </summary>
         /// <returns>Base64Url token</returns>
-        public string GetPlainTokenForBrowserStorage()
-        {
-            return Base64UrlEncoder.Encode(PlainToken);
-        }
+        public string GetPlainTokenForBrowserStorage() =>
+            Base64UrlEncoder.Encode(PlainToken);
     }
 }

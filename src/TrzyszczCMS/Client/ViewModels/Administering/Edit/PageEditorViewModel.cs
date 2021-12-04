@@ -149,11 +149,16 @@ namespace TrzyszczCMS.Client.ViewModels.Administering.Edit
         }
         public async Task LoadDataFromDeposit()
         {
-            EditedPageDepositVM = new EditedPageDepositViewModel(await this._depository.GetAsync<EditedPageDeposit>(), this._managePageService);
-            EditedPageDepositVM.PropertyChanged += (_, e) => this.NotifyPropertyChanged(e.PropertyName);
-            EditedPageDepositVM.OnDataSet += (_, _e) => this._delayedDepositoryUpdateInvoker.DelayedInvoke();
+            var gotDeposit = await this._depository.GetAsync<EditedPageDeposit>();
 
-            IsManagingPossible = _editedPageDepositVM != null;
+            bool managingPossible = gotDeposit != null;
+            if (managingPossible)
+            {
+                EditedPageDepositVM = new EditedPageDepositViewModel(gotDeposit, this._managePageService);
+                EditedPageDepositVM.PropertyChanged += (_, e) => this.NotifyPropertyChanged(e.PropertyName);
+                EditedPageDepositVM.OnDataSet += (_, _e) => this._delayedDepositoryUpdateInvoker.DelayedInvoke();
+            }
+            IsManagingPossible = managingPossible;
         }
         #endregion
 
@@ -271,11 +276,11 @@ namespace TrzyszczCMS.Client.ViewModels.Administering.Edit
             {
                 switch (this.EditedPageDepositVM.PageEditorMode)
                 {
-                    case PageEditorMode.Create:
+                    case DataEditorMode.Create:
                         await this._managePageService.AddPage(this.EditedPageDepositVM.GetDetailedPageInfo());
                         break;
 
-                    case PageEditorMode.Edit:
+                    case DataEditorMode.Edit:
                         await this._managePageService.UpdatePage(this.EditedPageDepositVM.GetDetailedPageInfo());
                         break;
 

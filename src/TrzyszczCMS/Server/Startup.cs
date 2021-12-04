@@ -20,8 +20,6 @@ using Microsoft.AspNetCore.ResponseCompression;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using System.Linq;
-using System.Reflection;
 using TrzyszczCMS.Server.Data;
 using TrzyszczCMS.Server.Handlers;
 
@@ -48,15 +46,16 @@ namespace TrzyszczCMS.Server
             services.Configure<CryptoSettings>(Configuration.GetSection("CryptoSettings"));
             services.Configure<ConnectionStrings>(Configuration.GetSection("ConnectionStrings"));
 
-            services.AddScoped<ICryptoService, CryptoService>();
+            services.AddScoped<ICryptoService,           CryptoService>();
             services.AddScoped<IDatabaseStrategyFactory, DatabaseStrategyFactory>();
-            services.AddScoped<IAuthDatabaseService, AuthDatabaseService>();
-            services.AddScoped<ILoadPageDbService, LoadPageDbService>();
-            services.AddScoped<IManagePageDbService, ManagePageDbService>();
+            services.AddScoped<IAuthDatabaseService,     AuthDatabaseService>();
+            services.AddScoped<ILoadPageDbService,       LoadPageDbService>();
+            services.AddScoped<IManagePageDbService,     ManagePageDbService>();
+            services.AddScoped<IManageUserDbService,     ManageUserDbService>();
         }
         #endregion
 
-
+        #region Configuring
         // This method gets called by the runtime. Use this method to add services to the container.
         // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
         public void ConfigureServices(IServiceCollection services)
@@ -114,5 +113,6 @@ namespace TrzyszczCMS.Server
                 endpoints.MapFallbackToFile("index.html");
             });
         }
+        #endregion
     }
 }

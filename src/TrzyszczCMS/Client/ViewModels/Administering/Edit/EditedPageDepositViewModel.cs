@@ -7,7 +7,6 @@ using Core.Shared.Models.PageContent;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
 using System.Threading.Tasks;
 using TrzyszczCMS.Client.Data.Model;
 using TrzyszczCMS.Client.Data.Model.Extensions;
@@ -29,11 +28,11 @@ namespace TrzyszczCMS.Client.ViewModels.Administering.Edit
         #endregion
 
         #region Properties :: Work & modes
-        private PageEditorMode _pageEditorMode;
+        private DataEditorMode _pageEditorMode;
         /// <summary>
         /// Work mode of editor
         /// </summary>
-        public PageEditorMode PageEditorMode
+        public DataEditorMode PageEditorMode
         {
             get => _pageEditorMode;
             set => Set(ref _pageEditorMode, value, nameof(PageEditorMode));

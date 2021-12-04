@@ -21,7 +21,7 @@ namespace Core.Application.Services.Interfaces.Rest
         IPageFetcher<SimplePageInfo> GetSimplePageInfos(PageType type, [NotNull] Dictionary<FilteredGridField, string> filters, int desiredPageNumber = 1);
 
         /// <summary>
-        /// Get detaild information about a specific page.
+        /// Get detailed information about a specific page.
         /// </summary>
         /// <param name="id">ID of the page</param>
         /// <returns>Task returning page details</returns>
@@ -29,7 +29,7 @@ namespace Core.Application.Services.Interfaces.Rest
         /// <summary>
         /// Get detailed information about the homepage.
         /// </summary>
-        /// <returns></returns>
+        /// <returns>Task returning homepage details</returns>
         Task<DetailedPageInfo> GetDetailedPageInfoOfHomepage();
         /// <summary>
         /// Check if there is a URI name that has been already used for any existing page.

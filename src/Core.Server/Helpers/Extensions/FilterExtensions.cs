@@ -1,4 +1,5 @@
 ﻿using Core.Shared.Enums;
+using Core.Shared.Helpers;
 using DAL.Models.Database;
 using System;
 using System.Collections.Generic;
@@ -69,8 +70,15 @@ namespace Core.Server.Helpers.Extensions
                     if (range2.End.HasValue)   { source = source.Where<ContPage, T>(t => t.PublishUtcTimestamp <= range2.End.Value);   }
                     return source;
 
+                case FilteredGridField.ManageUsers_Description:
+                    return source.Where<AuthUser, T>(t => t.Description.ToLower().Contains(filterText.ToLower()));
+                case FilteredGridField.ManageUsers_Role:
+                    return source.Where<AuthUser, T>(t => t.AuthRole.Name.ToLower().Contains(filterText.ToLower()));
+                case FilteredGridField.ManageUsers_UserName:
+                    return source.Where<AuthUser, T>(t => t.Username.ToLower().Contains(filterText.ToLower()));
+
                 default:
-                    throw new NotImplementedException("There are some enums that are not handled at all.");
+                    throw ExceptionMaker.NotImplemented.ForHandling(gridField, nameof(gridField));
                     // TODO: Write a test checking all the cases.
             }
         }

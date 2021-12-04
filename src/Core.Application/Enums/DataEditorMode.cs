@@ -3,7 +3,7 @@
     /// <summary>
     /// It tells the editor how it saves and handles edited data.
     /// </summary>
-    public enum PageEditorMode
+    public enum DataEditorMode
     {
         Create,
         Edit

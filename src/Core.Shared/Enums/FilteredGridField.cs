@@ -14,5 +14,11 @@
         ManagePages_Articles_Created,
         ManagePages_Articles_Published,
         #endregion
+
+        #region ManageUsers
+        ManageUsers_UserName,
+        ManageUsers_Description,
+        ManageUsers_Role,
+        #endregion
     }
 }

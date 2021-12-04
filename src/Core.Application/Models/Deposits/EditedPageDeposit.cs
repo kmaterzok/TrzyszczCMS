@@ -11,7 +11,7 @@ namespace Core.Application.Models.Deposits
         /// <summary>
         /// Work mode of editor
         /// </summary>
-        public PageEditorMode PageEditorMode { get; set; }
+        public DataEditorMode PageEditorMode { get; set; }
         /// <summary>
         /// Currently used and displayed management tool for the edited / created page.
         /// </summary>

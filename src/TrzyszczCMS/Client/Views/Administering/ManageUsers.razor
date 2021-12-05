@@ -2,44 +2,58 @@
 @page "/manage/users"
 
 @using Core.Shared.Enums;
+@using TrzyszczCMS.Client.Views.Shared.Accordion
 @using TrzyszczCMS.Client.Views.Shared.Grids
 @using TrzyszczCMS.Client.ViewModels.Administering
 @inject ManageUsersViewModel ViewModel
 @inject NavigationManager NavigationManager
 
-<nav class="d-flex">
-    <div class="me-auto">
-        <h1>Users</h1>
-    </div>
-    <div>
-        <div class="input-group input-group-sm">
-            <button class="btn btn-primary btn-sm" @onclick="@ViewModel.LoadUsersWithFilter"><i class="fas fa-search"></i>&nbsp;Search</button>
-            <button class="btn btn-primary btn-sm" @onclick="@GoToCreatingUserAsync"><i class="fas fa-plus"></i>&nbsp;Create...</button>
-        </div>
-    </div>
-</nav>
 
-<section>
-    <Grid Items="ViewModel.Users" MultiSelect="false">
-        <Header>
-            <GridColHeader Title="User name" OnSearchTextChanged="@(e => ViewModel.OnUsersSearch(e, FilteredGridField.ManageUsers_UserName))" />
-            <GridColHeader Title="Description" OnSearchTextChanged="@(e => ViewModel.OnUsersSearch(e, FilteredGridField.ManageUsers_Description))" />
-            <GridColHeader Title="Role" OnSearchTextChanged="@(e => ViewModel.OnUsersSearch(e, FilteredGridField.ManageUsers_Role))" />
-            <GridColHeader Title="Actions" SearchBoxType="SearchBoxType.None" Width="200" />
-        </Header>
-        <RowTemplate Context="row">
-            <td>@row.Data.UserName</td>
-            <td>@row.Data.Description</td>
-            <td>@row.Data.AssignedRoleName</td>
-            <td>
-                <div class="input-group input-group-sm">
-                    <button class="btn btn-sm btn-primary" @onclick="@(() => GoToManagingUserAsync(row.Data.Id))"><i class="fas fa-edit"></i>&nbsp;Edit</button>
-                    <button class="btn btn-sm btn-primary" @onclick="@(() => ViewModel.DeleteUserAsync(row.Data.Id))"><i class="fas fa-trash"></i>&nbsp;Delete</button>
-                </div>
-            </td>
-        </RowTemplate>
-        <NoRowsTemplate>
-            No data loaded.
-        </NoRowsTemplate>
-    </Grid>
-</section>
+<Accordion Id="MainAccordion">
+    <Elements Context="actx">
+
+        <AccordionElement Header="Users" ContentClass="@ACCORDION_CONTENT_CLASS" ParentAccordionId="actx.AccordionId" CollapseId="UserCollapse">
+            <Content>
+                <nav class="d-flex">
+                    <div class="ms-auto">
+                        <div class="input-group input-group-sm">
+                            <button class="btn btn-primary btn-sm" @onclick="@ViewModel.LoadUsersWithFilter"><i class="fas fa-search"></i>&nbsp;Search</button>
+                            <button class="btn btn-primary btn-sm" @onclick="@GoToCreatingUserAsync"><i class="fas fa-plus"></i>&nbsp;Create...</button>
+                        </div>
+                    </div>
+                </nav>
+                <section>
+                    <Grid Items="ViewModel.Users" MultiSelect="false">
+                        <Header>
+                            <GridColHeader Title="User name" OnSearchTextChanged="@(e => ViewModel.OnUsersSearch(e, FilteredGridField.ManageUsers_UserName))" />
+                            <GridColHeader Title="Description" OnSearchTextChanged="@(e => ViewModel.OnUsersSearch(e, FilteredGridField.ManageUsers_Description))" />
+                            <GridColHeader Title="Role" OnSearchTextChanged="@(e => ViewModel.OnUsersSearch(e, FilteredGridField.ManageUsers_Role))" />
+                            <GridColHeader Title="Actions" SearchBoxType="SearchBoxType.None" Width="200" />
+                        </Header>
+                        <RowTemplate Context="row">
+                            <td>@row.Data.UserName</td>
+                            <td>@row.Data.Description</td>
+                            <td>@row.Data.AssignedRoleName</td>
+                            <td>
+                                <div class="input-group input-group-sm">
+                                    <button class="btn btn-sm btn-primary" @onclick="@(() => GoToManagingUserAsync(row.Data.Id))"><i class="fas fa-edit"></i>&nbsp;Edit</button>
+                                    <button class="btn btn-sm btn-primary" @onclick="@(() => ViewModel.DeleteUserAsync(row.Data.Id))"><i class="fas fa-trash"></i>&nbsp;Delete</button>
+                                </div>
+                            </td>
+                        </RowTemplate>
+                        <NoRowsTemplate>
+                            No data loaded.
+                        </NoRowsTemplate>
+                    </Grid>
+                </section>
+            </Content>
+        </AccordionElement>
+
+        <AccordionElement Header="Active tokens" ContentClass="@ACCORDION_CONTENT_CLASS" ParentAccordionId="actx.AccordionId" CollapseId="UserCollapse">
+            <Content>
+                It will be implemented.
+            </Content>
+        </AccordionElement>
+
+    </Elements>
+</Accordion>

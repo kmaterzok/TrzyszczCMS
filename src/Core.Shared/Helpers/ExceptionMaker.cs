@@ -37,7 +37,17 @@ namespace Core.Shared.Helpers
             /// <param name="memberName">Name of the argument holding <paramref name="value"/></param>
             /// <returns>Prepared exception for throwing</returns>
             public static InvalidMemberException Invalid<T>(T value, string memberName) =>
-                new($"The member's value {value} of type {nameof(T)} is not supported.");
+                new($"The {memberName} member's value {value} of type {nameof(T)} is not supported.");
+
+            /// <summary>
+            /// Throw <see cref="InvalidMemberException"/> when <paramref name="value"/> is null and cannot be handled this way.
+            /// </summary>
+            /// <typeparam name="T">Type of the value</typeparam>
+            /// <param name="value">Unhandled value</param>
+            /// <param name="memberName">Name of the argument holding <paramref name="value"/></param>
+            /// <returns>Prepared exception for throwing</returns>
+            public static InvalidMemberException IsNull<T>(T value, string memberName) =>
+                new($"The {memberName} member's value of type {nameof(T)} is null and cannot be handled this way.");
         }
 
         /// <summary>

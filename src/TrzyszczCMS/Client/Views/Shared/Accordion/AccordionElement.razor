@@ -1,0 +1,78 @@
+﻿@using Core.Shared.Helpers 
+
+
+<h2 class="accordion-header">
+    <button class="accordion-button @CssClassForHeader" type="button" data-bs-toggle="collapse" data-bs-target="#@CollapseId"
+            aria-expanded="@AriaExpandedOfShowContent" aria-controls="@CollapseId" @onclick="@ToggleShow">
+        @Header
+    </button>
+</h2>
+<div id="@CollapseId" class="accordion-collapse collapse @CssClassForContent" aria-labelledby="Content" data-bs-parent="#@ParentAccordionId">
+    <div class="accordion-body @ContentClass">
+        @Content
+    </div>
+</div>
+
+
+@code {
+
+    #region Fields
+    /// <summary>
+    /// Is content currently displayed and not collapsed.
+    /// </summary>
+    public bool showContent = false;
+    #endregion
+
+    #region Parameters
+    /// <summary>
+    /// The header with a button for collapsing and showing the element.
+    /// </summary>
+    [Parameter]
+    public string Header { get; set; }
+    /// <summary>
+    /// The content of the element that is collapsed.
+    /// </summary>
+    [Parameter]
+    public RenderFragment Content { get; set; }
+    /// <summary>
+    /// Used for ARIA markups.
+    /// </summary>
+    [Parameter]
+    public string CollapseId { get; set; }
+    /// <summary>
+    /// Used for ARIA markups.
+    /// </summary>
+    [Parameter]
+    public string ParentAccordionId { get; set; }
+    /// <summary>
+    /// CSS classes for accordion body.
+    /// </summary>
+    [Parameter]
+    public string ContentClass { get; set; }
+    #endregion
+
+    #region Properties
+    private string CssClassForHeader  => showContent ? string.Empty : "collapsed";
+    private string CssClassForContent => showContent ? "show" : string.Empty;
+    private string AriaExpandedOfShowContent => showContent ? "true" : "false";
+    #endregion
+
+    #region Init
+    protected override void OnParametersSet()
+    {
+        base.OnParametersSet();
+        if (string.IsNullOrEmpty(Header))
+        {
+            throw ExceptionMaker.Member.IsNull(Header, nameof(Header));
+        }
+        else if (Content == null)
+        {
+            throw ExceptionMaker.Member.IsNull(Content, nameof(Content));
+        }
+    }
+    #endregion
+
+    #region Methods
+    private void ToggleShow() => showContent = !showContent;
+    #endregion
+}

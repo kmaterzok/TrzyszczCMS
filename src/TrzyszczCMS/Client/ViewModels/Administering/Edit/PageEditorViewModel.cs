@@ -49,7 +49,7 @@ namespace TrzyszczCMS.Client.ViewModels.Administering.Edit
         public EditedPageDepositViewModel EditedPageDepositVM
         {
             get => _editedPageDepositVM;
-            set => Set(ref _editedPageDepositVM, value, nameof(EditedPageDepositViewModel));
+            set => Set(ref _editedPageDepositVM, value, nameof(EditedPageDepositVM));
         }
 
         /// <summary>
@@ -287,6 +287,7 @@ namespace TrzyszczCMS.Client.ViewModels.Administering.Edit
                     default:
                         throw new InvalidOperationException($"{this.EditedPageDepositVM.PageEditorMode} is not allowed.");
                 }
+                await this._depository.RemoveAsync<EditedPageDeposit>();
                 this.OnExitingView?.Invoke();
             }
         }

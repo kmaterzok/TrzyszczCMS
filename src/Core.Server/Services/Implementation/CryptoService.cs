@@ -17,15 +17,15 @@ namespace Core.Server.Services.Implementation
     /// </summary>
     public class CryptoService : ICryptoService
     {
-        #region Fields
-        private readonly CryptoSettings _cryptoSettings;
+        #region Properties
+        public CryptoSettings CryptoSettings { get; private set; }
         #endregion
 
         #region Ctor
         public CryptoService(IOptions<CryptoSettings> cryptoSettings)
         {
-            _cryptoSettings = cryptoSettings.Value;
-            _cryptoSettings.EnsureMinimumSecurity();
+            CryptoSettings = cryptoSettings.Value;
+            CryptoSettings.EnsureMinimumSecurity();
         }
         #endregion
 
@@ -38,9 +38,9 @@ namespace Core.Server.Services.Implementation
                 password,
                 newSaltForPassword,
                 Constants.ARGON_HASH_BYTES_QUANTITY,
-                _cryptoSettings.Argon2Password.Parallelism,
-                _cryptoSettings.Argon2Password.Iterations,
-                _cryptoSettings.Argon2Password.MemoryCost
+                CryptoSettings.Argon2Password.Parallelism,
+                CryptoSettings.Argon2Password.Iterations,
+                CryptoSettings.Argon2Password.MemoryCost
             );
 
             return new ArgonHashedPasswordData()
@@ -60,7 +60,7 @@ namespace Core.Server.Services.Implementation
         public AccessTokenVariants GenerateAccessToken()
         {
             byte[] plainAccessToken  = CryptoHelper.GenerateRandomBytes(Constants.ACCESS_TOKEN_BYTES_QUANTITY);
-            byte[] hashedAccessToken = CryptoHelper.GenerateSha3_512(plainAccessToken, _cryptoSettings.TokenHashIterations);
+            byte[] hashedAccessToken = CryptoHelper.GenerateSha3_512(plainAccessToken, CryptoSettings.TokenHashIterations);
 
             return new AccessTokenVariants()
             {
@@ -72,7 +72,7 @@ namespace Core.Server.Services.Implementation
         public byte[] GenerateHashFromPlainAccessToken(string plainAccessTokenFromBrowser)
         {
             var plain = Base64UrlEncoder.DecodeBytes(plainAccessTokenFromBrowser);
-            return CryptoHelper.GenerateSha3_512(plain, _cryptoSettings.TokenHashIterations);
+            return CryptoHelper.GenerateSha3_512(plain, CryptoSettings.TokenHashIterations);
         }
         #endregion
 

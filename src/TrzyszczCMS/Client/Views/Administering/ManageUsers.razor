@@ -2,6 +2,7 @@
 @page "/manage/users"
 
 @using Core.Shared.Enums;
+@using Core.Shared.Models;
 @using TrzyszczCMS.Client.Views.Shared.Accordion
 @using TrzyszczCMS.Client.Views.Shared.Grids
 @using TrzyszczCMS.Client.ViewModels.Administering
@@ -11,7 +12,6 @@
 
 <Accordion Id="MainAccordion">
     <Elements Context="actx">
-
         <AccordionElement Header="Users" ContentClass="@ACCORDION_CONTENT_CLASS" ParentAccordionId="actx.AccordionId" CollapseId="UserCollapse">
             <Content>
                 <nav class="d-flex">
@@ -37,7 +37,10 @@
                             <td>
                                 <div class="input-group input-group-sm">
                                     <button class="btn btn-sm btn-primary" @onclick="@(() => GoToManagingUserAsync(row.Data.Id))"><i class="fas fa-edit"></i>&nbsp;Edit</button>
-                                    <button class="btn btn-sm btn-primary" @onclick="@(() => ViewModel.DeleteUserAsync(row.Data.Id))"><i class="fas fa-trash"></i>&nbsp;Delete</button>
+                                    @if (row.Data.Id != CommonConstants.DEFAULT_ADMIN_ID)
+                                    {
+                                        <button class="btn btn-sm btn-primary" @onclick="@(() => ViewModel.DeleteUserAsync(row.Data.Id))"><i class="fas fa-trash"></i>&nbsp;Delete</button>
+                                    }
                                 </div>
                             </td>
                         </RowTemplate>
@@ -49,11 +52,12 @@
             </Content>
         </AccordionElement>
 
-        <AccordionElement Header="Active tokens" ContentClass="@ACCORDION_CONTENT_CLASS" ParentAccordionId="actx.AccordionId" CollapseId="UserCollapse">
+        <AccordionElement Header="Your sessions" ContentClass="@ACCORDION_CONTENT_CLASS" ParentAccordionId="actx.AccordionId" CollapseId="SessionCollapse">
             <Content>
-                It will be implemented.
+                <section>
+                    It will be implemented soon.
+                </section>
             </Content>
         </AccordionElement>
-
     </Elements>
 </Accordion>

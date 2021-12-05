@@ -1,5 +1,7 @@
 ﻿using Core.Shared.Enums;
+using Core.Shared.Models;
 using Core.Shared.Models.ManageUser;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Threading.Tasks;
@@ -31,5 +33,23 @@ namespace Core.Application.Services.Interfaces.Rest
         /// </summary>
         /// <returns>List of available roles</returns>
         Task<List<SimpleRoleInfo>> GetSimpleRoleInfo();
+        /// <summary>
+        /// Check if the username has been already in use.
+        /// </summary>
+        /// <param name="username"></param>
+        /// <returns>Task returning if the user name exists and is valid</returns>
+        Task<Result<Tuple<bool>, string>> UserNameExists(string username);
+        /// <summary>
+        /// Add a user depending on dat in <paramref name="user"/>.
+        /// </summary>
+        /// <param name="user">Data of the added user</param>
+        /// <returns>Task returning a password of the newly created user</returns>
+        Task<string> AddUser(DetailedUserInfo user);
+        /// <summary>
+        /// Update the user's data in the database.
+        /// </summary>
+        /// <param name="user">Data of updated user</param>
+        /// <returns>Task of the executed operation</returns>
+        Task UpdateUser(DetailedUserInfo user);
     }
 }

@@ -1,8 +1,11 @@
-﻿using Core.Server.Services.Interfaces.DbAccess.Modify;
+﻿using Core.Server.Models.Enums;
+using Core.Server.Services.Interfaces.DbAccess.Modify;
 using Core.Shared.Enums;
+using Core.Shared.Helpers;
 using Core.Shared.Models.ManageUser;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Threading.Tasks;
@@ -43,8 +46,23 @@ namespace TrzyszczCMS.Server.Controllers
         [HttpDelete]
         [Produces("application/json")]
         [Route("[action]/{userId}")]
-        public async Task<ActionResult> DeletePages(int userId) =>
-            await this._manageUserService.DeleteUserAsync(userId) ? Ok() : NotFound();
+        public async Task<ActionResult> DeleteUser(int userId)
+        {
+            var error = await this._manageUserService.DeleteUserAsync(userId);
+            if (!error.HasValue)
+            {
+                return Ok();
+            }
+            switch (error.Value)
+            {
+                case DeleteRowFailReason.DeletingForbidden:
+                    return Forbid();
+                case DeleteRowFailReason.NotFound:
+                    return NotFound();
+                default:
+                    throw ExceptionMaker.NotImplemented.ForHandling(error.Value, nameof(error.Value));
+            }
+        }
 
         [HttpGet]
         [Produces("application/json")]
@@ -60,6 +78,26 @@ namespace TrzyszczCMS.Server.Controllers
         [Route("[action]")]
         public async Task<ActionResult<List<SimpleRoleInfo>>> SimpleRoleInfo() =>
             Ok(await this._manageUserService.GetSimpleRoleInfo());
+
+        [HttpGet]
+        [Produces("application/json")]
+        [Route("[action]/{username}")]
+        public async Task<ActionResult> UserNameExists(string username) =>
+            await this._manageUserService.UserNameExists(username) ? Ok() : NotFound();
+
+        [HttpPost]
+        [Produces("application/json")]
+        [Route("[action]")]
+        public async Task<ActionResult<string>> AddUser([FromBody][NotNull] DetailedUserInfo request) =>
+            (await this._manageUserService.AddUserAsync(request)).GetValue(out string password, out Tuple<bool> _) ?
+                Ok(password) : Conflict();
+
+        [HttpPost]
+        [Produces("application/json")]
+        [Route("[action]")]
+        public async Task<ActionResult> UpdateUser([FromBody][NotNull] DetailedUserInfo request) =>
+            await this._manageUserService.UpdateUserAsync(request) ? Ok() : Conflict();
+
         #endregion
     }
 }

@@ -111,7 +111,7 @@ namespace TrzyszczCMS.Client.ViewModels.Administering.Edit
         public string Title
         {
             get => _title;
-            set {Console.WriteLine("FIND YOU :)"); Set(ref _title, value, nameof(Title)); this.OnDataSet?.Invoke(this, EventArgs.Empty); }
+            set { Set(ref _title, value, nameof(Title)); this.OnDataSet?.Invoke(this, EventArgs.Empty); }
         }
         
         private string _uriName;
@@ -132,7 +132,7 @@ namespace TrzyszczCMS.Client.ViewModels.Administering.Edit
         {
             get => _publishUtcTimestampTime;
             set { Set(ref _publishUtcTimestampTime, value, nameof(PublishUtcTimestampTime)); this.OnDataSet?.Invoke(this, EventArgs.Empty); }
-            }
+        }
 
         private DateTime? _publishUtcTimestampDate;
         /// <summary>
@@ -196,7 +196,7 @@ namespace TrzyszczCMS.Client.ViewModels.Administering.Edit
         /// <summary>
         /// Create and get a detailed page info.
         /// </summary>
-        /// <returns>Midifiable and manageable information about page</returns>
+        /// <returns>Modifiable and manageable information about page</returns>
         public DetailedPageInfo GetDetailedPageInfo() => new DetailedPageInfo()
         {
             Id = this.IdOfPage,
@@ -208,7 +208,7 @@ namespace TrzyszczCMS.Client.ViewModels.Administering.Edit
         };
 
         /// <summary>
-        /// Check validity of the data that cannot be check with <see cref="ValidationAttribute"/>s.
+        /// Check validity of the data.
         /// </summary>
         /// <returns>Is data valid</returns>
         public async Task<bool> ValidateAndInformAsync()

@@ -12,7 +12,7 @@ namespace TrzyszczCMS.Client.Views.Administering
         /// <summary>
         /// The constant defining paddings within a body of an accordion.
         /// </summary>
-        private const string ACCORDION_CONTENT_CLASS = "px-0 pt-0 pb-1";
+        private const string ACCORDION_CONTENT_CLASS = "p-0 border-bottom border-dark border-1";
         #endregion
 
         #region Init

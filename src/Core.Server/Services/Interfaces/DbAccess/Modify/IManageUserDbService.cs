@@ -1,5 +1,8 @@
-﻿using Core.Shared.Enums;
+﻿using Core.Server.Models.Enums;
+using Core.Shared.Enums;
+using Core.Shared.Models;
 using Core.Shared.Models.ManageUser;
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -20,8 +23,8 @@ namespace Core.Server.Services.Interfaces.DbAccess.Modify
         /// Delete the user by <paramref name="userId"/>.
         /// </summary>
         /// <param name="userId">Row ID of the deleted user</param>
-        /// <returns>Task returning if the user was found</returns>
-        Task<bool> DeleteUserAsync(int userId);
+        /// <returns>Task returning the reason why the user was not deleted. <c>null</c> - successful operation.</returns>
+        Task<DeleteRowFailReason?> DeleteUserAsync(int userId);
         /// <summary>
         /// Get detailed information about a specific user.
         /// </summary>
@@ -33,5 +36,23 @@ namespace Core.Server.Services.Interfaces.DbAccess.Modify
         /// </summary>
         /// <returns>List of available roles</returns>
         Task<List<SimpleRoleInfo>> GetSimpleRoleInfo();
+        /// <summary>
+        /// Check if any user holds <paramref name="username"/>.
+        /// </summary>
+        /// <param name="username">Checked username</param>
+        /// <returns>Username has been used for a user.</returns>
+        Task<bool> UserNameExists(string username);
+        /// <summary>
+        /// Add a user to the database.
+        /// </summary>
+        /// <param name="user">Information about user</param>
+        /// <returns>Task returning a password for the new user or error flag</returns>
+        Task<Result<string, Tuple<bool>>> AddUserAsync(DetailedUserInfo user);
+        /// <summary>
+        /// Update a user in the database.
+        /// </summary>
+        /// <param name="user">Information about user</param>
+        /// <returns>Task returning if the update was successful</returns>
+        Task<bool> UpdateUserAsync(DetailedUserInfo user);
     }
 }

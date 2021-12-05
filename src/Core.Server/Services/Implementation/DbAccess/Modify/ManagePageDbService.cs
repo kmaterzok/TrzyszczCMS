@@ -129,6 +129,8 @@ namespace Core.Server.Services.Implementation.DbAccess.Modify
                 return false;
             }
 
+            // TODO: Checking if unique URI name
+
             using (var ctx = _databaseStrategy.GetContext())
             {
                 using (var ts = await ctx.Database.BeginTransactionAsync())
@@ -157,15 +159,21 @@ namespace Core.Server.Services.Implementation.DbAccess.Modify
                 return false;
             }
 
+            // TODO: Checking if unique URI name
+
             using (var ctx = _databaseStrategy.GetContext())
             {
                 using (var ts = await ctx.Database.BeginTransactionAsync())
                 {
-                    var updatedData = await ctx.ContPages.SingleAsync(i => i.Id == page.Id);
+                    var updatedData = await ctx.ContPages.SingleOrDefaultAsync(i => i.Id == page.Id);
+                    if (updatedData == null)
+                    {
+                        return false;
+                    }
 
+                    updatedData.Title               = page.Title;
+                    updatedData.UriName             = page.UriName;
                     updatedData.PublishUtcTimestamp = page.PublishUtcTimestamp;
-                    updatedData.Title = page.Title;
-                    updatedData.UriName = page.UriName;
                     ctx.ContModules.RemoveRange(ctx.ContModules.Where(i => i.ContPageId == page.Id));
 
 

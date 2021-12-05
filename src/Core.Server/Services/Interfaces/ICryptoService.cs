@@ -1,4 +1,5 @@
 ﻿using Core.Server.Models.Crypto;
+using Core.Server.Models.Settings;
 
 namespace Core.Server.Services.Interfaces
 {
@@ -7,6 +8,11 @@ namespace Core.Server.Services.Interfaces
     /// </summary>
     public interface ICryptoService
     {
+        /// <summary>
+        /// Cryptographic settings used in the backend for securing passwords and tokens.
+        /// </summary>
+        CryptoSettings CryptoSettings { get; }
+
         /// <summary>
         /// Check if <paramref name="argonHash"/> with specified <paramref name="passwordSalt"/> matches the specified <paramref name="password"/>.
         /// </summary>
@@ -17,7 +23,7 @@ namespace Core.Server.Services.Interfaces
         /// <param name="iterations">Iterations of hashing</param>
         /// <param name="memoryCost">Occupied memory [kB] for hashing</param>
         /// <returns></returns>
-        public bool PasswordValid(byte[] argonHash, byte[] passwordSalt, string password,
+        bool PasswordValid(byte[] argonHash, byte[] passwordSalt, string password,
                                   int parallelism, int iterations, int memoryCost);
         /// <summary>
         /// Generate hash for password with cryptographically random salt used for the hash.

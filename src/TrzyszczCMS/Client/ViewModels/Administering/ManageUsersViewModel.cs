@@ -50,8 +50,11 @@ namespace TrzyszczCMS.Client.ViewModels.Administering
         public void OnUsersSearch(ChangeEventArgs changeEventArgs, FilteredGridField columnTitle) =>
             this._userSearchParams.AddOrUpdate(columnTitle, changeEventArgs.Value.ToString());
 
-        public async Task DeleteUserAsync(int userId) =>
+        public async Task DeleteUserAsync(int userId)
+        {
             await this._manageUserService.DeleteUser(userId);
+            await this.LoadUsersWithFilter();
+        }
 
         public async Task LoadUsersWithFilter() =>
             this.Users = (await this._manageUserService.GetSimpleUserInfo(this._userSearchParams)).ToGridItemList();

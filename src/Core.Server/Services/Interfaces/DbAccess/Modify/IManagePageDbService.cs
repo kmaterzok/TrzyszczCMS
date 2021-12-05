@@ -40,13 +40,13 @@ namespace Core.Server.Services.Interfaces.DbAccess.Modify
         /// <returns>Task returning if the addition was successful</returns>
         Task<bool> AddPageAsync(DetailedPageInfo page);
         /// <summary>
-        /// Update page in the database.
+        /// Update a page in the database.
         /// </summary>
         /// <param name="page">Information about page</param>
         /// <returns>Task returning if the update was successful</returns>
         Task<bool> UpdatePageAsync(DetailedPageInfo page);
         /// <summary>
-        /// Delete pages width specified IDs.
+        /// Delete a pages width specified IDs.
         /// </summary>
         /// <param name="pageIds">IDs of the deleted pages</param>
         /// <returns>Task returning if the update was successful</returns>

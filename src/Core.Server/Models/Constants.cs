@@ -31,5 +31,10 @@
         /// a long period of time (remember option checked during sign in).
         /// </summary>
         public const int LONG_TERM_ACCESS_TOKEN_VALIDITY_DAYS = 182;
+        /// <summary>
+        /// Default length of the password
+        /// that is generated for a newly created user.
+        /// </summary>
+        public const int ADD_USER_DEFAULT_PASSWORD_LENGTH = 24;
     }
 }

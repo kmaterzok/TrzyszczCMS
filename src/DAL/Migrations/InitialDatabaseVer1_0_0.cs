@@ -62,26 +62,19 @@ namespace DAL.Migrations
                 .ToTable(  nameof(AuthRole))             .PrimaryColumn(nameof(AuthRole.Id));
 
             
-            Insert.IntoTable(nameof(AuthPolicy)).Row(new { Id =  1, Name = "CreateBlogPost" })
-                                                .Row(new { Id =  2, Name = "EditBlogPost"   })
-                                                .Row(new { Id =  3, Name = "DeleteBlogPost" })
-                                                .Row(new { Id =  4, Name = "DeleteBlogPostArchivedRevision" })
-                                                .Row(new { Id =  5, Name = "CreatePage" })
-                                                .Row(new { Id =  6, Name = "EditPage"   })
-                                                .Row(new { Id =  7, Name = "DeletePage" })
-                                                .Row(new { Id =  8, Name = "DeletePageArchivedRevision" })
-                                                .Row(new { Id =  9, Name = "ApplySiteTheme"  })
-                                                .Row(new { Id = 10, Name = "CreateSiteTheme" })
-                                                .Row(new { Id = 11, Name = "EditSiteTheme"   })
-                                                .Row(new { Id = 12, Name = "DeleteSiteTheme" })
-                                                .Row(new { Id = 13, Name = "CreateAnyUser"   })
-                                                .Row(new { Id = 14, Name = "EditAnyUser"     })
-                                                .Row(new { Id = 15, Name = "DeleteAnyUser"   })
-                                                .Row(new { Id = 16, Name = "PromoteAnyUser"  })
-                                                .Row(new { Id = 17, Name = "ChangeOwnUsername" }); // TODO: Add more policies / permissions.
+            Insert.IntoTable(nameof(AuthPolicy)).Row(new { Id = 1, Name = "CreateBlogPost" })
+                                                .Row(new { Id = 2, Name = "EditBlogPost"   })
+                                                .Row(new { Id = 3, Name = "DeleteBlogPost" })
+                                                .Row(new { Id = 4, Name = "CreatePage" })
+                                                .Row(new { Id = 5, Name = "EditPage"   })
+                                                .Row(new { Id = 6, Name = "DeletePage" })
+                                                .Row(new { Id = 7, Name = "CreateAnyUser"   })
+                                                .Row(new { Id = 8, Name = "EditAnyUser"     })
+                                                .Row(new { Id = 9, Name = "DeleteAnyUser"   });
+                                                // TODO: Add more policies / permissions.
 
             Insert.IntoTable(nameof(AuthRole)).Row(new { FactoryRole = true, Name = "Admin" });
-            for (int i=1; i <= 17; ++i)
+            for (int i=1; i <= 9; ++i)
             {
                 Insert.IntoTable(nameof(AuthRolePolicyAssign)).Row(new { AuthRoleId = 1, AuthPolicyId = i });
             }

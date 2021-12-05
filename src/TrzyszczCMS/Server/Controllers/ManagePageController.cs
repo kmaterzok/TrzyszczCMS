@@ -55,7 +55,7 @@ namespace TrzyszczCMS.Server.Controllers
 
         [HttpGet]
         [Produces("application/json")]
-        [Route("[action]/{id}")]
+        [Route("[action]/{checkedUriName}")]
         public async Task<ActionResult> PageUriNameExists(string checkedUriName) =>
             await this._managePageService.PageUriNameExists(checkedUriName) ? Ok() : NotFound();
 
@@ -63,13 +63,13 @@ namespace TrzyszczCMS.Server.Controllers
         [Produces("application/json")]
         [Route("[action]")]
         public async Task<ActionResult> AddPage([FromBody][NotNull] DetailedPageInfo request) =>
-            await this._managePageService.AddPageAsync(request) ? Ok() : NotFound();
+            await this._managePageService.AddPageAsync(request) ? Ok() : Conflict();
 
         [HttpPost]
         [Produces("application/json")]
         [Route("[action]")]
         public async Task<ActionResult> UpdatePage([FromBody][NotNull] DetailedPageInfo request) =>
-            await this._managePageService.UpdatePageAsync(request) ? Ok() : NotFound();
+            await this._managePageService.UpdatePageAsync(request) ? Ok() : Conflict();
 
         /// <summary>
         /// Delete pages from the database.

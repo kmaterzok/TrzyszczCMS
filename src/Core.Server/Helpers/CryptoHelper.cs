@@ -1,4 +1,6 @@
-﻿using System.Security.Cryptography;
+﻿using System.Linq;
+using System.Security.Cryptography;
+using System.Text;
 
 namespace Core.Server.Helpers
 {
@@ -39,6 +41,18 @@ namespace Core.Server.Helpers
                 data = finalHash;
             }
             return finalHash;
+        }
+        /// <summary>
+        /// Generate a random cryptographically safe ASCII-compliant string.
+        /// </summary>
+        /// <param name="quantityOfCharacters">Quantity of characters in the returned string</param>
+        /// <returns>Random string</returns>
+        public static string GenerateRandomString(int quantityOfCharacters)
+        {
+            var randomBytes = GenerateRandomBytes(quantityOfCharacters)
+                .Select(i => (byte)((i % 94) + 33))
+                .ToArray();
+            return Encoding.ASCII.GetString(randomBytes);
         }
     }
 }

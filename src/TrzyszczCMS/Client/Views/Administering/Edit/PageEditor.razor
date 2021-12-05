@@ -18,8 +18,6 @@
     {
         case PageManagementTool.PageLayoutComposer:
             <EditForm Model="@ViewModel" OnValidSubmit="@ViewModel.ApplyChanges">
-                <DataAnnotationsValidator />
-
                 <nav class="d-flex">
                     <h1 class="me-auto">@(this.ViewModel.EditedPageDepositVM.PageEditorMode == DataEditorMode.Create ? "Creating" : "Editing") page</h1>
                     <div class="d-flex mt-auto mb-1">
@@ -47,20 +45,20 @@
                             <td>
                                 <div class="input-group input-group-sm">
                                     @if (row.Data.GetModuleType() == PageModuleType.TextWall)
-                                                {
+                                    {
                                         <span class="input-group-text"><i class="fas fa-edit"></i></span>
                                         <select class="form-select form-select-sm" aria-label="Edit">
                                             <option disabled selected>Edit</option>
                                             @foreach (var sgType in Enum.GetValues(typeof(TextWallEditedPart)).Cast<TextWallEditedPart>())
-                                                        {
+                                            {
                                                 <option value="@sgType" @onclick="@(() => ViewModel.EditModule(row, sgType))">@sgType.GetTranslation()</option>
-                                                        }
+                                            }
                                         </select>
-                                                }
-                                                else
-                                                {
+                                    }
+                                    else
+                                    {
                                         <button class="btn btn-sm btn-primary" @onclick="@(() => ViewModel.EditModule(row))"><i class="fas fa-edit"></i>&nbsp;Edit</button>
-                                                }
+                                    }
                                     <button class="btn btn-sm btn-primary" @onclick="@(() => ViewModel.RemoveModule(row))"><i class="fas fa-minus"></i>&nbsp;Remove</button>
                                 </div>
                             </td>

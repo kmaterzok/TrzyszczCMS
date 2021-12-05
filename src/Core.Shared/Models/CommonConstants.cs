@@ -14,5 +14,9 @@
         /// It provides format for a single date only.
         /// </summary>
         public const string DATE_RANGE_FILTER_FORMAT = "yyyy-MM-dd";
+        /// <summary>
+        /// The database row ID of the default administrator.
+        /// </summary>
+        public const int DEFAULT_ADMIN_ID = 1;
     }
 }

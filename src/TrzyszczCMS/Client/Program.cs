@@ -9,19 +9,17 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using System;
-using System.Collections.Generic;
 using System.Net.Http;
-using System.Text;
 using System.Threading.Tasks;
 using TrzyszczCMS.Client.Other;
 using TrzyszczCMS.Client.Services.Implementations;
 using TrzyszczCMS.Client.Services.Interfaces;
 using TrzyszczCMS.Client.ViewModels.Administering;
-using TrzyszczCMS.Client.ViewModels.Shared;
 using TrzyszczCMS.Client.ViewModels.SignIn;
 using TrzyszczCMS.Client.ViewModels.PageContent;
 using TrzyszczCMS.Client.ViewModels.Administering.Edit;
 using TrzyszczCMS.Client.Services.Implementation;
+using TextCopy;
 
 namespace TrzyszczCMS.Client
 {
@@ -43,6 +41,7 @@ namespace TrzyszczCMS.Client
         /// <param name="services">Service collection</param>
         private static void RegisterServices(IServiceCollection services, string clientBaseAddress)
         {
+            services.InjectClipboard();
             services.AddBlazoredLocalStorage();
             services.AddBlazoredSessionStorage();
             services.AddScoped<ITokenService, TokenService>();
@@ -75,6 +74,7 @@ namespace TrzyszczCMS.Client
             services.AddTransient<ManagePagesViewModel>();
             services.AddTransient<PageEditorViewModel>();
             services.AddTransient<ManageUsersViewModel>();
+            services.AddTransient<UserEditorViewModel>();
         }
         #endregion
     }

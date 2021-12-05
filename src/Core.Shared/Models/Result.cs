@@ -27,7 +27,7 @@ namespace Core.Shared.Models
         {
             if (!(successObject == null ^ errorObject == null))
             {
-                throw new ArgumentException("Both arguments must not be null or have a reference.",
+                throw new ArgumentException("Both arguments are null or have a reference.",
                     $"{nameof(successObject)} or {nameof(errorObject)}");
             }
 

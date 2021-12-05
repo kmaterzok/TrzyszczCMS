@@ -1,0 +1,86 @@
+﻿@layout AdminLayout
+@page "/manage/edit-user"
+
+@using Core.Application.Enums
+@using Core.Shared.Models
+@using TextCopy 
+@using TrzyszczCMS.Client.ViewModels.Administering.Edit
+@inject UserEditorViewModel ViewModel
+@inject NavigationManager NavigationManager
+@inject IClipboard Clipboard
+
+
+@if (this.ViewModel.IsManagingPossible)
+{
+    @if (string.IsNullOrEmpty(ViewModel.GeneratedPassword))
+    {
+        <EditForm Model="@ViewModel" OnValidSubmit="@ViewModel.ApplyChanges">
+            <nav class="d-flex">
+                <h1 class="me-auto">@(this.ViewModel.EditedUserDepositVM.UserEditorMode == DataEditorMode.Create ? "Creating" : "Editing") user</h1>
+                <div class="d-flex mt-auto mb-1">
+                    <button type="submit" class="btn btn-sm btn-primary"><i class="fas fa-save"></i>&nbsp;Apply changes</button>
+                </div>
+            </nav>
+            <section>
+                <div class="container-fluid">
+                    <div class="row row-cols-1 row-cols-lg-2">
+                        <div class="col">
+                            <ErrorMessageBlock Message="@ViewModel.EditedUserDepositVM.UserNameValidationMessage" />
+                            <div class="form-floating my-3">
+                                <input type="text" id="userName" class="form-control w-100" @bind="@ViewModel.EditedUserDepositVM.UserName" />
+                                <label for="userName">User name</label>
+                            </div>
+                        </div>
+                        <div class="col">
+                            <div class="form-floating my-3">
+                                <input type="text" id="description" class="form-control w-100" @bind="@ViewModel.EditedUserDepositVM.Description" />
+                                <label for="description">Description</label>
+                            </div>
+                        </div>
+                        @if (ViewModel.EditedUserDepositVM.IdOfUser != CommonConstants.DEFAULT_ADMIN_ID)
+                        {
+                            <div class="col">
+                                <ErrorMessageBlock Message="@ViewModel.EditedUserDepositVM.AssignedRoleValidationMessage" />
+                                <div class="form-floating my-3">
+                                    <select id="roleSelect" class="form-select" aria-label="Select role" @bind="@ViewModel.EditedUserDepositVM.AssignedRoleId">
+                                        <option disabled selected>None</option>
+                                        @foreach (var sgRole in ViewModel.EditedUserDepositVM.AvailableRoles)
+                                        {
+                                            <option value="@sgRole.Id">@sgRole.Name</option>
+                                        }
+                                    </select>
+                                    <label for="roleSelect">Select role</label>
+                                </div>
+                            </div>
+                        }
+                    </div>
+                </div>
+            </section>
+        </EditForm>
+    }
+    else
+    {
+        <div class="container mx-auto w-100 mt-2">
+            <div class="row justify-content-center">
+                <section class="card col-10 col-sm-7 col-lg-5 border-0">
+                    <div class="card-header bg-transparent border-0 text-center">
+                        <span aria-hidden="true">Password for this user</span>
+                    </div>
+                    <div class="card-body bg-transparent">
+                        <div class="input-group w-100">
+                            <input class="form-control" type="text" readonly @bind="@ViewModel.GeneratedPassword" />
+                            <button class="btn btn-light" @onclick="@CopyPasswordToClipboard"><i class="fas fa-copy"></i>&nbsp;Copy</button>
+                        </div>
+                    </div>
+                    <div class="card-footer bg-transparent border-0">
+                        <button class="btn btn-sm btn-primary w-100" @onclick="@(() => ViewModel.ExitView())"><i class="fas fa-door-open"></i>&nbsp;Finish</button>
+                    </div>
+                </section>
+            </div>
+        </div>
+    }
+}
+else
+{
+    <span>If you want to create or edit a user, select one.</span>
+}

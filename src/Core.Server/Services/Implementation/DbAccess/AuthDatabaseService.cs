@@ -95,20 +95,22 @@ namespace Core.Server.Services.Implementations.DbAccess
                     { return null; }
 
                 var tokenVariants = _cryptoService.GenerateAccessToken();
+                var currentTimestamp = DateTime.UtcNow;
 
                 var dbAuthToken = new AuthToken()
                 {
                     AuthUserId = userInfo.Id,
                     HashedToken = tokenVariants.HashedToken,
+                    UtcCreateTime = currentTimestamp,
                     UtcExpiryTime = remember ?
-                        DateTime.UtcNow.AddDays(Constants.LONG_TERM_ACCESS_TOKEN_VALIDITY_DAYS) :
-                        DateTime.UtcNow.AddHours(Constants.SHORT_TERM_ACCESS_TOKEN_VALIDITY_HOURS)
+                        currentTimestamp.AddDays(Constants.LONG_TERM_ACCESS_TOKEN_VALIDITY_DAYS) :
+                        currentTimestamp.AddHours(Constants.SHORT_TERM_ACCESS_TOKEN_VALIDITY_HOURS)
                 };    
                 using (var ts = ctx.Database.BeginTransaction())
                 {
                     await ctx.AuthTokens.AddAsync(dbAuthToken);
                     await ctx.SaveChangesAsync();
-                    ts.Commit();
+                    await ts.CommitAsync();
                 }
                 
                 var roleName = (await ctx.AuthRoles.AsNoTracking().SingleAsync(i => i.Id == userInfo.AuthRoleId)).Name;
@@ -138,12 +140,13 @@ namespace Core.Server.Services.Implementations.DbAccess
             {
                 using (var ts = ctx.Database.BeginTransaction())
                 {
-                    var foundToken = await ctx.AuthTokens.FirstOrDefaultAsync(i => i.Id == userId && i.HashedToken == hashedToken);
+                    var foundToken = await ctx.AuthTokens.FirstOrDefaultAsync(i => i.AuthUserId == userId && i.HashedToken == hashedToken);
                     if (foundToken != null)
                     {
                         ctx.AuthTokens.Remove(foundToken);
+                        await ctx.SaveChangesAsync();
+                        await ts.CommitAsync();
                     }
-                    ts.Commit();
                 }
             }
         }

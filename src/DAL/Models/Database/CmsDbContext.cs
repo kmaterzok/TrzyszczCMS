@@ -161,7 +161,6 @@ namespace DAL.Models.Database
 
                 entity.Property(e => e.Description).HasMaxLength(1024);
             });
-
         }
     }
 }

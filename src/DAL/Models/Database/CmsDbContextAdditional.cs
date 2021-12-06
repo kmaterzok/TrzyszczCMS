@@ -12,17 +12,13 @@ namespace DAL.Models.Database
         #endregion
 
         #region --- Ctor ---
-        public CmsDbContext(string connectionString)
-        {
+        public CmsDbContext(string connectionString) =>
             this._connectionString = connectionString;
-        }
         #endregion
 
         #region --- Protected methods ---
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        {
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder) =>
             optionsBuilder.UseNpgsql(this._connectionString);
-        }
 
         #endregion
     }

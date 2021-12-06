@@ -29,6 +29,7 @@ namespace DAL.Migrations
                 .WithColumn(nameof(AuthToken.Id))            .AsInt32().NotNullable().PrimaryKey().Identity()
                 .WithColumn(nameof(AuthToken.AuthUserId))    .AsInt32().NotNullable()
                 .WithColumn(nameof(AuthToken.HashedToken))   .AsBinary(128).NotNullable()
+                .WithColumn(nameof(AuthToken.UtcCreateTime)) .AsDateTime().NotNullable()
                 .WithColumn(nameof(AuthToken.UtcExpiryTime)) .AsDateTime().NotNullable();
 
             Create.ForeignKey(ForeignKeys.Current.AUTHTOKEN_AUTHUSER_ASSIGNEDUSERID)

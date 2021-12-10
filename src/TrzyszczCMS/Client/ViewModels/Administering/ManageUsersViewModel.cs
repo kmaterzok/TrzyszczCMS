@@ -28,6 +28,7 @@ namespace TrzyszczCMS.Client.ViewModels.Administering
         public ManageUsersViewModel(IManageUserService manageUserService, IDataDepository depository)
         {
             this.Users = new List<GridItem<SimpleUserInfo>>();
+            this.Tokens = new List<GridItem<SimpleTokenInfo>>();
             this._userSearchParams = new Dictionary<FilteredGridField, string>();
             this._manageUserService = manageUserService;
             this._depository = depository;
@@ -44,6 +45,16 @@ namespace TrzyszczCMS.Client.ViewModels.Administering
             get => _users;
             set => Set(ref _users, value, nameof(Users));
         }
+
+        private List<GridItem<SimpleTokenInfo>> _tokens;
+        /// <summary>
+        /// All token currently displayed in the signed in user's token grid.
+        /// </summary>
+        public List<GridItem<SimpleTokenInfo>> Tokens
+        {
+            get => _tokens;
+            set => Set(ref _tokens, value, nameof(Tokens));
+        }
         #endregion
 
         #region Methods
@@ -58,6 +69,9 @@ namespace TrzyszczCMS.Client.ViewModels.Administering
 
         public async Task LoadUsersWithFilter() =>
             this.Users = (await this._manageUserService.GetSimpleUserInfo(this._userSearchParams)).ToGridItemList();
+
+        public async Task LoadSignedInUserTokens() =>
+            this.Tokens = (await this._manageUserService.GetOwnSimpleTokenInfo()).ToGridItemList();
 
         public async Task SendDataToDepositoryForEditingAsync(int editedUserId)
         {
@@ -79,6 +93,12 @@ namespace TrzyszczCMS.Client.ViewModels.Administering
                 UserEditorMode = DataEditorMode.Create,
                 UserDetails = DetailedUserInfo.MakeEmpty(availableRoles)
             }, false);
+        }
+
+        public async Task RevokeTokenAsync(int tokenId)
+        {
+            await this._manageUserService.RevokeToken(tokenId);
+            await this.LoadSignedInUserTokens();
         }
         #endregion
     }

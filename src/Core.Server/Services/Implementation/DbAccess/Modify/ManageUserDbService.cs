@@ -73,6 +73,7 @@ namespace Core.Server.Services.Implementation.DbAccess.Modify
                     {
                         return DeleteRowFailReason.DeletingForbidden;
                     }
+                    // TODO: Make sure the signed in user does not delete its own account.
 
                     ctx.AuthUsers.Remove(removedOne);
                     await ctx.SaveChangesAsync();
@@ -163,7 +164,6 @@ namespace Core.Server.Services.Implementation.DbAccess.Modify
 
         public async Task<bool> UpdateUserAsync(DetailedUserInfo user)
         {
-
             using (var ctx = _databaseStrategy.GetContext())
             {
                 using (var ts = await ctx.Database.BeginTransactionAsync())
@@ -186,6 +186,62 @@ namespace Core.Server.Services.Implementation.DbAccess.Modify
                     return true;
                 }
             }
+        }
+
+        public async Task<DeleteRowFailReason?> RevokeTokenAsync(int tokenId, int signedInUserId, string usersSessionToken)
+        {
+            using (var ctx = _databaseStrategy.GetContext())
+            {
+                using (var ts = await ctx.Database.BeginTransactionAsync())
+                {
+                    var removedOne = await ctx.AuthTokens.SingleOrDefaultAsync(i => i.Id == tokenId);
+                    if (removedOne == null)
+                    {
+                        return DeleteRowFailReason.NotFound;
+                    }
+                    else if (removedOne.AuthUserId != signedInUserId)
+                    {
+                        return DeleteRowFailReason.DeletingForbidden;
+                    }
+                    else if (_cryptoService.GenerateHashFromPlainAccessToken(usersSessionToken).SequenceEqual(removedOne.HashedToken))
+                    {
+                        return DeleteRowFailReason.DeletingOwnStuff;
+                    }
+
+                    ctx.AuthTokens.Remove(removedOne);
+                    await ctx.SaveChangesAsync();
+                    await ts.CommitAsync();
+
+                    return null;
+                }
+            }
+        }
+
+        public async Task<List<SimpleTokenInfo>> OwnSimpleTokenInfoAsync(int signedInUserId, string usersSessionToken)
+        {
+            return await Task.Run(() =>
+            {
+                using (var ctx = _databaseStrategy.GetContext())
+                {
+                    var tokenData = ctx.AuthTokens.Where(i => i.AuthUserId == signedInUserId)
+                                                  .Select(i => new
+                                                  {
+                                                      Id                    = i.Id,
+                                                      UsedForCurrentSession = false,
+                                                      UtcCreateTime         = i.UtcCreateTime,
+                                                      UtcExpiryTime         = i.UtcExpiryTime,
+                                                      HashedToken           = i.HashedToken
+                                                  }).AsEnumerable();
+                    return tokenData.Select(i => new SimpleTokenInfo()
+                                    {
+                                        Id                    = i.Id,
+                                        UsedForCurrentSession = _cryptoService.GenerateHashFromPlainAccessToken(usersSessionToken)
+                                                                              .SequenceEqual(i.HashedToken),
+                                        UtcCreateTime         = i.UtcCreateTime,
+                                        UtcExpiryTime         = i.UtcExpiryTime
+                                    }).ToList();
+                }
+            });
         }
         #endregion
 

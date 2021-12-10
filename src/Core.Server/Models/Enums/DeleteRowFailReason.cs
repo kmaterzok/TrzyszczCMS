@@ -6,6 +6,7 @@
     public enum DeleteRowFailReason
     {
         NotFound,
-        DeletingForbidden
+        DeletingForbidden,
+        DeletingOwnStuff
     }
 }

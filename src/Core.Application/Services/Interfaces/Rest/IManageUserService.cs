@@ -51,5 +51,16 @@ namespace Core.Application.Services.Interfaces.Rest
         /// <param name="user">Data of updated user</param>
         /// <returns>Task of the executed operation</returns>
         Task UpdateUser(DetailedUserInfo user);
+        /// <summary>
+        /// Revoke the token that has <paramref name="tokenId"/> ID.
+        /// </summary>
+        /// <param name="tokenId">Row ID of the token</param>
+        /// <returns>Task executing the operation</returns>
+        Task RevokeToken(int tokenId);
+        /// <summary>
+        /// Get all tokens belonging to the signed in user.
+        /// </summary>
+        /// <returns>Task returning tokens</returns>
+        Task<List<SimpleTokenInfo>> GetOwnSimpleTokenInfo();
     }
 }

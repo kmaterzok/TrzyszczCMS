@@ -62,6 +62,11 @@ namespace Core.Application.Services.Implementation.Rest
         public async Task UpdateUser(DetailedUserInfo user) =>
             (await this._authHttpClient.PostAsJsonAsync($"/ManageUser/UpdateUser", user)).EnsureSuccessStatusCode();
 
+        public async Task RevokeToken(int tokenId) =>
+            (await this._authHttpClient.DeleteAsync($"/ManageUser/RevokeToken/{tokenId}")).EnsureSuccessStatusCode();
+
+        public async Task<List<SimpleTokenInfo>> GetOwnSimpleTokenInfo() =>
+            await this._authHttpClient.GetFromJsonAsync<List<SimpleTokenInfo>>($"/ManageUser/OwnSimpleTokenInfo");
         #endregion
     }
 }

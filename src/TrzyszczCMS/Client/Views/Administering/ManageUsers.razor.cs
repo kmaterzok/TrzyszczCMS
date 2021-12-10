@@ -29,6 +29,7 @@ namespace TrzyszczCMS.Client.Views.Administering
             if (firstRender)
             {
                 await this.ViewModel.LoadUsersWithFilter();
+                await this.ViewModel.LoadSignedInUserTokens();
             }
         }
         #endregion

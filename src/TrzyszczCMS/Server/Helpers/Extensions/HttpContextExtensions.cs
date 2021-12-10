@@ -34,9 +34,7 @@ namespace TrzyszczCMS.Server.Helpers.Extensions
         /// </summary>
         /// <param name="httpContext">HTTP context from the request used for processing data</param>
         /// <returns>Access token</returns>
-        public static string GetAccessToken(this HttpContext httpContext)
-        {
-            return httpContext.Request.Headers[CommonConstants.HEADER_AUTHORIZATION_NAME].SingleOrDefault();
-        }
+        public static string GetAccessToken(this HttpContext httpContext) =>
+            httpContext.Request.Headers[CommonConstants.HEADER_AUTHORIZATION_NAME].SingleOrDefault();
     }
 }

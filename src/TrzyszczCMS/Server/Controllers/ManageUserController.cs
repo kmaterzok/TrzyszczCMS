@@ -9,6 +9,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Threading.Tasks;
+using TrzyszczCMS.Server.Helpers.Extensions;
 
 namespace TrzyszczCMS.Server.Controllers
 {
@@ -97,6 +98,54 @@ namespace TrzyszczCMS.Server.Controllers
         [Route("[action]")]
         public async Task<ActionResult> UpdateUser([FromBody][NotNull] DetailedUserInfo request) =>
             await this._manageUserService.UpdateUserAsync(request) ? Ok() : Conflict();
+
+
+
+        [HttpDelete]
+        [Produces("application/json")]
+        [Route("[action]/{tokenId}")]
+        public async Task<ActionResult> RevokeToken(int tokenId)
+        {
+            var userId = HttpContext.GetUserIdByAccessToken();
+            var usersCurrentToken = HttpContext.GetAccessToken();
+
+            if (!userId.HasValue || string.IsNullOrEmpty(usersCurrentToken))
+            {
+                return Forbid();
+            }
+
+            var error = await this._manageUserService.RevokeTokenAsync(tokenId, userId.Value, usersCurrentToken);
+            if (!error.HasValue)
+            {
+                return Ok();
+            }
+            switch (error.Value)
+            {
+                case DeleteRowFailReason.DeletingForbidden:
+                    return Forbid();
+                case DeleteRowFailReason.NotFound:
+                    return NotFound();
+                case DeleteRowFailReason.DeletingOwnStuff:
+                    return Conflict();
+                default:
+                    throw ExceptionMaker.NotImplemented.ForHandling(error.Value, nameof(error.Value));
+            }
+        }
+
+        [HttpGet]
+        [Produces("application/json")]
+        [Route("[action]")]
+        public async Task<ActionResult<List<SimpleRoleInfo>>> OwnSimpleTokenInfo()
+        {
+            var userId = HttpContext.GetUserIdByAccessToken();
+            var usersCurrentToken = HttpContext.GetAccessToken();
+
+            if (!userId.HasValue || string.IsNullOrEmpty(usersCurrentToken))
+            {
+                return Forbid();
+            }
+            return Ok(await this._manageUserService.OwnSimpleTokenInfoAsync(userId.Value, usersCurrentToken));
+        }
 
         #endregion
     }

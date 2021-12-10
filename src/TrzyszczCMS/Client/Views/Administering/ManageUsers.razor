@@ -2,6 +2,7 @@
 @page "/manage/users"
 
 @using Core.Shared.Enums;
+@using Core.Shared.Helpers.Extensions
 @using Core.Shared.Models;
 @using TrzyszczCMS.Client.Views.Shared.Accordion
 @using TrzyszczCMS.Client.Views.Shared.Grids
@@ -55,7 +56,30 @@
         <AccordionElement Header="Your sessions" ContentClass="@ACCORDION_CONTENT_CLASS" ParentAccordionId="actx.AccordionId" CollapseId="SessionCollapse">
             <Content>
                 <section>
-                    It will be implemented soon.
+                    <Grid Items="ViewModel.Tokens" MultiSelect="false">
+                        <Header>
+                            <GridColHeader Title="Created" SearchBoxType="SearchBoxType.None" />
+                            <GridColHeader Title="Expiring" SearchBoxType="SearchBoxType.None" />
+                            <GridColHeader Title="Actions" SearchBoxType="SearchBoxType.None" Width="200" />
+                        </Header>
+                        <RowTemplate Context="row">
+                            <td>@row.Data.UtcCreateTime.ToGenericNotation()</td>
+                            <td>@row.Data.UtcExpiryTime.ToGenericNotation()</td>
+                            <td>
+                                @if (row.Data.UsedForCurrentSession)
+                                {
+                                    <span>Current session</span>
+                                }
+                                else
+                                {
+                                    <button class="btn btn-sm btn-primary" @onclick="@(() => ViewModel.RevokeTokenAsync(row.Data.Id))"><i class="fas fa-trash"></i>&nbsp;Revoke</button>
+                                }
+                            </td>
+                        </RowTemplate>
+                        <NoRowsTemplate>
+                            No data loaded.
+                        </NoRowsTemplate>
+                    </Grid>
                 </section>
             </Content>
         </AccordionElement>

@@ -54,5 +54,21 @@ namespace Core.Server.Services.Interfaces.DbAccess.Modify
         /// <param name="user">Information about user</param>
         /// <returns>Task returning if the update was successful</returns>
         Task<bool> UpdateUserAsync(DetailedUserInfo user);
+        /// <summary>
+        /// Revoke the user's by <paramref name="tokenId"/>.
+        /// </summary>
+        /// <param name="tokenId">Row ID of the revoked token</param>
+        /// <param name="signedInUserId">Row ID of the signed in user that executes the operation</param>
+        /// <param name="usersSessionToken">Access token of the signed in user that is used in the current session</param>
+        /// <returns>Task returning the reason why the token was not deleted. <c>null</c> - successful operation.</returns>
+        Task<DeleteRowFailReason?> RevokeTokenAsync(int tokenId, int signedInUserId, string usersSessionToken);
+        /// <summary>
+        /// Get information about session access tokens of the user by <paramref name="signedInUserId"/>.
+        /// </summary>
+        /// <param name="signedInUserId">Row ID of the signed in user that executes the operation</param>
+        /// <param name="usersSessionToken">Access token of the signed in user that is used in the current session</param>
+        /// <returns>Task returning the collection of token infos</returns>
+        Task<List<SimpleTokenInfo>> OwnSimpleTokenInfoAsync(int signedInUserId, string usersSessionToken);
+
     }
 }

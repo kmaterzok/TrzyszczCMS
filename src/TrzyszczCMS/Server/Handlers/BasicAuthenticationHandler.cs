@@ -35,7 +35,7 @@ namespace TrzyszczCMS.Server.Handlers
         {
             if (!Request.Headers.ContainsKey(CommonConstants.HEADER_AUTHORIZATION_NAME))
             {
-                return AuthenticateResult.Fail("Authorization header not found.");
+                return AuthenticateResult.NoResult();
             }
             try
             {

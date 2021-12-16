@@ -59,6 +59,7 @@ namespace TrzyszczCMS.Client
             services.AddScoped<ILoadPageService,   LoadPageService>();
             services.AddScoped<IManagePageService, ManagePageService>();
             services.AddScoped<IManageUserService, ManageUserService>();
+            services.AddScoped<IManageFileService, ManageFileService>();
 
 
             services.AddScoped<AuthenticationStateProvider, ApplicationAuthenticationStateProvider>();
@@ -70,10 +71,11 @@ namespace TrzyszczCMS.Client
         private static void RegisterViewModels(IServiceCollection services)
         {
             services.AddTransient<SignInViewModel>();
-            services.AddTransient<ModularPageViewModel>();
             services.AddTransient<ManagePagesViewModel>();
-            services.AddTransient<PageEditorViewModel>();
             services.AddTransient<ManageUsersViewModel>();
+            services.AddTransient<ManageFilesViewModel>();
+            services.AddTransient<ModularPageViewModel>();
+            services.AddTransient<PageEditorViewModel>();
             services.AddTransient<UserEditorViewModel>();
         }
         #endregion

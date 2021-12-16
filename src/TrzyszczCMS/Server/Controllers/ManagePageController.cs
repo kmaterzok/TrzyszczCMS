@@ -79,11 +79,8 @@ namespace TrzyszczCMS.Server.Controllers
         [HttpPost]
         [Produces("application/json")]
         [Route("[action]")]
-        public async Task<ActionResult> DeletePages([FromBody] int[] pageIds)
-        {
-            await this._managePageService.DeletePagesAsync(pageIds);
-            return Ok();
-        }
+        public async Task<ActionResult> DeletePages([FromBody] int[] pageIds) =>
+            await this._managePageService.DeletePagesAsync(pageIds) ? Ok() : NotFound();
         #endregion
     }
 }

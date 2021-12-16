@@ -1,6 +1,4 @@
-﻿using System;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Metadata;
+﻿using Microsoft.EntityFrameworkCore;
 
 #nullable disable
 
@@ -22,10 +20,12 @@ namespace DAL.Models.Database
         public virtual DbSet<AuthRolePolicyAssign> AuthRolePolicyAssigns { get; set; }
         public virtual DbSet<AuthToken> AuthTokens { get; set; }
         public virtual DbSet<AuthUser> AuthUsers { get; set; }
+        public virtual DbSet<ContFile> ContFiles { get; set; }
         public virtual DbSet<ContModule> ContModules { get; set; }
         public virtual DbSet<ContPage> ContPages { get; set; }
         public virtual DbSet<ContTextWallModule> ContTextWallModules { get; set; }
         public virtual DbSet<VersionInfo> VersionInfos { get; set; }
+
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -103,6 +103,21 @@ namespace DAL.Models.Database
                     .HasForeignKey(d => d.AuthRoleId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("AuthUser_AuthRole_AssignedRoleId");
+            });
+
+            modelBuilder.Entity<ContFile>(entity =>
+            {
+                entity.ToTable("ContFile");
+
+                entity.Property(e => e.Name)
+                    .IsRequired()
+                    .HasMaxLength(250);
+
+                entity.HasOne(d => d.ParentFile)
+                    .WithMany(p => p.InverseParentFile)
+                    .HasForeignKey(d => d.ParentFileId)
+                    .OnDelete(DeleteBehavior.Cascade)
+                    .HasConstraintName("ContFile_ContFile_ParentFileId");
             });
 
             modelBuilder.Entity<ContModule>(entity =>

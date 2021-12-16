@@ -20,5 +20,10 @@
         ManageUsers_Description,
         ManageUsers_Role,
         #endregion
+
+        #region ManageFiles
+        ManageFiles_Name,
+        ManageFiles_Created
+        #endregion
     }
 }

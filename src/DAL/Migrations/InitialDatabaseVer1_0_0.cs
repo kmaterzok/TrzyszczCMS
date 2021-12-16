@@ -178,7 +178,23 @@ namespace DAL.Migrations
                 SectionWidth = 800,
                 SectionContent = "**Accusantium consequatur et maiores.** Est quia iste consectetur illum repellendus officia quia quam. Perspiciatis nihil dignissimos est et beatae qui ex ipsa. Dolorem est at molestias aut architecto quis non. Vel unde sequi itaque. Deserunt est numquam quia harum voluptatem excepturi. Sunt expedita sequi veniam optio et voluptate quia voluptatem. Vel corporis deleniti dolorem accusantium. Eos vel modi qui eos. At sed et dolorum ad temporibus vel. Omnis illum quam fugit. Officiis officia quia autem laudantium aut impedit. Asperiores laborum neque quaerat excepturi autem et. Ad id fugit error voluptas sed eum architecto. Error non commodi in delectus. Harum veritatis rerum eum quos et aperiam et vel. Est et nemo similique nam quos necessitatibus tempore commodi. Minima sunt dolorem velit aut omnis eaque repudiandae qui. Atque assumenda voluptas assumenda sint quia deleniti. Corporis aliquam dolorem aut quasi fuga est inventore deleniti. Ratione sit est totam facere libero. In quaerat et consequuntur."
             });
-            
+
+            #endregion
+
+
+            #region --- Files ---
+            Create.Table(nameof(ContFile))
+                .WithColumn(nameof(ContFile.Id))                   .AsInt32().NotNullable().PrimaryKey().Identity()
+                .WithColumn(nameof(ContFile.ParentFileId))         .AsInt32().Nullable()
+                .WithColumn(nameof(ContFile.IsDirectory))          .AsBoolean().NotNullable()
+                .WithColumn(nameof(ContFile.CreationUtcTimestamp)) .AsDateTime().NotNullable()
+                .WithColumn(nameof(ContFile.Name))                 .AsString(250).NotNullable()
+                .WithColumn(nameof(ContFile.AccessGuid))           .AsGuid().NotNullable();
+
+            Create.ForeignKey(ForeignKeys.Current.CONTFILEID_CONTFILEID_PARENTFILEID)
+                .FromTable(nameof(ContFile))                       .ForeignColumn(nameof(ContFile.ParentFileId))
+                .ToTable(  nameof(ContFile))                       .PrimaryColumn(nameof(ContFile.Id))
+                .OnDelete(System.Data.Rule.Cascade);
             #endregion
 
         }

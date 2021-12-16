@@ -28,6 +28,9 @@
 
             public const string CONTMODULE_PAGE_ASSIGNEDID
                 = "ContModule_Page_AssignedId";
+
+            public const string CONTFILEID_CONTFILEID_PARENTFILEID
+                = "ContFile_ContFile_ParentFileId";
         }
         /// <summary>
         /// Names of all obsolete (unused) foreign keys.

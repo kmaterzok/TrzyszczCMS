@@ -77,6 +77,14 @@ namespace Core.Server.Helpers.Extensions
                 case FilteredGridField.ManageUsers_UserName:
                     return source.Where<AuthUser, T>(t => t.Username.ToLower().Contains(filterText.ToLower()));
 
+                case FilteredGridField.ManageFiles_Name:
+                    return source.Where<ContFile, T>(t => t.Name.ToLower().Contains(filterText.ToLower()));
+                case FilteredGridField.ManageFiles_Created:
+                    var range3 = FilterDataParser.ToDateRange(filterText);
+                    if (range3.Start.HasValue) { source = source.Where<ContFile, T>(t => t.CreationUtcTimestamp >= range3.Start.Value); }
+                    if (range3.End.HasValue)   { source = source.Where<ContFile, T>(t => t.CreationUtcTimestamp <= range3.End.Value); }
+                    return source;
+
                 default:
                     throw ExceptionMaker.NotImplemented.ForHandling(gridField, nameof(gridField));
                     // TODO: Write a test checking all the cases.

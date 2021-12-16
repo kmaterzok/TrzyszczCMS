@@ -60,7 +60,6 @@ namespace Core.Server.Services.Implementation.DbAccess.Modify
                                                      UriName = i.UriName,
                                                      CreateUtcTimestamp = i.CreateUtcTimestamp,
                                                      PublishUtcTimestamp = i.PublishUtcTimestamp
-                                                     // TODO: Displaying local time whilst using UTC on the server
                                                  }).ToListAsync();
 
                 return new DataPage<SimplePageInfo>()
@@ -192,17 +191,22 @@ namespace Core.Server.Services.Implementation.DbAccess.Modify
             }
         }
 
-        public async Task DeletePagesAsync(IEnumerable<int> pageIds)
+        public async Task<bool> DeletePagesAsync(IEnumerable<int> pageIds)
         {
             using (var ctx = _databaseStrategy.GetContext())
             {
                 using (var ts = await ctx.Database.BeginTransactionAsync())
                 {
                     var removedOnes = ctx.ContPages.Where(i => pageIds.Contains(i.Id));
+                    if (await removedOnes.CountAsync() != pageIds.Count())
+                    {
+                        return false;
+                    }
                     ctx.ContPages.RemoveRange(removedOnes);
 
                     await ctx.SaveChangesAsync();
                     await ts.CommitAsync();
+                    return true;
                 }
             }
         }

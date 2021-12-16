@@ -15,8 +15,8 @@ namespace Core.Application.Services.Interfaces.Rest
         /// Get basic information about sites
         /// </summary>
         /// <param name="type">Type of fetched pages</param>
-        /// <param name="desiredPageNumber">Number of first page that will be fetched</param>
         /// <param name="filters">Filters applied to fetched data</param>
+        /// <param name="desiredPageNumber">Number of first page that will be fetched</param>
         /// <returns>The fetcher getting data from the backend</returns>
         IPageFetcher<SimplePageInfo> GetSimplePageInfos(PageType type, [NotNull] Dictionary<FilteredGridField, string> filters, int desiredPageNumber = 1);
 

@@ -1,0 +1,45 @@
+﻿@layout AdminLayout
+@page "/manage/files"
+@using Core.Shared.Enums;
+@using Core.Shared.Helpers.Extensions
+@using TrzyszczCMS.Client.Views.Shared.Grids
+@using TrzyszczCMS.Client.ViewModels.Administering
+@inject ManageFilesViewModel ViewModel
+
+
+
+
+<nav class="d-flex">
+    <div class="ms-auto">
+        <div class="input-group input-group-sm">
+            <button class="btn btn-primary btn-sm" @onclick="@ViewModel.ApplySearchAsync"><i class="fas fa-search"></i>&nbsp;Search</button>
+            <button class="btn btn-primary btn-sm"><i class="fas fa-plus"></i>&nbsp;Add...</button>
+        </div>
+    </div>
+</nav>
+
+<section>
+    <Grid Items="ViewModel.Files">
+        <Header>
+            <GridColHeader Title="Name" OnSearchTextChanged="@(e => ViewModel.OnSearch(e, FilteredGridField.ManageFiles_Name))" />
+            <GridColHeader Title="Created" OnSearchDateChanged="@(e => ViewModel.OnSearch(e, FilteredGridField.ManageFiles_Created))"
+                           SearchBoxType="SearchBoxType.DateInputs" />
+            <GridColHeader Title="Access ID" SearchBoxType="SearchBoxType.None" />
+
+            <GridColHeader Title="Actions" SearchBoxType="SearchBoxType.None" Width="200" />
+        </Header>
+        <RowTemplate Context="row">
+            @*TODO: Use backend URI*@
+            <td><a href="@string.Format("/Storage/GetFile/{0:N}", row.Data.AccessGuid)">@row.Data.Name</a></td>
+            <td>@row.Data.AccessGuid.ToString("N")</td>
+            <td>@row.Data.CreationUtcTimestamp.ToGenericNotation()</td>
+            <td>
+                <button class="btn btn-sm btn-primary" @onclick="@(() => ViewModel.DeleteFileAsync(row.Data.Id))"><i class="fas fa-trash"></i>&nbsp;Delete</button>
+            </td>
+        </RowTemplate>
+        <NoRowsTemplate>
+            No data loaded.
+        </NoRowsTemplate>
+    </Grid>
+    <button class="btn btn-sm btn-primary w-100 @ViewModel.CssClassForLoadMoreFiles" @onclick="@ViewModel.FetchPageDataNextFiles">Load more</button>
+</section>

@@ -217,12 +217,12 @@ namespace TrzyszczCMS.Client.ViewModels.Administering.Edit
             bool valid = true;
 
             // *** UriName ***
-            if (this._oldUriName == this.UriName)
+            bool noChangeInName = this._oldUriName == this.UriName;
+            if (!noChangeInName)
             {
-                // Do nothing
+                this.UriNameValidationMessage = ValidationApplier.CheckRequired(this.UriName, ref valid);
             }
-            this.UriNameValidationMessage = ValidationApplier.CheckRequired(this.UriName, ref valid);
-            if (!valid)
+            if (noChangeInName || !valid)
             {
                 // Do nothing
             }

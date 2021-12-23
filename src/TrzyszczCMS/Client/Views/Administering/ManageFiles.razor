@@ -2,6 +2,7 @@
 @page "/manage/files"
 @using Core.Shared.Enums;
 @using Core.Shared.Helpers.Extensions
+@using Core.Shared.Models
 @using TrzyszczCMS.Client.Views.Shared.Grids
 @using TrzyszczCMS.Client.ViewModels.Administering
 @inject ManageFilesViewModel ViewModel
@@ -13,13 +14,14 @@
     <div class="ms-auto">
         <div class="input-group input-group-sm">
             <button class="btn btn-primary btn-sm" @onclick="@ViewModel.ApplySearchAsync"><i class="fas fa-search"></i>&nbsp;Search</button>
-            <button class="btn btn-primary btn-sm"><i class="fas fa-plus"></i>&nbsp;Add...</button>
+            <button class="btn btn-primary btn-sm" @onclick="@CreateDirectory"><i class="fas fa-plus"></i>&nbsp;Add directory...</button>
+            <button class="btn btn-primary btn-sm" ><i class="fas fa-plus"></i>&nbsp;Add file...</button>
         </div>
     </div>
 </nav>
 
 <section>
-    <Grid Items="ViewModel.Files">
+    <Grid Items="ViewModel.Files" MultiSelect="false">
         <Header>
             <GridColHeader Title="Name" OnSearchTextChanged="@(e => ViewModel.OnSearch(e, FilteredGridField.ManageFiles_Name))" />
             <GridColHeader Title="Created" OnSearchDateChanged="@(e => ViewModel.OnSearch(e, FilteredGridField.ManageFiles_Created))"
@@ -29,10 +31,23 @@
             <GridColHeader Title="Actions" SearchBoxType="SearchBoxType.None" Width="200" />
         </Header>
         <RowTemplate Context="row">
-            @*TODO: Use backend URI*@
-            <td><a href="@string.Format("/Storage/GetFile/{0:N}", row.Data.AccessGuid)">@row.Data.Name</a></td>
-            <td>@row.Data.AccessGuid.ToString("N")</td>
+            <td>
+                @if (row.Data.IsDirectory)
+                {
+                    <span>
+                        <i class="fas fa-folder"></i>&nbsp;@row.Data.Name
+                    </span>
+                }
+                else
+                {
+                    <span>
+                        <i class="fas fa-file"></i>&nbsp;
+                        <a href="@string.Format("/Storage/GetFile/{0}", row.Data.AccessGuid.ToString(CommonConstants.FILE_ACCESS_ID_FORMAT))">@row.Data.Name</a>
+                    </span>
+                }
+            </td>
             <td>@row.Data.CreationUtcTimestamp.ToGenericNotation()</td>
+            <td>@row.Data.AccessGuid.ToString(CommonConstants.FILE_ACCESS_ID_FORMAT)</td>
             <td>
                 <button class="btn btn-sm btn-primary" @onclick="@(() => ViewModel.DeleteFileAsync(row.Data.Id))"><i class="fas fa-trash"></i>&nbsp;Delete</button>
             </td>

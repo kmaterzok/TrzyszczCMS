@@ -4,10 +4,7 @@ using Core.Shared.Models.ManageFiles;
 using Core.Shared.Models.Rest.Requests.ManageFiles;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace TrzyszczCMS.Server.Controllers
@@ -43,6 +40,32 @@ namespace TrzyszczCMS.Server.Controllers
         [Route("[action]/{fileId}")]
         public async Task<ActionResult> DeleteFile(int fileId) =>
             await this._manageFileService.DeleteFileAsync(fileId) ? Ok() : NotFound();
+
+        [HttpGet]
+        [Produces("application/json")]
+        [Route("[action]/{directoryName}")]
+        public async Task<ActionResult<SimpleFileInfo>> CreateDirectory(string directoryName) =>
+            await CreateDirectoryAsync(directoryName, null);
+
+        [HttpGet]
+        [Produces("application/json")]
+        [Route("[action]/{directoryName}/{parentNodeId}")]
+        public async Task<ActionResult<SimpleFileInfo>> CreateDirectory(string directoryName, int parentNodeId) =>
+            await CreateDirectoryAsync(directoryName, parentNodeId);
+        #endregion
+
+        #region Helper methods
+        /// <summary>
+        /// Try to create a directory and retrive a info about it.
+        /// </summary>
+        /// <param name="directoryName">Name of a new directory</param>
+        /// <param name="parentNodeId">ID of the node that hold the directory</param>
+        /// <returns>Task returning result info about created directory</returns>
+        private async Task<ActionResult<SimpleFileInfo>> CreateDirectoryAsync(string directoryName, int? parentNodeId)
+        {
+            var result = await this._manageFileService.CreateLogicalDirectoryAsync(directoryName, parentNodeId);
+            return result.GetValue(out SimpleFileInfo file, out _) ? Ok(file) : Conflict();
+        }
         #endregion
     }
 }

@@ -1,5 +1,6 @@
 ﻿using Core.Application.Helpers.Interfaces;
 using Core.Shared.Enums;
+using Core.Shared.Models;
 using Core.Shared.Models.ManageFiles;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
@@ -27,5 +28,13 @@ namespace Core.Application.Services.Interfaces.Rest
         /// <param name="fileId">ID of the deleted file</param>
         /// <returns>Task executing the operation</returns>
         Task DeleteFile(int fileId);
+
+        /// <summary>
+        /// Create a logical directory in the database.
+        /// </summary>
+        /// <param name="name">Name of the directory</param>
+        /// <param name="currentParentNodeId">The id of the node for which the folder is created</param>
+        /// <returns>Task returning info about created directory or error if the folder exists.</returns>
+        Task<Result<SimpleFileInfo, object>> CreateLogicalDirectory(string name, int? currentParentNodeId);
     }
 }

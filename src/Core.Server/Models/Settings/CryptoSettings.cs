@@ -5,7 +5,7 @@ namespace Core.Server.Models.Settings
     /// <summary>
     /// The class containing settings of cryptography for backend usage.
     /// </summary>
-    public class CryptoSettings
+    public sealed class CryptoSettings
     {
         /// <summary>
         /// How many iterations of SHA3-512 (Keccak) must be done to achieve a hashed access token.

@@ -30,12 +30,22 @@ namespace TrzyszczCMS.Client.Data.Model.Extensions
             source.Select(i => i.Data).ToList();
 
         /// <summary>
-        /// Adds the elements of the specified grid data collection to the end of the <see cref="List{GridItem{T}}"/>
+        /// Adds elements of the specified grid data collection to the end of the <see cref="List{GridItem{T}}"/>
         /// </summary>
         /// <typeparam name="T">Type of the added data</typeparam>
         /// <param name="source">Modified list</param>
         /// <param name="collection">Added data</param>
         public static void AddRangeAndPack<T>(this List<GridItem<T>> source, IEnumerable<T> collection) =>
             source.AddRange(collection.Select(i => new GridItem<T>(i)));
+
+        /// <summary>
+        /// Adds an element of the specified grid data collection to the end of the <see cref="List{GridItem{T}}"/>
+        /// </summary>
+        /// <typeparam name="T">Type of the added data</typeparam>
+        /// <param name="source">Modified list</param>
+        /// <param name="element">Added element</param>
+        public static void AddAndPack<T>(this List<GridItem<T>> source, T element) =>
+            source.Add(new GridItem<T>(element));
+
     }
 }

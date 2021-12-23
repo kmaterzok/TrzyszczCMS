@@ -18,5 +18,9 @@
         /// The database row ID of the default administrator.
         /// </summary>
         public const int DEFAULT_ADMIN_ID = 1;
+        /// <summary>
+        /// The format for stored and displayed file access names/IDs.
+        /// </summary>
+        public const string FILE_ACCESS_ID_FORMAT = "N";
     }
 }

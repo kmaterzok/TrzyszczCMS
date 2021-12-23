@@ -1,4 +1,7 @@
 ﻿@inherits LayoutComponentBase
+@using TrzyszczCMS.Client.Data.Enums;   
+@using TrzyszczCMS.Client.Helpers
+
 @*--- This a layout displaying menu for those who administer the website ---*@
 
 <AuthorizeView>
@@ -14,10 +17,48 @@
                 </div>
 
                 <div class="content px-4">
-                    @Body
+                    <CascadingValue Value="@Popupper">
+                        @Body
+                    </CascadingValue>
                 </div>
             </div>
         </div>
+
+        @if (Popupper.PopupType != PopupType.None)
+        {
+            <div class="position-absolute top-0 start-0 vw-100 vh-100 opacity"
+                    style="background-color: #072009e6; z-index: 1000;">
+
+                <div class="container mx-auto w-100">
+                    <div class="row justify-content-center">
+                        <section class="card col-9 col-sm-6 col-lg-4 border-0 bg-light">
+                            <div class="card-header border-0 bg-light my-2">
+                                @Popupper.Message
+                            </div>
+                            <div class="card-body">
+                                @if (Popupper.PopupType == PopupType.Prompt || Popupper.PopupType == PopupType.CancellablePrompt)
+                                {
+                                    <div class="my-2">
+                                        <input type="text" class="form-control" @bind-value="@Popupper.TypedInput" />
+                                    </div>
+                                }
+                                <div class="d-flex my-2">
+                                    <div class="ms-auto">
+                                        <div class="input-group input-group-sm">
+                                            <button class="btn btn-sm btn-primary" style="min-width: 70px;" @onclick="@Popupper.OnOK">OK</button>
+                                            @if (Popupper.PopupType == PopupType.CancellablePrompt)
+                                            {
+                                                <button class="btn btn-sm btn-primary" style="min-width: 70px;" @onclick="@Popupper.OnCancel">Cancel</button>
+                                            }
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </section>
+                    </div>
+                </div>
+            </div>
+        }
     </Authorized>
     <NotAuthorized>
         <LayoutView Layout="@typeof(ViewportMiddleYLayout)">
@@ -25,3 +66,18 @@
         </LayoutView>
     </NotAuthorized>
 </AuthorizeView>
+
+@code {
+    #region Fields
+    public Popupper Popupper { get; set; }
+    #endregion
+
+    #region Init
+    protected override void OnInitialized()
+    {
+        this.Popupper = new Popupper();
+        this.Popupper.TypedInput = string.Empty;
+        this.Popupper.NotifyModelUpdated += new EventHandler((s, e) => this.StateHasChanged());
+    }
+    #endregion
+}

@@ -1,10 +1,8 @@
 ﻿using Core.Server.Services.Interfaces.DbAccess;
-using Core.Shared.Models;
 using Core.Shared.Models.Rest.Requests.Auth;
 using Core.Shared.Models.Rest.Responses.Auth;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using System.Linq;
 using System.Threading.Tasks;
 using TrzyszczCMS.Server.Helpers.Extensions;
 
@@ -16,6 +14,7 @@ namespace TrzyszczCMS.Server.Controllers
     /// </summary>
     [ApiController]
     [Route("Auth")]
+    [RequireHttps]
     public class AuthController : ControllerBase
     {
         #region Fields

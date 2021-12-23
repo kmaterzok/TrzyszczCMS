@@ -5,7 +5,7 @@ namespace Core.Server.Models.Settings
     /// <summary>
     ///  The settings for usage of cryptographic function Argon2 for storing passwords.
     /// </summary>
-    public class Argon2Settings
+    public sealed class Argon2Settings
     {
         /// <summary>
         /// Quantity of iterations used for hasing

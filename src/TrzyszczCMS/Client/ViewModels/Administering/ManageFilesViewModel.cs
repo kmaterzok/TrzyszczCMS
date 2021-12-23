@@ -24,7 +24,7 @@ namespace TrzyszczCMS.Client.ViewModels.Administering
         private readonly Dictionary<FilteredGridField, string> _fileSearchParams;
 
         private IPageFetcher<SimpleFileInfo> _filesFetcher;
-        private int? _currentParentNode;
+        private int? _currentParentNodeId;
         #endregion
 
         #region Properties
@@ -59,7 +59,7 @@ namespace TrzyszczCMS.Client.ViewModels.Administering
         #region Ctor
         public ManageFilesViewModel(IManageFileService manageFileService)
         {
-            this._currentParentNode = null;
+            this._currentParentNodeId = null;
             this._manageFileService = manageFileService;
             this._fileSearchParams = new Dictionary<FilteredGridField, string>();
             this.Files = new List<GridItem<SimpleFileInfo>>();
@@ -81,7 +81,7 @@ namespace TrzyszczCMS.Client.ViewModels.Administering
         #region Methods
         public async Task ApplySearchAsync()
         {
-            this.PrepareFilesFetcher(this._currentParentNode);
+            this.PrepareFilesFetcher(this._currentParentNodeId);
             await LoadFilesAsync();
         }
         public async Task LoadFilesAsync()
@@ -102,6 +102,18 @@ namespace TrzyszczCMS.Client.ViewModels.Administering
 
             this.Files.Remove(this.Files.Single(i => i.Data.Id == fileId));
             this.NotifyPropertyChanged(nameof(this.Files));
+        }
+
+        public async Task<bool> CreateDirectoryForCurrentNodeAsync(string name)
+        {
+            var response = await this._manageFileService.CreateLogicalDirectory(name, this._currentParentNodeId);
+            if (response.GetValue(out SimpleFileInfo file, out _))
+            {
+                this.Files.AddAndPack(file);
+                this.NotifyPropertyChanged(nameof(Files));
+                return true;
+            }
+            return false;
         }
         #endregion
     }

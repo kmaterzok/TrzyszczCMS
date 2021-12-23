@@ -65,7 +65,5 @@ namespace Core.Shared.Helpers
             public static NotImplementedException ForHandling<T>(T value, string variableName) =>
                 new NotImplementedException($"Handling of the value {variableName} of type {nameof(T)} has not been implemented.");
         }
-
-
     }
 }

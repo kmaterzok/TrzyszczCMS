@@ -6,12 +6,12 @@ using Core.Shared.Models;
 using Core.Shared.Models.ManageFiles;
 using DAL.Enums;
 using DAL.Helpers.Interfaces;
+using DAL.Models.Database;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace Core.Server.Services.Implementation.DbAccess.Modify
@@ -83,7 +83,6 @@ namespace Core.Server.Services.Implementation.DbAccess.Modify
             }
 
         }
-
         public async Task<bool> DeleteFileAsync(int fileId)
         {
             using (var ctx = _databaseStrategy.GetContext())
@@ -104,5 +103,65 @@ namespace Core.Server.Services.Implementation.DbAccess.Modify
                 }
             }
         }
+
+        public async Task<Result<SimpleFileInfo, object>> CreateLogicalDirectoryAsync(string name, int? currentParentNodeId)
+        {
+            using (var ctx = _databaseStrategy.GetContext())
+            {
+                using (var ts = await ctx.Database.BeginTransactionAsync())
+                {
+                    bool directoryExists = await ctx.ContFiles.AnyAsync(i =>
+                        i.ParentFileId == currentParentNodeId && i.Name == name
+                    );
+                    if (directoryExists)
+                    {
+                        return Result<SimpleFileInfo, object>.MakeError(new object());
+                    }
+                    
+                    var newDirectoryGuid = await this.GetGuidForNewFileAsync(ctx);
+                    var addedDirectory = await ctx.ContFiles.AddAsync(new ContFile()
+                    {
+                        AccessGuid = newDirectoryGuid,
+                        CreationUtcTimestamp = DateTime.UtcNow,
+                        IsDirectory = true,
+                        Name = name,
+                        ParentFileId = currentParentNodeId
+                    });
+
+
+                    await ctx.SaveChangesAsync();
+
+                    var info = new SimpleFileInfo()
+                    {
+                        Id                   = addedDirectory.Entity.Id,
+                        AccessGuid           = addedDirectory.Entity.AccessGuid,
+                        CreationUtcTimestamp = addedDirectory.Entity.CreationUtcTimestamp,
+                        IsDirectory          = addedDirectory.Entity.IsDirectory,
+                        Name                 = addedDirectory.Entity.Name,
+                        ParentFileId         = addedDirectory.Entity.ParentFileId
+                    };
+
+                    await ts.CommitAsync();
+                    return Result<SimpleFileInfo, object>.MakeSuccess(info);
+                }
+            }
+        }
+
+        #region Helper methods
+        /// <summary>
+        /// Generate new guid for a new file.
+        /// </summary>
+        /// <param name="context">Database context</param>
+        /// <returns>Not used GUID for a new file</returns>
+        private async Task<Guid> GetGuidForNewFileAsync(CmsDbContext context)
+        {
+            var newGuid = Guid.NewGuid();
+            while (await context.ContFiles.AsNoTracking().AnyAsync(i => i.AccessGuid == newGuid))
+            {
+                newGuid = Guid.NewGuid();
+            }
+            return newGuid;
+        }
+        #endregion
     }
 }

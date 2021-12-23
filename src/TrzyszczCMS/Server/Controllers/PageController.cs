@@ -15,10 +15,8 @@ namespace TrzyszczCMS.Server.Controllers
         #endregion
 
         #region Ctor
-        public PageController(ILoadPageDbService loadPageService)
-        {
+        public PageController(ILoadPageDbService loadPageService) =>
             this._loadPageService = loadPageService;
-        }
         #endregion
 
         #region Methods

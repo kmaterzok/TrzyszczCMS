@@ -7,6 +7,7 @@ using Core.Server.Services.Interfaces;
 using Core.Server.Services.Interfaces.DbAccess;
 using Core.Server.Services.Interfaces.DbAccess.Modify;
 using Core.Server.Services.Interfaces.DbAccess.Read;
+using Core.Shared.Exceptions;
 using DAL.Helpers;
 using DAL.Helpers.Interfaces;
 using DAL.Migrations;
@@ -20,6 +21,7 @@ using Microsoft.AspNetCore.ResponseCompression;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using System.IO;
 using TrzyszczCMS.Server.Data;
 using TrzyszczCMS.Server.Handlers;
 
@@ -43,8 +45,15 @@ namespace TrzyszczCMS.Server
         /// <param name="services">Service collection</param>
         private void RegisterServices(IServiceCollection services)
         {
-            services.Configure<CryptoSettings>(Configuration.GetSection("CryptoSettings"));
             services.Configure<ConnectionStrings>(Configuration.GetSection("ConnectionStrings"));
+            services.Configure<CryptoSettings>   (Configuration.GetSection("CryptoSettings"));
+            services.Configure<StorageSettings>  (Configuration.GetSection("StorageSettings"));
+
+            var storagePath = Configuration.GetValue<string>("StorageSettings:Path");
+            if (!Directory.Exists(storagePath))
+            {
+                throw new InvalidMemberException($"Path {storagePath} does not belong to an existing directory.");
+            }
 
             services.AddScoped<ICryptoService,           CryptoService>();
             services.AddScoped<IDatabaseStrategyFactory, DatabaseStrategyFactory>();
@@ -53,6 +62,7 @@ namespace TrzyszczCMS.Server
             services.AddScoped<IManagePageDbService,     ManagePageDbService>();
             services.AddScoped<IManageUserDbService,     ManageUserDbService>();
             services.AddScoped<IManageFileDbService,     ManageFileDbService>();
+            services.AddScoped<IStorageService,          StorageService>();
         }
         #endregion
 

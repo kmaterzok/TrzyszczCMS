@@ -7,10 +7,8 @@ using Core.Shared.Enums;
 using Core.Shared.Models;
 using Core.Shared.Models.ManageFiles;
 using Core.Shared.Models.Rest.Requests.ManageFiles;
-using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
-using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Json;
 using System.Threading.Tasks;
@@ -34,6 +32,19 @@ namespace Core.Application.Services.Implementation.Rest
 
         public async Task DeleteFile(int fileId) =>
             (await this._authHttpClient.DeleteAsync($"/ManageFile/DeleteFile/{fileId}")).EnsureSuccessStatusCode();
+
+        public async Task<Result<SimpleFileInfo, object>> CreateLogicalDirectory(string name, int? currentParentNodeId)
+        {
+            string uri = currentParentNodeId.HasValue ?
+                $"/ManageFile/CreateDirectory/{name}/{currentParentNodeId.Value}" :
+                $"/ManageFile/CreateDirectory/{name}";
+
+            var response = await this._authHttpClient.GetAsync(uri);
+
+            return response.IsSuccessStatusCode ?
+                Result<SimpleFileInfo, object>.MakeSuccess(await response.Content.ReadFromJsonAsync<SimpleFileInfo>()) :
+                Result<SimpleFileInfo, object>.MakeError(new object());
+        }
         #endregion
 
         #region Helper methods

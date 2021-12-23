@@ -1,11 +1,8 @@
 ﻿using Core.Shared.Enums;
 using Core.Shared.Models;
 using Core.Shared.Models.ManageFiles;
-using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace Core.Server.Services.Interfaces.DbAccess.Modify
@@ -30,5 +27,13 @@ namespace Core.Server.Services.Interfaces.DbAccess.Modify
         /// <param name="fileId">Row ID of the file entry</param>
         /// <returns>Task returning if the file was found and deleted</returns>
         Task<bool> DeleteFileAsync(int fileId);
+
+        /// <summary>
+        /// Create a logical directory in the database.
+        /// </summary>
+        /// <param name="name">Name of the directory</param>
+        /// <param name="currentParentNodeId">The id of the node for which the folder is created</param>
+        /// <returns>Task returning info about created directory or error if the folder exists.</returns>
+        Task<Result<SimpleFileInfo, object>> CreateLogicalDirectoryAsync(string name, int? currentParentNodeId);
     }
 }

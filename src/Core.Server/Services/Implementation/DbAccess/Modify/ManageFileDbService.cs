@@ -1,5 +1,6 @@
 ﻿using Core.Server.Helpers.Extensions;
 using Core.Server.Models;
+using Core.Server.Models.Enums;
 using Core.Server.Services.Interfaces.DbAccess.Modify;
 using Core.Shared.Enums;
 using Core.Shared.Models;
@@ -104,7 +105,7 @@ namespace Core.Server.Services.Implementation.DbAccess.Modify
             }
         }
 
-        public async Task<Result<SimpleFileInfo, object>> CreateLogicalDirectoryAsync(string name, int? currentParentNodeId)
+        public async Task<Result<SimpleFileInfo, Tuple<CreatingRowFailReason>>> CreateLogicalDirectoryAsync(string name, int? currentParentNodeId)
         {
             using (var ctx = _databaseStrategy.GetContext())
             {
@@ -115,7 +116,11 @@ namespace Core.Server.Services.Implementation.DbAccess.Modify
                     );
                     if (directoryExists)
                     {
-                        return Result<SimpleFileInfo, object>.MakeError(new object());
+                        return Result<SimpleFileInfo, Tuple<CreatingRowFailReason>>.MakeError(new Tuple<CreatingRowFailReason>(CreatingRowFailReason.AlreadyExisting));
+                    }
+                    else if (name == "..")
+                    {
+                        return Result<SimpleFileInfo, Tuple<CreatingRowFailReason>>.MakeError(new Tuple<CreatingRowFailReason>(CreatingRowFailReason.CreatingForbidden));
                     }
                     
                     var newDirectoryGuid = await this.GetGuidForNewFileAsync(ctx);
@@ -142,7 +147,7 @@ namespace Core.Server.Services.Implementation.DbAccess.Modify
                     };
 
                     await ts.CommitAsync();
-                    return Result<SimpleFileInfo, object>.MakeSuccess(info);
+                    return Result<SimpleFileInfo, Tuple<CreatingRowFailReason>>.MakeSuccess(info);
                 }
             }
         }

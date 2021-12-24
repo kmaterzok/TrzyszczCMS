@@ -35,7 +35,8 @@
                 @if (row.Data.IsDirectory)
                 {
                     <span>
-                        <i class="fas fa-folder"></i>&nbsp;@row.Data.Name
+                        <i class="fas fa-folder"></i>&nbsp;
+                        <a class="text-decoration-underline" role="button" @onclick="@(() => ViewModel.EnterDirectoryAsync(row.Data))" >@row.Data.Name</a>
                     </span>
                 }
                 else
@@ -49,7 +50,10 @@
             <td>@row.Data.CreationUtcTimestamp.ToGenericNotation()</td>
             <td>@row.Data.AccessGuid.ToString(CommonConstants.FILE_ACCESS_ID_FORMAT)</td>
             <td>
-                <button class="btn btn-sm btn-primary" @onclick="@(() => ViewModel.DeleteFileAsync(row.Data.Id))"><i class="fas fa-trash"></i>&nbsp;Delete</button>
+                @if (row.Data.Name != "..")
+                {
+                    <button class="btn btn-sm btn-primary" @onclick="@(() => ViewModel.DeleteFileAsync(row.Data.Id))"><i class="fas fa-trash"></i>&nbsp;Delete</button>
+                } 
             </td>
         </RowTemplate>
         <NoRowsTemplate>

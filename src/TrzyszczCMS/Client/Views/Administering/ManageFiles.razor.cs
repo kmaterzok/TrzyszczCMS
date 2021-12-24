@@ -43,7 +43,7 @@ namespace TrzyszczCMS.Client.Views.Administering
                     }
                     else if (!await ViewModel.CreateDirectoryForCurrentNodeAsync(name))
                     {
-                        Popupper.ShowAlert("The directory with the specified name has been existed over there.");
+                        Popupper.ShowAlert("The directory with the specified name has been existed over there or the name is forbidden for use.");
                     }
                 }
             }, true);

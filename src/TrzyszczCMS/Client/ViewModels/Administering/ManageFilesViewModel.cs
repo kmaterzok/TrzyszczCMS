@@ -115,6 +115,16 @@ namespace TrzyszczCMS.Client.ViewModels.Administering
             }
             return false;
         }
+
+        public async Task EnterDirectoryAsync(SimpleFileInfo fileInfo)
+        {
+            this._currentParentNodeId = fileInfo.Name == ".." ?
+                fileInfo.ParentFileId :
+                fileInfo.Id;
+
+            this._filesFetcher = this._manageFileService.GetSimpleFileInfos(this._currentParentNodeId, this._fileSearchParams);
+            await this.LoadFilesAsync();
+        }
         #endregion
     }
 }

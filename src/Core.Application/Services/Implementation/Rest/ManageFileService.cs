@@ -7,6 +7,7 @@ using Core.Shared.Enums;
 using Core.Shared.Models;
 using Core.Shared.Models.ManageFiles;
 using Core.Shared.Models.Rest.Requests.ManageFiles;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Net.Http;
@@ -35,9 +36,15 @@ namespace Core.Application.Services.Implementation.Rest
 
         public async Task<Result<SimpleFileInfo, object>> CreateLogicalDirectory(string name, int? currentParentNodeId)
         {
+            if (name == "..")
+            {
+                return Result<SimpleFileInfo, object>.MakeError(new object());
+            }
+            string sanitisedName = Uri.EscapeDataString(name);
+
             string uri = currentParentNodeId.HasValue ?
-                $"/ManageFile/CreateDirectory/{name}/{currentParentNodeId.Value}" :
-                $"/ManageFile/CreateDirectory/{name}";
+                $"/ManageFile/CreateDirectory/{sanitisedName}/{currentParentNodeId.Value}" :
+                $"/ManageFile/CreateDirectory/{sanitisedName}";
 
             var response = await this._authHttpClient.GetAsync(uri);
 

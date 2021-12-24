@@ -1,9 +1,12 @@
-﻿using Core.Server.Services.Interfaces.DbAccess.Modify;
+﻿using Core.Server.Models.Enums;
+using Core.Server.Services.Interfaces.DbAccess.Modify;
+using Core.Shared.Helpers;
 using Core.Shared.Models;
 using Core.Shared.Models.ManageFiles;
 using Core.Shared.Models.Rest.Requests.ManageFiles;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System;
 using System.Diagnostics.CodeAnalysis;
 using System.Threading.Tasks;
 
@@ -64,7 +67,24 @@ namespace TrzyszczCMS.Server.Controllers
         private async Task<ActionResult<SimpleFileInfo>> CreateDirectoryAsync(string directoryName, int? parentNodeId)
         {
             var result = await this._manageFileService.CreateLogicalDirectoryAsync(directoryName, parentNodeId);
-            return result.GetValue(out SimpleFileInfo file, out _) ? Ok(file) : Conflict();
+            if (result.GetValue(out SimpleFileInfo file, out Tuple<CreatingRowFailReason> error))
+            {
+                return Ok(file);
+            }
+            else
+            {
+                switch (error.Item1)
+                {
+                    case CreatingRowFailReason.AlreadyExisting:
+                        return Conflict();
+
+                    case CreatingRowFailReason.CreatingForbidden:
+                        return BadRequest();
+
+                    default:
+                        throw ExceptionMaker.NotImplemented.ForHandling(error.Item1, $"{nameof(error)}.{nameof(error.Item1)}");
+                }
+            }
         }
         #endregion
     }

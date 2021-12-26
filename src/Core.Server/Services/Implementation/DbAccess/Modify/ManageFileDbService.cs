@@ -1,6 +1,8 @@
 ﻿using Core.Server.Helpers.Extensions;
 using Core.Server.Models;
+using Core.Server.Models.Adapters;
 using Core.Server.Models.Enums;
+using Core.Server.Services.Interfaces;
 using Core.Server.Services.Interfaces.DbAccess.Modify;
 using Core.Shared.Enums;
 using Core.Shared.Models;
@@ -23,19 +25,24 @@ namespace Core.Server.Services.Implementation.DbAccess.Modify
         /// <summary>
         /// Used for persisting data in the database.
         /// </summary>
-        private readonly IDatabaseStrategy _databaseStrategy;
+        private readonly IDatabaseStrategy _DatabaseStrategy;
+        /// <summary>
+        /// Used for uploading files.
+        /// </summary>
+        private readonly IStorageService _storageService;
         #endregion
 
         #region Ctor
-        public ManageFileDbService(IDatabaseStrategyFactory databaseStrategyFactory)
+        public ManageFileDbService(IDatabaseStrategyFactory databaseStrategyFactory, IStorageService storageService)
         {
-            this._databaseStrategy = databaseStrategyFactory.GetStrategy(ConnectionStringDbType.Modify);
+            this._DatabaseStrategy = databaseStrategyFactory.GetStrategy(ConnectionStringDbType.Modify);
+            this._storageService = storageService;
         }
         #endregion
 
         public async Task<DataPage<SimpleFileInfo>> GetSimpleFileInfoPage(int? fileNodeId, int desiredPageNumber, [NotNull] Dictionary<FilteredGridField, string> filters)
         {
-            using (var ctx = _databaseStrategy.GetContext())
+            using (var ctx = _DatabaseStrategy.GetContext())
             {
                 int allPagesCount = await ctx.ContFiles.AsNoTracking()
                                                        .Where(i => i.ParentFileId == fileNodeId)
@@ -86,7 +93,7 @@ namespace Core.Server.Services.Implementation.DbAccess.Modify
         }
         public async Task<bool> DeleteFileAsync(int fileId)
         {
-            using (var ctx = _databaseStrategy.GetContext())
+            using (var ctx = _DatabaseStrategy.GetContext())
             {
                 using (var ts = await ctx.Database.BeginTransactionAsync())
                 {
@@ -99,6 +106,10 @@ namespace Core.Server.Services.Implementation.DbAccess.Modify
                     ctx.ContFiles.Remove(removedOne);
 
                     await ctx.SaveChangesAsync();
+                    if (!removedOne.IsDirectory)
+                    {
+                        this._storageService.DeleteFile(removedOne.AccessGuid);
+                    }
                     await ts.CommitAsync();
                     return true;
                 }
@@ -107,7 +118,7 @@ namespace Core.Server.Services.Implementation.DbAccess.Modify
 
         public async Task<Result<SimpleFileInfo, Tuple<CreatingRowFailReason>>> CreateLogicalDirectoryAsync(string name, int? currentParentNodeId)
         {
-            using (var ctx = _databaseStrategy.GetContext())
+            using (var ctx = _DatabaseStrategy.GetContext())
             {
                 using (var ts = await ctx.Database.BeginTransactionAsync())
                 {
@@ -135,21 +146,48 @@ namespace Core.Server.Services.Implementation.DbAccess.Modify
 
 
                     await ctx.SaveChangesAsync();
-
-                    var info = new SimpleFileInfo()
-                    {
-                        Id                   = addedDirectory.Entity.Id,
-                        AccessGuid           = addedDirectory.Entity.AccessGuid,
-                        CreationUtcTimestamp = addedDirectory.Entity.CreationUtcTimestamp,
-                        IsDirectory          = addedDirectory.Entity.IsDirectory,
-                        Name                 = addedDirectory.Entity.Name,
-                        ParentFileId         = addedDirectory.Entity.ParentFileId
-                    };
-
+                    var info = addedDirectory.ToSimpleFileInfo();
                     await ts.CommitAsync();
                     return Result<SimpleFileInfo, Tuple<CreatingRowFailReason>>.MakeSuccess(info);
                 }
             }
+        }
+
+        public async Task<Result<List<SimpleFileInfo>, Tuple<CreatingFileFailReason>>> UploadFiles(IEnumerable<IUploadedFile> files, int? currentParentNodeId)
+        {
+            if (files.Any(i => i.Length > CommonConstants.MAX_UPLOADED_FILE_LENGTH_BYTES))
+            {
+                return Result<List<SimpleFileInfo>, Tuple<CreatingFileFailReason>>.MakeError(
+                    new Tuple<CreatingFileFailReason>(CreatingFileFailReason.FileSizeTooLarge)
+                );
+            }
+
+            var uploadedFiles = new List<SimpleFileInfo>();
+            foreach (var file in files)
+            {
+                using (var ctx = _DatabaseStrategy.GetContext())
+                {
+                    using (var ts = await ctx.Database.BeginTransactionAsync())
+                    {
+                        var newFileGuid = await this.GetGuidForNewFileAsync(ctx);
+                        var uploadResult = this._storageService.PutFileAsync(file, newFileGuid);
+
+                        
+                        await ctx.SaveChangesAsync();
+                        var addedFile = await ctx.ContFiles.AddAsync(new ContFile()
+                        {
+                            CreationUtcTimestamp = DateTime.UtcNow,
+                            Name = file.Name,
+                            IsDirectory = false,
+                            ParentFileId = currentParentNodeId,
+                            AccessGuid = newFileGuid
+                        });
+                        uploadedFiles.Add(addedFile.ToSimpleFileInfo());
+                        await ts.CommitAsync();
+                    }
+                }
+            }
+            return Result<List<SimpleFileInfo>, Tuple<CreatingFileFailReason>>.MakeSuccess(uploadedFiles);
         }
 
         #region Helper methods

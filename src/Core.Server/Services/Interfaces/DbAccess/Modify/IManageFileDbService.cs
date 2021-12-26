@@ -1,4 +1,5 @@
-﻿using Core.Server.Models.Enums;
+﻿using Core.Server.Models.Adapters;
+using Core.Server.Models.Enums;
 using Core.Shared.Enums;
 using Core.Shared.Models;
 using Core.Shared.Models.ManageFiles;
@@ -37,5 +38,13 @@ namespace Core.Server.Services.Interfaces.DbAccess.Modify
         /// <param name="currentParentNodeId">The id of the node for which the folder is created</param>
         /// <returns>Task returning info about created directory or error if the folder exists.</returns>
         Task<Result<SimpleFileInfo, Tuple<CreatingRowFailReason>>> CreateLogicalDirectoryAsync(string name, int? currentParentNodeId);
+
+        /// <summary>
+        /// Upload files into a server and add entries into the database.
+        /// </summary>
+        /// <param name="files">Added files</param>
+        /// <param name="currentParentNodeId">Directory which the files are added for</param>
+        /// <returns>Task returning info about added files or error if something goes wrong</returns>
+        Task<Result<List<SimpleFileInfo>, Tuple<CreatingFileFailReason>>> UploadFiles(IEnumerable<IUploadedFile> files, int? currentParentNodeId);
     }
 }

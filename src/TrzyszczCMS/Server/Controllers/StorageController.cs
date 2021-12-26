@@ -22,11 +22,11 @@ namespace TrzyszczCMS.Server.Controllers
         #region Methods
         [HttpGet]
         [Route("[action]/{accessId}")]
-        public async Task<ActionResult> GetFile(string accessId)
+        public ActionResult GetFile(string accessId)
         {
             BinaryReader fileReader = null;
             if (Guid.TryParse(accessId, out Guid parsedAccessGuid) &&
-                (await this._loadFileService.GetFile(parsedAccessGuid)).GetValue(out fileReader, out object _))
+                (this._loadFileService.GetFile(parsedAccessGuid)).GetValue(out fileReader, out object _))
             {
                 try
                 {

@@ -22,5 +22,9 @@
         /// The format for stored and displayed file access names/IDs.
         /// </summary>
         public const string FILE_ACCESS_ID_FORMAT = "N";
+        /// <summary>
+        /// The maximum file size that is allowed for upload.
+        /// </summary>
+        public const int MAX_UPLOADED_FILE_LENGTH_BYTES = 1024 * 1024 * 256;
     }
 }

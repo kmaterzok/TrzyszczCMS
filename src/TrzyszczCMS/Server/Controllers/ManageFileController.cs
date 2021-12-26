@@ -5,10 +5,15 @@ using Core.Shared.Models;
 using Core.Shared.Models.ManageFiles;
 using Core.Shared.Models.Rest.Requests.ManageFiles;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
+using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
+using System.IO;
+using System.Linq;
 using System.Threading.Tasks;
+using TrzyszczCMS.Server.Data.Adapters;
 
 namespace TrzyszczCMS.Server.Controllers
 {
@@ -55,14 +60,58 @@ namespace TrzyszczCMS.Server.Controllers
         [Route("[action]/{directoryName}/{parentNodeId}")]
         public async Task<ActionResult<SimpleFileInfo>> CreateDirectory(string directoryName, int parentNodeId) =>
             await CreateDirectoryAsync(directoryName, parentNodeId);
+
+        [HttpPost]
+        [Produces("application/json")]
+        [Route("[action]")]
+        public async Task<ActionResult<List<SimpleFileInfo>>> Upload(IFormFileCollection files) =>
+            await UploadFilesAsync(files, null);
+
+        [HttpPost]
+        [Produces("application/json")]
+        [Route("[action]/{parentNodeId}")]
+        public async Task<ActionResult<List<SimpleFileInfo>>> Upload(IFormFileCollection files, int parentNodeId) =>
+            await UploadFilesAsync(files, parentNodeId);
         #endregion
 
+
         #region Helper methods
+        /// <summary>
+        /// Upload files into the storage and store info aobut them in the database.
+        /// </summary>
+        /// <param name="files">Details about uploaded files</param>
+        /// <param name="parentNodeId">ID of the node that holds the files</param>
+        /// <returns>Task returning result info about uploaded files</returns>
+        private async Task<ActionResult<List<SimpleFileInfo>>> UploadFilesAsync(IFormFileCollection files, int? parentNodeId)
+        {
+            if (files.Count == 0)
+            {
+                return BadRequest();
+            }
+
+            var fileAdapters = files.Select(i => new UploadedFileAdapter(i));
+            if ((await this._manageFileService.UploadFiles(fileAdapters, parentNodeId))
+                .GetValue(out List<SimpleFileInfo> fileList, out Tuple<CreatingFileFailReason> error))
+            {
+                return Ok(fileList);
+            }
+            else
+            {
+                switch (error.Item1)
+                {
+                    case CreatingFileFailReason.FileSizeTooLarge:
+                        return BadRequest("At least on of the uploaded files is too large.");
+
+                    default:
+                        throw ExceptionMaker.NotImplemented.ForHandling(error, $"{nameof(error)}.{nameof(error.Item1)}");
+                }
+            }
+        }
         /// <summary>
         /// Try to create a directory and retrive a info about it.
         /// </summary>
         /// <param name="directoryName">Name of a new directory</param>
-        /// <param name="parentNodeId">ID of the node that hold the directory</param>
+        /// <param name="parentNodeId">ID of the node that holds the directory</param>
         /// <returns>Task returning result info about created directory</returns>
         private async Task<ActionResult<SimpleFileInfo>> CreateDirectoryAsync(string directoryName, int? parentNodeId)
         {

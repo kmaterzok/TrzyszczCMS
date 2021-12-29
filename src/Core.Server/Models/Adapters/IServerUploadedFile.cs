@@ -5,9 +5,9 @@ using System.Threading.Tasks;
 namespace Core.Server.Models.Adapters
 {
     /// <summary>
-    /// The file info interface for an uploaded file.
+    /// The file info interface for an uploaded file in the server side.
     /// </summary>
-    public interface IUploadedFile
+    public interface IServerUploadedFile
     {
         /// <summary>
         /// The file's content type
@@ -17,10 +17,6 @@ namespace Core.Server.Models.Adapters
         /// Byte length of the file
         /// </summary>
         long Length { get; }
-        /// <summary>
-        /// The form field name from the Content-Disposition header
-        /// </summary>
-        string Name { get; }
         /// <summary>
         /// The file name from the Content-Disposition header
         /// </summary>

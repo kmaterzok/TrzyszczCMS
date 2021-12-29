@@ -25,6 +25,10 @@
         /// <summary>
         /// The maximum file size that is allowed for upload.
         /// </summary>
-        public const int MAX_UPLOADED_FILE_LENGTH_BYTES = 1024 * 1024 * 256;
+        public const int MAX_UPLOADED_FILE_LENGTH_MEGABYTES = 28;
+        /// <summary>
+        /// The maximum file size that is allowed for upload.
+        /// </summary>
+        public static int MAX_UPLOADED_FILE_LENGTH_BYTES => 1024 * 1024 * MAX_UPLOADED_FILE_LENGTH_MEGABYTES;
     }
 }

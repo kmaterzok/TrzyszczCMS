@@ -10,7 +10,7 @@ namespace TrzyszczCMS.Server.Data.Adapters
     /// The adaptering class for handling file info objects.
     /// The class used for file upload.
     /// </summary>
-    public class UploadedFileAdapter : IUploadedFile
+    public class ServerUploadedFileAdapter : IServerUploadedFile
     {
         #region Properties
         /// <summary>
@@ -21,14 +21,13 @@ namespace TrzyszczCMS.Server.Data.Adapters
         #endregion
 
         #region Ctor
-        public UploadedFileAdapter(IFormFile formFile) =>
+        public ServerUploadedFileAdapter(IFormFile formFile) =>
             this.AdapteredObject = formFile;
         #endregion
 
-        #region Methods
+        #region Interface implementation
         public string ContentType => this.AdapteredObject.ContentType;
         public long Length => this.AdapteredObject.Length;
-        public string Name => this.AdapteredObject.Name;
         public string FileName => this.AdapteredObject.FileName;
         public async Task CopyToAsync(Stream target, CancellationToken cancellationToken = default) =>
             await this.AdapteredObject.CopyToAsync(target, cancellationToken);

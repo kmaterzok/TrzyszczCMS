@@ -1,4 +1,5 @@
 ﻿using Core.Shared.Models;
+using Microsoft.AspNetCore.Components;
 using System;
 using TrzyszczCMS.Client.Data.Enums;
 
@@ -35,7 +36,7 @@ namespace TrzyszczCMS.Client.Helpers
         /// <summary>
         /// Displayed message.
         /// </summary>
-        public string Message { get; private set; }
+        public MarkupString Message { get; private set; }
         /// <summary>
         /// Type of displayed popup.
         /// </summary>
@@ -45,7 +46,7 @@ namespace TrzyszczCMS.Client.Helpers
         #region Ctor
         public Popupper()
         {
-            this.Message    = null;
+            this.Message    = new MarkupString(string.Empty);
             this.TypedInput = string.Empty;
             this.PopupType  = PopupType.None;
         }
@@ -86,14 +87,14 @@ namespace TrzyszczCMS.Client.Helpers
         public void OnCancel()
         {
             this.SetReturnData(PopupExitResult.Cancel);
-            this._promptResult?.Invoke(Result<string, object>.MakeError(new object()));
+            this._promptResult?.Invoke(Result<string, object>.MakeError());
         }
         #endregion
 
         #region Helper methods
         private void SetDisplayData(string message, PopupType popupType)
         {
-            this.Message   = message;
+            this.Message   = new MarkupString(message);
             this.PopupType = popupType;
             this.NotifyModelUpdated.Invoke(this, EventArgs.Empty);
         }

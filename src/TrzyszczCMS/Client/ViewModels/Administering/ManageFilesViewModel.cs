@@ -6,11 +6,14 @@ using Core.Shared.Helpers.Extensions;
 using Core.Shared.Models;
 using Core.Shared.Models.ManageFiles;
 using Microsoft.AspNetCore.Components;
+using Microsoft.AspNetCore.Components.Forms;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using TrzyszczCMS.Client.Data.Model;
+using TrzyszczCMS.Client.Data.Model.Adapters;
 using TrzyszczCMS.Client.Data.Model.Extensions;
 using TrzyszczCMS.Client.Helpers;
 using TrzyszczCMS.Client.ViewModels.Shared;
@@ -54,6 +57,24 @@ namespace TrzyszczCMS.Client.ViewModels.Administering
             get => _canFetchFiles;
             set => Set(ref _canFetchFiles, value, nameof(CanFetchFiles));
         }
+        #endregion
+
+        #region Properties :: Handled from code behind
+        /// <summary>
+        /// The list holding info about files for upload.
+        /// Data set from the view's code behind.
+        /// </summary>
+        public IReadOnlyList<IBrowserFile> FilesForUpload { get; set; }
+        /// <summary>
+        /// Indicates if files ready for upload are not set.
+        /// </summary>
+        public bool FilesForUploadUnset =>
+            this.FilesForUpload == null || this.FilesForUpload.Count == 0;
+
+        /// <summary>
+        /// Events raised whenever files upload finishes with fail.
+        /// </summary>
+        public EventHandler OnFilesUploadFailure { get; set; }
         #endregion
 
         #region Ctor
@@ -124,6 +145,41 @@ namespace TrzyszczCMS.Client.ViewModels.Administering
 
             this._filesFetcher = this._manageFileService.GetSimpleFileInfos(this._currentParentNodeId, this._fileSearchParams);
             await this.LoadFilesAsync();
+        }
+
+
+
+        public async Task UploadFilesAsync()
+        {
+            if (this.FilesForUploadUnset)
+            {
+                return;
+            }
+
+            bool allFilesUploadedSuccessfully = true;
+            List<SimpleFileInfo> addedFiles = new();
+            var adapteredFilesInfos = this.FilesForUpload.Select(i => new ClientUploadedFileAdapter(i));
+
+            await this._manageFileService.UploadFiles(adapteredFilesInfos, this._currentParentNodeId,
+                new Action<Result<SimpleFileInfo, object>>(partialResult =>
+                {
+                    if (partialResult.GetValue(out SimpleFileInfo successfulFile, out _))
+                    {
+                        addedFiles.Add(successfulFile);
+                    }
+                    else
+                    {
+                        allFilesUploadedSuccessfully = false;
+                    }
+                }));
+
+            this.Files.AddRangeAndPack(addedFiles);
+            this.NotifyPropertyChanged(nameof(Files));
+            
+            if (!allFilesUploadedSuccessfully)
+            {
+                this.OnFilesUploadFailure.Invoke(this, EventArgs.Empty);
+            }
         }
         #endregion
     }

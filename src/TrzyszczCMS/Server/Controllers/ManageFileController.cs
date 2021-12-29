@@ -64,14 +64,14 @@ namespace TrzyszczCMS.Server.Controllers
         [HttpPost]
         [Produces("application/json")]
         [Route("[action]")]
-        public async Task<ActionResult<List<SimpleFileInfo>>> Upload(IFormFileCollection files) =>
-            await UploadFilesAsync(files, null);
+        public async Task<ActionResult<List<SimpleFileInfo>>> Upload(IFormCollection files) =>
+            await UploadFilesAsync(files?.Files, null);
 
         [HttpPost]
         [Produces("application/json")]
         [Route("[action]/{parentNodeId}")]
-        public async Task<ActionResult<List<SimpleFileInfo>>> Upload(IFormFileCollection files, int parentNodeId) =>
-            await UploadFilesAsync(files, parentNodeId);
+        public async Task<ActionResult<List<SimpleFileInfo>>> Upload(IFormCollection files, int parentNodeId) =>
+            await UploadFilesAsync(files?.Files, parentNodeId);
         #endregion
 
 
@@ -84,12 +84,12 @@ namespace TrzyszczCMS.Server.Controllers
         /// <returns>Task returning result info about uploaded files</returns>
         private async Task<ActionResult<List<SimpleFileInfo>>> UploadFilesAsync(IFormFileCollection files, int? parentNodeId)
         {
-            if (files.Count == 0)
+            if (files == null || files.Count == 0)
             {
                 return BadRequest();
             }
 
-            var fileAdapters = files.Select(i => new UploadedFileAdapter(i));
+            var fileAdapters = files.Select(i => new ServerUploadedFileAdapter(i));
             if ((await this._manageFileService.UploadFiles(fileAdapters, parentNodeId))
                 .GetValue(out List<SimpleFileInfo> fileList, out Tuple<CreatingFileFailReason> error))
             {
@@ -100,7 +100,7 @@ namespace TrzyszczCMS.Server.Controllers
                 switch (error.Item1)
                 {
                     case CreatingFileFailReason.FileSizeTooLarge:
-                        return BadRequest("At least on of the uploaded files is too large.");
+                        return BadRequest("At least one of the uploaded files is too large.");
 
                     default:
                         throw ExceptionMaker.NotImplemented.ForHandling(error, $"{nameof(error)}.{nameof(error.Item1)}");

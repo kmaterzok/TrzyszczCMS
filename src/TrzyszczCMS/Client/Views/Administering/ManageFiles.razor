@@ -15,10 +15,19 @@
         <div class="input-group input-group-sm">
             <button class="btn btn-primary btn-sm" @onclick="@ViewModel.ApplySearchAsync"><i class="fas fa-search"></i>&nbsp;Search</button>
             <button class="btn btn-primary btn-sm" @onclick="@CreateDirectory"><i class="fas fa-plus"></i>&nbsp;Add directory...</button>
-            <button class="btn btn-primary btn-sm" ><i class="fas fa-plus"></i>&nbsp;Add file...</button>
+            <button class="btn btn-primary btn-sm" @onclick="@ToggleFileUploadVisibility"><i class="fas fa-plus"></i>&nbsp;Add file...</button>
         </div>
     </div>
 </nav>
+
+<section class="my-2 @CssClassOfFileUploadVisibility">
+    <div class="input-group input-group-sm">
+        <InputFile class="form-control btn btn-light btn-sm border-1 border-primary" OnChange="@OnSelectedFiles" multiple />
+        <button class="btn btn-primary btn-sm" disabled="@ViewModel.FilesForUploadUnset" @onclick="@ViewModel.UploadFilesAsync">
+            <i class="fas fa-upload"></i>&nbsp;Upload now
+        </button>
+    </div>
+</section>
 
 <section>
     <Grid Items="ViewModel.Files" MultiSelect="false">

@@ -153,7 +153,7 @@ namespace Core.Server.Services.Implementation.DbAccess.Modify
             }
         }
 
-        public async Task<Result<List<SimpleFileInfo>, Tuple<CreatingFileFailReason>>> UploadFiles(IEnumerable<IUploadedFile> files, int? currentParentNodeId)
+        public async Task<Result<List<SimpleFileInfo>, Tuple<CreatingFileFailReason>>> UploadFiles(IEnumerable<IServerUploadedFile> files, int? currentParentNodeId)
         {
             if (files.Any(i => i.Length > CommonConstants.MAX_UPLOADED_FILE_LENGTH_BYTES))
             {
@@ -173,15 +173,15 @@ namespace Core.Server.Services.Implementation.DbAccess.Modify
                         var uploadResult = this._storageService.PutFileAsync(file, newFileGuid);
 
                         
-                        await ctx.SaveChangesAsync();
                         var addedFile = await ctx.ContFiles.AddAsync(new ContFile()
                         {
                             CreationUtcTimestamp = DateTime.UtcNow,
-                            Name = file.Name,
+                            Name = file.FileName,
                             IsDirectory = false,
                             ParentFileId = currentParentNodeId,
                             AccessGuid = newFileGuid
                         });
+                        await ctx.SaveChangesAsync();
                         uploadedFiles.Add(addedFile.ToSimpleFileInfo());
                         await ts.CommitAsync();
                     }

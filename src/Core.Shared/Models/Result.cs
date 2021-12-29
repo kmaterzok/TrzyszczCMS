@@ -53,6 +53,14 @@ namespace Core.Shared.Models
         /// <returns>Object with result information</returns>
         public static Result<T, E> MakeError([NotNull] E errorObject) =>
             new Result<T, E>(null, errorObject);
+
+        /// <summary>
+        /// Create a result of faulty executing of operation.
+        /// The error type is <see cref="object"/> as a simplest error info.
+        /// </summary>
+        /// <returns>Object with result information</returns>
+        public static Result<T, object> MakeError() =>
+            new Result<T, object>(null, new object());
         #endregion
 
         #region Public methods

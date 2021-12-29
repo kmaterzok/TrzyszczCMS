@@ -16,6 +16,7 @@ using DAL.Models.Config;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http.Features;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.ResponseCompression;
 using Microsoft.Extensions.Configuration;
@@ -82,6 +83,11 @@ namespace TrzyszczCMS.Server
                     builder.WithOrigins(corsOrigins)
                            .AllowAnyMethod()
                            .AllowAnyHeader()));
+
+            services.Configure<FormOptions>(options =>
+            {
+                options.MultipartBodyLengthLimit = long.MaxValue;
+            });
 
             RegisterServices(services);
 

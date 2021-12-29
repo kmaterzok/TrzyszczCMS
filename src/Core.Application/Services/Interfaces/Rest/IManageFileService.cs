@@ -1,7 +1,9 @@
 ﻿using Core.Application.Helpers.Interfaces;
+using Core.Application.Models.Adapters;
 using Core.Shared.Enums;
 using Core.Shared.Models;
 using Core.Shared.Models.ManageFiles;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Threading.Tasks;
@@ -36,5 +38,14 @@ namespace Core.Application.Services.Interfaces.Rest
         /// <param name="currentParentNodeId">The id of the node for which the folder is created</param>
         /// <returns>Task returning info about created directory or error if the folder exists.</returns>
         Task<Result<SimpleFileInfo, object>> CreateLogicalDirectory(string name, int? currentParentNodeId);
+
+        /// <summary>
+        /// Upload files onto the server.
+        /// </summary>
+        /// <param name="files">Uploaded files information</param>
+        /// <param name="currentParentNodeId">A node which the files will be placed upon.</param>
+        /// <param name="onTriedUpload">Action fired when a single upload trial is finished and the result object is sent</param>
+        /// <returns></returns>
+        Task UploadFiles(IEnumerable<IClientUploadedFile> files, int? currentParentNodeId, Action<Result<SimpleFileInfo, object>> onTriedUpload);
     }
 }

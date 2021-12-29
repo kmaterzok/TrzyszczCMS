@@ -45,6 +45,6 @@ namespace Core.Server.Services.Interfaces.DbAccess.Modify
         /// <param name="files">Added files</param>
         /// <param name="currentParentNodeId">Directory which the files are added for</param>
         /// <returns>Task returning info about added files or error if something goes wrong</returns>
-        Task<Result<List<SimpleFileInfo>, Tuple<CreatingFileFailReason>>> UploadFiles(IEnumerable<IUploadedFile> files, int? currentParentNodeId);
+        Task<Result<List<SimpleFileInfo>, Tuple<CreatingFileFailReason>>> UploadFiles(IEnumerable<IServerUploadedFile> files, int? currentParentNodeId);
     }
 }

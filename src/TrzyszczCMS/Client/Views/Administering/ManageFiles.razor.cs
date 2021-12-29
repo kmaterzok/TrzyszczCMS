@@ -1,5 +1,10 @@
-﻿using Microsoft.AspNetCore.Components;
+﻿using Core.Shared.Models;
+using Microsoft.AspNetCore.Components;
+using Microsoft.AspNetCore.Components.Forms;
+using System;
+using System.Collections.Generic;
 using System.ComponentModel;
+using System.Linq;
 using System.Threading.Tasks;
 using TrzyszczCMS.Client.Helpers;
 
@@ -7,9 +12,16 @@ namespace TrzyszczCMS.Client.Views.Administering
 {
     public partial class ManageFiles
     {
+        #region Fields
+        private bool fileUploadVisible = false;
+        #endregion
+
         #region Properties
         [CascadingParameter]
         public Popupper Popupper { get; private set; }
+
+        public string CssClassOfFileUploadVisibility =>
+            CssClassesHelper.ClassCollapsingElement(fileUploadVisible);
         #endregion
 
         #region Init
@@ -18,6 +30,9 @@ namespace TrzyszczCMS.Client.Views.Administering
             base.OnInitialized();
             this.ViewModel.PropertyChanged += new PropertyChangedEventHandler(
                 async (s, e) => await this.InvokeAsync(() => this.StateHasChanged())
+            );
+            this.ViewModel.OnFilesUploadFailure = new ((s, e) =>
+                this.Popupper.ShowAlert("Uploading files finished with errors.")
             );
         }
         protected override async Task OnAfterRenderAsync(bool firstRender)
@@ -31,6 +46,9 @@ namespace TrzyszczCMS.Client.Views.Administering
         #endregion
 
         #region Methods
+        private void ToggleFileUploadVisibility() =>
+            fileUploadVisible = !fileUploadVisible;
+
         private void CreateDirectory()
         {
             Popupper.ShowPrompt("Enter the name for a new directory.", async answer =>
@@ -47,6 +65,25 @@ namespace TrzyszczCMS.Client.Views.Administering
                     }
                 }
             }, true);
+        }
+        
+        private void OnSelectedFiles(InputFileChangeEventArgs e)
+        {
+            this.ViewModel.FilesForUpload = null;
+            
+            var sizeExceedingFiles = e.GetMultipleFiles().Where(i => i.Size > CommonConstants.MAX_UPLOADED_FILE_LENGTH_BYTES);
+            if (sizeExceedingFiles.Any())
+            {
+                var names = HtmlHelper.MakeUnorderedList(sizeExceedingFiles.Select(i =>
+                    $"{i.Name} ({Math.Ceiling(i.Size / 1048576.0):N0} MB)"
+                ));
+
+                names.Insert(0, $"The following files exceeded the maximum allowed file size ({CommonConstants.MAX_UPLOADED_FILE_LENGTH_MEGABYTES} MB):<br/>");
+                Popupper.ShowAlert(names.ToString());
+                return;
+            }
+
+            this.ViewModel.FilesForUpload = e.GetMultipleFiles();
         }
         #endregion
     }

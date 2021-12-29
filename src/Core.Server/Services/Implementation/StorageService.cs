@@ -29,7 +29,7 @@ namespace Core.Server.Services.Implementation
             var filePath = this.MakeFullFilePath(accessId);
             if (!File.Exists(filePath))
             {
-                return Result<BinaryReader, object>.MakeError(new object());
+                return Result<BinaryReader, object>.MakeError();
             }
 
             return Result<BinaryReader, object>.MakeSuccess(
@@ -37,20 +37,13 @@ namespace Core.Server.Services.Implementation
             );
         }
 
-        public async Task PutFileAsync(IUploadedFile file, Guid accessId)
+        public async Task PutFileAsync(IServerUploadedFile file, Guid accessId)
         {
             var targetFilePath = this.MakeFullFilePath(accessId);
             using (var fileStream = new FileStream(targetFilePath, FileMode.Create, FileAccess.Write))
             {
-                try
-                {
-                    await file.CopyToAsync(fileStream);
-                    // TODO: Add logging in the catch.
-                }
-                finally
-                {
-                    fileStream.Close();
-                }
+                await file.CopyToAsync(fileStream);
+                // TODO: Add logging in the catch.
             }
         }
 

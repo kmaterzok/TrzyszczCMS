@@ -23,7 +23,7 @@ namespace Core.Server.Services.Interfaces
         /// <param name="file">Uploaded file details instance</param>
         /// <param name="accessId">GUID that lets access the uploaded file</param>
         /// <returns>Task returning error info</returns>
-        Task PutFileAsync(IUploadedFile file, Guid accessId);
+        Task PutFileAsync(IServerUploadedFile file, Guid accessId);
         /// <summary>
         /// Delete a file.
         /// </summary>

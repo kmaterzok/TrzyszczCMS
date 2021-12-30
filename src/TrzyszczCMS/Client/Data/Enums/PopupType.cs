@@ -9,6 +9,7 @@
         Prompt,
         CancellablePrompt,
         Alert,
-        Progress
+        Progress,
+        YesNo
     }
 }

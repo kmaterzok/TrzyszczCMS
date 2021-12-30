@@ -1,11 +1,12 @@
 ﻿using Core.Shared.Models;
+using Core.Shared.Models.ManageFiles;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Forms;
 using System;
-using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Threading.Tasks;
+using TrzyszczCMS.Client.Data.Enums;
 using TrzyszczCMS.Client.Helpers;
 
 namespace TrzyszczCMS.Client.Views.Administering
@@ -18,7 +19,7 @@ namespace TrzyszczCMS.Client.Views.Administering
 
         #region Properties
         [CascadingParameter]
-        public Popupper Popupper { get; private set; }
+        private Popupper Popupper { get; set; }
 
         public string CssClassOfFileUploadVisibility =>
             CssClassesHelper.ClassCollapsingElement(fileUploadVisible);
@@ -103,6 +104,17 @@ namespace TrzyszczCMS.Client.Views.Administering
             }
 
             this.ViewModel.FilesForUpload = e.GetMultipleFiles();
+        }
+
+        private void DeleteFile(SimpleFileInfo file)
+        {
+            this.Popupper.ShowYesNoPrompt($"Delete <em>{file.Name}</em>?", async result =>
+            {
+                if (result == PopupExitResult.Yes)
+                {
+                    await ViewModel.DeleteFileAsync(file.Id);
+                }
+            });
         }
         #endregion
     }

@@ -18,7 +18,7 @@
     </div>
     <div>
         <div class="input-group input-group-sm">
-            <button class="btn btn-primary btn-sm" @onclick="@DeleteSelectedPagesAsync"><i class="fas fa-trash"></i>&nbsp;Delete</button>
+            <button class="btn btn-primary btn-sm" @onclick="@DeleteSelectedPages"><i class="fas fa-trash"></i>&nbsp;Delete</button>
             <button class="btn btn-primary btn-sm" @onclick="@ApplySearchAsync"><i class="fas fa-search"></i>&nbsp;Search</button>
             <button class="btn btn-primary btn-sm" @onclick="@GoToCreatingPageAsync"><i class="fas fa-plus"></i>&nbsp;Create...</button>
         </div>
@@ -44,7 +44,7 @@
                 <td>
                     <div class="input-group input-group-sm">
                         <button class="btn btn-sm btn-primary" @onclick="@(() => GoToManagingPageAsync(PageType.Post, row.Data.Id))"><i class="fas fa-edit"></i>&nbsp;Edit</button>
-                        <button class="btn btn-sm btn-primary" @onclick="@(() => DeletePageAsync(row.Data.Id))"><i class="fas fa-trash"></i>&nbsp;Delete</button>
+                        <button class="btn btn-sm btn-primary" @onclick="@(() => DeletePage(row.Data))"><i class="fas fa-trash"></i>&nbsp;Delete</button>
                     </div>
                 </td>
             </RowTemplate>
@@ -73,7 +73,7 @@
                 <td>
                     <div class="input-group input-group-sm">
                         <button class="btn btn-sm btn-primary" @onclick="@(() => GoToManagingPageAsync(PageType.Article, row.Data.Id))"><i class="fas fa-edit"></i>&nbsp;Edit</button>
-                        <button class="btn btn-sm btn-primary" @onclick="@(() => DeletePageAsync(row.Data.Id))"><i class="fas fa-trash"></i>&nbsp;Delete</button>
+                        <button class="btn btn-sm btn-primary" @onclick="@(() => DeletePage(row.Data))"><i class="fas fa-trash"></i>&nbsp;Delete</button>
                     </div>
                 </td>
             </RowTemplate>

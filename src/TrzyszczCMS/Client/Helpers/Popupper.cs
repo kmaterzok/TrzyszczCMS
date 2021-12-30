@@ -19,7 +19,11 @@ namespace TrzyszczCMS.Client.Helpers
         /// <summary>
         /// Invoked with typed prompt result.
         /// </summary>
-        private Action<Result<string, object>> _promptResult;
+        private Action<Result<string, object>> _promptStringResult;
+        /// <summary>
+        /// Invoked with a pressed closing button.
+        /// </summary>
+        private Action<PopupExitResult> _promptEnumResult;
         /// <summary>
         /// The stored value for <see cref="ProgressCurrentValue"/> property.
         /// </summary>
@@ -97,15 +101,15 @@ namespace TrzyszczCMS.Client.Helpers
 
         #region Methods :: Show methods
         /// <summary>
-        /// Dipslay a card with a message and a prompt.
+        /// Display a card with a message and a prompt.
         /// </summary>
         /// <param name="message">Displayed message</param>
-        /// <param name="promptResultAction">THe action executed after pressing OK button</param>
+        /// <param name="promptResultAction">The action executed after pressing OK button</param>
         /// <param name="cancellable">Is cancellation option displayed</param>
         /// <returns>Typed string</returns>
         public void ShowPrompt(string message, Action<Result<string, object>> promptResultAction, bool cancellable)
         {
-            this._promptResult = promptResultAction;
+            this._promptStringResult = promptResultAction;
             this.SetDisplayData(message, cancellable ? PopupType.CancellablePrompt : PopupType.Prompt);
         }
         /// <summary>
@@ -115,8 +119,18 @@ namespace TrzyszczCMS.Client.Helpers
         /// <returns>Typed string</returns>
         public void ShowAlert(string message)
         {
-            this._promptResult = null;
+            this._promptStringResult = null;
             this.SetDisplayData(message, PopupType.Alert);
+        }
+        /// <summary>
+        /// Display a card with a message and result buttons.
+        /// </summary>
+        /// <param name="message">Displayed message</param>
+        /// <param name="promptResultAction">The action executed after pressing a result button</param>
+        public void ShowYesNoPrompt(string message, Action<PopupExitResult> promptResultAction)
+        {
+            this._promptEnumResult = promptResultAction;
+            this.SetDisplayData(message, PopupType.YesNo);
         }
         /// <summary>
         /// Display a card with a progress bar.
@@ -125,7 +139,7 @@ namespace TrzyszczCMS.Client.Helpers
         /// <param name="progressMaxValue">Max reachable value of the progress</param>
         public void ShowProgress(string message, int progressMaxValue)
         {
-            this._promptResult = null;
+            this._promptStringResult = null;
             this.SetDisplayData(message, PopupType.Progress);
             this.ProgressCurrentValue = 0;
             this.ProgressMaxValue     = progressMaxValue;
@@ -142,12 +156,22 @@ namespace TrzyszczCMS.Client.Helpers
         {
             var returnedText = this.TypedInput;
             this.SetReturnData(PopupExitResult.OK);
-            this._promptResult?.Invoke(Result<string, object>.MakeSuccess(returnedText));
+            this._promptStringResult?.Invoke(Result<string, object>.MakeSuccess(returnedText));
         }
         public void OnCancel()
         {
             this.SetReturnData(PopupExitResult.Cancel);
-            this._promptResult?.Invoke(Result<string, object>.MakeError());
+            this._promptStringResult?.Invoke(Result<string, object>.MakeError());
+        }
+        public void OnYes()
+        {
+            this.SetReturnData(PopupExitResult.Yes);
+            this._promptEnumResult?.Invoke(PopupExitResult.Yes);
+        }
+        public void OnNo()
+        {
+            this.SetReturnData(PopupExitResult.No);
+            this._promptEnumResult?.Invoke(PopupExitResult.No);
         }
         #endregion
 

@@ -61,7 +61,7 @@
             <td>
                 @if (row.Data.Name != "..")
                 {
-                    <button class="btn btn-sm btn-primary" @onclick="@(() => ViewModel.DeleteFileAsync(row.Data.Id))"><i class="fas fa-trash"></i>&nbsp;Delete</button>
+                    <button class="btn btn-sm btn-primary" @onclick="@(() => DeleteFile(row.Data))"><i class="fas fa-trash"></i>&nbsp;Delete</button>
                 } 
             </td>
         </RowTemplate>

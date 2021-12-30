@@ -54,7 +54,15 @@
                                     <div class="d-flex my-2">
                                         <div class="ms-auto">
                                             <div class="input-group input-group-sm">
-                                                <button class="btn btn-sm btn-primary" style="min-width: 70px;" @onclick="@Popupper.OnOK">OK</button>
+                                                @if (Popupper.PopupType == PopupType.YesNo)
+                                                {
+                                                    <button class="btn btn-sm btn-primary" style="min-width: 70px;" @onclick="@Popupper.OnYes">Yes</button>
+                                                    <button class="btn btn-sm btn-primary" style="min-width: 70px;" @onclick="@Popupper.OnNo">No</button>
+                                                }
+                                                else
+                                                {
+                                                    <button class="btn btn-sm btn-primary" style="min-width: 70px;" @onclick="@Popupper.OnOK">OK</button>
+                                                }
                                                 @if (Popupper.PopupType == PopupType.CancellablePrompt)
                                                 {
                                                     <button class="btn btn-sm btn-primary" style="min-width: 70px;" @onclick="@Popupper.OnCancel">Cancel</button>

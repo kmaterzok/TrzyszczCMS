@@ -6,6 +6,8 @@
     public enum PopupExitResult
     {
         OK,
-        Cancel
+        Cancel,
+        Yes,
+        No
     }
 }

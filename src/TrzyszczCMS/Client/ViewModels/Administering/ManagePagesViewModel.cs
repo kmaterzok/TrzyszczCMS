@@ -249,6 +249,22 @@ namespace TrzyszczCMS.Client.ViewModels.Administering
 
         public async Task DeletePageAsync(int pageId) =>
             await this._managePageService.DeletePages(pageId);
+
+        /// <summary>
+        /// Retrieve pages by type
+        /// </summary>
+        /// <param name="type">Type of retrieved pages</param>
+        /// <returns>List of pages of certain type</returns>
+        public List<GridItem<SimplePageInfo>> GetPagesByType(PageType type)
+        {
+            switch (type)
+            {
+                case PageType.Article: return this.Articles;
+                case PageType.Post: return this.Posts;
+                default:
+                    throw ExceptionMaker.Argument.Unsupported(type, nameof(type));
+            }
+        }
         #endregion
 
         #region Helpers
@@ -257,17 +273,6 @@ namespace TrzyszczCMS.Client.ViewModels.Administering
         
         private void PrepareArticlesFetcher() =>
             this._articlesFetcher = this._managePageService.GetSimplePageInfos(PageType.Article, this._articleSearchParams);
-
-        private List<GridItem<SimplePageInfo>> GetPagesByType(PageType type)
-        {
-            switch (type)
-            {
-                case PageType.Article: return this.Articles;
-                case PageType.Post:    return this.Posts;
-                default:
-                    throw ExceptionMaker.Argument.Unsupported(type, nameof(type));
-            }
-        }
         #endregion
     }
 }

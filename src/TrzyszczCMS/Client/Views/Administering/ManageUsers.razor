@@ -40,7 +40,7 @@
                                     <button class="btn btn-sm btn-primary" @onclick="@(() => GoToManagingUserAsync(row.Data.Id))"><i class="fas fa-edit"></i>&nbsp;Edit</button>
                                     @if (row.Data.Id != CommonConstants.DEFAULT_ADMIN_ID)
                                     {
-                                        <button class="btn btn-sm btn-primary" @onclick="@(() => ViewModel.DeleteUserAsync(row.Data.Id))"><i class="fas fa-trash"></i>&nbsp;Delete</button>
+                                        <button class="btn btn-sm btn-primary" @onclick="@(() => DeleteUser(row.Data))"><i class="fas fa-trash"></i>&nbsp;Delete</button>
                                     }
                                 </div>
                             </td>

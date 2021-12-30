@@ -1,7 +1,11 @@
 ﻿using Core.Shared.Enums;
+using Core.Shared.Models.ManagePage;
+using Microsoft.AspNetCore.Components;
 using System;
 using System.ComponentModel;
+using System.Linq;
 using System.Threading.Tasks;
+using TrzyszczCMS.Client.Data.Enums;
 using TrzyszczCMS.Client.Helpers;
 
 namespace TrzyszczCMS.Client.Views.Administering
@@ -11,6 +15,9 @@ namespace TrzyszczCMS.Client.Views.Administering
         #region Fields & properties
         private bool postsButtonEnabled;
         private bool articlesButtonEnabled;
+
+        [CascadingParameter]
+        private Popupper Popupper { get; set; }
 
         private string PostsButtonLinkEnableClasses =>
             CssClassesHelper.ClassesForLink(this.postsButtonEnabled);
@@ -102,19 +109,41 @@ namespace TrzyszczCMS.Client.Views.Administering
             }
         }
 
-        private async Task DeleteSelectedPagesAsync()
+        private void DeleteSelectedPages()
         {
-            var anythingDeleted = await this.ViewModel.DeleteSelectedPagesAsync(this.CurrentlyManagedPageType);
-            if (anythingDeleted)
+            var selectedPages = this.ViewModel.GetPagesByType(this.CurrentlyManagedPageType)
+                                              .Where(i => i.Checked)
+                                              .Select(i => $"<em>{i.Data.Title}</em>");
+            if (!selectedPages.Any())
             {
-                await this.LoadFirstPageOfPages();
+                return;
             }
+            var deletedPagesMessage = HtmlHelper.MakeUnorderedList(selectedPages);
+            deletedPagesMessage.Insert(0, "Delete these pages?<br/>");
+
+            this.Popupper.ShowYesNoPrompt(deletedPagesMessage.ToString(), async result =>
+            {
+                if (result == PopupExitResult.Yes)
+                {
+                    var anythingDeleted = await this.ViewModel.DeleteSelectedPagesAsync(this.CurrentlyManagedPageType);
+                    if (anythingDeleted)
+                    {
+                        await this.LoadFirstPageOfPages();
+                    }
+                }
+            });
         }
 
-        private async Task DeletePageAsync(int pageId)
+        private void DeletePage(SimplePageInfo page)
         {
-            await this.ViewModel.DeletePageAsync(pageId);
-            await this.LoadFirstPageOfPages();
+            this.Popupper.ShowYesNoPrompt($"Delete <em>{page.Title}</em>?", async result =>
+            {
+                if (result == PopupExitResult.Yes)
+                {
+                    await this.ViewModel.DeletePageAsync(page.Id);
+                    await this.LoadFirstPageOfPages();
+                }
+            });
         }
         #endregion
     }

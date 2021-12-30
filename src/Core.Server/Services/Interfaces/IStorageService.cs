@@ -1,6 +1,7 @@
 ﻿using Core.Server.Models.Adapters;
 using Core.Shared.Models;
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
 
@@ -29,5 +30,10 @@ namespace Core.Server.Services.Interfaces
         /// </summary>
         /// <param name="accessId">GUID that lets access a very specific file.</param>
         void DeleteFile(Guid accessId);
+        /// <summary>
+        /// Delete files.
+        /// </summary>
+        /// <param name="accessIds">GUIDs that let access very specific files.</param>
+        void DeleteFiles(IEnumerable<Guid> accessIds);
     }
 }

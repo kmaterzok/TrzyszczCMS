@@ -98,15 +98,20 @@ namespace Core.Server.Services.Implementation.DbAccess.Modify
                 using (var ts = await ctx.Database.BeginTransactionAsync())
                 {
                     var removedOne = await ctx.ContFiles.SingleOrDefaultAsync(i => i.Id == fileId);
-
                     if (removedOne == null)
                     {
                         return false;
                     }
+                    var deletedFiles = await GetFileAccessIdsRecursively(ctx, removedOne.Id);
                     ctx.ContFiles.Remove(removedOne);
 
+
                     await ctx.SaveChangesAsync();
-                    if (!removedOne.IsDirectory)
+                    if (removedOne.IsDirectory)
+                    {
+                        this._storageService.DeleteFiles(deletedFiles);
+                    }
+                    else
                     {
                         this._storageService.DeleteFile(removedOne.AccessGuid);
                     }
@@ -205,6 +210,43 @@ namespace Core.Server.Services.Implementation.DbAccess.Modify
             }
             return newGuid;
         }
+
+
+
+        /// <summary>
+        /// Retrieve all files that are assigned in tyhe logical directory.
+        /// </summary>
+        /// <param name="context">Database context for getting data</param>
+        /// <param name="nodeId">The file ID that is a directory and stores files</param>
+        /// <returns>Task returning a list of GUIDs of files assigned directly or indirectly
+        /// (through other directories) to the desired node</returns>
+        private async Task<List<Guid>> GetFileAccessIdsRecursively(CmsDbContext context, int nodeId)
+        {
+            List<Guid> fileGuids = new();
+            Stack<ContFile> analysedDirectories = new();
+            var sourceDirectory = await context.ContFiles.SingleAsync(i => i.Id == nodeId);
+            analysedDirectories.Push(sourceDirectory);
+
+            while (analysedDirectories.Count > 0)
+            {
+                var checkedNode = analysedDirectories.Pop();
+                var dataInsideDirectory = context.ContFiles.AsNoTracking()
+                                                           .Where(i => i.ParentFileId == checkedNode.Id);
+
+                fileGuids.AddRange(dataInsideDirectory.Where(i => !i.IsDirectory)
+                                                      .Select(i => i.AccessGuid)
+                                                      .AsEnumerable());
+
+                var nextDirectoriesToCheck = dataInsideDirectory.Where(i => i.IsDirectory);
+
+                foreach(var nextDirectoryToCheck in nextDirectoriesToCheck)
+                {
+                    analysedDirectories.Push(nextDirectoryToCheck);
+                }
+            }
+            return fileGuids;
+        }
+
         #endregion
     }
 }

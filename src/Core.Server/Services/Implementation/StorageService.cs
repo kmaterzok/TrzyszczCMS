@@ -4,6 +4,7 @@ using Core.Server.Services.Interfaces;
 using Core.Shared.Models;
 using Microsoft.Extensions.Options;
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
 
@@ -53,6 +54,14 @@ namespace Core.Server.Services.Implementation
             if (File.Exists(targetFilePath))
             {
                 File.Delete(targetFilePath);
+            }
+        }
+
+        public void DeleteFiles(IEnumerable<Guid> accessIds)
+        {
+            foreach (var accessId in accessIds)
+            {
+                this.DeleteFile(accessId);
             }
         }
         #endregion

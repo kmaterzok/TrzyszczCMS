@@ -1,4 +1,5 @@
-﻿using Core.Shared.Models;
+﻿using Core.Shared.Helpers;
+using Core.Shared.Models;
 using Microsoft.AspNetCore.Components;
 using System;
 using TrzyszczCMS.Client.Data.Enums;
@@ -19,6 +20,14 @@ namespace TrzyszczCMS.Client.Helpers
         /// Invoked with typed prompt result.
         /// </summary>
         private Action<Result<string, object>> _promptResult;
+        /// <summary>
+        /// The stored value for <see cref="ProgressCurrentValue"/> property.
+        /// </summary>
+        private int _progressCurrentValue;
+        /// <summary>
+        /// The stored value for <see cref="ProgressMaxValue"/> property.
+        /// </summary>
+        private int _progressMaxValue;
         #endregion
 
         #region Events
@@ -30,6 +39,10 @@ namespace TrzyszczCMS.Client.Helpers
 
         #region Properties
         /// <summary>
+        /// Type of displayed popup.
+        /// </summary>
+        public PopupType PopupType { get; private set; }
+        /// <summary>
         /// The typed text in the input.
         /// </summary>
         public string TypedInput { get; set; }
@@ -38,17 +51,47 @@ namespace TrzyszczCMS.Client.Helpers
         /// </summary>
         public MarkupString Message { get; private set; }
         /// <summary>
-        /// Type of displayed popup.
+        /// The current value of the progress.
         /// </summary>
-        public PopupType PopupType { get; private set; }
+        public int ProgressCurrentValue
+        {
+            get => this._progressCurrentValue;
+            set
+            {
+                if (this.PopupType != PopupType.Progress)
+                {
+                    throw ExceptionMaker.Member.Invalid(PopupType, nameof(PopupType));
+                }
+                this._progressCurrentValue = value;
+                this.NotifyModelUpdated.Invoke(this, EventArgs.Empty);
+            }
+        }
+        /// <summary>
+        /// The max reachable value of the progress.
+        /// </summary>
+        public int ProgressMaxValue
+        {
+            get => this._progressMaxValue;
+            set
+            {
+                if (this.PopupType != PopupType.Progress)
+                {
+                    throw ExceptionMaker.Member.Invalid(PopupType, nameof(PopupType));
+                }
+                this._progressMaxValue = value;
+                this.NotifyModelUpdated.Invoke(this, EventArgs.Empty);
+            }
+        }
         #endregion
 
         #region Ctor
         public Popupper()
         {
-            this.Message    = new MarkupString(string.Empty);
-            this.TypedInput = string.Empty;
-            this.PopupType  = PopupType.None;
+            this._progressMaxValue     = 1;
+            this._progressCurrentValue = 0;
+            this.PopupType             = PopupType.None;
+            this.Message               = new MarkupString(string.Empty);
+            this.TypedInput            = string.Empty;
         }
         #endregion
 
@@ -75,6 +118,23 @@ namespace TrzyszczCMS.Client.Helpers
             this._promptResult = null;
             this.SetDisplayData(message, PopupType.Alert);
         }
+        /// <summary>
+        /// Display a card with a progress bar.
+        /// </summary>
+        /// <param name="message">Displayed message</param>
+        /// <param name="progressMaxValue">Max reachable value of the progress</param>
+        public void ShowProgress(string message, int progressMaxValue)
+        {
+            this._promptResult = null;
+            this.SetDisplayData(message, PopupType.Progress);
+            this.ProgressCurrentValue = 0;
+            this.ProgressMaxValue     = progressMaxValue;
+        }
+        /// <summary>
+        /// Hide the displayed progress bar card.
+        /// </summary>
+        public void HideProgress() =>
+            this.SetReturnData(PopupExitResult.OK);
         #endregion
 
         #region Methods :: Button press exiting methods

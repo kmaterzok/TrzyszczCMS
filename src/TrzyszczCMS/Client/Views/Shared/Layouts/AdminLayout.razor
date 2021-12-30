@@ -42,17 +42,27 @@
                                         <input type="text" class="form-control" @bind-value="@Popupper.TypedInput" />
                                     </div>
                                 }
-                                <div class="d-flex my-2">
-                                    <div class="ms-auto">
-                                        <div class="input-group input-group-sm">
-                                            <button class="btn btn-sm btn-primary" style="min-width: 70px;" @onclick="@Popupper.OnOK">OK</button>
-                                            @if (Popupper.PopupType == PopupType.CancellablePrompt)
-                                            {
-                                                <button class="btn btn-sm btn-primary" style="min-width: 70px;" @onclick="@Popupper.OnCancel">Cancel</button>
-                                            }
+                                else if (Popupper.PopupType == PopupType.Progress)
+                                {
+                                    <div class="my-2">
+                                        <ProgressBar CurrentValue="@Popupper.ProgressCurrentValue" MaxValue="@Popupper.ProgressMaxValue"
+                                                     Message="@string.Format("{0}/{1}", Popupper.ProgressCurrentValue, Popupper.ProgressMaxValue)" />
+                                    </div>
+                                }
+                                @if (Popupper.PopupType != PopupType.Progress)
+                                {
+                                    <div class="d-flex my-2">
+                                        <div class="ms-auto">
+                                            <div class="input-group input-group-sm">
+                                                <button class="btn btn-sm btn-primary" style="min-width: 70px;" @onclick="@Popupper.OnOK">OK</button>
+                                                @if (Popupper.PopupType == PopupType.CancellablePrompt)
+                                                {
+                                                    <button class="btn btn-sm btn-primary" style="min-width: 70px;" @onclick="@Popupper.OnCancel">Cancel</button>
+                                                }
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
+                                }
                             </div>
                         </section>
                     </div>

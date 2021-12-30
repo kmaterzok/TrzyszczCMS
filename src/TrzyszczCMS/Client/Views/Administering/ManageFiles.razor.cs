@@ -31,8 +31,27 @@ namespace TrzyszczCMS.Client.Views.Administering
             this.ViewModel.PropertyChanged += new PropertyChangedEventHandler(
                 async (s, e) => await this.InvokeAsync(() => this.StateHasChanged())
             );
-            this.ViewModel.OnFilesUploadFailure = new ((s, e) =>
-                this.Popupper.ShowAlert("Uploading files finished with errors.")
+            this.ViewModel.OnFilesUploadFailure = new ((s, failedFileUploads) =>
+            {
+                this.Popupper.HideProgress();
+                string message = failedFileUploads == 1 ?
+                    $"1 file upload has finished with errors." :
+                    $"{failedFileUploads} file uploads have finished with errors.";
+                this.Popupper.ShowAlert(message);
+            });
+            this.ViewModel.OnFilesUploadBegin = new((s, e) =>
+            {
+                string fileNoun = this.ViewModel.FilesForUpload.Count == 1 ? "file" : "files";
+                this.Popupper.ShowProgress(
+                    $"Uploading {this.ViewModel.FilesForUpload.Count} {fileNoun}...",
+                    this.ViewModel.FilesForUpload.Count
+                );
+            });
+            this.ViewModel.OnFilesUploadSuccess = new((s, e) =>
+                this.Popupper.HideProgress()
+            );
+            this.ViewModel.OnFilesUploadSingleFileSuccess = new((s, countOfUploadedFiles) =>
+                this.Popupper.ProgressCurrentValue = countOfUploadedFiles
             );
         }
         protected override async Task OnAfterRenderAsync(bool firstRender)

@@ -8,6 +8,7 @@
         None,
         Prompt,
         CancellablePrompt,
-        Alert
+        Alert,
+        Progress
     }
 }

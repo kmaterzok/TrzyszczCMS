@@ -1,0 +1,46 @@
+﻿@using System.Globalization 
+
+<div class="progress w-100">
+    <div class="progress-bar" role="progressbar" style="width: @ProgressText;" aria-valuenow="@CurrentValue" aria-valuemin="0" aria-valuemax="@MaxValue">
+    </div>
+    <span class="horizontal-center" style="color: @TextColor;">
+        @Message
+    </span>
+</div>
+
+
+@code {
+
+    #region Properties :: Parameters
+    /// <summary>
+    /// The max value of progress that can be reached.
+    /// </summary>
+    [Parameter]
+    public int MaxValue { get; set; } = 100;
+    /// <summary>
+    /// The current progress value.
+    /// </summary>
+    [Parameter]
+    public int CurrentValue { get; set; }
+    /// <summary>
+    /// A message that is displayed on the progress bar.
+    /// </summary>
+    [Parameter]
+    public string Message { get; set; }
+    #endregion
+
+    #region Properties
+    /// <summary>
+    /// Current percentage of progress.
+    /// </summary>
+    public double ProgressPercentage => (double)CurrentValue * 100.0 / (double)MaxValue;
+    /// <summary>
+    /// The text used for formatting progress bay with CSS.
+    /// </summary>
+    private string ProgressText => $"{ProgressPercentage.ToString("F1", CultureInfo.InvariantCulture)}%";
+    /// <summary>
+    /// Color of the dipslayed text.
+    /// </summary>
+    private string TextColor => ProgressPercentage < 50.0 ? "#000" : "#fff";
+    #endregion
+}

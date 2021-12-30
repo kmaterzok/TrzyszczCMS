@@ -70,11 +70,26 @@ namespace TrzyszczCMS.Client.ViewModels.Administering
         /// </summary>
         public bool FilesForUploadUnset =>
             this.FilesForUpload == null || this.FilesForUpload.Count == 0;
+        #endregion
 
+        #region Properties :: Event handlers
+        /// <summary>
+        /// Events raised when the upload is begun.
+        /// </summary>
+        public EventHandler OnFilesUploadBegin { get; set; }
+        /// <summary>
+        /// Events raised when a quantity of successfully uploaded files is changed.
+        /// </summary>
+        public EventHandler<int> OnFilesUploadSingleFileSuccess { get; set; }
         /// <summary>
         /// Events raised whenever files upload finishes with fail.
+        /// Quantity of upload failures is passed.
         /// </summary>
-        public EventHandler OnFilesUploadFailure { get; set; }
+        public EventHandler<int> OnFilesUploadFailure { get; set; }
+        /// <summary>
+        /// Events raised after successful sending of all files.
+        /// </summary>
+        public EventHandler OnFilesUploadSuccess { get; set; }
         #endregion
 
         #region Ctor
@@ -155,8 +170,9 @@ namespace TrzyszczCMS.Client.ViewModels.Administering
             {
                 return;
             }
+            this.OnFilesUploadBegin.Invoke(this, EventArgs.Empty);
 
-            bool allFilesUploadedSuccessfully = true;
+            int countOfUploadFailures = 0;
             List<SimpleFileInfo> addedFiles = new();
             var adapteredFilesInfos = this.FilesForUpload.Select(i => new ClientUploadedFileAdapter(i));
 
@@ -166,20 +182,26 @@ namespace TrzyszczCMS.Client.ViewModels.Administering
                     if (partialResult.GetValue(out SimpleFileInfo successfulFile, out _))
                     {
                         addedFiles.Add(successfulFile);
+                        this.OnFilesUploadSingleFileSuccess.Invoke(this, addedFiles.Count);
                     }
                     else
                     {
-                        allFilesUploadedSuccessfully = false;
+                        ++countOfUploadFailures;
                     }
                 }));
 
             this.Files.AddRangeAndPack(addedFiles);
             this.NotifyPropertyChanged(nameof(Files));
             
-            if (!allFilesUploadedSuccessfully)
+            if (countOfUploadFailures == 0)
             {
-                this.OnFilesUploadFailure.Invoke(this, EventArgs.Empty);
+                this.OnFilesUploadSuccess.Invoke(this, EventArgs.Empty);
             }
+            else
+            {
+                this.OnFilesUploadFailure.Invoke(this, countOfUploadFailures);
+            }
+            this.FilesForUpload = null;
         }
         #endregion
     }

@@ -1,8 +1,5 @@
-﻿using Core.Server.Helpers;
-using Core.Server.Services.Interfaces;
+﻿using Core.Server.Services.Interfaces;
 using Core.Server.Services.Interfaces.DbAccess.Read;
-using DAL.Enums;
-using DAL.Helpers.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.IO;

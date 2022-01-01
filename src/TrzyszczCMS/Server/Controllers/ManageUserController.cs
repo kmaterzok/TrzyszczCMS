@@ -91,13 +91,13 @@ namespace TrzyszczCMS.Server.Controllers
         [Route("[action]")]
         public async Task<ActionResult<string>> AddUser([FromBody][NotNull] DetailedUserInfo request) =>
             (await this._manageUserService.AddUserAsync(request)).GetValue(out string password, out Tuple<bool> _) ?
-                Ok(password) : Conflict();
+                Ok(password) : Conflict("User name not compliant with specific rules.");
 
         [HttpPost]
         [Produces("application/json")]
         [Route("[action]")]
         public async Task<ActionResult> UpdateUser([FromBody][NotNull] DetailedUserInfo request) =>
-            await this._manageUserService.UpdateUserAsync(request) ? Ok() : Conflict();
+            await this._manageUserService.UpdateUserAsync(request) ? Ok() : Conflict("Some invalid data specified.");
 
 
 
@@ -126,7 +126,7 @@ namespace TrzyszczCMS.Server.Controllers
                 case DeleteRowFailReason.NotFound:
                     return NotFound();
                 case DeleteRowFailReason.DeletingOwnStuff:
-                    return Conflict();
+                    return Conflict("Cannot delete token that is used for current session.");
                 default:
                     throw ExceptionMaker.NotImplemented.ForHandling(error.Value, nameof(error.Value));
             }

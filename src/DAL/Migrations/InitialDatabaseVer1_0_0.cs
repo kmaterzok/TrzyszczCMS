@@ -189,7 +189,8 @@ namespace DAL.Migrations
                 .WithColumn(nameof(ContFile.IsDirectory))          .AsBoolean().NotNullable()
                 .WithColumn(nameof(ContFile.CreationUtcTimestamp)) .AsDateTime().NotNullable()
                 .WithColumn(nameof(ContFile.Name))                 .AsString(250).NotNullable()
-                .WithColumn(nameof(ContFile.AccessGuid))           .AsGuid().NotNullable();
+                .WithColumn(nameof(ContFile.AccessGuid))           .AsGuid().NotNullable()
+                .WithColumn(nameof(ContFile.MimeType))             .AsString(100).Nullable();
 
             Create.ForeignKey(ForeignKeys.Current.CONTFILEID_CONTFILEID_PARENTFILEID)
                 .FromTable(nameof(ContFile))                       .ForeignColumn(nameof(ContFile.ParentFileId))

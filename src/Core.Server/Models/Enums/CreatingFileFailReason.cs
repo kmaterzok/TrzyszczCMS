@@ -5,6 +5,7 @@
     /// </summary>
     public enum CreatingFileFailReason
     {
-        FileSizeTooLarge
+        FileSizeTooLarge,
+        TooLargeMimeType
     }
 }

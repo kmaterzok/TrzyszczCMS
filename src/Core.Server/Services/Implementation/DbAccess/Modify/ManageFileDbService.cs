@@ -1,4 +1,5 @@
-﻿using Core.Server.Helpers.Extensions;
+﻿using Core.Server.Helpers;
+using Core.Server.Helpers.Extensions;
 using Core.Server.Models;
 using Core.Server.Models.Adapters;
 using Core.Server.Models.Enums;
@@ -64,7 +65,8 @@ namespace Core.Server.Services.Implementation.DbAccess.Modify
                                                      CreationUtcTimestamp = i.CreationUtcTimestamp,
                                                      IsDirectory          = i.IsDirectory,
                                                      Name                 = i.Name,
-                                                     ParentFileId         = i.ParentFileId
+                                                     ParentFileId         = i.ParentFileId,
+                                                     MimeType             = i.MimeType
                                                  }).ToListAsync();
 
                 if (skippedPages == 0 && fileNodeId.HasValue)
@@ -77,7 +79,8 @@ namespace Core.Server.Services.Implementation.DbAccess.Modify
                         CreationUtcTimestamp = goUpDirectory.CreationUtcTimestamp,
                         IsDirectory          = true,
                         Name                 = "..",
-                        ParentFileId         = goUpDirectory.ParentFileId
+                        ParentFileId         = goUpDirectory.ParentFileId,
+                        MimeType             = goUpDirectory.MimeType
                     });
                 }
 
@@ -142,11 +145,11 @@ namespace Core.Server.Services.Implementation.DbAccess.Modify
                     var newDirectoryGuid = await this.GetGuidForNewFileAsync(ctx);
                     var addedDirectory = await ctx.ContFiles.AddAsync(new ContFile()
                     {
-                        AccessGuid = newDirectoryGuid,
+                        AccessGuid           = newDirectoryGuid,
                         CreationUtcTimestamp = DateTime.UtcNow,
-                        IsDirectory = true,
-                        Name = name,
-                        ParentFileId = currentParentNodeId
+                        IsDirectory          = true,
+                        Name                 = name,
+                        ParentFileId         = currentParentNodeId
                     });
 
 
@@ -160,10 +163,11 @@ namespace Core.Server.Services.Implementation.DbAccess.Modify
 
         public async Task<Result<List<SimpleFileInfo>, Tuple<CreatingFileFailReason>>> UploadFiles(IEnumerable<IServerUploadedFile> files, int? currentParentNodeId)
         {
-            if (files.Any(i => i.Length > CommonConstants.MAX_UPLOADED_FILE_LENGTH_BYTES))
+            var creatingFailReason = FileManagementHelper.CheckFilesBeforeUpload(files);
+            if (creatingFailReason.HasValue)
             {
                 return Result<List<SimpleFileInfo>, Tuple<CreatingFileFailReason>>.MakeError(
-                    new Tuple<CreatingFileFailReason>(CreatingFileFailReason.FileSizeTooLarge)
+                    new Tuple<CreatingFileFailReason>(creatingFailReason.Value)
                 );
             }
 
@@ -177,14 +181,16 @@ namespace Core.Server.Services.Implementation.DbAccess.Modify
                         var newFileGuid = await this.GetGuidForNewFileAsync(ctx);
                         var uploadResult = this._storageService.PutFileAsync(file, newFileGuid);
 
+                        var mimeType  = file.ContentType;
                         
                         var addedFile = await ctx.ContFiles.AddAsync(new ContFile()
                         {
                             CreationUtcTimestamp = DateTime.UtcNow,
-                            Name = file.FileName,
-                            IsDirectory = false,
-                            ParentFileId = currentParentNodeId,
-                            AccessGuid = newFileGuid
+                            Name                 = file.FileName,
+                            IsDirectory          = false,
+                            ParentFileId         = currentParentNodeId,
+                            AccessGuid           = newFileGuid,
+                            MimeType             = mimeType
                         });
                         await ctx.SaveChangesAsync();
                         uploadedFiles.Add(addedFile.ToSimpleFileInfo());

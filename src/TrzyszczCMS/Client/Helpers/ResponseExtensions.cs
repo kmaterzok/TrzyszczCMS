@@ -1,9 +1,6 @@
 ﻿using Core.Shared.Enums;
 using Core.Shared.Models.Rest.Responses.PageContent;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using TrzyszczCMS.Client.ViewModels.PageContent.Modules;
 
 namespace TrzyszczCMS.Client.Helpers

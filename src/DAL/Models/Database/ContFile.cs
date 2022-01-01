@@ -18,6 +18,7 @@ namespace DAL.Models.Database
         public DateTime CreationUtcTimestamp { get; set; }
         public string Name { get; set; }
         public Guid AccessGuid { get; set; }
+        public string MimeType { get; set; }
 
         public virtual ContFile ParentFile { get; set; }
         public virtual ICollection<ContFile> InverseParentFile { get; set; }

@@ -57,7 +57,12 @@
                 }
             </td>
             <td>@row.Data.CreationUtcTimestamp.ToGenericNotation()</td>
-            <td>@row.Data.AccessGuid.ToString(CommonConstants.FILE_ACCESS_ID_FORMAT)</td>
+            <td>
+                @if (!row.Data.IsDirectory)
+                {
+                    @row.Data.AccessGuid.ToString(CommonConstants.FILE_ACCESS_ID_FORMAT)
+                }
+            </td>
             <td>
                 @if (row.Data.Name != "..")
                 {

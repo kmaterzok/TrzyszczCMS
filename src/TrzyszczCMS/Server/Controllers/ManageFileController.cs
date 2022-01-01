@@ -86,7 +86,7 @@ namespace TrzyszczCMS.Server.Controllers
         {
             if (files == null || files.Count == 0)
             {
-                return BadRequest();
+                return BadRequest("There are no files uploaded.");
             }
 
             var fileAdapters = files.Select(i => new ServerUploadedFileAdapter(i));
@@ -125,10 +125,10 @@ namespace TrzyszczCMS.Server.Controllers
                 switch (error.Item1)
                 {
                     case CreatingRowFailReason.AlreadyExisting:
-                        return Conflict();
+                        return Conflict("A directory with the specified name has already existed.");
 
                     case CreatingRowFailReason.CreatingForbidden:
-                        return BadRequest();
+                        return BadRequest("Cannot create a directory with the specified data.");
 
                     default:
                         throw ExceptionMaker.NotImplemented.ForHandling(error.Item1, $"{nameof(error)}.{nameof(error.Item1)}");

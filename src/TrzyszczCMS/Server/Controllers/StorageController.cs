@@ -1,4 +1,8 @@
-﻿using Core.Server.Services.Interfaces;
+﻿using Core.Server.Helpers;
+using Core.Server.Services.Interfaces;
+using Core.Server.Services.Interfaces.DbAccess.Read;
+using DAL.Enums;
+using DAL.Helpers.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.IO;
@@ -11,34 +15,41 @@ namespace TrzyszczCMS.Server.Controllers
     public class StorageController : Controller
     {
         #region Fields
-        private readonly IStorageService _loadFileService;
+        private readonly IStorageService _storageService;
+        private readonly ILoadFileDbService _loadFileService;
         #endregion
 
         #region Ctor
-        public StorageController(IStorageService loadFileService) =>
+        public StorageController(IStorageService storageService, ILoadFileDbService loadFileService)
+        {
             this._loadFileService = loadFileService;
+            this._storageService  = storageService;
+        }
         #endregion
 
         #region Methods
         [HttpGet]
         [Route("[action]/{accessId}")]
-        public ActionResult GetFile(string accessId)
+        public async Task<ActionResult> GetFile(string accessId)
         {
-            BinaryReader fileReader = null;
-            if (Guid.TryParse(accessId, out Guid parsedAccessGuid) &&
-                (this._loadFileService.GetFile(parsedAccessGuid)).GetValue(out fileReader, out object _))
+            if (Guid.TryParse(accessId, out Guid parsedAccessGuid))
             {
-                try
+                if (this._storageService.GetFile(parsedAccessGuid).GetValue(out BinaryReader fileReader, out object _))
                 {
-                    return new FileContentResult(fileReader.ReadBytes((int)fileReader.BaseStream.Length), "application/octet-stream");
+                    try
+                    {
+                        var mimeType = await this._loadFileService.GetMimeType(parsedAccessGuid);
+                        return new FileContentResult(fileReader.ReadBytes((int)fileReader.BaseStream.Length), mimeType);
+                    }
+                    finally
+                    {
+                        fileReader.Close();
+                        fileReader.Dispose();
+                    }
                 }
-                finally
-                {
-                    fileReader.Close();
-                    fileReader.Dispose();
-                }
+                return NotFound();
             }
-            return NotFound();
+            return BadRequest("Invalid GUID syntax.");
         }
         #endregion
     }

@@ -34,7 +34,8 @@ namespace Core.Server.Helpers.Extensions
             CreationUtcTimestamp = source.Entity.CreationUtcTimestamp,
             IsDirectory          = source.Entity.IsDirectory,
             Name                 = source.Entity.Name,
-            ParentFileId         = source.Entity.ParentFileId
+            ParentFileId         = source.Entity.ParentFileId,
+            MimeType             = source.Entity.MimeType
         };
     }
 }

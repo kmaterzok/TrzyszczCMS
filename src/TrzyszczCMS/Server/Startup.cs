@@ -63,6 +63,7 @@ namespace TrzyszczCMS.Server
             services.AddScoped<IManagePageDbService,     ManagePageDbService>();
             services.AddScoped<IManageUserDbService,     ManageUserDbService>();
             services.AddScoped<IManageFileDbService,     ManageFileDbService>();
+            services.AddScoped<ILoadFileDbService,       LoadFileDbService>();
             services.AddScoped<IStorageService,          StorageService>();
         }
         #endregion

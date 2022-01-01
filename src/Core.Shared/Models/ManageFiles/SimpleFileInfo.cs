@@ -33,5 +33,9 @@ namespace Core.Shared.Models.ManageFiles
         /// It is also the real name of the file stored in the storage.
         /// </summary>
         public Guid AccessGuid { get; set; }
+        /// <summary>
+        /// The file's MIME type.
+        /// </summary>
+        public string MimeType { get; set; }
     }
 }

@@ -26,7 +26,6 @@ namespace DAL.Models.Database
         public virtual DbSet<ContTextWallModule> ContTextWallModules { get; set; }
         public virtual DbSet<VersionInfo> VersionInfos { get; set; }
 
-
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.HasAnnotation("Relational:Collation", "Polish_Poland.1250");
@@ -108,6 +107,8 @@ namespace DAL.Models.Database
             modelBuilder.Entity<ContFile>(entity =>
             {
                 entity.ToTable("ContFile");
+
+                entity.Property(e => e.MimeType).HasMaxLength(100);
 
                 entity.Property(e => e.Name)
                     .IsRequired()

@@ -44,7 +44,7 @@ namespace Core.Shared.Models
         /// <param name="successObject">Object for processing</param>
         /// <returns>Object with result information</returns>
         public static Result<T, E> MakeSuccess([NotNull] T successObject) =>
-            new Result<T, E>(successObject, null);
+            new (successObject, null);
         
         /// <summary>
         /// Create a result of faulty executing of operation.
@@ -52,7 +52,7 @@ namespace Core.Shared.Models
         /// <param name="successObject">Object for processing</param>
         /// <returns>Object with result information</returns>
         public static Result<T, E> MakeError([NotNull] E errorObject) =>
-            new Result<T, E>(null, errorObject);
+            new (null, errorObject);
 
         /// <summary>
         /// Create a result of faulty executing of operation.
@@ -60,7 +60,7 @@ namespace Core.Shared.Models
         /// </summary>
         /// <returns>Object with result information</returns>
         public static Result<T, object> MakeError() =>
-            new Result<T, object>(null, new object());
+            new (null, new object());
         #endregion
 
         #region Public methods

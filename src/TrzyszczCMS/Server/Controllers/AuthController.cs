@@ -22,12 +22,17 @@ namespace TrzyszczCMS.Server.Controllers
         /// Service handling basic authorisation and authentication with database usage.
         /// </summary>
         private readonly IAuthDatabaseService _authService;
+        /// <summary>
+        /// Service for executing repetitive tasks.
+        /// </summary>
+        private readonly IRepetitiveTaskService _repetitiveTaskService;
         #endregion
 
         #region Ctor
-        public AuthController(IAuthDatabaseService authService)
+        public AuthController(IAuthDatabaseService authService, IRepetitiveTaskService repetitiveTaskService)
         {
             this._authService = authService;
+            this._repetitiveTaskService = repetitiveTaskService;
         }
         #endregion
 
@@ -42,6 +47,7 @@ namespace TrzyszczCMS.Server.Controllers
         [Route("[action]")]
         public async Task<ActionResult<GenerateAuthDataResponse>> GenerateData([FromBody] GenerateAuthDataRequest request)
         {
+            await this._repetitiveTaskService.StartRevokingTokensAsync();
             var result = await this._authService.GenerateAuthData(request.Username, request.Password, request.RememberMe);
             return (result != null) ?
                 Ok(new GenerateAuthDataResponse() { AuthUserInfo = result }) :
@@ -56,6 +62,7 @@ namespace TrzyszczCMS.Server.Controllers
         [Route("[action]/{token}")]
         public async Task<ActionResult<GenerateAuthDataResponse>> GetData(string token)
         {
+            await this._repetitiveTaskService.StartRevokingTokensAsync();
             if (string.IsNullOrEmpty(token))
             {
                 return Forbid();

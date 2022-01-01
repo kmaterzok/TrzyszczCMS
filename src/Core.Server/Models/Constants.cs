@@ -36,5 +36,10 @@
         /// that is generated for a newly created user.
         /// </summary>
         public const int ADD_USER_DEFAULT_PASSWORD_LENGTH = 24;
+        /// <summary>
+        /// The time between trials of revoking expored tokens.
+        /// </summary>
+        public const int REPETITIVE_CYCLE_PERIOD_FOR_ACCESS_TOKEN_REVOKE_MILLIS = 60000;//3600000;
+
     }
 }

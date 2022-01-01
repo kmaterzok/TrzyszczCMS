@@ -1,5 +1,6 @@
 using Core.Server.Models.Settings;
 using Core.Server.Services.Implementation;
+using Core.Server.Services.Implementation.DbAccess;
 using Core.Server.Services.Implementation.DbAccess.Modify;
 using Core.Server.Services.Implementation.DbAccess.Read;
 using Core.Server.Services.Implementations.DbAccess;
@@ -56,8 +57,10 @@ namespace TrzyszczCMS.Server
                 throw new InvalidMemberException($"Path {storagePath} does not belong to an existing directory.");
             }
 
+            services.AddSingleton<IDatabaseStrategyFactory, DatabaseStrategyFactory>();
+            services.AddSingleton<IRepetitiveTaskService,   RepetitiveTaskService>();
+
             services.AddScoped<ICryptoService,           CryptoService>();
-            services.AddScoped<IDatabaseStrategyFactory, DatabaseStrategyFactory>();
             services.AddScoped<IAuthDatabaseService,     AuthDatabaseService>();
             services.AddScoped<ILoadPageDbService,       LoadPageDbService>();
             services.AddScoped<IManagePageDbService,     ManagePageDbService>();

@@ -23,6 +23,9 @@ namespace TrzyszczCMS.Client.Data
         /// The delay for invoking function / action persisting MArkDown editor changes in the specified depository.
         /// </summary>
         public const int MARKDOWN_EDITOR_DELAY_FOR_UPDATING_DEPOSITORY_MILLIS = 2000;
-
+        /// <summary>
+        /// The constant defining paddings within a body of an accordion.
+        /// </summary>
+        public const string ACCORDION_CONTENT_CLASS = "p-0 border-bottom border-dark border-1";
     }
 }

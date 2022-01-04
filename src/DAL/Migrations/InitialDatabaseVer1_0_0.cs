@@ -95,6 +95,21 @@ namespace DAL.Migrations
             #endregion
 
 
+            #region --- Menu ---
+            Create.Table(nameof(ContMenuItem))
+                .WithColumn(nameof(ContMenuItem.Id))           .AsInt32().NotNullable().PrimaryKey().Identity()
+                .WithColumn(nameof(ContMenuItem.ParentItemId)) .AsInt32().Nullable()
+                .WithColumn(nameof(ContMenuItem.Name))         .AsString(250).NotNullable()
+                .WithColumn(nameof(ContMenuItem.Uri))          .AsString(250).Nullable()
+                .WithColumn(nameof(ContMenuItem.OrderNumber))  .AsInt32().NotNullable();
+
+            Create.ForeignKey(ForeignKeys.Current.CONTMENUITEMID_CONTMENUITEMID_PARENTITEMID)
+                .FromTable(nameof(ContMenuItem))               .ForeignColumn(nameof(ContMenuItem.ParentItemId))
+                .ToTable(  nameof(ContMenuItem))               .PrimaryColumn(nameof(ContMenuItem.Id))
+                .OnDelete(System.Data.Rule.Cascade);
+            #endregion
+
+
             #region --- Content tables ---
             Create.Table(   nameof(ContModule))
                 .WithColumn(nameof(ContModule.Id))           .AsInt32().NotNullable().PrimaryKey().Identity()

@@ -4,6 +4,7 @@
 @using Core.Shared.Enums;
 @using Core.Shared.Helpers.Extensions
 @using Core.Shared.Models;
+@using TrzyszczCMS.Client.Data
 @using TrzyszczCMS.Client.Views.Shared.Accordion
 @using TrzyszczCMS.Client.Views.Shared.Grids
 @using TrzyszczCMS.Client.ViewModels.Administering
@@ -13,7 +14,7 @@
 
 <Accordion Id="MainAccordion">
     <Elements Context="actx">
-        <AccordionElement Header="Users" ContentClass="@ACCORDION_CONTENT_CLASS" ParentAccordionId="actx.AccordionId" CollapseId="UserCollapse">
+        <AccordionElement Header="Users" ContentClass="@Constants.ACCORDION_CONTENT_CLASS" ParentAccordionId="actx.AccordionId" CollapseId="UserCollapse">
             <Content>
                 <nav class="d-flex">
                     <div class="ms-auto">
@@ -53,7 +54,7 @@
             </Content>
         </AccordionElement>
 
-        <AccordionElement Header="Your sessions" ContentClass="@ACCORDION_CONTENT_CLASS" ParentAccordionId="actx.AccordionId" CollapseId="SessionCollapse">
+        <AccordionElement Header="Your sessions" ContentClass="@Constants.ACCORDION_CONTENT_CLASS" ParentAccordionId="actx.AccordionId" CollapseId="SessionCollapse">
             <Content>
                 <section>
                     <Grid Items="ViewModel.Tokens" MultiSelect="false">

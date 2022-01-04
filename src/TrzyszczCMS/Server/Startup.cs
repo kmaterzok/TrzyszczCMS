@@ -61,13 +61,14 @@ namespace TrzyszczCMS.Server
             services.AddSingleton<IRepetitiveTaskService,   RepetitiveTaskService>();
 
             services.AddScoped<ICryptoService,           CryptoService>();
+            services.AddScoped<IStorageService,          StorageService>();
+            services.AddScoped<ILoadFileDbService,       LoadFileDbService>();
             services.AddScoped<IAuthDatabaseService,     AuthDatabaseService>();
             services.AddScoped<ILoadPageDbService,       LoadPageDbService>();
             services.AddScoped<IManagePageDbService,     ManagePageDbService>();
             services.AddScoped<IManageUserDbService,     ManageUserDbService>();
             services.AddScoped<IManageFileDbService,     ManageFileDbService>();
-            services.AddScoped<ILoadFileDbService,       LoadFileDbService>();
-            services.AddScoped<IStorageService,          StorageService>();
+            services.AddScoped<IManageSettingsDbService, ManageSettingsDbService>();
         }
         #endregion
 
@@ -89,9 +90,7 @@ namespace TrzyszczCMS.Server
                            .AllowAnyHeader()));
 
             services.Configure<FormOptions>(options =>
-            {
-                options.MultipartBodyLengthLimit = long.MaxValue;
-            });
+                options.MultipartBodyLengthLimit = int.MaxValue);
 
             RegisterServices(services);
 

@@ -1,4 +1,5 @@
 ﻿using Core.Shared.Models.ManageFiles;
+using Core.Shared.Models.ManageSettings;
 using Core.Shared.Models.ManageUser;
 using DAL.Models.Database;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
@@ -37,5 +38,16 @@ namespace Core.Server.Helpers.Extensions
             ParentFileId         = source.Entity.ParentFileId,
             MimeType             = source.Entity.MimeType
         };
+
+
+        public static SimpleMenuItemInfo ToSimpleMenuItemInfo(this EntityEntry<ContMenuItem> source) => new SimpleMenuItemInfo()
+        {
+            Id           = source.Entity.Id,
+            Name         = source.Entity.Name,
+            OrderNumber  = source.Entity.OrderNumber,
+            ParentItemId = source.Entity.ParentItemId,
+            Uri          = source.Entity.Uri,
+        };
+
     }
 }

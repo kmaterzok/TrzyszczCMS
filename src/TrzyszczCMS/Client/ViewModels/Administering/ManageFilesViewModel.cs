@@ -39,7 +39,7 @@ namespace TrzyszczCMS.Client.ViewModels.Administering
 
         private List<GridItem<SimpleFileInfo>> _files;
         /// <summary>
-        /// All files currently displayed in the posts grid.
+        /// All files currently displayed in the grid.
         /// These files come from a specified directory.
         /// </summary>
         public List<GridItem<SimpleFileInfo>> Files

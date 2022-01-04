@@ -31,6 +31,9 @@
 
             public const string CONTFILEID_CONTFILEID_PARENTFILEID
                 = "ContFile_ContFile_ParentFileId";
+
+            public const string CONTMENUITEMID_CONTMENUITEMID_PARENTITEMID
+                = "ContMenuItem_ContMenuItem_ParentItemId";
         }
         /// <summary>
         /// Names of all obsolete (unused) foreign keys.

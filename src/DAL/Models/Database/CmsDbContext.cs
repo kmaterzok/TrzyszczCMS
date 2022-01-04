@@ -21,6 +21,7 @@ namespace DAL.Models.Database
         public virtual DbSet<AuthToken> AuthTokens { get; set; }
         public virtual DbSet<AuthUser> AuthUsers { get; set; }
         public virtual DbSet<ContFile> ContFiles { get; set; }
+        public virtual DbSet<ContMenuItem> ContMenuItems { get; set; }
         public virtual DbSet<ContModule> ContModules { get; set; }
         public virtual DbSet<ContPage> ContPages { get; set; }
         public virtual DbSet<ContTextWallModule> ContTextWallModules { get; set; }
@@ -119,6 +120,23 @@ namespace DAL.Models.Database
                     .HasForeignKey(d => d.ParentFileId)
                     .OnDelete(DeleteBehavior.Cascade)
                     .HasConstraintName("ContFile_ContFile_ParentFileId");
+            });
+
+            modelBuilder.Entity<ContMenuItem>(entity =>
+            {
+                entity.ToTable("ContMenuItem");
+
+                entity.Property(e => e.Name)
+                    .IsRequired()
+                    .HasMaxLength(250);
+
+                entity.Property(e => e.Uri).HasMaxLength(250);
+
+                entity.HasOne(d => d.ParentItem)
+                    .WithMany(p => p.InverseParentItem)
+                    .HasForeignKey(d => d.ParentItemId)
+                    .OnDelete(DeleteBehavior.Cascade)
+                    .HasConstraintName("ContMenuItem_ContMenuItem_ParentItemId");
             });
 
             modelBuilder.Entity<ContModule>(entity =>

@@ -1,0 +1,51 @@
+﻿@layout AdminLayout
+@page "/manage/settings"
+
+@using TrzyszczCMS.Client.Views.Shared.Grids
+@using TrzyszczCMS.Client.ViewModels.Administering
+@inject SettingsViewModel ViewModel
+@inject NavigationManager NavigationManager
+
+
+
+<nav class="d-flex">
+    <h1 class="me-auto">Menu links</h1>
+    <div class="d-flex mt-auto mb-1">
+        <div class="input-group input-group-sm">
+            <button class="btn btn-primary btn-sm" @onclick="@AddMenuItem"><i class="fas fa-plus"></i>&nbsp;Add item...</button>
+        </div>
+    </div>
+</nav>
+<section>
+    <Grid Items="ViewModel.MenuItems" MultiSelect="false">
+        <Header>
+            <GridColHeader Title="Name"      SearchBoxType="SearchBoxType.None" />
+            <GridColHeader Title="URI"       SearchBoxType="SearchBoxType.None" />
+            <GridColHeader Title="Actions"   SearchBoxType="SearchBoxType.None" Width="200" />
+        </Header>
+        <RowTemplate Context="row">
+            <td>
+                <span>
+                    <i class="fas fa-link"></i>&nbsp;
+                    <a class="text-decoration-underline" role="button" @onclick="@(() => ViewModel.EnterMenuItemAsync(row.Data))">@row.Data.Name</a>
+                </span>
+            </td>
+            <td>
+                <a href="@row.Data.Uri" class="text-decoration-underline" role="button" rel="nofollow">@row.Data.Uri</a>
+            </td>
+            <td>
+                @if (row.Data.Name != "..")
+                {
+                <div class="input-group input-group-sm">
+                    <button class="btn btn-sm btn-primary" @onclick="@(() => DeleteMenuItem(row.Data))"><i class="fas fa-trash"></i>&nbsp;Delete</button>
+                    <button class="btn btn-sm btn-primary" @onclick="@(() => ViewModel.MoveMenuItemAsync(row.Data, true))"><i class="fas fa-arrow-up"></i></button>
+                    <button class="btn btn-sm btn-primary" @onclick="@(() => ViewModel.MoveMenuItemAsync(row.Data, false))"><i class="fas fa-arrow-down"></i></button>
+                </div>
+                }
+            </td>
+        </RowTemplate>
+        <NoRowsTemplate>
+            No links added.
+        </NoRowsTemplate>
+    </Grid>
+</section>

@@ -32,7 +32,7 @@
 <section>
     <Grid Items="ViewModel.Files" MultiSelect="false">
         <Header>
-            <GridColHeader Title="Name" OnSearchTextChanged="@(e => ViewModel.OnSearch(e, FilteredGridField.ManageFiles_Name))" />
+            <GridColHeader Title="Name"    OnSearchTextChanged="@(e => ViewModel.OnSearch(e, FilteredGridField.ManageFiles_Name))" />
             <GridColHeader Title="Created" OnSearchDateChanged="@(e => ViewModel.OnSearch(e, FilteredGridField.ManageFiles_Created))"
                            SearchBoxType="SearchBoxType.DateInputs" />
             <GridColHeader Title="Access ID" SearchBoxType="SearchBoxType.None" />

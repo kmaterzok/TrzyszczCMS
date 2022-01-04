@@ -80,7 +80,7 @@ namespace Core.Server.Services.Implementation.DbAccess.Modify
                         IsDirectory          = true,
                         Name                 = "..",
                         ParentFileId         = goUpDirectory.ParentFileId,
-                        MimeType             = goUpDirectory.MimeType
+                        MimeType             = null
                     });
                 }
 

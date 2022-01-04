@@ -9,13 +9,6 @@ namespace TrzyszczCMS.Client.Views.Administering
 {
     public partial class ManageUsers
     {
-        #region Constants
-        /// <summary>
-        /// The constant defining paddings within a body of an accordion.
-        /// </summary>
-        private const string ACCORDION_CONTENT_CLASS = "p-0 border-bottom border-dark border-1";
-        #endregion
-
         #region Properties
         [CascadingParameter]
         private Popupper Popupper { get; set; }

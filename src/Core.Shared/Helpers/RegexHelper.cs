@@ -10,7 +10,7 @@ namespace Core.Shared.Helpers
         /// <param name="uriName">Checked URI name</param>
         /// <returns>Is URI name valid</returns>
         public static bool IsValidPageUriName(string uriName) =>
-            Regex.IsMatch(uriName, @"^[^!@#$%^&*()=+\[\]\{\};:/?\\]+$");
+            Regex.IsMatch(uriName ?? string.Empty, @"^[^!@#$%^&*()=+\[\]\{\};:/?\\]+$");
 
         /// <summary>
         /// Check if <paramref name="username"/> complies the rules of valid login / username.
@@ -18,6 +18,6 @@ namespace Core.Shared.Helpers
         /// <param name="username">Checked username</param>
         /// <returns>Is username valid</returns>
         public static bool IsValidUserName(string username) =>
-            Regex.IsMatch(username, @"^[a-z0-9_\-]+$");
+            Regex.IsMatch(username ?? string.Empty, @"^[a-z0-9_\-]+$");
     }
 }

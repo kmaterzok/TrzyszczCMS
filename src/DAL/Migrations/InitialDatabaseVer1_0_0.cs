@@ -134,7 +134,8 @@ namespace DAL.Migrations
                 .WithColumn(nameof(ContPage.Title))                       .AsString(255).NotNullable().Unique()
                 .WithColumn(nameof(ContPage.Type))                        .AsByte().NotNullable().WithDefaultValue(3)
                 .WithColumn(nameof(ContPage.CreateUtcTimestamp))          .AsDateTime().NotNullable()
-                .WithColumn(nameof(ContPage.PublishUtcTimestamp))         .AsDateTime().NotNullable();
+                .WithColumn(nameof(ContPage.PublishUtcTimestamp))         .AsDateTime().NotNullable()
+                .WithColumn(nameof(ContPage.AuthorsInfo))                 .AsString(255).Nullable().WithDefaultValue(null);
 
             Create.ForeignKey(ForeignKeys.Current.CONTMODULE_PAGE_ASSIGNEDID)
                 .FromTable(nameof(ContModule))   .ForeignColumn(nameof(ContModule.ContPageId))
@@ -149,7 +150,8 @@ namespace DAL.Migrations
                 Title = "Homepage",
                 Type = 1,
                 CreateUtcTimestamp  = new DateTime(2021, 10, 1, 18, 15, 0),
-                PublishUtcTimestamp = new DateTime(2021, 10, 1, 18, 25, 0)
+                PublishUtcTimestamp = new DateTime(2021, 10, 1, 18, 25, 0),
+                AuthorsInfo = (string)null
             });
             for (int i = 1; i <= 5; ++i)
             {
@@ -177,7 +179,8 @@ namespace DAL.Migrations
                 Title = "A simple article",
                 Type = 2,
                 CreateUtcTimestamp  = new DateTime(2021, 10, 1, 18, 30, 0),
-                PublishUtcTimestamp = new DateTime(2021, 10, 1, 18, 40, 0)
+                PublishUtcTimestamp = new DateTime(2021, 10, 1, 18, 40, 0),
+                AuthorsInfo = "Someone who wrote it ;)"
             });
             Insert.IntoTable(nameof(ContModule)).Row(new
             {

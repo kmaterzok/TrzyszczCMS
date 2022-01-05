@@ -69,7 +69,7 @@ namespace TrzyszczCMS.Server.Controllers
         [Produces("application/json")]
         [Route("[action]")]
         public async Task<ActionResult> UpdatePage([FromBody][NotNull] DetailedPageInfo request) =>
-            await this._managePageService.UpdatePageAsync(request) ? Ok() : Conflict("Some invalid data specified.");
+            await this._managePageService.UpdatePageAsync(request) ? Ok() : Conflict("Some invalid or repetitive data specified.");
 
         /// <summary>
         /// Delete pages from the database.

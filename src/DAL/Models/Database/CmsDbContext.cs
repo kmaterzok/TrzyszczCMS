@@ -159,6 +159,10 @@ namespace DAL.Models.Database
                 entity.HasIndex(e => e.UriName, "IX_ContPage_UriName")
                     .IsUnique();
 
+                entity.Property(e => e.AuthorsInfo)
+                    .HasMaxLength(255)
+                    .HasDefaultValueSql("NULL::character varying");
+
                 entity.Property(e => e.Title)
                     .IsRequired()
                     .HasMaxLength(255);

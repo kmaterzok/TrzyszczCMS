@@ -6,7 +6,6 @@ using Core.Shared.Models.ManagePage;
 using Core.Shared.Models.PageContent;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
 using System.Threading.Tasks;
 using TrzyszczCMS.Client.Data.Model;
 using TrzyszczCMS.Client.Data.Model.Extensions;
@@ -144,6 +143,16 @@ namespace TrzyszczCMS.Client.ViewModels.Administering.Edit
             set { Set(ref _publishUtcTimestampDate, value, nameof(PublishUtcTimestampDate)); this.OnDataSet?.Invoke(this, EventArgs.Empty); }
         }
 
+        private string _authorsInfo;
+        /// <summary>
+        /// Information about authors provided by the page creator.
+        /// </summary>
+        public string AuthorsInfo
+        {
+            get => _authorsInfo;
+            set { Set(ref _authorsInfo, value, nameof(AuthorsInfo)); this.OnDataSet?.Invoke(this, EventArgs.Empty); }
+        }
+
         private List<GridItem<ModuleContent>> _moduleContents;
         /// <summary>
         /// Modules displayed on the page with their content.
@@ -176,6 +185,7 @@ namespace TrzyszczCMS.Client.ViewModels.Administering.Edit
             this.PublishUtcTimestampDate = deposit.PageDetails.PublishUtcTimestamp;
             this.PageType                = deposit.PageDetails.PageType;
             this.ModuleContents          = deposit.PageDetails.ModuleContents.ToGridItemList();
+            this.AuthorsInfo             = deposit.PageDetails.AuthorsInfo;
         }
         #endregion
 
@@ -190,7 +200,8 @@ namespace TrzyszczCMS.Client.ViewModels.Administering.Edit
             PageEditorMode          = this.PageEditorMode,
             EditedModuleListIndex   = this.EditedModuleListIndex,
             OldUriName              = this._oldUriName,
-            PageDetails             = this.GetDetailedPageInfo()
+            PageDetails             = this.GetDetailedPageInfo(),
+            AuthorsInfo             = this.AuthorsInfo
         };
 
         /// <summary>
@@ -199,12 +210,13 @@ namespace TrzyszczCMS.Client.ViewModels.Administering.Edit
         /// <returns>Modifiable and manageable information about page</returns>
         public DetailedPageInfo GetDetailedPageInfo() => new DetailedPageInfo()
         {
-            Id = this.IdOfPage,
-            ModuleContents = this.ModuleContents.ToOrdinaryList(),
-            PageType = this.PageType,
+            Id                  = this.IdOfPage,
+            ModuleContents      = this.ModuleContents.ToOrdinaryList(),
+            PageType            = this.PageType,
             PublishUtcTimestamp = this.PublishUtcTimestampDate.Value.TruncateHMS().Add(this.PublishUtcTimestampTime.GetHMS()),
-            Title = this.Title,
-            UriName = this.UriName
+            Title               = this.Title,
+            UriName             = this.UriName,
+            AuthorsInfo         = this.AuthorsInfo
         };
 
         /// <summary>
@@ -218,10 +230,7 @@ namespace TrzyszczCMS.Client.ViewModels.Administering.Edit
 
             // *** UriName ***
             bool noChangeInName = this._oldUriName == this.UriName;
-            if (!noChangeInName)
-            {
-                this.UriNameValidationMessage = ValidationApplier.CheckRequired(this.UriName, ref valid);
-            }
+            this.UriNameValidationMessage = ValidationApplier.CheckRequired(this.UriName, ref valid);
             if (noChangeInName || !valid)
             {
                 // Do nothing

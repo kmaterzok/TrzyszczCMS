@@ -182,11 +182,12 @@ namespace TrzyszczCMS.Client.ViewModels.Administering
             }
             await this._depository.AddOrUpdateAsync(new EditedPageDeposit()
             {
-                PageEditorMode = DataEditorMode.Edit,
-                PageDetails = pageInfo,
+                PageEditorMode        = DataEditorMode.Edit,
+                PageDetails           = pageInfo,
                 EditedModuleListIndex = 0,
                 CurrentManagementTool = PageManagementTool.PageLayoutComposer,
-                OldUriName = pageInfo.UriName
+                OldUriName            = pageInfo.UriName,
+                AuthorsInfo           = (string)null
             });
         }
 
@@ -198,11 +199,12 @@ namespace TrzyszczCMS.Client.ViewModels.Administering
                 case PageType.Article:
                     await this._depository.AddOrUpdateAsync(new EditedPageDeposit()
                     {
-                        PageEditorMode = DataEditorMode.Create,
-                        PageDetails = DetailedPageInfo.MakeEmpty(pagetype),
+                        PageEditorMode        = DataEditorMode.Create,
+                        PageDetails           = DetailedPageInfo.MakeEmpty(pagetype),
                         EditedModuleListIndex = 0,
                         CurrentManagementTool = PageManagementTool.PageLayoutComposer,
-                        OldUriName = (string)null
+                        OldUriName            = (string)null,
+                        AuthorsInfo           = (string)null
                     });
                     break;
 

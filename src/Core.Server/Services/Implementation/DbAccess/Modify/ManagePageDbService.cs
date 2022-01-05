@@ -29,10 +29,8 @@ namespace Core.Server.Services.Implementation.DbAccess.Modify
         #endregion
 
         #region Ctor
-        public ManagePageDbService(IDatabaseStrategyFactory databaseStrategyFactory)
-        {
+        public ManagePageDbService(IDatabaseStrategyFactory databaseStrategyFactory) =>
             this._databaseStrategy = databaseStrategyFactory.GetStrategy(ConnectionStringDbType.Modify);
-        }
         #endregion
 
         #region Methods
@@ -85,7 +83,8 @@ namespace Core.Server.Services.Implementation.DbAccess.Modify
                     PageType = (PageType)rawPageInfo.Type,
                     Title = rawPageInfo.Title,
                     UriName = rawPageInfo.UriName,
-                    PublishUtcTimestamp = rawPageInfo.PublishUtcTimestamp
+                    PublishUtcTimestamp = rawPageInfo.PublishUtcTimestamp,
+                    AuthorsInfo = rawPageInfo.AuthorsInfo
                 };
 
                 var moduleInfos = await ctx.ContModules.AsNoTracking()
@@ -128,12 +127,16 @@ namespace Core.Server.Services.Implementation.DbAccess.Modify
                 return false;
             }
 
-            // TODO: Checking if unique URI name
-
             using (var ctx = _databaseStrategy.GetContext())
             {
                 using (var ts = await ctx.Database.BeginTransactionAsync())
                 {
+                    if (await ctx.ContPages.AnyAsync(i => i.UriName == page.UriName))
+                    {
+                        await ts.RollbackAsync();
+                        return false;
+                    }
+
                     await ctx.ContPages.AddAsync(new ContPage()
                     {
                         UriName = page.UriName,
@@ -141,7 +144,8 @@ namespace Core.Server.Services.Implementation.DbAccess.Modify
                         Title = page.Title,
                         PublishUtcTimestamp = page.PublishUtcTimestamp,
                         CreateUtcTimestamp = DateTime.UtcNow,
-                        ContModules = page.ModuleContents.ToContModulesList()
+                        ContModules = page.ModuleContents.ToContModulesList(),
+                        AuthorsInfo = page.AuthorsInfo
                     });
 
                     await ctx.SaveChangesAsync();
@@ -158,8 +162,6 @@ namespace Core.Server.Services.Implementation.DbAccess.Modify
                 return false;
             }
 
-            // TODO: Checking if unique URI name
-
             using (var ctx = _databaseStrategy.GetContext())
             {
                 using (var ts = await ctx.Database.BeginTransactionAsync())
@@ -167,13 +169,24 @@ namespace Core.Server.Services.Implementation.DbAccess.Modify
                     var updatedData = await ctx.ContPages.SingleOrDefaultAsync(i => i.Id == page.Id);
                     if (updatedData == null)
                     {
+                        await ts.RollbackAsync();
+                        return false;
+                    }
+                    var uriWasUsed = await ctx.ContPages.Where(i => i.Id != page.Id)
+                                                        .AnyAsync(i => i.UriName == page.UriName);
+                    if (uriWasUsed)
+                    {
+                        await ts.RollbackAsync();
                         return false;
                     }
 
-                    updatedData.Title               = page.Title;
-                    updatedData.UriName             = page.UriName;
+
+                    updatedData.Title = page.Title;
+                    updatedData.UriName = page.UriName;
                     updatedData.PublishUtcTimestamp = page.PublishUtcTimestamp;
+                    updatedData.AuthorsInfo = page.AuthorsInfo;
                     ctx.ContModules.RemoveRange(ctx.ContModules.Where(i => i.ContPageId == page.Id));
+                    await ctx.SaveChangesAsync();
 
 
                     var addedModules = page.ModuleContents.ToContModulesList();

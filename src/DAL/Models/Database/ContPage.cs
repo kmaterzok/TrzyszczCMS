@@ -18,6 +18,7 @@ namespace DAL.Models.Database
         public short Type { get; set; }
         public DateTime CreateUtcTimestamp { get; set; }
         public DateTime PublishUtcTimestamp { get; set; }
+        public string AuthorsInfo { get; set; }
 
         public virtual ICollection<ContModule> ContModules { get; set; }
     }

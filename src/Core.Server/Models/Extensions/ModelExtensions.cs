@@ -62,6 +62,6 @@ namespace Core.Server.Models.Extensions
         /// <param name="source">Data to be mapped to desired list</param>
         /// <returns>Remapped list</returns>
         public static List<ContModule> ToContModulesList(this IEnumerable<ModuleContent> source) =>
-            source.Select(i => i.ToContModule()).ToList();
+            source?.Select(i => i.ToContModule()).ToList() ?? new List<ContModule>();
     }
 }

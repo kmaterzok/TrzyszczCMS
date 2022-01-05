@@ -1,5 +1,5 @@
 # Updating EF Core Table models and *DbContext*
-1. Make sure the whole solution is able to be compiled. Otherwise the update won't be done and will fail.
+1. Make sure the whole solution is able to be compiled. Otherwise the update won't be done - it will fail.
 2. Apply all necessary changes in the database so entities will be compliant with latest migrations. It might be done through executing migration on the database.
 3. Set *DAL* as startup project and select it as launched project.
 4. Open *Package Manager Console* and select *DAL* as *Default project* for this console's instance.

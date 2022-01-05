@@ -7,7 +7,7 @@
 @using Core.Shared.Helpers.Extensions
 
 @inject ModularPageViewModel ViewModel
-@*--- This an empty layout for most of the website pages visible for any user ---*@
+@*--- This is an empty layout for most of the website pages visible for any user ---*@
 
 @if (ViewModel.ContentFound == false)
 {
@@ -15,30 +15,22 @@
 }
 else if (ViewModel.ContentFound == true)
 {
-    <header class="px-4">
-        @if (PageType == PageType.HomePage)
-        {
-            <h1>Home page</h1>
-        }
-        else if (PageType == PageType.Article)
-        {
-            <h1>Article</h1>
-        }
-        else if (PageType == PageType.Post)
-        {
-            <h1>Post</h1>
-        }
-    </header>
+    @if (PageType == PageType.Article || PageType == PageType.Post)
+    {
+        <header class="px-4">
+            <h1>@(PageType == PageType.Article ? "Article" : "Post")</h1>
+        </header>
+    }
 
     @foreach (var moduleVM in ViewModel.ViewModelsForModules)
     {
-        if (moduleVM.As(out TextWallModuleViewModel textWallVM))
+        if (moduleVM is TextWallModuleViewModel textWallVM)
         {
             <TextWallModule ViewModel="@textWallVM" />
         }
         else
         {
-            <section><strong>Error:</strong> There is a content type (@moduleVM.GetType().Name) that cannot be displayed.</section>
+            <section><strong>Error:</strong> There is a content type <em>(@moduleVM.GetType().Name)</em> that cannot be displayed.</section>
         }
     }
 

@@ -76,20 +76,26 @@
                         <div class="container-fluid">
                             <div class="row row-cols-1 row-cols-lg-2">
                                 <div class="col">
+                                    <ErrorMessageBlock Message="@ViewModel.EditedPageDepositVM.TitleValidationMessage" />
+                                    <div class="d-flex my-3">
+                                        <div class="form-floating" style="width: calc(100% - 55px);">
+                                            <input type="text" id="titleName" class="form-control w-100" @bind="@ViewModel.EditedPageDepositVM.Title" />
+                                            <label for="titleName">Title</label>
+                                        </div>
+                                        <button type="button" class="btn btn-light ms-auto" style="width: 44px;" title="Create URI name from title"
+                                                @onclick="@ViewModel.CreateUriNameFromTitle">
+                                            <i class="fas fa-copy"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                                <div class="col">
                                     <ErrorMessageBlock Message="@ViewModel.EditedPageDepositVM.UriNameValidationMessage" />
                                     <div class="form-floating my-3">
                                         <input type="text" id="uriName" class="form-control w-100" @bind="@ViewModel.EditedPageDepositVM.UriName" />
                                         <label for="uriName">URI name</label>
                                     </div>
                                 </div>
-                                <div class="col">
-                                    <ErrorMessageBlock Message="@ViewModel.EditedPageDepositVM.TitleValidationMessage" />
-                                    <div class="form-floating my-3">
-                                        <input type="text" id="titleName" class="form-control w-100" @bind="@ViewModel.EditedPageDepositVM.Title" />
-                                        <label for="titleName">Title</label>
-                                    </div>
-                                </div>
-
+                                
                                 <div class="col">
                                     <ErrorMessageBlock Message="@ViewModel.EditedPageDepositVM.PublishUtcTimestampDateValidationMessage" />
                                     <div class="form-floating my-3">
@@ -104,6 +110,7 @@
                                         <label for="publishTime">Publish hour</label>
                                     </div>
                                 </div>
+
                                 <div class="col">
                                     <div class="form-floating my-3">
                                         <input type="text" id="authorsInfo" class="form-control w-100" @bind="@ViewModel.EditedPageDepositVM.AuthorsInfo" />

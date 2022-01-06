@@ -291,6 +291,14 @@ namespace TrzyszczCMS.Client.ViewModels.Administering.Edit
                 this.OnExitingView?.Invoke();
             }
         }
+
+        /// <summary>
+        /// Make a URI part from entered title.
+        /// </summary>
+        public void CreateUriNameFromTitle() =>
+            this.EditedPageDepositVM.UriName = SanitiseHelper.GetStringReadyForUri(
+                this.EditedPageDepositVM.Title.Substring(0, NumberHelper.ValueOrMax(this.EditedPageDepositVM.Title.Length, 150))
+            );
         #endregion
 
         #region Helper methods

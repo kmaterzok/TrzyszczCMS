@@ -179,7 +179,7 @@ namespace Core.Server.Services.Implementation.DbAccess.Modify
                     using (var ts = await ctx.Database.BeginTransactionAsync())
                     {
                         var newFileGuid = await this.GetGuidForNewFileAsync(ctx);
-                        var uploadResult = this._storageService.PutFileAsync(file, newFileGuid);
+                        this._storageService.PutFile(file, newFileGuid);
 
                         var mimeType  = file.ContentType;
                         
@@ -201,6 +201,21 @@ namespace Core.Server.Services.Implementation.DbAccess.Modify
             return Result<List<SimpleFileInfo>, Tuple<CreatingFileFailReason>>.MakeSuccess(uploadedFiles);
         }
 
+        public async Task<FileTypeCheckResult> FileIsGraphics(Guid fileAccessGuid)
+        {
+            using (var ctx = _DatabaseStrategy.GetContext())
+            {
+                var foundFile = await ctx.ContFiles.AsNoTracking()
+                                                   .FirstOrDefaultAsync(i => i.AccessGuid == fileAccessGuid);
+                if (foundFile == null)
+                {
+                    return FileTypeCheckResult.NotFound;
+                }
+                return MimeTypeHelper.IsGraphics(foundFile.MimeType) ?
+                    FileTypeCheckResult.OK :
+                    FileTypeCheckResult.NotApplicableMimeType;
+            }
+        }
         #region Helper methods
         /// <summary>
         /// Generate new guid for a new file.
@@ -244,11 +259,7 @@ namespace Core.Server.Services.Implementation.DbAccess.Modify
                                                       .AsEnumerable());
 
                 var nextDirectoriesToCheck = dataInsideDirectory.Where(i => i.IsDirectory);
-
-                foreach(var nextDirectoryToCheck in nextDirectoriesToCheck)
-                {
-                    analysedDirectories.Push(nextDirectoryToCheck);
-                }
+                analysedDirectories.PushRange(nextDirectoriesToCheck);
             }
             return fileGuids;
         }

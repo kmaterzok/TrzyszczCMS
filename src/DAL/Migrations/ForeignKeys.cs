@@ -23,17 +23,23 @@
             public const string AUTHUSER_AUTHROLE_ASSIGNEDROLEID
                 = "AuthUser_AuthRole_AssignedRoleId";
 
-            public const string CONTTEXTWALLMODULEID_CONTMODULEID_ASSIGNEDMODULEID
-                = "ContTextWallModuleId_ContModuleId_AssignedModuleId";
+            public const string CONTTEXTWALLMODULE_CONTMODULE_ASSIGNEDMODULEID
+                = "ContTextWallModule_ContModule_AssignedModuleId";
 
             public const string CONTMODULE_PAGE_ASSIGNEDID
                 = "ContModule_Page_AssignedId";
 
-            public const string CONTFILEID_CONTFILEID_PARENTFILEID
+            public const string CONTFILE_CONTFILE_PARENTFILEID
                 = "ContFile_ContFile_ParentFileId";
 
-            public const string CONTMENUITEMID_CONTMENUITEMID_PARENTITEMID
+            public const string CONTMENUITEM_CONTMENUITEM_PARENTITEMID
                 = "ContMenuItem_ContMenuItem_ParentItemId";
+
+            public const string CONTHEADINGBANNERMODULE_CONTMODULE_ASSIGNEDMODULEID
+                = "ContHeadingBannerModule_ContModule_AssignedModuleId";
+
+            public const string CONTHEADINGBANNERMODULE_CONTFILE_ASSIGNEDPICTUREFILEID
+                = "ContHeadingBannerModule_ContFile_AssignedPictureFileId";
         }
         /// <summary>
         /// Names of all obsolete (unused) foreign keys.

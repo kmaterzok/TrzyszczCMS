@@ -38,16 +38,15 @@ namespace Core.Server.Services.Implementation
             );
         }
 
-        public async Task PutFileAsync(IServerUploadedFile file, Guid accessId)
+        public void PutFile(IServerUploadedFile file, Guid accessId)
         {
             var targetFilePath = this.MakeFullFilePath(accessId);
-            using (var fileStream = new FileStream(targetFilePath, FileMode.Create, FileAccess.Write))
+            using (var writeStream = new FileStream(targetFilePath, FileMode.Create, FileAccess.Write))
             {
-                await file.CopyToAsync(fileStream);
+                file.CopyTo(writeStream);
                 // TODO: Add logging in the catch.
             }
         }
-
         public void DeleteFile(Guid accessId)
         {
             var targetFilePath = this.MakeFullFilePath(accessId);

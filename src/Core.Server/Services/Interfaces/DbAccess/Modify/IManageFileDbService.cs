@@ -46,5 +46,12 @@ namespace Core.Server.Services.Interfaces.DbAccess.Modify
         /// <param name="currentParentNodeId">Directory which the files are added for</param>
         /// <returns>Task returning info about added files or error if something goes wrong</returns>
         Task<Result<List<SimpleFileInfo>, Tuple<CreatingFileFailReason>>> UploadFiles(IEnumerable<IServerUploadedFile> files, int? currentParentNodeId);
+
+        /// <summary>
+        /// Check if a file with a specified <paramref name="fileAccessGuid"/> exists and is a graphics file.
+        /// </summary>
+        /// <param name="fileAccessGuid">Access GUID fo the checked file</param>
+        /// <returns>Task returning if the access GUID is compliat</returns>
+        Task<FileTypeCheckResult> FileIsGraphics(Guid fileAccessGuid);
     }
 }

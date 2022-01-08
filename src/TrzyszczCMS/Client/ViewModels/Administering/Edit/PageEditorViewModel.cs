@@ -21,12 +21,13 @@ namespace TrzyszczCMS.Client.ViewModels.Administering.Edit
     {
         #region Fields
         private readonly IDataDepository _depository;
-        private DelayedInvoker _delayedDepositoryUpdateInvoker;
         private readonly IManagePageService _managePageService;
+        private readonly IManageFileService _manageFileService;
+        private DelayedInvoker _delayedDepositoryUpdateInvoker;
         #endregion
 
 
-        #region Properties
+        #region Properties :: General
         /// <summary>
         /// Fired when there is a need to exit the current view.
         /// </summary>
@@ -52,6 +53,30 @@ namespace TrzyszczCMS.Client.ViewModels.Administering.Edit
             set => Set(ref _editedPageDepositVM, value, nameof(EditedPageDepositVM));
         }
 
+        private EditedHeadingBannerModuleViewModel _currentlyEditedHeadingBannerVM;
+        /// <summary>
+        /// The viewmodel accessing the currently edited heading banner module data.
+        /// </summary>
+        public  EditedHeadingBannerModuleViewModel CurrentlyEditedHeadingBannerVM
+        {
+            get
+            {
+                if (_currentlyEditedHeadingBannerVM == null)
+                {
+                    var assignedModule = this.EditedPageDepositVM.ModuleContents[this.EditedPageDepositVM.EditedModuleListIndex]
+                                                                 .Data.HeadingBannerModuleContent;
+                    _currentlyEditedHeadingBannerVM = new EditedHeadingBannerModuleViewModel(assignedModule, this._manageFileService);
+                    _currentlyEditedHeadingBannerVM.PropertyChanged += (_, e) => this.NotifyPropertyChanged(e.PropertyName);
+                    _currentlyEditedHeadingBannerVM.OnDataSet += (_, _e) => this._delayedDepositoryUpdateInvoker.DelayedInvoke();
+                    _currentlyEditedHeadingBannerVM.OnExitingEditor += BackToLayoutComposer;
+                }
+                return _currentlyEditedHeadingBannerVM;
+            }
+        }
+        #endregion
+
+
+        #region Properties :: Text wall editor
         /// <summary>
         /// The MarkDown editor's edited code.
         /// </summary>
@@ -137,10 +162,13 @@ namespace TrzyszczCMS.Client.ViewModels.Administering.Edit
 
 
         #region Ctor & init
-        public PageEditorViewModel(IDataDepository depository, IManagePageService managePageService)
+        public PageEditorViewModel(IDataDepository depository, IManagePageService managePageService, IManageFileService manageFileService)
         {
             this._depository = depository;
             this._managePageService = managePageService;
+            this._manageFileService = manageFileService;
+
+            this._currentlyEditedHeadingBannerVM = null;
 
             this._delayedDepositoryUpdateInvoker = new DelayedInvoker(
                 Constants.MARKDOWN_EDITOR_DELAY_FOR_UPDATING_DEPOSITORY_MILLIS,
@@ -178,6 +206,7 @@ namespace TrzyszczCMS.Client.ViewModels.Administering.Edit
         /// <param name="moduleType">Type of the added module.</param>
         public void AddModule(PageModuleType moduleType)
         {
+            this.ResetEditedModulesViewModels();
             PageManagementTool nextTool;
             var module = new ModuleContent();
             switch (moduleType)
@@ -189,10 +218,20 @@ namespace TrzyszczCMS.Client.ViewModels.Administering.Edit
                     //break;
 
                 case PageModuleType.HeadingBanner:
-                    //nextTool = PageManagementTool.PageLayoutComposer;
-                    // TODO: Implement
-                    return;
-                    //break;
+                    module.SetModule(new HeadingBannerModuleContent()
+                    {
+                        AuthorsInfo = null,
+                        Description = null,
+                        BackgroundPictureAccessGuid = null,
+                        MenuItems = null,
+                        DarkDescription = false,
+                        ViewportHeight = Constants.DEFAULT_HEADING_BANNER_HEIGHT,
+                        DisplayAuthorsInfo = true,
+                        DisplayDescription = true,
+                        AttachLinkMenu     = true
+                    });
+                    nextTool = PageManagementTool.HeadingBannerEditor;
+                    break;
 
                 case PageModuleType.TextWall:
                     module.SetModule(new TextWallModuleContent()
@@ -223,7 +262,7 @@ namespace TrzyszczCMS.Client.ViewModels.Administering.Edit
             var moduleType = item.Data.GetModuleType();
             if (moduleType != PageModuleType.TextWall)
             {
-                throw new ArgumentException($"The moudle type other than {nameof(PageModuleType.TextWall)} is not supported.", nameof(item));
+                throw ExceptionMaker.Member.Invalid(item, nameof(moduleType));
             }
 
             this.EditedPageDepositVM.EditedModuleListIndex = this.EditedPageDepositVM.ModuleContents.IndexOf(item);
@@ -236,12 +275,27 @@ namespace TrzyszczCMS.Client.ViewModels.Administering.Edit
         /// <param name="item">Reference on the grid item</param>
         public void EditModule(GridItem<ModuleContent> item)
         {
-            throw new NotImplementedException();
+            this.ResetEditedModulesViewModels();
+            var moduleType = item.Data.GetModuleType();
+            if (moduleType == PageModuleType.TextWall)
+            {
+                throw ExceptionMaker.Member.Invalid(item, nameof(moduleType));
+            }
+
+            this.EditedPageDepositVM.EditedModuleListIndex = this.EditedPageDepositVM.ModuleContents.IndexOf(item);
+            this.EditedPageDepositVM.CurrentManagementTool = item.Data.GetModuleType().GetPageManagementTool();
+            this.UpdatePageDeposit();
         }
         /// <summary>
         /// Fired when the editor component fires exiting action.
         /// </summary>
-        public void OnEditorExiting(object _, EventArgs e)
+        public void OnEditorExiting(object _, EventArgs e) =>
+            BackToLayoutComposer();
+
+        /// <summary>
+        /// Change the currently displayed view to the page composer.
+        /// </summary>
+        public void BackToLayoutComposer()
         {
             this.EditedPageDepositVM.CurrentManagementTool = PageManagementTool.PageLayoutComposer;
             this.UpdatePageDeposit();
@@ -299,6 +353,9 @@ namespace TrzyszczCMS.Client.ViewModels.Administering.Edit
             this.EditedPageDepositVM.UriName = SanitiseHelper.GetStringReadyForUri(
                 this.EditedPageDepositVM.Title.Substring(0, NumberHelper.ValueOrMax(this.EditedPageDepositVM.Title.Length, 150))
             );
+
+        public void ResetEditedModulesViewModels() =>
+            this._currentlyEditedHeadingBannerVM = null;
         #endregion
 
         #region Helper methods

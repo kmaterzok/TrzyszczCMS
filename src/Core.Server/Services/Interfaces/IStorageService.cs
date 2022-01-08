@@ -3,7 +3,6 @@ using Core.Shared.Models;
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Threading.Tasks;
 
 namespace Core.Server.Services.Interfaces
 {
@@ -23,8 +22,7 @@ namespace Core.Server.Services.Interfaces
         /// </summary>
         /// <param name="file">Uploaded file details instance</param>
         /// <param name="accessId">GUID that lets access the uploaded file</param>
-        /// <returns>Task returning error info</returns>
-        Task PutFileAsync(IServerUploadedFile file, Guid accessId);
+        void PutFile(IServerUploadedFile file, Guid accessId);
         /// <summary>
         /// Delete a file.
         /// </summary>

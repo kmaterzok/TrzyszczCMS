@@ -28,6 +28,14 @@ namespace TrzyszczCMS.Client.Data.Enums.Extensions
             $"{width.ToString()[1..]}px";
 
         /// <summary>
+        /// Get description about viewport height of a heading banner.
+        /// </summary>
+        /// <param name="height">Desired banner height</param>
+        /// <returns>Description of percentage height</returns>
+        public static string GetPercentageDescription(this HeadingBannerHeight height) =>
+            $"{height.ToString()[1..]}%";
+
+        /// <summary>
         /// Get width of section for usage in the CSS style.
         /// </summary>
         /// <param name="width">Preferred width of a section block</param>
@@ -44,8 +52,8 @@ namespace TrzyszczCMS.Client.Data.Enums.Extensions
         {
             switch (type)
             {
-                case PageModuleType.TextWall: return "Text wall";
-                case PageModuleType.Gallery: return "Gallery";
+                case PageModuleType.TextWall:      return "Text wall";
+                case PageModuleType.Gallery:       return "Gallery";
                 case PageModuleType.HeadingBanner: return "Heading banner";
                 default:
                     throw ExceptionMaker.Argument.Unsupported(type, nameof(type));
@@ -100,6 +108,21 @@ namespace TrzyszczCMS.Client.Data.Enums.Extensions
                     throw ExceptionMaker.Argument.Unsupported(source, nameof(source));
             }
         }
-
+        /// <summary>
+        /// Get <see cref="PageManagementTool"/> value based on a value of <see cref="PageModuleType"/>
+        /// </summary>
+        /// <param name="moduleType">Provided value to check</param>
+        /// <returns>Value got by resolving input value</returns>
+        public static PageManagementTool GetPageManagementTool(this PageModuleType moduleType)
+        {
+            switch (moduleType)
+            {
+                case PageModuleType.HeadingBanner: return PageManagementTool.HeadingBannerEditor;
+                case PageModuleType.TextWall:
+                    throw ExceptionMaker.Argument.Invalid(moduleType, nameof(moduleType));
+                default:
+                    throw ExceptionMaker.NotImplemented.ForHandling(moduleType, nameof(moduleType));
+            }
+        }
     }
 }

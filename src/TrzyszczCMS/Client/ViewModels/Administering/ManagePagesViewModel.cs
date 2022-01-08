@@ -178,7 +178,7 @@ namespace TrzyszczCMS.Client.ViewModels.Administering
                     break;
 
                 default:
-                    throw new NotImplementedException();
+                    throw ExceptionMaker.NotImplemented.ForHandling(pagetype, nameof(pagetype));
             }
             await this._depository.AddOrUpdateAsync(new EditedPageDeposit()
             {
@@ -186,8 +186,7 @@ namespace TrzyszczCMS.Client.ViewModels.Administering
                 PageDetails           = pageInfo,
                 EditedModuleListIndex = 0,
                 CurrentManagementTool = PageManagementTool.PageLayoutComposer,
-                OldUriName            = pageInfo.UriName,
-                AuthorsInfo           = (string)null
+                OldUriName            = pageInfo.UriName
             });
         }
 
@@ -203,13 +202,12 @@ namespace TrzyszczCMS.Client.ViewModels.Administering
                         PageDetails           = DetailedPageInfo.MakeEmpty(pagetype),
                         EditedModuleListIndex = 0,
                         CurrentManagementTool = PageManagementTool.PageLayoutComposer,
-                        OldUriName            = (string)null,
-                        AuthorsInfo           = (string)null
+                        OldUriName            = null
                     });
                     break;
 
                 case PageType.HomePage:
-                    throw new ArgumentException($"The type {nameof(pagetype)} cannot be supported.");
+                    throw ExceptionMaker.Argument.Invalid(pagetype, nameof(pagetype));
                 default:
                     throw ExceptionMaker.Argument.Unsupported(pagetype, nameof(pagetype));
             }

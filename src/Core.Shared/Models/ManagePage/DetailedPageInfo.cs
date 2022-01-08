@@ -35,6 +35,10 @@ namespace Core.Shared.Models.ManagePage
         /// </summary>
         public string AuthorsInfo { get; set; }
         /// <summary>
+        /// Description of the page.
+        /// </summary>
+        public string Description { get; set; }
+        /// <summary>
         /// All page's modules delivering content
         /// </summary>
         public List<ModuleContent> ModuleContents { get; set; }
@@ -52,9 +56,10 @@ namespace Core.Shared.Models.ManagePage
             ModuleContents      = new List<ModuleContent>(),
             PageType            = type,
             PublishUtcTimestamp = DateTime.UtcNow,
-            Title               = (string)null,
-            UriName             = (string)null,
-            AuthorsInfo         = (string)null
+            Title               = null,
+            UriName             = null,
+            AuthorsInfo         = null,
+            Description         = null
         };
     }
 }

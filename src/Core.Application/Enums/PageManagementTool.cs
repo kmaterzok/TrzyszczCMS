@@ -8,6 +8,7 @@
         PageLayoutComposer,
         TextWallLeftAsideEditor,
         TextWallRightAsideEditor,
-        TextWallSectionEditor
+        TextWallSectionEditor,
+        HeadingBannerEditor
     }
 }

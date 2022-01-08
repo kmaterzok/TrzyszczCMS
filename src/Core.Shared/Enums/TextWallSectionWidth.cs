@@ -5,7 +5,7 @@
     /// </summary>
     public enum TextWallSectionWidth : short
     {
-        _600 = 600,
+        _600  = 600,
         _800  = 800,
         _1000 = 1000,
         _1200 = 1200

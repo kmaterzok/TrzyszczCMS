@@ -28,9 +28,5 @@ namespace Core.Application.Models.Deposits
         /// THe original value of the <see cref="DetailedPageInfo.UriName"/>, before modification.
         /// </summary>
         public string OldUriName { get; set; }
-        /// <summary>
-        /// Information about authors provided by the page creator.
-        /// </summary>
-        public string AuthorsInfo { get; set; }
     }
 }

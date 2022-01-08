@@ -1,6 +1,4 @@
 ﻿using System.IO;
-using System.Threading;
-using System.Threading.Tasks;
 
 namespace Core.Server.Models.Adapters
 {
@@ -25,8 +23,6 @@ namespace Core.Server.Models.Adapters
         /// Copy uploaded file to a specified location.
         /// </summary>
         /// <param name="target">Target stream for storing file's data</param>
-        /// <param name="cancellationToken">Token for cancelling the executed task</param>
-        /// <returns>Task executing copying</returns>
-        Task CopyToAsync(Stream target, CancellationToken cancellationToken = default);
+        void CopyTo(Stream target);
     }
 }

@@ -28,6 +28,10 @@ else if (ViewModel.ContentFound == true)
         {
             <TextWallModule ViewModel="@textWallVM" />
         }
+        else if (moduleVM is HeadingBannerModuleViewModel headingBannerVM)
+        {
+
+        }
         else
         {
             <section><strong>Error:</strong> There is a content type <em>(@moduleVM.GetType().Name)</em> that cannot be displayed.</section>

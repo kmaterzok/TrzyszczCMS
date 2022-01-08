@@ -9,6 +9,7 @@ namespace DAL.Models.Database
     {
         public ContFile()
         {
+            ContHeadingBannerModules = new HashSet<ContHeadingBannerModule>();
             InverseParentFile = new HashSet<ContFile>();
         }
 
@@ -21,6 +22,7 @@ namespace DAL.Models.Database
         public string MimeType { get; set; }
 
         public virtual ContFile ParentFile { get; set; }
+        public virtual ICollection<ContHeadingBannerModule> ContHeadingBannerModules { get; set; }
         public virtual ICollection<ContFile> InverseParentFile { get; set; }
     }
 }

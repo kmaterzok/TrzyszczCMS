@@ -84,7 +84,8 @@ namespace Core.Server.Services.Implementation.DbAccess.Modify
                     Title = rawPageInfo.Title,
                     UriName = rawPageInfo.UriName,
                     PublishUtcTimestamp = rawPageInfo.PublishUtcTimestamp,
-                    AuthorsInfo = rawPageInfo.AuthorsInfo
+                    AuthorsInfo = rawPageInfo.AuthorsInfo,
+                    Description = rawPageInfo.Description
                 };
 
                 var moduleInfos = await ctx.ContModules.AsNoTracking()
@@ -131,7 +132,7 @@ namespace Core.Server.Services.Implementation.DbAccess.Modify
             {
                 using (var ts = await ctx.Database.BeginTransactionAsync())
                 {
-                    if (await ctx.ContPages.AnyAsync(i => i.UriName == page.UriName))
+                    if (await ctx.ContPages.AsNoTracking().AnyAsync(i => i.UriName == page.UriName))
                     {
                         await ts.RollbackAsync();
                         return false;
@@ -144,8 +145,9 @@ namespace Core.Server.Services.Implementation.DbAccess.Modify
                         Title = page.Title,
                         PublishUtcTimestamp = page.PublishUtcTimestamp,
                         CreateUtcTimestamp = DateTime.UtcNow,
-                        ContModules = page.ModuleContents.ToContModulesList(),
-                        AuthorsInfo = page.AuthorsInfo
+                        ContModules = page.ModuleContents.ToContModulesList(ctx),
+                        AuthorsInfo = page.AuthorsInfo,
+                        Description = page.Description
                     });
 
                     await ctx.SaveChangesAsync();
@@ -172,7 +174,8 @@ namespace Core.Server.Services.Implementation.DbAccess.Modify
                         await ts.RollbackAsync();
                         return false;
                     }
-                    var uriWasUsed = await ctx.ContPages.Where(i => i.Id != page.Id)
+                    var uriWasUsed = await ctx.ContPages.AsNoTracking()
+                                                        .Where(i => i.Id != page.Id)
                                                         .AnyAsync(i => i.UriName == page.UriName);
                     if (uriWasUsed)
                     {
@@ -180,22 +183,22 @@ namespace Core.Server.Services.Implementation.DbAccess.Modify
                         return false;
                     }
 
-
                     updatedData.Title = page.Title;
                     updatedData.UriName = page.UriName;
                     updatedData.PublishUtcTimestamp = page.PublishUtcTimestamp;
                     updatedData.AuthorsInfo = page.AuthorsInfo;
+                    updatedData.Description = page.Description;
+
                     ctx.ContModules.RemoveRange(ctx.ContModules.Where(i => i.ContPageId == page.Id));
                     await ctx.SaveChangesAsync();
 
 
-                    var addedModules = page.ModuleContents.ToContModulesList();
+                    var addedModules = page.ModuleContents.ToContModulesList(ctx);
                     foreach (var module in addedModules)
                     {
                         module.ContPageId = page.Id;
                     }
                     await ctx.ContModules.AddRangeAsync(addedModules);
-
 
                     await ctx.SaveChangesAsync();
                     await ts.CommitAsync();

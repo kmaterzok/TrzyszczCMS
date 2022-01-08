@@ -3,15 +3,8 @@ using Core.Application.Models;
 using Core.Application.Services.Interfaces.Rest;
 using Core.Shared.Enums;
 using Core.Shared.Helpers;
-using Core.Shared.Models.Rest.Requests.Auth;
-using Core.Shared.Models.Rest.Responses.Auth;
 using Core.Shared.Models.Rest.Responses.PageContent;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Net.Http;
-using System.Net.Http.Json;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace Core.Application.Services.Implementation.Rest

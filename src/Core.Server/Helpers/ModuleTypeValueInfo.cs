@@ -4,6 +4,7 @@ using Core.Shared.Models.PageContent;
 using DAL.Models.Database;
 using Microsoft.EntityFrameworkCore;
 using System;
+using System.Linq;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -30,11 +31,11 @@ namespace Core.Server.Helpers
     public static class ModuleTypeValueInfoExtensions
     {
         /// <summary>
-        /// 
+        /// Get content of page's modules.
         /// </summary>
-        /// <param name="moduleInfos"></param>
-        /// <param name="dbContext"></param>
-        /// <returns></returns>
+        /// <param name="moduleInfos">Simple imfo about requested modules</param>
+        /// <param name="dbContext">Database context which the data is fetched from1</param>
+        /// <returns>List of modules for page</returns>
         public static async Task<List<ModuleContent>> GetModuleContentsAsync(this List<ModuleTypeValueInfo> moduleInfos, CmsDbContext dbContext)
         {
             var moduleContents = new List<ModuleContent>();
@@ -46,6 +47,11 @@ namespace Core.Server.Helpers
                     case PageModuleType.TextWall:
                         var textWallModule = await dbContext.ContTextWallModules.AsNoTracking().FirstAsync(i => i.Id == moduleInfo.Id);
                         moduleContents.Add(textWallModule.ToModuleContent());
+                        break;
+
+                    case PageModuleType.HeadingBanner:
+                        var headingBannerModule = await dbContext.ContHeadingBannerModules.AsNoTracking().FirstAsync(i => i.Id == moduleInfo.Id);
+                        moduleContents.Add(await headingBannerModule.ToModuleContentAsync(dbContext));
                         break;
 
                     default:

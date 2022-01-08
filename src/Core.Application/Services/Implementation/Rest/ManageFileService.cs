@@ -79,6 +79,9 @@ namespace Core.Application.Services.Implementation.Rest
                 }
             }
         }
+
+        public async Task<FileTypeCheckResult> FileIsGraphics(string fileAccessGuid) =>
+            await this._authHttpClient.GetFromJsonAsync<FileTypeCheckResult>($"/ManageFile/FileIsGraphics/{fileAccessGuid}");
         #endregion
 
         #region Helper methods

@@ -20,6 +20,10 @@ namespace TrzyszczCMS.Client.Data
         /// </summary>
         public const TextWallSectionWidth DEFAULT_TEXT_WALL_SECTION_WIDTH = TextWallSectionWidth._800;
         /// <summary>
+        /// The default viewport height of a heading banner.
+        /// </summary>
+        public const HeadingBannerHeight DEFAULT_HEADING_BANNER_HEIGHT = HeadingBannerHeight._40;
+        /// <summary>
         /// The delay for invoking function / action persisting MArkDown editor changes in the specified depository.
         /// </summary>
         public const int MARKDOWN_EDITOR_DELAY_FOR_UPDATING_DEPOSITORY_MILLIS = 2000;

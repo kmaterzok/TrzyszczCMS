@@ -1,5 +1,6 @@
 ﻿using Core.Server.Models.Enums;
 using Core.Server.Services.Interfaces.DbAccess.Modify;
+using Core.Shared.Enums;
 using Core.Shared.Helpers;
 using Core.Shared.Models;
 using Core.Shared.Models.ManageFiles;
@@ -72,6 +73,18 @@ namespace TrzyszczCMS.Server.Controllers
         [Route("[action]/{parentNodeId}")]
         public async Task<ActionResult<List<SimpleFileInfo>>> Upload(IFormCollection files, int parentNodeId) =>
             await UploadFilesAsync(files?.Files, parentNodeId);
+
+        [HttpGet]
+        [Produces("application/json")]
+        [Route("[action]/{fileAccessGuid}")]
+        public async Task<ActionResult<FileTypeCheckResult>> FileIsGraphics(string fileAccessGuid)
+        {
+            if (Guid.TryParse(fileAccessGuid, out Guid parsedFileAccessGuid))
+            {
+                return Ok(await this._manageFileService.FileIsGraphics(parsedFileAccessGuid));
+            }
+            return BadRequest("The file access GUID has invalid format.");
+        }
         #endregion
 
 

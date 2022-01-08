@@ -53,10 +53,8 @@ namespace TrzyszczCMS.Client.ViewModels.PageContent.Modules
         #endregion
 
         #region Ctor
-        public TextWallModuleViewModel()
-        {
+        public TextWallModuleViewModel() =>
             this.ModuleType = PageModuleType.TextWall;
-        }
         #endregion
     }
 }

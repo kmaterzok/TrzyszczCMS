@@ -1,8 +1,6 @@
 ﻿using Core.Server.Models.Adapters;
 using Microsoft.AspNetCore.Http;
 using System.IO;
-using System.Threading;
-using System.Threading.Tasks;
 
 namespace TrzyszczCMS.Server.Data.Adapters
 {
@@ -29,8 +27,7 @@ namespace TrzyszczCMS.Server.Data.Adapters
         public string ContentType => this.AdapteredObject.ContentType;
         public long Length => this.AdapteredObject.Length;
         public string FileName => this.AdapteredObject.FileName;
-        public async Task CopyToAsync(Stream target, CancellationToken cancellationToken = default) =>
-            await this.AdapteredObject.CopyToAsync(target, cancellationToken);
+        public void CopyTo(Stream target) => this.AdapteredObject.CopyTo(target);
         #endregion
     }
 }

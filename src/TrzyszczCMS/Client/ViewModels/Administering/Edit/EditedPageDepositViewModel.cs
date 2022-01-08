@@ -153,6 +153,16 @@ namespace TrzyszczCMS.Client.ViewModels.Administering.Edit
             set { Set(ref _authorsInfo, value, nameof(AuthorsInfo)); this.OnDataSet?.Invoke(this, EventArgs.Empty); }
         }
 
+        private string _description;
+        /// <summary>
+        /// Description of the page.
+        /// </summary>
+        public string Description
+        {
+            get => _description;
+            set { Set(ref _description, value, nameof(Description)); this.OnDataSet?.Invoke(this, EventArgs.Empty); }
+        }
+
         private List<GridItem<ModuleContent>> _moduleContents;
         /// <summary>
         /// Modules displayed on the page with their content.
@@ -186,6 +196,7 @@ namespace TrzyszczCMS.Client.ViewModels.Administering.Edit
             this.PageType                = deposit.PageDetails.PageType;
             this.ModuleContents          = deposit.PageDetails.ModuleContents.ToGridItemList();
             this.AuthorsInfo             = deposit.PageDetails.AuthorsInfo;
+            this.Description             = deposit.PageDetails.Description;
         }
         #endregion
 
@@ -200,8 +211,7 @@ namespace TrzyszczCMS.Client.ViewModels.Administering.Edit
             PageEditorMode          = this.PageEditorMode,
             EditedModuleListIndex   = this.EditedModuleListIndex,
             OldUriName              = this._oldUriName,
-            PageDetails             = this.GetDetailedPageInfo(),
-            AuthorsInfo             = this.AuthorsInfo
+            PageDetails             = this.GetDetailedPageInfo()
         };
 
         /// <summary>
@@ -216,7 +226,8 @@ namespace TrzyszczCMS.Client.ViewModels.Administering.Edit
             PublishUtcTimestamp = this.PublishUtcTimestampDate.Value.TruncateHMS().Add(this.PublishUtcTimestampTime.GetHMS()),
             Title               = this.Title,
             UriName             = this.UriName,
-            AuthorsInfo         = this.AuthorsInfo
+            AuthorsInfo         = this.AuthorsInfo,
+            Description         = this.Description
         };
 
         /// <summary>

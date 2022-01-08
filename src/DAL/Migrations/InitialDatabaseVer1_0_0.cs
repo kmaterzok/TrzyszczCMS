@@ -16,7 +16,7 @@ namespace DAL.Migrations
             #region --- Auth tables ---
             Create.Table(   nameof(AuthUser))
                 .WithColumn(nameof(AuthUser.Id))                .AsInt32().NotNullable().PrimaryKey().Identity()
-                .WithColumn(nameof(AuthUser.Username))          .AsString(40).NotNullable()
+                .WithColumn(nameof(AuthUser.Username))          .AsString(40).NotNullable().Unique()
                 .WithColumn(nameof(AuthUser.Description))       .AsString(250).Nullable().WithDefaultValue(null)
                 .WithColumn(nameof(AuthUser.PasswordHash))      .AsBinary(128).NotNullable()
                 .WithColumn(nameof(AuthUser.PasswordSalt))      .AsBinary(32).NotNullable()
@@ -103,7 +103,7 @@ namespace DAL.Migrations
                 .WithColumn(nameof(ContMenuItem.Uri))          .AsString(250).Nullable()
                 .WithColumn(nameof(ContMenuItem.OrderNumber))  .AsInt32().NotNullable();
 
-            Create.ForeignKey(ForeignKeys.Current.CONTMENUITEMID_CONTMENUITEMID_PARENTITEMID)
+            Create.ForeignKey(ForeignKeys.Current.CONTMENUITEM_CONTMENUITEM_PARENTITEMID)
                 .FromTable(nameof(ContMenuItem))               .ForeignColumn(nameof(ContMenuItem.ParentItemId))
                 .ToTable(  nameof(ContMenuItem))               .PrimaryColumn(nameof(ContMenuItem.Id))
                 .OnDelete(System.Data.Rule.Cascade);
@@ -123,7 +123,7 @@ namespace DAL.Migrations
                 .WithColumn(nameof(ContTextWallModule.SectionContent))    .AsString().Nullable().WithDefaultValue(null)
                 .WithColumn(nameof(ContTextWallModule.SectionWidth))      .AsInt16().NotNullable().WithDefaultValue(800);
 
-            Create.ForeignKey(ForeignKeys.Current.CONTTEXTWALLMODULEID_CONTMODULEID_ASSIGNEDMODULEID)
+            Create.ForeignKey(ForeignKeys.Current.CONTTEXTWALLMODULE_CONTMODULE_ASSIGNEDMODULEID)
                 .FromTable(nameof(ContTextWallModule))       .ForeignColumn(nameof(ContTextWallModule.Id))
                 .ToTable(  nameof(ContModule))               .PrimaryColumn(nameof(ContModule.Id))
                 .OnDelete(System.Data.Rule.Cascade);
@@ -131,16 +131,32 @@ namespace DAL.Migrations
             Create.Table(   nameof(ContPage))
                 .WithColumn(nameof(ContPage.Id))                          .AsInt32().NotNullable().PrimaryKey().Identity()
                 .WithColumn(nameof(ContPage.UriName))                     .AsString(255).NotNullable().Unique()
-                .WithColumn(nameof(ContPage.Title))                       .AsString(255).NotNullable().Unique()
+                .WithColumn(nameof(ContPage.Title))                       .AsString(255).NotNullable()
                 .WithColumn(nameof(ContPage.Type))                        .AsByte().NotNullable().WithDefaultValue(3)
                 .WithColumn(nameof(ContPage.CreateUtcTimestamp))          .AsDateTime().NotNullable()
                 .WithColumn(nameof(ContPage.PublishUtcTimestamp))         .AsDateTime().NotNullable()
-                .WithColumn(nameof(ContPage.AuthorsInfo))                 .AsString(255).Nullable().WithDefaultValue(null);
+                .WithColumn(nameof(ContPage.AuthorsInfo))                 .AsString(255).Nullable().WithDefaultValue(null)
+                .WithColumn(nameof(ContPage.Description))                 .AsString(255).Nullable().WithDefaultValue(null);
 
             Create.ForeignKey(ForeignKeys.Current.CONTMODULE_PAGE_ASSIGNEDID)
                 .FromTable(nameof(ContModule))   .ForeignColumn(nameof(ContModule.ContPageId))
                 .ToTable(  nameof(ContPage))     .PrimaryColumn(nameof(ContPage.Id))
                 .OnDelete(System.Data.Rule.Cascade);
+
+            Create.Table(   nameof(ContHeadingBannerModule))
+                .WithColumn(nameof(ContHeadingBannerModule.Id))                        .AsInt32().NotNullable().PrimaryKey().Identity()
+                .WithColumn(nameof(ContHeadingBannerModule.DisplayDescription))        .AsBoolean().NotNullable().WithDefaultValue(true)
+                .WithColumn(nameof(ContHeadingBannerModule.DisplayAuthorsInfo))        .AsBoolean().NotNullable().WithDefaultValue(true)
+                .WithColumn(nameof(ContHeadingBannerModule.DarkDescription))           .AsBoolean().NotNullable().WithDefaultValue(false)
+                .WithColumn(nameof(ContHeadingBannerModule.ViewportHeight))            .AsByte().NotNullable().WithDefaultValue(40)
+                .WithColumn(nameof(ContHeadingBannerModule.AttachLinkMenu))            .AsBoolean().NotNullable().WithDefaultValue(true)
+                .WithColumn(nameof(ContHeadingBannerModule.BackgroundPictureId))       .AsInt32().Nullable().WithDefaultValue(null);
+
+            Create.ForeignKey(ForeignKeys.Current.CONTHEADINGBANNERMODULE_CONTMODULE_ASSIGNEDMODULEID)
+                .FromTable(nameof(ContHeadingBannerModule))       .ForeignColumn(nameof(ContHeadingBannerModule.Id))
+                .ToTable(  nameof(ContModule))                    .PrimaryColumn(nameof(ContModule.Id))
+                .OnDelete(System.Data.Rule.Cascade);
+
 
 
             Insert.IntoTable(nameof(ContPage)).Row(new
@@ -207,13 +223,18 @@ namespace DAL.Migrations
                 .WithColumn(nameof(ContFile.IsDirectory))          .AsBoolean().NotNullable()
                 .WithColumn(nameof(ContFile.CreationUtcTimestamp)) .AsDateTime().NotNullable()
                 .WithColumn(nameof(ContFile.Name))                 .AsString(250).NotNullable()
-                .WithColumn(nameof(ContFile.AccessGuid))           .AsGuid().NotNullable()
+                .WithColumn(nameof(ContFile.AccessGuid))           .AsGuid().NotNullable().Unique()
                 .WithColumn(nameof(ContFile.MimeType))             .AsString(100).Nullable();
 
-            Create.ForeignKey(ForeignKeys.Current.CONTFILEID_CONTFILEID_PARENTFILEID)
+            Create.ForeignKey(ForeignKeys.Current.CONTFILE_CONTFILE_PARENTFILEID)
                 .FromTable(nameof(ContFile))                       .ForeignColumn(nameof(ContFile.ParentFileId))
                 .ToTable(  nameof(ContFile))                       .PrimaryColumn(nameof(ContFile.Id))
                 .OnDelete(System.Data.Rule.Cascade);
+
+            Create.ForeignKey(ForeignKeys.Current.CONTHEADINGBANNERMODULE_CONTFILE_ASSIGNEDPICTUREFILEID)
+                .FromTable(nameof(ContHeadingBannerModule))        .ForeignColumn(nameof(ContHeadingBannerModule.BackgroundPictureId))
+                .ToTable(  nameof(ContFile))                       .PrimaryColumn(nameof(ContFile.Id))
+                .OnDelete(System.Data.Rule.SetNull);
             #endregion
 
         }

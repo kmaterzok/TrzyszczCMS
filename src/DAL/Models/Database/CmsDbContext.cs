@@ -21,11 +21,13 @@ namespace DAL.Models.Database
         public virtual DbSet<AuthToken> AuthTokens { get; set; }
         public virtual DbSet<AuthUser> AuthUsers { get; set; }
         public virtual DbSet<ContFile> ContFiles { get; set; }
+        public virtual DbSet<ContHeadingBannerModule> ContHeadingBannerModules { get; set; }
         public virtual DbSet<ContMenuItem> ContMenuItems { get; set; }
         public virtual DbSet<ContModule> ContModules { get; set; }
         public virtual DbSet<ContPage> ContPages { get; set; }
         public virtual DbSet<ContTextWallModule> ContTextWallModules { get; set; }
         public virtual DbSet<VersionInfo> VersionInfos { get; set; }
+
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -86,6 +88,9 @@ namespace DAL.Models.Database
             {
                 entity.ToTable("AuthUser");
 
+                entity.HasIndex(e => e.Username, "IX_AuthUser_Username")
+                    .IsUnique();
+
                 entity.Property(e => e.Description)
                     .HasMaxLength(250)
                     .HasDefaultValueSql("NULL::character varying");
@@ -109,6 +114,9 @@ namespace DAL.Models.Database
             {
                 entity.ToTable("ContFile");
 
+                entity.HasIndex(e => e.AccessGuid, "IX_ContFile_AccessGuid")
+                    .IsUnique();
+
                 entity.Property(e => e.MimeType).HasMaxLength(100);
 
                 entity.Property(e => e.Name)
@@ -120,6 +128,38 @@ namespace DAL.Models.Database
                     .HasForeignKey(d => d.ParentFileId)
                     .OnDelete(DeleteBehavior.Cascade)
                     .HasConstraintName("ContFile_ContFile_ParentFileId");
+            });
+
+            modelBuilder.Entity<ContHeadingBannerModule>(entity =>
+            {
+                entity.ToTable("ContHeadingBannerModule");
+
+                entity.Property(e => e.Id).ValueGeneratedOnAdd();
+
+                entity.Property(e => e.AttachLinkMenu)
+                    .IsRequired()
+                    .HasDefaultValueSql("true");
+
+                entity.Property(e => e.DisplayAuthorsInfo)
+                    .IsRequired()
+                    .HasDefaultValueSql("true");
+
+                entity.Property(e => e.DisplayDescription)
+                    .IsRequired()
+                    .HasDefaultValueSql("true");
+
+                entity.Property(e => e.ViewportHeight).HasDefaultValueSql("40");
+
+                entity.HasOne(d => d.BackgroundPicture)
+                    .WithMany(p => p.ContHeadingBannerModules)
+                    .HasForeignKey(d => d.BackgroundPictureId)
+                    .OnDelete(DeleteBehavior.SetNull)
+                    .HasConstraintName("ContHeadingBannerModule_ContFile_AssignedPictureFileId");
+
+                entity.HasOne(d => d.IdNavigation)
+                    .WithOne(p => p.ContHeadingBannerModule)
+                    .HasForeignKey<ContHeadingBannerModule>(d => d.Id)
+                    .HasConstraintName("ContHeadingBannerModule_ContModule_AssignedModuleId");
             });
 
             modelBuilder.Entity<ContMenuItem>(entity =>
@@ -153,13 +193,14 @@ namespace DAL.Models.Database
             {
                 entity.ToTable("ContPage");
 
-                entity.HasIndex(e => e.Title, "IX_ContPage_Title")
-                    .IsUnique();
-
                 entity.HasIndex(e => e.UriName, "IX_ContPage_UriName")
                     .IsUnique();
 
                 entity.Property(e => e.AuthorsInfo)
+                    .HasMaxLength(255)
+                    .HasDefaultValueSql("NULL::character varying");
+
+                entity.Property(e => e.Description)
                     .HasMaxLength(255)
                     .HasDefaultValueSql("NULL::character varying");
 
@@ -185,7 +226,7 @@ namespace DAL.Models.Database
                 entity.HasOne(d => d.IdNavigation)
                     .WithOne(p => p.ContTextWallModule)
                     .HasForeignKey<ContTextWallModule>(d => d.Id)
-                    .HasConstraintName("ContTextWallModuleId_ContModuleId_AssignedModuleId");
+                    .HasConstraintName("ContTextWallModule_ContModule_AssignedModuleId");
             });
 
             modelBuilder.Entity<VersionInfo>(entity =>

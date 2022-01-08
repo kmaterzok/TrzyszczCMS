@@ -1,8 +1,6 @@
-﻿
-using Core.Shared.Enums;
+﻿using Core.Shared.Enums;
 using Core.Shared.Exceptions;
 using Core.Shared.Helpers;
-using System;
 
 namespace Core.Shared.Models.PageContent
 {
@@ -17,13 +15,16 @@ namespace Core.Shared.Models.PageContent
         /// If <c>null</c> - the module's type does not apply to the content.
         /// </summary>
         public TextWallModuleContent TextWallModuleContent { get; set; }
+        /// <summary>
+        /// Reference on the module content of type <see cref="PageModuleType.HeadingBanner"/>.
+        /// If <c>null</c> - the module's type does not apply to the content.
+        /// </summary>
+        public HeadingBannerModuleContent HeadingBannerModuleContent { get; set; }
         #endregion
 
         #region Ctor
-        public ModuleContent()
-        {
+        public ModuleContent() =>
             this.NullifyContentHolders();
-        }
         #endregion
 
         #region Methods
@@ -33,16 +34,13 @@ namespace Core.Shared.Models.PageContent
         /// <returns>Page module enum value</returns>
         public PageModuleType GetModuleType()
         {
-            if (this.TextWallModuleContent != null)
-            {
-                return PageModuleType.TextWall;
-            }
+            if (     this.TextWallModuleContent      != null) { return PageModuleType.TextWall; }
+            else if (this.HeadingBannerModuleContent != null) { return PageModuleType.HeadingBanner; }
             else
             {
                 throw new InvalidMemberException($"The page type is unknown.");
             }
         }
-
 
         /// <summary>
         /// Set module data object.
@@ -53,10 +51,8 @@ namespace Core.Shared.Models.PageContent
         {
             this.NullifyContentHolders();
 
-            if (typeof(T) == typeof(TextWallModuleContent))
-            {
-                this.TextWallModuleContent = (TextWallModuleContent)(object)module;
-            }
+            if (     typeof(T) == typeof(TextWallModuleContent))      { this.TextWallModuleContent =      (TextWallModuleContent)(object)module; }
+            else if (typeof(T) == typeof(HeadingBannerModuleContent)) { this.HeadingBannerModuleContent = (HeadingBannerModuleContent)(object)module; }
             else
             {
                 throw ExceptionMaker.Argument.Unsupported(module, nameof(module));
@@ -69,6 +65,7 @@ namespace Core.Shared.Models.PageContent
         private void NullifyContentHolders()
         {
             this.TextWallModuleContent = null;
+            this.HeadingBannerModuleContent = null;
         }
         #endregion
     }

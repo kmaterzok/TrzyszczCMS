@@ -12,6 +12,7 @@ namespace DAL.Models.Database
         public int ContPageId { get; set; }
 
         public virtual ContPage ContPage { get; set; }
+        public virtual ContHeadingBannerModule ContHeadingBannerModule { get; set; }
         public virtual ContTextWallModule ContTextWallModule { get; set; }
     }
 }

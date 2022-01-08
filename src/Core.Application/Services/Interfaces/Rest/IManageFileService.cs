@@ -1,4 +1,5 @@
-﻿using Core.Application.Helpers.Interfaces;
+﻿using Core.Application.Enums;
+using Core.Application.Helpers.Interfaces;
 using Core.Application.Models.Adapters;
 using Core.Shared.Enums;
 using Core.Shared.Models;
@@ -47,5 +48,12 @@ namespace Core.Application.Services.Interfaces.Rest
         /// <param name="onTriedUpload">Action fired when a single upload trial is finished and the result object is sent</param>
         /// <returns></returns>
         Task UploadFiles(IEnumerable<IClientUploadedFile> files, int? currentParentNodeId, Action<Result<SimpleFileInfo, object>> onTriedUpload);
+
+        /// <summary>
+        /// Check if a file with a specified <paramref name="fileAccessGuid"/> exists and is a graphics file.
+        /// </summary>
+        /// <param name="fileAccessGuid">Access GUID fo the checked file</param>
+        /// <returns>Task returning if the access GUID is compliat</returns>
+        Task<FileTypeCheckResult> FileIsGraphics(string fileAccessGuid);
     }
 }

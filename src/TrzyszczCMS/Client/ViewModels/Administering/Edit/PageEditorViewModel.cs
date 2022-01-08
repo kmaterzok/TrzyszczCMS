@@ -6,8 +6,6 @@ using Core.Shared.Enums;
 using Core.Shared.Helpers;
 using Core.Shared.Models.PageContent;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using TrzyszczCMS.Client.Data;
 using TrzyszczCMS.Client.Data.Enums.Extensions;
@@ -211,12 +209,6 @@ namespace TrzyszczCMS.Client.ViewModels.Administering.Edit
             var module = new ModuleContent();
             switch (moduleType)
             {
-                case PageModuleType.Gallery:
-                    //nextTool = PageManagementTool.PageLayoutComposer;
-                    // TODO: Implement
-                    return;
-                    //break;
-
                 case PageModuleType.HeadingBanner:
                     module.SetModule(new HeadingBannerModuleContent()
                     {

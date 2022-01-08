@@ -53,7 +53,6 @@ namespace TrzyszczCMS.Client.Data.Enums.Extensions
             switch (type)
             {
                 case PageModuleType.TextWall:      return "Text wall";
-                case PageModuleType.Gallery:       return "Gallery";
                 case PageModuleType.HeadingBanner: return "Heading banner";
                 default:
                     throw ExceptionMaker.Argument.Unsupported(type, nameof(type));

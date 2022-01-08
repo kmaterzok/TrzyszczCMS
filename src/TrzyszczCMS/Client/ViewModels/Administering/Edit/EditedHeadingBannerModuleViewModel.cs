@@ -1,18 +1,9 @@
-﻿using Core.Application.Enums;
-using Core.Application.Helpers;
-using Core.Application.Models.Deposits;
-using Core.Application.Services.Interfaces.Rest;
+﻿using Core.Application.Services.Interfaces.Rest;
 using Core.Shared.Enums;
 using Core.Shared.Helpers;
 using Core.Shared.Models.PageContent;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
-using TrzyszczCMS.Client.Data;
-using TrzyszczCMS.Client.Data.Enums.Extensions;
-using TrzyszczCMS.Client.Data.Model;
-using TrzyszczCMS.Client.Services.Interfaces;
 using TrzyszczCMS.Client.ViewModels.Shared;
 
 namespace TrzyszczCMS.Client.ViewModels.Administering.Edit

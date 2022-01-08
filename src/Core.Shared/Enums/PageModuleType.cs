@@ -13,10 +13,6 @@
         /// The fullscreen / height limited box containing picture,
         /// centered heading, some text and horizontal menu.
         /// </summary>
-        HeadingBanner = 2,
-        /// <summary>
-        /// The box containing pictures that are displayed on the whole width and height of viewport.
-        /// </summary>
-        Gallery = 3
+        HeadingBanner = 2
     }
 }

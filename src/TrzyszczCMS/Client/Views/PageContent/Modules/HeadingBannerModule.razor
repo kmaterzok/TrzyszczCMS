@@ -7,7 +7,7 @@
 
     <div class="position-absolute" style="bottom: 10vh; left: 10vw; text-shadow: 1px 1px 2px @ViewModel.ShadowColor;">
         <h1>
-            Here's a sample title. Change it in the future.
+            @ViewModel.ModuleContent.Title
         </h1>
         @if (ViewModel.ModuleContent.DisplayAuthorsInfo && !string.IsNullOrEmpty(@ViewModel.ModuleContent.AuthorsInfo))
         {

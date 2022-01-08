@@ -54,6 +54,7 @@ namespace Core.Server.Models.Extensions
                     AttachLinkMenu              = dbHeadingBannerModule.AttachLinkMenu.Value,
                     Description                 = containingPage.Description,
                     AuthorsInfo                 = containingPage.AuthorsInfo,
+                    Title                       = containingPage.Title,
                     MenuItems                   = context.GetAllMenuItems()
                 }
             };

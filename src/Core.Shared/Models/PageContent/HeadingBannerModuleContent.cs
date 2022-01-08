@@ -45,5 +45,9 @@ namespace Core.Shared.Models.PageContent
         /// Attach and dipslay main link menu atop of the heading banner.
         /// </summary>
         public bool AttachLinkMenu { get; set; }
+        /// <summary>
+        /// Title of the page that contains a module.
+        /// </summary>
+        public string Title { get; set; }
     }
 }

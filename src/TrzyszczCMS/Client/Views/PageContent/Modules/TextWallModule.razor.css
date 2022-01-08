@@ -9,6 +9,15 @@ aside.section-width-1200 {
     width: 100%;
     float: left;
 }
+.aside-inner-note {
+    margin-left: auto;
+    margin-right: auto;
+    max-width: 270px;
+    padding: 10px;
+    background-color: #d3d3d342;
+    border-radius: 2px;
+}
+
 
 @media (min-width: 900px) {
     section.section-width-600 {
@@ -17,7 +26,17 @@ aside.section-width-1200 {
     aside.section-width-600 {
         width: calc(50% - 300px);
     }
+    .aside-inner-note {
+        max-width: 270px;
+    }
+    .aside-inner-note-right {
+        margin-right: auto;
+    }
+    .aside-inner-note-left {
+        margin-left: auto;
+    }
 }
+
 
 @media (min-width: 1100px) {
     section.section-width-800 {
@@ -26,7 +45,17 @@ aside.section-width-1200 {
     aside.section-width-800 {
         width: calc(50% - 400px);
     }
+    .aside-inner-note {
+        max-width: 270px;
+    }
+    .aside-inner-note-right {
+        margin-right: auto;
+    }
+    .aside-inner-note-left {
+        margin-left: auto;
+    }
 }
+
 
 @media (min-width: 1300px) {
     section.section-width-1000 {
@@ -35,7 +64,17 @@ aside.section-width-1200 {
     aside.section-width-1000 {
         width: calc(50% - 500px);
     }
+    .aside-inner-note {
+        max-width: 270px;
+    }
+    .aside-inner-note-right {
+        margin-right: auto;
+    }
+    .aside-inner-note-left {
+        margin-left: auto;
+    }
 }
+
 
 @media (min-width: 1500px) {
     section.section-width-1200 {
@@ -43,5 +82,14 @@ aside.section-width-1200 {
     }
     aside.section-width-1200 {
         width: calc(50% - 600px);
+    }
+    .aside-inner-note {
+        max-width: 270px;
+    }
+    .aside-inner-note-right {
+        margin-right: auto;
+    }
+    .aside-inner-note-left {
+        margin-left: auto;
     }
 }

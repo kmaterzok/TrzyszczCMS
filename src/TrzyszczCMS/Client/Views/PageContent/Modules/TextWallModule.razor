@@ -10,7 +10,9 @@
         }
         else
         {
-            <MarkDown Text="@ViewModel.ModuleContent.LeftAsideMarkDownContent" />
+            <div class="aside-inner-note aside-inner-note-left">
+                <MarkDown Text="@ViewModel.ModuleContent.LeftAsideMarkDownContent" />
+            </div>
         }
     </aside>
     <section class="@ViewModel.ModuleContent.SectionWidth.SectionWidthCssClass() px-2 mb-0">
@@ -23,7 +25,9 @@
         }
         else
         {
-            <MarkDown Text="@ViewModel.ModuleContent.RightAsideMarkDownContent" />
+            <div class="aside-inner-note aside-inner-note-right">
+                <MarkDown Text="@ViewModel.ModuleContent.RightAsideMarkDownContent" />
+            </div>
         }
     </aside>
     <div aria-hidden="true" style="clear: both"></div>

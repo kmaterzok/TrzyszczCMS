@@ -5,6 +5,7 @@
     /// </summary>
     public enum HeadingBannerHeight : short
     {
+        _25  =  25,
         _30  =  30,
         _40  =  40,
         _50  =  50,

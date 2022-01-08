@@ -1,4 +1,5 @@
 ﻿using Core.Shared.Enums;
+using Core.Shared.Models.PageContent;
 using TrzyszczCMS.Client.ViewModels.Shared;
 
 namespace TrzyszczCMS.Client.ViewModels.PageContent.Modules
@@ -11,50 +12,23 @@ namespace TrzyszczCMS.Client.ViewModels.PageContent.Modules
         #region Properties
         public PageModuleType ModuleType { get; private set; }
 
-        private TextWallSectionWidth _sectionWidth;
+        private TextWallModuleContent _ModuleContent;
         /// <summary>
-        /// Max width of displayed text on the screen in pixels.
+        /// Content of the module which the viewmodel gets data from.
         /// </summary>
-        public TextWallSectionWidth SectionWidth
+        public TextWallModuleContent ModuleContent
         {
-            get => _sectionWidth;
-            set => Set(ref _sectionWidth, value, nameof(SectionWidth));
-        }
-
-        private string _displayedMarkDown;
-        /// <summary>
-        /// Main MarkDown text to display.
-        /// </summary>
-        public string SectionMarkDown
-        {
-            get => this._displayedMarkDown;
-            set => Set(ref _displayedMarkDown, value, nameof(SectionMarkDown));
-        }
-
-        private string _leftAsideMarkDown;
-        /// <summary>
-        /// MarkDown text displayed on the left side of the main content.
-        /// </summary>
-        public string LeftAsideMarkDown
-        {
-            get => _leftAsideMarkDown;
-            set => Set(ref _leftAsideMarkDown, value, nameof(LeftAsideMarkDown));
-        }
-
-        private string _rightAsideMarkDown;
-        /// <summary>
-        /// MarkDown text displayed on the right side of the main content.
-        /// </summary>
-        public string RightAsideMarkDown
-        {
-            get => _rightAsideMarkDown;
-            set => Set(ref _rightAsideMarkDown, value, nameof(RightAsideMarkDown));
+            get => _ModuleContent;
+            set => Set(ref _ModuleContent, value, nameof(ModuleContent));
         }
         #endregion
 
         #region Ctor
-        public TextWallModuleViewModel() =>
+        public TextWallModuleViewModel(TextWallModuleContent moduleContent)
+        {
+            this.ModuleContent = moduleContent;
             this.ModuleType = PageModuleType.TextWall;
+        }
         #endregion
     }
 }

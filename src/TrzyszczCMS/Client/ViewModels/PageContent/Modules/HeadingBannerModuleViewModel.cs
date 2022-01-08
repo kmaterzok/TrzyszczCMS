@@ -1,4 +1,8 @@
 ﻿using Core.Shared.Enums;
+using Core.Shared.Models.PageContent;
+using System.Text;
+using TrzyszczCMS.Client.Data.Enums.Extensions;
+using TrzyszczCMS.Client.Helpers;
 using TrzyszczCMS.Client.ViewModels.Shared;
 
 namespace TrzyszczCMS.Client.ViewModels.PageContent.Modules
@@ -11,20 +15,49 @@ namespace TrzyszczCMS.Client.ViewModels.PageContent.Modules
         #region Properties
         public PageModuleType ModuleType { get; private set; }
 
-        private string _backgroundPictureAccessGuid;
+        private HeadingBannerModuleContent _ModuleContent;
         /// <summary>
-        /// GUID of the picture that will be a backgound for a banner.
+        /// Content of the module which the viewmodel gets data from.
         /// </summary>
-        public string BackgroundPictureAccessGuid
+        public HeadingBannerModuleContent ModuleContent
         {
-            get => this._backgroundPictureAccessGuid;
-            set => Set(ref _backgroundPictureAccessGuid, value, nameof(BackgroundPictureAccessGuid));
+            get => _ModuleContent;
+            set => Set(ref _ModuleContent, value, nameof(ModuleContent));
         }
+        /// <summary>
+        /// CSS style of the banner
+        /// </summary>
+        public string BannerCssStyle
+        {
+            get
+            {
+                var cssStyle = new StringBuilder
+                (
+                    string.IsNullOrEmpty(this.ModuleContent.BackgroundPictureAccessGuid) ?
+                        CssStyleHelper.GetDefaultTextColourCssStyle(!this.ModuleContent.DarkDescription) :
+                        CssStyleHelper.GetBackgroundImageCssStyle(this.ModuleContent.BackgroundPictureAccessGuid)
+                );
+                cssStyle.Append(" height: ")
+                        .Append(this.ModuleContent.ViewportHeight.GetBannerHeightCssValue())
+                        .Append("; min-height: 200px; ");
+
+                cssStyle.Append(CssStyleHelper.GetDefaultTextColourCssStyle(this.ModuleContent.DarkDescription));
+
+                return cssStyle.ToString();
+            }
+        }
+        /// <summary>
+        /// Text shadow colour in the banner in the bottom.
+        /// </summary>
+        public string ShadowColor => this.ModuleContent.DarkDescription ? "white" : "black";
         #endregion
 
         #region Ctor
-        public HeadingBannerModuleViewModel() =>
+        public HeadingBannerModuleViewModel(HeadingBannerModuleContent moduleContent)
+        {
+            this.ModuleContent = moduleContent;
             this.ModuleType = PageModuleType.HeadingBanner;
+        }
         #endregion
     }
 }

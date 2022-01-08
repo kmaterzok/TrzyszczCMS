@@ -28,6 +28,14 @@ namespace TrzyszczCMS.Client.Data.Enums.Extensions
             $"{width.ToString()[1..]}px";
 
         /// <summary>
+        /// Get width of section for usage in the CSS style.
+        /// </summary>
+        /// <param name="width">Preferred width of a section block</param>
+        /// <returns>Value of width for usage in the CSS style</returns>
+        public static string GetCssStylePixelWidth(this TextWallSectionWidth width) =>
+            $"{width.ToString()[1..]}px";
+
+        /// <summary>
         /// Get description about viewport height of a heading banner.
         /// </summary>
         /// <param name="height">Desired banner height</param>
@@ -36,12 +44,12 @@ namespace TrzyszczCMS.Client.Data.Enums.Extensions
             $"{height.ToString()[1..]}%";
 
         /// <summary>
-        /// Get width of section for usage in the CSS style.
+        /// Get value of the banner height as CSS value.
         /// </summary>
-        /// <param name="width">Preferred width of a section block</param>
-        /// <returns>Value of width for usage in the CSS style</returns>
-        public static string GetCssStylePixelWidth(this TextWallSectionWidth width) =>
-            $"{width.ToString()[1..]}px";
+        /// <param name="height">Banner's Height</param>
+        /// <returns>CSS value of banner's height.</returns>
+        public static string GetBannerHeightCssValue(this HeadingBannerHeight height) =>
+            $"{height.ToString()[1..]}vh";
 
         /// <summary>
         /// Get human language translation of module type enum.

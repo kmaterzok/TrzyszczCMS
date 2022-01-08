@@ -3,27 +3,27 @@
 @using TrzyszczCMS.Client.Data.Enums.Extensions
 
 <div class="w-100 d-block pb-3">
-    <aside class="@ViewModel.SectionWidth.SectionWidthCssClass() px-2">
-        @if (string.IsNullOrEmpty(ViewModel.LeftAsideMarkDown))
+    <aside class="@ViewModel.ModuleContent.SectionWidth.SectionWidthCssClass() px-2">
+        @if (string.IsNullOrEmpty(ViewModel.ModuleContent.LeftAsideMarkDownContent))
         {
             <span class="user-select-none" aria-hidden="true">&nbsp;</span>
         }
         else
         {
-            <MarkDown Text="@ViewModel.LeftAsideMarkDown" />
+            <MarkDown Text="@ViewModel.ModuleContent.LeftAsideMarkDownContent" />
         }
     </aside>
-    <section class="@ViewModel.SectionWidth.SectionWidthCssClass() px-2 mb-0">
-        <MarkDown Text="@ViewModel.SectionMarkDown" />
+    <section class="@ViewModel.ModuleContent.SectionWidth.SectionWidthCssClass() px-2 mb-0">
+        <MarkDown Text="@ViewModel.ModuleContent.SectionMarkDownContent" />
     </section>
-    <aside class="@ViewModel.SectionWidth.SectionWidthCssClass() px-2">
-        @if (string.IsNullOrEmpty(ViewModel.RightAsideMarkDown))
+    <aside class="@ViewModel.ModuleContent.SectionWidth.SectionWidthCssClass() px-2">
+        @if (string.IsNullOrEmpty(ViewModel.ModuleContent.RightAsideMarkDownContent))
         {
             <span class="user-select-none" aria-hidden="true">&nbsp;</span>
         }
         else
         {
-            <MarkDown Text="@ViewModel.RightAsideMarkDown" />
+            <MarkDown Text="@ViewModel.ModuleContent.RightAsideMarkDownContent" />
         }
     </aside>
     <div aria-hidden="true" style="clear: both"></div>

@@ -15,13 +15,6 @@
 }
 else if (ViewModel.ContentFound == true)
 {
-    @if (PageType == PageType.Article || PageType == PageType.Post)
-    {
-        <header class="px-4">
-            <h1>@(PageType == PageType.Article ? "Article" : "Post")</h1>
-        </header>
-    }
-
     @foreach (var moduleVM in ViewModel.ViewModelsForModules)
     {
         if (moduleVM is TextWallModuleViewModel textWallVM)
@@ -30,7 +23,7 @@ else if (ViewModel.ContentFound == true)
         }
         else if (moduleVM is HeadingBannerModuleViewModel headingBannerVM)
         {
-
+            <HeadingBannerModule ViewModel="@headingBannerVM" />
         }
         else
         {

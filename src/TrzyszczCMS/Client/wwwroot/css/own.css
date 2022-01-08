@@ -26,6 +26,14 @@
 th {
     vertical-align: text-top;
 }
+.background-resized {
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+.background-parallax {
+    background-attachment: fixed;
+}
 /***************************************/
 /*     Spinner by Fabio Ottaviani:     */
 /* https://codepen.io/supah/pen/BjYLdW */

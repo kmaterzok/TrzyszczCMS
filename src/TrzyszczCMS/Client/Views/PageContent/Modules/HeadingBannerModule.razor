@@ -1,0 +1,41 @@
+﻿@using System.ComponentModel
+@using TrzyszczCMS.Client.ViewModels.PageContent.Modules
+@using TrzyszczCMS.Client.Data.Enums.Extensions
+
+
+<div class="w-100 pb-3 mb-4 px-4 position-relative background-resized background-parallax" style="@ViewModel.BannerCssStyle">
+
+    <div class="position-absolute" style="bottom: 10vh; left: 10vw; text-shadow: 1px 1px 2px @ViewModel.ShadowColor;">
+        <h1>
+            Here's a sample title. Change it in the future.
+        </h1>
+        @if (ViewModel.ModuleContent.DisplayAuthorsInfo && !string.IsNullOrEmpty(@ViewModel.ModuleContent.AuthorsInfo))
+        {
+            <div>
+                Authors: @ViewModel.ModuleContent.AuthorsInfo
+            </div>
+        }
+        @if (@ViewModel.ModuleContent.DisplayDescription && !string.IsNullOrEmpty(@ViewModel.ModuleContent.Description))
+        {
+            <div>
+                @ViewModel.ModuleContent.Description
+            </div>
+        }
+    </div>
+</div>
+
+
+@code {
+
+    [Parameter]
+    public HeadingBannerModuleViewModel ViewModel { get; set; }
+
+    protected override void OnInitialized()
+    {
+        this.ViewModel.PropertyChanged += new PropertyChangedEventHandler(
+            async (s, e) => await this.InvokeAsync(() => this.StateHasChanged())
+        );
+
+        base.OnInitialized();
+    }
+}

@@ -1,4 +1,5 @@
 ﻿using Core.Shared.Enums;
+using Core.Shared.Helpers;
 using Core.Shared.Models.Rest.Responses.PageContent;
 using System.Collections.Generic;
 using TrzyszczCMS.Client.ViewModels.PageContent.Modules;
@@ -20,15 +21,15 @@ namespace TrzyszczCMS.Client.Helpers
                 switch (singleModuleData.GetModuleType())
                 {
                     case PageModuleType.TextWall:
-
-                        viewModels.Add(new TextWallModuleViewModel()
-                        {
-                            LeftAsideMarkDown = singleModuleData.TextWallModuleContent.LeftAsideMarkDownContent,
-                            RightAsideMarkDown = singleModuleData.TextWallModuleContent.RightAsideMarkDownContent,
-                            SectionMarkDown = singleModuleData.TextWallModuleContent.SectionMarkDownContent,
-                            SectionWidth = singleModuleData.TextWallModuleContent.SectionWidth
-                        });
+                        viewModels.Add(new TextWallModuleViewModel(singleModuleData.TextWallModuleContent));
                         break;
+
+                    case PageModuleType.HeadingBanner:
+                        viewModels.Add(new HeadingBannerModuleViewModel(singleModuleData.HeadingBannerModuleContent));
+                        break;
+
+                    default:
+                        throw ExceptionMaker.NotImplemented.ForHandling(singleModuleData.GetModuleType(), $"{nameof(singleModuleData)}.{nameof(singleModuleData.GetModuleType)}()");
                 }
             }
             return viewModels;

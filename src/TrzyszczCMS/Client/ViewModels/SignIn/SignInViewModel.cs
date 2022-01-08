@@ -82,10 +82,10 @@ namespace TrzyszczCMS.Client.ViewModels.SignIn
             this.RememberMe = false;
         }
         /// <summary>
-        /// Sign in user to the dashboard.
+        /// Sign in user to the administering panel.
         /// </summary>
-        /// <param name="afterSuccess">What to to after success ful sign in.</param>
-        /// <returns></returns>
+        /// <param name="afterSuccess">What to to after successful sign in.</param>
+        /// <returns>Task returning if the signing in was finished successfully and used can administer the page</returns>
         public async Task<bool> SignInUser(Action afterSuccess)
         {
             if(!PasswordValidationHelper.CheckCredentials(this.Username, this.Password, out string error))

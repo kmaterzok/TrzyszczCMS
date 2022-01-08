@@ -31,5 +31,9 @@ namespace TrzyszczCMS.Client.Data
         /// The constant defining paddings within a body of an accordion.
         /// </summary>
         public const string ACCORDION_CONTENT_CLASS = "p-0 border-bottom border-dark border-1";
+        /// <summary>
+        /// The URL of the page that must be displayed after signing in with credentials or with an access token.
+        /// </summary>
+        public const string AFTER_SIGN_IN_IMMEDIATE_PAGE_URL = "/manage/pages";
     }
 }

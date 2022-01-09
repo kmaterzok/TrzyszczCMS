@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Core.Shared.Enums;
+using System;
 using System.ComponentModel;
 using System.Threading.Tasks;
 
@@ -6,6 +7,12 @@ namespace TrzyszczCMS.Client.Views.Administering.Edit
 {
     public partial class PageEditor : IDisposable
     {
+        #region Properties
+        public string CopyTitleCssStyle => ViewModel.EditedPageDepositVM.PageType != PageType.HomePage ?
+            "width: calc(100% - 55px);" :
+            "width: 100%;";
+        #endregion
+
         #region Init
         protected override void OnInitialized()
         {

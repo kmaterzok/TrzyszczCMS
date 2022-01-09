@@ -1,4 +1,5 @@
 ﻿using Core.Shared.Enums;
+using System;
 using System.Collections.Generic;
 
 namespace Core.Shared.Models.PageContent
@@ -49,5 +50,9 @@ namespace Core.Shared.Models.PageContent
         /// Title of the page that contains a module.
         /// </summary>
         public string Title { get; set; }
+        /// <summary>
+        /// Timestamp of the publishing the page.
+        /// </summary>
+        public DateTime PublishUtcTimestamp { get; set; }
     }
 }

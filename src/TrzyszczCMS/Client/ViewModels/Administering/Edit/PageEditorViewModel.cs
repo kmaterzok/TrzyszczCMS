@@ -215,13 +215,14 @@ namespace TrzyszczCMS.Client.ViewModels.Administering.Edit
                         AuthorsInfo = null,
                         Description = null,
                         BackgroundPictureAccessGuid = null,
-                        MenuItems          = null,
-                        Title              = null,
-                        DarkDescription    = false,
-                        ViewportHeight     = Constants.DEFAULT_HEADING_BANNER_HEIGHT,
-                        DisplayAuthorsInfo = true,
-                        DisplayDescription = true,
-                        AttachLinkMenu     = true,
+                        MenuItems           = null,
+                        Title               = null,
+                        PublishUtcTimestamp = DateTime.MinValue,
+                        DarkDescription     = false,
+                        ViewportHeight      = Constants.DEFAULT_HEADING_BANNER_HEIGHT,
+                        DisplayAuthorsInfo  = true,
+                        DisplayDescription  = true,
+                        AttachLinkMenu      = true
                     });
                     nextTool = PageManagementTool.HeadingBannerEditor;
                     break;

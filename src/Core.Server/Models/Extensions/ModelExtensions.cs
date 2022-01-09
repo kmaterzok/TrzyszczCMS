@@ -52,6 +52,7 @@ namespace Core.Server.Models.Extensions
                     DisplayAuthorsInfo          = dbHeadingBannerModule.DisplayAuthorsInfo.Value,
                     DarkDescription             = dbHeadingBannerModule.DarkDescription,
                     AttachLinkMenu              = dbHeadingBannerModule.AttachLinkMenu.Value,
+                    PublishUtcTimestamp         = containingPage.PublishUtcTimestamp,
                     Description                 = containingPage.Description,
                     AuthorsInfo                 = containingPage.AuthorsInfo,
                     Title                       = containingPage.Title,

@@ -1,6 +1,8 @@
 ﻿@using System.ComponentModel
+@using Core.Shared.Enums
+@using Core.Shared.Helpers.Extensions
 @using TrzyszczCMS.Client.ViewModels.PageContent.Modules
-@using TrzyszczCMS.Client.Helpers 
+@using TrzyszczCMS.Client.Helpers
 @inject NavigationManager NavigationManager
 
 
@@ -24,12 +26,14 @@
                 }
                 else
                 {
-                       <button class="btn btn-light menu-item-control" style="@CssStyleHelper.CssMenuItemWidth(menuItem.Name)"
-                               @onclick="@(() => FollowLinkAsync(menuItem.Uri, false))">@menuItem.Name</button>
-                }
-            } 
+                    <button class="btn btn-light menu-item-control" style="@CssStyleHelper.CssMenuItemWidth(menuItem.Name)"
+                            @onclick="@(() => FollowLinkAsync(menuItem.Uri, false))">
+                        @menuItem.Name
+                        </button>
+                    }
+            }
         </div>
-    } 
+    }
 
     <div class="position-absolute" style="bottom: 10vh; left: 10vw; text-shadow: 1px 1px 2px @ViewModel.ShadowColor;">
         <h1>
@@ -38,7 +42,11 @@
         @if (ViewModel.ModuleContent.DisplayAuthorsInfo && !string.IsNullOrEmpty(@ViewModel.ModuleContent.AuthorsInfo))
         {
             <div>
-                Authors: @ViewModel.ModuleContent.AuthorsInfo
+                @if (this.PageType == PageType.Post)
+                {
+                    <span>@ViewModel.ModuleContent.PublishUtcTimestamp.ToGenericNotation(),&nbsp;</span>
+                }
+                <span>Authors: @ViewModel.ModuleContent.AuthorsInfo</span>
             </div>
         }
         @if (@ViewModel.ModuleContent.DisplayDescription && !string.IsNullOrEmpty(@ViewModel.ModuleContent.Description))
@@ -55,6 +63,9 @@
 
     [Parameter]
     public HeadingBannerModuleViewModel ViewModel { get; set; }
+
+    [Parameter]
+    public PageType PageType { get; set; }
 
     private bool DisplaySelects;
 

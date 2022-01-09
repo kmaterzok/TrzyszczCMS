@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics.CodeAnalysis;
 using System.Threading.Tasks;
+using TrzyszczCMS.Server.Helpers.Extensions;
 
 namespace TrzyszczCMS.Server.Controllers
 {
@@ -63,7 +64,7 @@ namespace TrzyszczCMS.Server.Controllers
         [Produces("application/json")]
         [Route("[action]")]
         public async Task<ActionResult> AddPage([FromBody][NotNull] DetailedPageInfo request) =>
-            await this._managePageService.AddPageAsync(request) ? Ok() : Conflict("Some invalid data specified.");
+            await this._managePageService.AddPageAsync(request) ? this.ObjectCreated() : Conflict("Some invalid data specified.");
 
         [HttpPost]
         [Produces("application/json")]

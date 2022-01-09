@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using TrzyszczCMS.Server.Helpers.Extensions;
 
 namespace TrzyszczCMS.Server.Controllers
 {
@@ -39,7 +40,7 @@ namespace TrzyszczCMS.Server.Controllers
         [Route("[action]")]
         public async Task<ActionResult<SimpleMenuItemInfo>> AddMenuItem([FromBody] SimpleMenuItemInfo addedItem) =>
             (await this._manageSettingsService.AddMenuItem(addedItem)).GetValue(out SimpleMenuItemInfo menuItem, out _) ?
-                Ok(menuItem) :
+                this.ObjectCreated(menuItem) :
                 Conflict("A new item cannot have a parent node that has another parent node. A new item cannot be named as ..");
 
         [HttpDelete]

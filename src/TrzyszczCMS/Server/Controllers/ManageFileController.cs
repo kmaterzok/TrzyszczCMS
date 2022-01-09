@@ -15,6 +15,7 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using TrzyszczCMS.Server.Data.Adapters;
+using TrzyszczCMS.Server.Helpers.Extensions;
 
 namespace TrzyszczCMS.Server.Controllers
 {
@@ -106,7 +107,7 @@ namespace TrzyszczCMS.Server.Controllers
             if ((await this._manageFileService.UploadFiles(fileAdapters, parentNodeId))
                 .GetValue(out List<SimpleFileInfo> fileList, out Tuple<CreatingFileFailReason> error))
             {
-                return Ok(fileList);
+                return this.ObjectCreated(fileList);
             }
             else
             {
@@ -131,7 +132,7 @@ namespace TrzyszczCMS.Server.Controllers
             var result = await this._manageFileService.CreateLogicalDirectoryAsync(directoryName, parentNodeId);
             if (result.GetValue(out SimpleFileInfo file, out Tuple<CreatingRowFailReason> error))
             {
-                return Ok(file);
+                return this.ObjectCreated(file);
             }
             else
             {

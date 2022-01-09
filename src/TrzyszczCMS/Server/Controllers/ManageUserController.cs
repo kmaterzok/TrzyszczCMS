@@ -91,7 +91,7 @@ namespace TrzyszczCMS.Server.Controllers
         [Route("[action]")]
         public async Task<ActionResult<string>> AddUser([FromBody][NotNull] DetailedUserInfo request) =>
             (await this._manageUserService.AddUserAsync(request)).GetValue(out string password, out Tuple<bool> _) ?
-                Ok(password) : Conflict("User name not compliant with specific rules.");
+                this.ObjectCreated(password) : Conflict("User name not compliant with specific rules.");
 
         [HttpPost]
         [Produces("application/json")]

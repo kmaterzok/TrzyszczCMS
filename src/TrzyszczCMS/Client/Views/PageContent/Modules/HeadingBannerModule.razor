@@ -36,24 +36,11 @@
     }
 
     <div class="position-absolute" style="bottom: 10vh; left: 10vw; text-shadow: 1px 1px 2px @ViewModel.ShadowColor;">
-        <h1>
-            @ViewModel.ModuleContent.Title
-        </h1>
-        @if (ViewModel.ModuleContent.DisplayAuthorsInfo && !string.IsNullOrEmpty(@ViewModel.ModuleContent.AuthorsInfo))
-        {
-            <div>
-                @if (this.PageType == PageType.Post)
-                {
-                    <span>@ViewModel.ModuleContent.PublishUtcTimestamp.ToGenericNotation(),&nbsp;</span>
-                }
-                <span>Authors: @ViewModel.ModuleContent.AuthorsInfo</span>
-            </div>
-        }
+        <h1>@ViewModel.ModuleContent.Title</h1>
+        <div>@DateAndAuthorInfo</div>
         @if (@ViewModel.ModuleContent.DisplayDescription && !string.IsNullOrEmpty(@ViewModel.ModuleContent.Description))
         {
-            <div>
-                @ViewModel.ModuleContent.Description
-            </div>
+            <div>@ViewModel.ModuleContent.Description</div>
         }
     </div>
 </div>
@@ -68,6 +55,21 @@
     public PageType PageType { get; set; }
 
     private bool DisplaySelects;
+
+    private string DateAndAuthorInfo
+    {
+        get
+        {
+            var isPost = this.PageType == PageType.Post;
+            var hasAuthors = ViewModel.ModuleContent.DisplayAuthorsInfo && !string.IsNullOrEmpty(ViewModel.ModuleContent.AuthorsInfo);
+
+            var text = new System.Text.StringBuilder();
+            if (isPost)               { text.Append(ViewModel.ModuleContent.PublishUtcTimestamp.ToGenericNotation()); }
+            if (isPost && hasAuthors) { text.Append(", "); }
+            if (hasAuthors)           { text.Append("Authors: ").Append(ViewModel.ModuleContent.AuthorsInfo); }
+            return text.ToString();
+        }
+    }
 
     protected override void OnInitialized()
     {

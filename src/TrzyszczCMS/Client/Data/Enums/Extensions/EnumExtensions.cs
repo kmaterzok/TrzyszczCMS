@@ -18,7 +18,19 @@ namespace TrzyszczCMS.Client.Data.Enums.Extensions
         /// <returns>Style name from isolated CSS file</returns>
         public static string SectionWidthCssClass(this TextWallSectionWidth width) =>
             $"section-width-{width.ToString()[1..]}";
-        
+
+        /// <summary>
+        /// Get complementary style for a specific aside note.
+        /// </summary>
+        /// <param name="width">Preferred width of section block</param>
+        /// <param name="leftNote"><c>false</c> - left note, <c>true</c> - right note</param>
+        /// <returns>Style name from isolated CSS file</returns>
+        public static string AsideInnerNoteCssClass(this TextWallSectionWidth width, bool leftNote)
+        {
+            var direction = leftNote ? "left" : "right";
+            return $"aside-inner-note-{direction}-{width.ToString()[1..]}";
+        }
+
         /// <summary>
         /// Get description about pixel size for Text wall module.
         /// </summary>

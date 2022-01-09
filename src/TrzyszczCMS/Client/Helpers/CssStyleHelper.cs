@@ -30,5 +30,13 @@
         /// <returns>CSS style for a background colour</returns>
         public static string GetDefaultBackgroundColourCssStyle(bool darkColour) =>
             darkColour ? $"background-color: #111;" : $"background-color: #eee;";
+
+        /// <summary>
+        /// Get a style for buttons and selects present in the heading banner menu.
+        /// </summary>
+        /// <param name="text">Text hold in the buttons or select's disabled option</param>
+        /// <returns>Style for element</returns>
+        public static string CssMenuItemWidth(string text) =>
+            text.Length > 14 ? "width: 250px;" : "width: 150px;";
     }
 }

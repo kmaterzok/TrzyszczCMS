@@ -16,6 +16,7 @@ aside.section-width-1200 {
     padding: 10px;
     background-color: #d3d3d342;
     border-radius: 2px;
+    margin-bottom: 18px;
 }
 
 
@@ -26,14 +27,13 @@ aside.section-width-1200 {
     aside.section-width-600 {
         width: calc(50% - 300px);
     }
-    .aside-inner-note {
-        max-width: 270px;
-    }
-    .aside-inner-note-right {
+    .aside-inner-note-right-600 {
         margin-right: auto;
+        margin-left: 10px;
     }
-    .aside-inner-note-left {
+    .aside-inner-note-left-600 {
         margin-left: auto;
+        margin-right: 10px;
     }
 }
 
@@ -45,14 +45,13 @@ aside.section-width-1200 {
     aside.section-width-800 {
         width: calc(50% - 400px);
     }
-    .aside-inner-note {
-        max-width: 270px;
-    }
-    .aside-inner-note-right {
+    .aside-inner-note-right-800 {
         margin-right: auto;
+        margin-left: 10px;
     }
-    .aside-inner-note-left {
+    .aside-inner-note-left-800 {
         margin-left: auto;
+        margin-right: 10px;
     }
 }
 
@@ -64,14 +63,13 @@ aside.section-width-1200 {
     aside.section-width-1000 {
         width: calc(50% - 500px);
     }
-    .aside-inner-note {
-        max-width: 270px;
-    }
-    .aside-inner-note-right {
+    .aside-inner-note-right-1000 {
         margin-right: auto;
+        margin-left: 10px;
     }
-    .aside-inner-note-left {
+    .aside-inner-note-left-1000 {
         margin-left: auto;
+        margin-right: 10px;
     }
 }
 
@@ -83,13 +81,12 @@ aside.section-width-1200 {
     aside.section-width-1200 {
         width: calc(50% - 600px);
     }
-    .aside-inner-note {
-        max-width: 270px;
-    }
-    .aside-inner-note-right {
+    .aside-inner-note-right-1200 {
         margin-right: auto;
+        margin-left: 10px;
     }
-    .aside-inner-note-left {
+    .aside-inner-note-left-1200 {
         margin-left: auto;
+        margin-right: 10px;
     }
 }

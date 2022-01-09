@@ -1,9 +1,35 @@
 ﻿@using System.ComponentModel
 @using TrzyszczCMS.Client.ViewModels.PageContent.Modules
-@using TrzyszczCMS.Client.Data.Enums.Extensions
+@using TrzyszczCMS.Client.Helpers 
+@inject NavigationManager NavigationManager
 
 
 <div class="w-100 pb-3 mb-4 px-4 position-relative background-resized background-parallax" style="@ViewModel.BannerCssStyle">
+
+    @if (ViewModel.ModuleContent.AttachLinkMenu && ViewModel.ModuleContent.MenuItems != null && ViewModel.ModuleContent.MenuItems.Count != 0)
+    {
+        <div class="position-absolute d-flex flex-wrap" style="top: 1.5vh; left: 10vw; opacity: 0.9; width: 80vw; background-color: #f9fafb;">
+
+            @foreach (var menuItem in ViewModel.ModuleContent.MenuItems)
+            {
+                @if (menuItem.SubItems != null && menuItem.SubItems.Count != 0 && DisplaySelects)
+                {
+                    <select class="form-select menu-item-control menu-item-control-light" style="@CssStyleHelper.CssMenuItemWidth(menuItem.Name)" aria-label="@menuItem.Name">
+                        <option disabled selected>@menuItem.Name</option>
+                        @foreach (var subItem in menuItem.SubItems)
+                        {
+                            <option @onclick="@(() => FollowLinkAsync(subItem.Uri, true))">@subItem.Name</option>
+                        }
+                    </select>
+                }
+                else
+                {
+                       <button class="btn btn-light menu-item-control" style="@CssStyleHelper.CssMenuItemWidth(menuItem.Name)"
+                               @onclick="@(() => FollowLinkAsync(menuItem.Uri, false))">@menuItem.Name</button>
+                }
+            } 
+        </div>
+    } 
 
     <div class="position-absolute" style="bottom: 10vh; left: 10vw; text-shadow: 1px 1px 2px @ViewModel.ShadowColor;">
         <h1>
@@ -30,12 +56,25 @@
     [Parameter]
     public HeadingBannerModuleViewModel ViewModel { get; set; }
 
+    private bool DisplaySelects;
+
     protected override void OnInitialized()
     {
         this.ViewModel.PropertyChanged += new PropertyChangedEventHandler(
             async (s, e) => await this.InvokeAsync(() => this.StateHasChanged())
         );
-
+        this.DisplaySelects = true;
         base.OnInitialized();
+    }
+
+    private async Task FollowLinkAsync(string uri, bool subitem)
+    {
+        if (subitem)
+        {
+            await this.InvokeAsync(() => this.DisplaySelects = false);
+            await Task.Delay(1);
+            await this.InvokeAsync(() => this.DisplaySelects = true);
+        }
+        NavigationManager.NavigateTo(uri, true);
     }
 }

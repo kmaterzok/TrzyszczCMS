@@ -127,6 +127,7 @@ namespace Core.Server.Models.Extensions
         public static List<DisplayedMenuItem> GetAllMenuItems(this CmsDbContext context)
         {
             var subLists = context.ContMenuItems.AsNoTracking()
+                                                .OrderBy(i => i.OrderNumber)
                                                 .AsEnumerable()
                                                 .GroupBy(i => i.ParentItemId ?? -1)
                                                 .ToDictionary(i => i.Key, i => i.Select(

@@ -26,11 +26,10 @@
                 }
                 else
                 {
-                    <button class="btn btn-light menu-item-control" style="@CssStyleHelper.CssMenuItemWidth(menuItem.Name)"
-                            @onclick="@(() => FollowLinkAsync(menuItem.Uri, false))">
-                        @menuItem.Name
-                        </button>
-                    }
+                    <NavLink class="btn btn-light menu-item-control" href="@menuItem.Uri"
+                             style="@CssStyleHelper.CssMenuItemWidth(menuItem.Name)">@menuItem.Name
+                    </NavLink>
+                }
             }
         </div>
     }

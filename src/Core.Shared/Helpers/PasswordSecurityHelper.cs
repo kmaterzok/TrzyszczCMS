@@ -1,4 +1,5 @@
 ﻿using Core.Shared.Enums;
+using Core.Shared.Models;
 using System.Linq;
 
 namespace Core.Shared.Helpers
@@ -39,7 +40,7 @@ namespace Core.Shared.Helpers
         (
             !string.IsNullOrEmpty(password) &&
             !string.IsNullOrWhiteSpace(password) &&
-            password.Length >= 12 &&
+            password.Length >= LocalConstants.MIN_REQUIRED_USER_PASSWORD_LENGTH &&
             password.Any(i => char.IsUpper(i)) &&
             password.Any(i => char.IsLower(i)) &&
             password.Any(i => char.IsNumber(i)) &&

@@ -78,6 +78,7 @@ namespace TrzyszczCMS.Client
             services.AddTransient<PageEditorViewModel>();
             services.AddTransient<UserEditorViewModel>();
             services.AddTransient<SettingsViewModel>();
+            services.AddTransient<ChangeOwnPasswordViewModel>();
         }
         #endregion
     }

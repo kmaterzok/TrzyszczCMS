@@ -69,6 +69,12 @@ namespace Core.Server.Services.Interfaces.DbAccess.Modify
         /// <param name="usersSessionToken">Access token of the signed in user that is used in the current session</param>
         /// <returns>Task returning the collection of token infos</returns>
         Task<List<SimpleTokenInfo>> OwnSimpleTokenInfoAsync(int signedInUserId, string usersSessionToken);
-
+        /// <summary>
+        /// Change the password of the user identified by <paramref name="userId"/>.
+        /// </summary>
+        /// <param name="userId">Row ID of the user</param>
+        /// <param name="newPassword">New password for the user</param>
+        /// <returns>Task with execution result</returns>
+        Task ChangeUserPasswordAsync(int userId, string newPassword);
     }
 }

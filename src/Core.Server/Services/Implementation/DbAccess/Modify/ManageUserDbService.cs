@@ -243,6 +243,28 @@ namespace Core.Server.Services.Implementation.DbAccess.Modify
                 }
             });
         }
+
+        public async Task ChangeUserPasswordAsync(int userId, string newPassword)
+        {
+            using (var ctx = _databaseStrategy.GetContext())
+            {
+                using (var ts = await ctx.Database.BeginTransactionAsync())
+                {
+                    var cryptoSettings = this._cryptoService.CryptoSettings;
+                    var passwordHashInfo = this._cryptoService.GenerateHashWithSalt(newPassword);
+                    var user = await ctx.AuthUsers.SingleAsync(i => i.Id == userId);
+
+                    user.Argon2Iterations  = cryptoSettings.Argon2Password.Iterations;
+                    user.Argon2MemoryCost  = cryptoSettings.Argon2Password.MemoryCost;
+                    user.Argon2Parallelism = cryptoSettings.Argon2Password.Parallelism;
+                    user.PasswordSalt      = passwordHashInfo.PasswordDependentSalt;
+                    user.PasswordHash      = passwordHashInfo.HashedPassword;
+
+                    await ctx.SaveChangesAsync();
+                    await ts.CommitAsync();
+                }
+            }
+        }
         #endregion
 
         #region Helper methods
@@ -251,7 +273,7 @@ namespace Core.Server.Services.Implementation.DbAccess.Modify
             return RegexHelper.IsValidUserName(newUsername) &&
             (
                 (!string.IsNullOrEmpty(oldUsername) && oldUsername == newUsername) ||
-                !await this.UserNameExists(newUsername)
+                    !await this.UserNameExists(newUsername)
             );
         }
         #endregion

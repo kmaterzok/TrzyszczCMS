@@ -95,6 +95,29 @@ namespace TrzyszczCMS.Client.Data.Enums.Extensions
             }
         }
         /// <summary>
+        /// Get human language translation of fail reason.
+        /// </summary>
+        /// <param name="type">Selected fail reason</param>
+        /// <returns>Human language translation (meaning)</returns>
+        public static string GetTranslation(this PasswordNotChangedReason reason)
+        {
+            switch (reason)
+            {
+                case PasswordNotChangedReason.NewPasswordEqualsOldPassword:
+                    return "The old password and the new password are same.";
+                case PasswordNotChangedReason.NewPasswordNotComplexEnough:
+                    return "The new password is not complex enough.";
+                case PasswordNotChangedReason.NotAllDataProvided:
+                    return "Not all necessary data has been provided.";
+                case PasswordNotChangedReason.OldPasswordInvalid:
+                    return "The old password is invalid.";
+                case PasswordNotChangedReason.RepeatedPasswordInvalid:
+                    return "The repeated password is invalid.";
+                default:
+                    throw ExceptionMaker.Argument.Unsupported(reason, nameof(reason));
+            }
+        }
+        /// <summary>
         /// Get value of next enum defined in <typeparamref name="T"/>.
         /// </summary>
         /// <typeparam name="T">Type of iterated enum</typeparam>

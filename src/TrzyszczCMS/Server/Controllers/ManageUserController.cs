@@ -3,6 +3,7 @@ using Core.Server.Services.Interfaces.DbAccess.Modify;
 using Core.Shared.Enums;
 using Core.Shared.Helpers;
 using Core.Shared.Models.ManageUser;
+using Core.Shared.Models.Rest.Requests.ManageUsers;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -147,6 +148,26 @@ namespace TrzyszczCMS.Server.Controllers
             return Ok(await this._manageUserService.OwnSimpleTokenInfoAsync(userId.Value, usersCurrentToken));
         }
 
+        [HttpPost]
+        [RequireHttps]
+        [Produces("application/json")]
+        [Route("[action]")]
+        public async Task<ActionResult<PasswordNotChangedReason?>> ChangeOwnPassword([FromBody][NotNull] ChangeOwnPasswordRequest request)
+        {
+            var userId = HttpContext.GetUserIdByAccessToken();
+            if (!userId.HasValue)
+            {
+                return Forbid();
+            }
+
+            var verdict = PasswordSecurityHelper.FindReasonOfNotChangingPassword(request.CurrentPassword, request.NewPassword);
+            if (verdict.HasValue)
+            {
+                return Conflict(verdict);
+            }
+            await this._manageUserService.ChangeUserPasswordAsync(userId.Value, request.NewPassword);
+            return Ok();
+        }
         #endregion
     }
 }

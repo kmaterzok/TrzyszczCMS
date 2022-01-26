@@ -24,7 +24,7 @@ namespace Core.Application.Helpers.Extensions
         /// <typeparam name="T">Deserialised data</typeparam>
         /// <param name="message">Response message from HTTP server</param>
         /// <returns>Task returning data</returns>
-        public static async Task<T> ContentOrFailAsync<T>(this HttpResponseMessage message) where T : class
+        public static async Task<T> ContentOrFailAsync<T>(this HttpResponseMessage message)
         {
             message.EnsureSuccessStatusCode();
             return await message.Content.ReadFromJsonAsync<T>();

@@ -1,10 +1,10 @@
 @page "/sign-in"
 @layout ViewportMiddleYLayout
 
+@using Client.Data 
+@using Microsoft.AspNetCore.Components.Authorization
 @using System.Security.Claims
 @using ViewModels.SignIn
-@using Microsoft.AspNetCore.Components.Authorization
-@using Client.Data 
 
 @inject AuthenticationStateProvider AuthStateProvider
 @inject NavigationManager NavigationManager
@@ -15,7 +15,7 @@
     <div class="row justify-content-center">
         <section class="card col-9 col-sm-6 col-lg-4 border-0">
             <div class="card-header bg-transparent border-0 text-center">
-                <span aria-hidden="true">TRZYSZCZ CMS</span>
+                <CmsLogo />
             </div>
             <div class="card-body bg-transparent">
                 <EditForm Model="@ViewModel" OnValidSubmit="@(() => ViewModel.SignInUser(() => { NavigationManager.NavigateTo(Constants.AFTER_SIGN_IN_IMMEDIATE_PAGE_URL); this.StateHasChanged(); }))">
@@ -44,7 +44,7 @@
                 </EditForm>
             </div>
             <div class="card-footer bg-transparent border-0">
-                <a href="/">Back to home page</a>
+                <NavLink href="/">Back to home page</NavLink>
             </div>
         </section>
     </div>

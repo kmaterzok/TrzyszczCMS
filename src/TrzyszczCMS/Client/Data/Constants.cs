@@ -35,5 +35,10 @@ namespace TrzyszczCMS.Client.Data
         /// The URL of the page that must be displayed after signing in with credentials or with an access token.
         /// </summary>
         public const string AFTER_SIGN_IN_IMMEDIATE_PAGE_URL = "/manage/pages";
+        /// <summary>
+        /// The URL of the page that must be displayed after successful password change.
+        /// </summary>
+        public const string AFTER_PASSWORD_CHANGE_IMMEDIATE_PAGE_URL = "/manage/users";
+
     }
 }

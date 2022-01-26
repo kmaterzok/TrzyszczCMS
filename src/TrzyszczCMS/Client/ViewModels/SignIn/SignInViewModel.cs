@@ -1,7 +1,5 @@
-﻿using Core.Shared.Helpers;
+﻿using Core.Application.Helpers;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using TrzyszczCMS.Client.Services.Interfaces;
 using TrzyszczCMS.Client.ViewModels.Shared;
@@ -88,7 +86,7 @@ namespace TrzyszczCMS.Client.ViewModels.SignIn
         /// <returns>Task returning if the signing in was finished successfully and used can administer the page</returns>
         public async Task<bool> SignInUser(Action afterSuccess)
         {
-            if(!PasswordValidationHelper.CheckCredentials(this.Username, this.Password, out string error))
+            if(!SignInValidationHelper.CheckCredentials(this.Username, this.Password, out string error))
             {
                 this.ErrorMessage = error;
                 return false;
@@ -102,6 +100,5 @@ namespace TrzyszczCMS.Client.ViewModels.SignIn
             return success;
         }
         #endregion
-
     }
 }

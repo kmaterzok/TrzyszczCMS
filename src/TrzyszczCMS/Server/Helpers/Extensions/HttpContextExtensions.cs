@@ -20,14 +20,8 @@ namespace TrzyszczCMS.Server.Helpers.Extensions
         {
             var userId = httpContext.User.Claims.SingleOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value;
 
-            if (!string.IsNullOrEmpty(userId) && int.TryParse(userId, out int parsedUserId))
-            {
-                return parsedUserId;
-            }
-            else
-            {
-                return null;
-            }
+            return !string.IsNullOrEmpty(userId) && int.TryParse(userId, out int parsedUserId) ?
+                parsedUserId : null;
         }
         /// <summary>
         /// Retrieve access token from HTTP request's header.

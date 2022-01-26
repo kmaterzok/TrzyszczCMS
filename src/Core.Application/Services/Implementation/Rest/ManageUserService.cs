@@ -5,6 +5,7 @@ using Core.Shared.Enums;
 using Core.Shared.Helpers;
 using Core.Shared.Models;
 using Core.Shared.Models.ManageUser;
+using Core.Shared.Models.Rest.Requests.ManageUsers;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
@@ -67,6 +68,21 @@ namespace Core.Application.Services.Implementation.Rest
 
         public async Task<List<SimpleTokenInfo>> GetOwnSimpleTokenInfo() =>
             await this._authHttpClient.GetFromJsonAsync<List<SimpleTokenInfo>>($"/ManageUser/OwnSimpleTokenInfo");
+
+        public async Task<PasswordNotChangedReason?> ChangeSignedInUserPassword(string currentPassword, string newPassword)
+        {
+            var request = new ChangeOwnPasswordRequest()
+            {
+                CurrentPassword = currentPassword,
+                NewPassword     = newPassword
+            };
+            var response = await this._authHttpClient.PostAsJsonAsync($"/ManageUser/ChangeOwnPassword", request);
+            if (System.Net.HttpStatusCode.Conflict == response.StatusCode)
+            {
+                return await response.Content.ReadFromJsonAsync<PasswordNotChangedReason>();
+            }
+            return null;
+        }
         #endregion
     }
 }

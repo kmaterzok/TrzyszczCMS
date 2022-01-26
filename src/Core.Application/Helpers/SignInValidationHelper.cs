@@ -1,9 +1,9 @@
-﻿namespace Core.Shared.Helpers
+﻿namespace Core.Application.Helpers
 {
     /// <summary>
     /// The class of validation methods.
     /// </summary>
-    public static class PasswordValidationHelper
+    public static class SignInValidationHelper
     {
         /// <summary>
         /// Check if the enetred credentials meet basic criteria for sign in.

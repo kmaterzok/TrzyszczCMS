@@ -62,5 +62,12 @@ namespace Core.Application.Services.Interfaces.Rest
         /// </summary>
         /// <returns>Task returning tokens</returns>
         Task<List<SimpleTokenInfo>> GetOwnSimpleTokenInfo();
+        /// <summary>
+        /// change the currently signed in user's password.
+        /// </summary>
+        /// <param name="currentPassword">Current/old password of the user</param>
+        /// <param name="newPassword">New password for the user</param>
+        /// <returns>Task returning the cause of not change the password or none if the change was successful</returns>
+        Task<PasswordNotChangedReason?> ChangeSignedInUserPassword(string currentPassword, string newPassword);
     }
 }

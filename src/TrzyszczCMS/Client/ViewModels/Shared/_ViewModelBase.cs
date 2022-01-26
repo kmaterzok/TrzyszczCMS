@@ -19,7 +19,7 @@ namespace TrzyszczCMS.Client.ViewModels.Shared
 
         #region Ctor
         /// <summary>
-        /// A simple protected constructor.
+        /// A simple protected constructor. 
         /// </summary>
         protected ViewModelBase()
         {
@@ -44,10 +44,8 @@ namespace TrzyszczCMS.Client.ViewModels.Shared
         /// Notify change of the property.
         /// </summary>
         /// <param name="name">Name of the property</param>
-        protected void NotifyPropertyChanged(string name)
-        {
+        protected void NotifyPropertyChanged(string name) =>
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
-        }
         #endregion
     }
 }

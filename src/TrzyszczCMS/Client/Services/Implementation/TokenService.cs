@@ -36,9 +36,7 @@ namespace TrzyszczCMS.Client.Services.Implementations
             }
         }
 
-        public async Task SetTokenAsync(string accessToken)
-        {
+        public async Task SetTokenAsync(string accessToken) =>
             await this._localStorage.SetItemAsStringAsync(Constants.LOCAL_STORAGE_ACCESS_TOKEN_VAR_NAME, accessToken);
-        }
     }
 }

@@ -10,7 +10,7 @@ namespace TrzyszczCMS.Client.ViewModels.PageContent.Modules
     /// <summary>
     /// The viewmodel for a heading banner page module.
     /// </summary>
-    public class HeadingBannerModuleViewModel : ViewModelBase, IModuleViewModelBase
+    public class HeadingBannerModuleViewModel : ViewModelBase, IModuleViewModel
     {
         #region Properties
         public PageModuleType ModuleType { get; private set; }

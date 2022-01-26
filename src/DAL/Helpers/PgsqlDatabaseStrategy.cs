@@ -21,17 +21,13 @@ namespace DAL.Helpers
         /// A standard constructor for handling databases in a PostgreSQL server.
         /// </summary>
         /// <param name="connectionString">Connection string for database access.</param>
-        public PgsqlDatabaseStrategy(string connectionString)
-        {
+        public PgsqlDatabaseStrategy(string connectionString) =>
             this._dbContextFactoryMethod = () => new CmsDbContext(connectionString);
-        }
         #endregion
 
         #region Public methods
-        public CmsDbContext GetContext()
-        {
-            return this._dbContextFactoryMethod.Invoke();
-        }
+        public CmsDbContext GetContext() =>
+            this._dbContextFactoryMethod.Invoke();
         #endregion
     }
 }

@@ -13,9 +13,9 @@ namespace TrzyszczCMS.Client.Helpers
         /// </summary>
         /// <param name="pageContent">Page modules content</param>
         /// <returns>List of viewmodels with content for display.</returns>
-        public static List<IModuleViewModelBase> CreateViewModels(this ModularPageContentResponse pageContent)
+        public static List<IModuleViewModel> CreateViewModels(this ModularPageContentResponse pageContent)
         {
-            var viewModels = new List<IModuleViewModelBase>();
+            var viewModels = new List<IModuleViewModel>();
             foreach (var singleModuleData in pageContent.ModuleContents)
             {
                 switch (singleModuleData.GetModuleType())

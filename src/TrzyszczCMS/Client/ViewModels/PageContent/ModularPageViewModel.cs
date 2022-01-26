@@ -19,11 +19,11 @@ namespace TrzyszczCMS.Client.ViewModels.PageContent
         #endregion
 
         #region Properties
-        private List<IModuleViewModelBase> _viewModelsOfModules;
+        private List<IModuleViewModel> _viewModelsOfModules;
         /// <summary>
         /// List of viewmodels which are used by page modules that display its content
         /// </summary>
-        public List<IModuleViewModelBase> ViewModelsForModules
+        public List<IModuleViewModel> ViewModelsForModules
         {
             get => _viewModelsOfModules;
             set => Set(ref _viewModelsOfModules, value, nameof(ViewModelsForModules));
@@ -45,7 +45,7 @@ namespace TrzyszczCMS.Client.ViewModels.PageContent
         public ModularPageViewModel(ILoadPageService loadPageService)
         {
             this._loadPageService = loadPageService;
-            this.ViewModelsForModules = new List<IModuleViewModelBase>();
+            this.ViewModelsForModules = new List<IModuleViewModel>();
             this.ContentFound = null;
         }
         #endregion

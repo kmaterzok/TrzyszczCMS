@@ -13,10 +13,8 @@ namespace TrzyszczCMS.Client.Services.Implementation
         #endregion
 
         #region Ctor
-        public JSInteropService(IJSRuntime jSRuntime)
-        {
+        public JSInteropService(IJSRuntime jSRuntime) =>
             this._jsRuntime = jSRuntime;
-        }
         #endregion
 
         #region Methods

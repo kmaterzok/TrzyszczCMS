@@ -41,7 +41,7 @@
                             <GridColHeader SearchBoxType="SearchBoxType.None" Title="Actions" Width="250" />
                         </Header>
                         <RowTemplate Context="row">
-                            <td>@row.Data.GetModuleType().GetTranslation() @row.GetHashCode()</td>
+                            <td>@row.Data.GetModuleType().GetTranslation()</td>
                             <td>
                                 <div class="input-group input-group-sm">
                                     @if (row.Data.GetModuleType() == PageModuleType.TextWall)

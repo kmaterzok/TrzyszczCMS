@@ -7,7 +7,7 @@ namespace TrzyszczCMS.Client.ViewModels.PageContent.Modules
     /// <summary>
     /// The viewmodel for text wall page module.
     /// </summary>
-    public class TextWallModuleViewModel : ViewModelBase, IModuleViewModelBase
+    public class TextWallModuleViewModel : ViewModelBase, IModuleViewModel
     {
         #region Properties
         public PageModuleType ModuleType { get; private set; }

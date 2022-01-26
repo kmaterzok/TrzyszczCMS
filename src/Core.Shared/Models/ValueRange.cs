@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Core.Shared.Models
+﻿namespace Core.Shared.Models
 {
     /// <summary>
     /// A simple struct for storing ranges of values for comparison or return.
@@ -20,8 +14,5 @@ namespace Core.Shared.Models
         /// Value that ends the range
         /// </summary>
         public T End { get; set; }
-        /// <summary>
-        /// Is <see cref="Start"/> value included into the range
-        /// </summary>
     }
 }

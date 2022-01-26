@@ -12,17 +12,13 @@ namespace DAL.Helpers
         #endregion
 
         #region Ctor
-        public DatabaseStrategyFactory(IOptions<ConnectionStrings> connectionStrings)
-        {
+        public DatabaseStrategyFactory(IOptions<ConnectionStrings> connectionStrings) =>
             this._connectionStrings = connectionStrings.Value;
-        }
         #endregion
 
         #region Methods
-        public IDatabaseStrategy GetStrategy(ConnectionStringDbType dbType)
-        {
-            return new PgsqlDatabaseStrategy(this._connectionStrings.GetConnectionString(dbType));
-        }
+        public IDatabaseStrategy GetStrategy(ConnectionStringDbType dbType) =>
+            new PgsqlDatabaseStrategy(this._connectionStrings.GetConnectionString(dbType));
         #endregion
     }
 }

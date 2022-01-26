@@ -165,6 +165,11 @@ namespace TrzyszczCMS.Server.Controllers
             {
                 return Conflict(verdict);
             }
+            else if (!await this._manageUserService.PasswordMatches(userId.Value, request.CurrentPassword))
+            {
+                return Conflict(PasswordNotChangedReason.OldPasswordInvalid);
+            }
+
             await this._manageUserService.ChangeUserPasswordAsync(userId.Value, request.NewPassword);
             return Ok();
         }

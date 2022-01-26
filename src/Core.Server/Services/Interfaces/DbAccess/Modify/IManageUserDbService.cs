@@ -70,6 +70,13 @@ namespace Core.Server.Services.Interfaces.DbAccess.Modify
         /// <returns>Task returning the collection of token infos</returns>
         Task<List<SimpleTokenInfo>> OwnSimpleTokenInfoAsync(int signedInUserId, string usersSessionToken);
         /// <summary>
+        /// Check if the <paramref name="password"/> is valid for a user identified by <paramref name="userId"/>.
+        /// </summary>
+        /// <param name="userId">Row ID of the user</param>
+        /// <param name="password">Checked password</param>
+        /// <returns>Task returning if <paramref name="password"/> is valid for <paramref name="userId"/></returns>
+        Task<bool> PasswordMatches(int userId, string password);
+        /// <summary>
         /// Change the password of the user identified by <paramref name="userId"/>.
         /// </summary>
         /// <param name="userId">Row ID of the user</param>

@@ -244,6 +244,23 @@ namespace Core.Server.Services.Implementation.DbAccess.Modify
             });
         }
 
+        public async Task<bool> PasswordMatches(int userId, string password)
+        {
+            using (var ctx = _databaseStrategy.GetContext())
+            {
+                var user = await ctx.AuthUsers.SingleAsync(i => i.Id == userId);
+                return this._cryptoService.PasswordValid
+                (
+                    user.PasswordHash,
+                    user.PasswordSalt,
+                    password,
+                    user.Argon2Parallelism,
+                    user.Argon2Iterations,
+                    user.Argon2MemoryCost
+                );
+            }
+        }
+
         public async Task ChangeUserPasswordAsync(int userId, string newPassword)
         {
             using (var ctx = _databaseStrategy.GetContext())

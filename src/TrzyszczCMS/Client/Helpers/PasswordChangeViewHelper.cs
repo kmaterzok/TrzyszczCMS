@@ -18,6 +18,10 @@ namespace TrzyszczCMS.Client.Helpers
         /// <returns>Fail reason of not changing the password</returns>
         public static PasswordNotChangedReason? CheckPasswordsForChangeBeforeSending(string oldPassword, string newPassword, string newPasswordRepeated)
         {
+            if (string.IsNullOrEmpty(newPasswordRepeated))
+            {
+                return PasswordNotChangedReason.NotAllDataProvided;
+            }
             var verdict = PasswordSecurityHelper.FindReasonOfNotChangingPassword(oldPassword, newPassword);
 
             if (!verdict.HasValue)

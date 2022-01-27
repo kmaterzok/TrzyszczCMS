@@ -5,7 +5,7 @@ VisualStudioVersion = 16.0.31624.102
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DAL", "src\DAL\DAL.csproj", "{8F13A407-6237-40F5-9E68-D06C3F478FE6}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NUnit.Tests", "tests\NUnit.Tests\NUnit.Tests.csproj", "{7F61B344-8FCD-4B31-9D72-9898147684FF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TrzyszczCMS.Tests", "tests\TrzyszczCMS.Tests\TrzyszczCMS.Tests.csproj", "{7F61B344-8FCD-4B31-9D72-9898147684FF}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SolutionFolder", "SolutionFolder", "{4E4D8AA4-072B-49B5-8BB1-491A8B101A00}"
 	ProjectSection(SolutionItems) = preProject

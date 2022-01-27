@@ -29,14 +29,14 @@ namespace Core.Server.Helpers
                 return new ValueRange<DateTime?>()
                 {
                     Start = DateTime.ParseExact(partsOfString[0], CommonConstants.DATE_RANGE_FILTER_FORMAT, null),
-                    End   = DateTime.ParseExact(partsOfString[2], CommonConstants.DATE_RANGE_FILTER_FORMAT, null).AddMaxHour()
+                    End   = DateTime.ParseExact(partsOfString[2], CommonConstants.DATE_RANGE_FILTER_FORMAT, null).GetWithMaxHour()
                 };
             }
             else if (partsOfString.Length == 2 && partsOfString[0] == "<=")
             {
                 return new ValueRange<DateTime?>()
                 {
-                    End = DateTime.ParseExact(partsOfString[1], CommonConstants.DATE_RANGE_FILTER_FORMAT, null).AddMaxHour()
+                    End = DateTime.ParseExact(partsOfString[1], CommonConstants.DATE_RANGE_FILTER_FORMAT, null).GetWithMaxHour()
                 };
             }
             else if (partsOfString.Length == 2 && partsOfString[0] == ">=")

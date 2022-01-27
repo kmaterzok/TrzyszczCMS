@@ -21,13 +21,13 @@ namespace Core.Shared.Helpers
             {
                 return PasswordNotChangedReason.NotAllDataProvided;
             }
-            else if (!IsPasswordComplexEnough(newPassword))
-            {
-                return PasswordNotChangedReason.NewPasswordNotComplexEnough;
-            }
             else if (currentPassword == newPassword)
             {
                 return PasswordNotChangedReason.NewPasswordEqualsOldPassword;
+            }
+            else if (!IsPasswordComplexEnough(newPassword))
+            {
+                return PasswordNotChangedReason.NewPasswordNotComplexEnough;
             }
             return null;
         }

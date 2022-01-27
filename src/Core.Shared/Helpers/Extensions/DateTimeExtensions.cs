@@ -17,11 +17,11 @@ namespace Core.Shared.Helpers.Extensions
             timestamp.ToString(LocalConstants.GENERIC_NOTATION_FORMAT);
         
         /// <summary>
-        /// Add 23:59:59 hours to the time.
+        /// Get a <see cref="DateTime"/> with an hour of value 23:59:59.
         /// </summary>
         /// <param name="source"><see cref="DateTime"/> value</param>
         /// <returns><see cref="DateTime"/> with hours added</returns>
-        public static DateTime AddMaxHour(this DateTime source) => 
-            source.AddDays(1).AddSeconds(-1);
+        public static DateTime GetWithMaxHour(this DateTime source) =>
+            new DateTime(source.Year, source.Month, source.Day, 23, 59, 59);
     }
 }

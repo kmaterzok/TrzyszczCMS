@@ -55,7 +55,7 @@
                 {
                     <span>
                         <i class="fas fa-file"></i>&nbsp;
-                        <a href="@string.Format("/Storage/GetFile/{0}", row.Data.AccessGuid.ToString(CommonConstants.FILE_ACCESS_ID_FORMAT))">@row.Data.Name</a>
+                        <NavLink href="@string.Format("/Storage/GetFile/{0}", row.Data.AccessGuid.ToString(CommonConstants.FILE_ACCESS_ID_FORMAT))">@row.Data.Name</NavLink>
                     </span>
                 }
             </td>

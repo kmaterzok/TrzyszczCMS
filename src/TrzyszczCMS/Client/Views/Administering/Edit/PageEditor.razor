@@ -38,12 +38,12 @@
                     <Grid Items="ViewModel.EditedPageDepositVM.ModuleContents" MultiSelect="false">
                         <Header>
                             <GridColHeader SearchBoxType="SearchBoxType.None" Title="Module type" />
-                            <GridColHeader SearchBoxType="SearchBoxType.None" Title="Actions" Width="250" />
+                            <GridColHeader SearchBoxType="SearchBoxType.None" Title="Actions" Width="310" />
                         </Header>
                         <RowTemplate Context="row">
                             <td>@row.Data.GetModuleType().GetTranslation()</td>
                             <td>
-                                <div class="input-group input-group-sm">
+                                <div class="input-group input-group-sm justify-content-end">
                                     @if (row.Data.GetModuleType() == PageModuleType.TextWall)
                                     {
                                         <span class="input-group-text"><i class="fas fa-edit"></i></span>
@@ -59,7 +59,9 @@
                                     {
                                         <button class="btn btn-sm btn-primary" @onclick="@(() => ViewModel.EditModule(row))"><i class="fas fa-edit"></i>&nbsp;Edit</button>
                                     }
-                                    <button class="btn btn-sm btn-primary" @onclick="@(() => ViewModel.RemoveModule(row))"><i class="fas fa-minus"></i>&nbsp;Remove</button>
+                                    <button type="button" class="btn btn-sm btn-primary" @onclick="@(() => ViewModel.RemoveModule(row))"><i class="fas fa-minus"></i>&nbsp;Remove</button>
+                                    <button type="button" class="btn btn-sm btn-primary" @onclick="@(() => ViewModel.MoveModuleItem(row, true))"><i class="fas fa-arrow-up"></i></button>
+                                    <button type="button" class="btn btn-sm btn-primary" @onclick="@(() => ViewModel.MoveModuleItem(row, false))"><i class="fas fa-arrow-down"></i></button>
                                 </div>
                             </td>
                         </RowTemplate>

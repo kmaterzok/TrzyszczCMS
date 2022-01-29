@@ -190,6 +190,14 @@ namespace TrzyszczCMS.Client.ViewModels.Administering.Edit
 
         #region Methods
         /// <summary>
+        /// Move module content item up or down.
+        /// </summary>
+        /// <param name="menuItem">Moved item</param>
+        /// <param name="moveUp"><c>true</c> - up, <c>false</c> - down</param>
+        public void MoveModuleItem(GridItem<ModuleContent> menuItem, bool moveUp) =>
+            this.EditedPageDepositVM.MoveModuleItem(menuItem, moveUp);
+        
+        /// <summary>
         /// Remove a module from collection in the deposited data and send changes into the depository.
         /// </summary>
         /// <param name="removedItem">The reference onto the removed module</param>

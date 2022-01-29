@@ -1,9 +1,5 @@
-﻿using Core.Application.Enums;
-using Core.Application.Services.Interfaces.Rest;
-using Core.Shared.Enums;
-using Core.Shared.Helpers.Extensions;
+﻿using Core.Application.Services.Interfaces.Rest;
 using Core.Shared.Models.ManageSettings;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;

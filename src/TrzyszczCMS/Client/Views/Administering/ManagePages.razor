@@ -38,7 +38,7 @@
                 <GridColHeader Title="Actions" SearchBoxType="SearchBoxType.None" Width="200" />
             </Header>
             <RowTemplate Context="row">
-                <td><a href="@string.Format("/post/{0}", row.Data.UriName)">@row.Data.Title</a></td>
+                <td><NavLink href="@string.Format("/post/{0}", row.Data.UriName)">@row.Data.Title</NavLink></td>
                 <td>@row.Data.CreateUtcTimestamp.ToGenericNotation()</td>
                 <td>@row.Data.PublishUtcTimestamp.ToGenericNotation()</td>
                 <td>
@@ -67,7 +67,7 @@
                 <GridColHeader Title="Actions" SearchBoxType="SearchBoxType.None" Width="200" />
             </Header>
             <RowTemplate Context="row">
-                <td><a href="@string.Format("/article/{0}", row.Data.UriName)">@row.Data.Title</a></td>
+                <td><NavLink href="@string.Format("/article/{0}", row.Data.UriName)">@row.Data.Title</NavLink></td>
                 <td>@row.Data.CreateUtcTimestamp.ToGenericNotation()</td>
                 <td>@row.Data.PublishUtcTimestamp.ToGenericNotation()</td>
                 <td>

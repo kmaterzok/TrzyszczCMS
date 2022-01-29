@@ -4,11 +4,13 @@
 <div class="w-100">
     <table class="table table-bordered table-striped mb-0">
         <thead class="bg-success text-white">
-            @if (MultiSelect)
-            {
-                <th style="width: 30px;"></th>
-            }
-            @Header
+            <tr>
+                @if (MultiSelect)
+                {
+                    <th style="width: 30px;"></th>
+                }
+                @Header
+            </tr>
         </thead>
         <tbody>
             @foreach (var item in Items)

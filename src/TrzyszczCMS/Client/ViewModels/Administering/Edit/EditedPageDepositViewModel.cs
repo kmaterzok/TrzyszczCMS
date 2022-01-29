@@ -272,6 +272,16 @@ namespace TrzyszczCMS.Client.ViewModels.Administering.Edit
 
             return valid;
         }
+        /// <summary>
+        /// Move module content item up or down.
+        /// </summary>
+        /// <param name="menuItem">Moved item</param>
+        /// <param name="moveUp"><c>true</c> - up, <c>false</c> - down</param>
+        public void MoveModuleItem(GridItem<ModuleContent> menuItem, bool moveUp)
+        {
+            this.ModuleContents.MoveItem(menuItem, moveUp);
+            this.NotifyPropertyChanged(nameof(this.ModuleContents));
+        }
         #endregion
 
         #region Helper methods

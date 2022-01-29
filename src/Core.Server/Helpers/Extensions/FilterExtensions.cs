@@ -87,7 +87,6 @@ namespace Core.Server.Helpers.Extensions
 
                 default:
                     throw ExceptionMaker.NotImplemented.ForHandling(gridField, nameof(gridField));
-                    // TODO: Write a test checking all the cases.
             }
         }
     }

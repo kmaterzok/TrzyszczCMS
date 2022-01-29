@@ -1,5 +1,6 @@
 ﻿using Core.Application.Helpers.Interfaces;
 using Core.Shared.Models;
+using System;
 using System.Threading.Tasks;
 
 namespace Core.Application.Helpers
@@ -22,6 +23,10 @@ namespace Core.Application.Helpers
         /// Fetches data from the data source.
         /// </summary>
         private readonly FetchDataPageAsyncHandler<T> _fetchPage;
+        /// <summary>
+        /// Indicates if the method <see cref="GetCurrent"/> was already invoked.
+        /// </summary>
+        private bool _alreadyGotCurrentPage;
         #endregion
 
         #region Properties
@@ -37,6 +42,7 @@ namespace Core.Application.Helpers
             this.HasPrevious = false;
             this.CurrentPageNumber = desiredPageNumber;
             this._fetchPage = fetchPageHandler;
+            this._alreadyGotCurrentPage = false;
         }
         #endregion
 
@@ -47,14 +53,21 @@ namespace Core.Application.Helpers
             
             this.HasPrevious = pageOfData.HasPreviousPage;
             this.HasNext     = pageOfData.HasNextPage;
+            this._alreadyGotCurrentPage = true;
 
             return pageOfData;
         }
-        public async Task<DataPage<T>> GetNext() =>
-            this.HasNext ? await this.GetDataAndSetProperties(true) : null;
+        public async Task<DataPage<T>> GetNext()
+        {
+            this.EnsureIfAlreadyGotCurrent();
+            return this.HasNext ? await this.GetDataAndSetProperties(true) : null;
+        }
         
-        public async Task<DataPage<T>> GetPrevious() =>
-            this.HasPrevious ? await this.GetDataAndSetProperties(false) : null;
+        public async Task<DataPage<T>> GetPrevious()
+        {
+            this.EnsureIfAlreadyGotCurrent();
+            return this.HasPrevious ? await this.GetDataAndSetProperties(false) : null;
+        }
 
         private async Task<DataPage<T>> GetDataAndSetProperties(bool gettingNextPage)
         {
@@ -73,6 +86,14 @@ namespace Core.Application.Helpers
                 this.HasNext     = pageOfData.HasNextPage;
             }
             return pageOfData;
+        }
+
+        private void EnsureIfAlreadyGotCurrent()
+        {
+            if (!this._alreadyGotCurrentPage)
+            {
+                throw new InvalidOperationException($"Method {nameof(GetCurrent)} must be invoked.");
+            }
         }
         #endregion
     }

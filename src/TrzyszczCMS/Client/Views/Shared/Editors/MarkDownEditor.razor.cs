@@ -105,12 +105,9 @@ namespace TrzyszczCMS.Client.Views.Shared.Editors
         private async Task AddFormattingSuffixes([NotNull] string suffix) =>
             await this.markDownFormatter.AddFormattingSuffixes(suffix);
 
-        private async Task AddFormattingSuffixesLeft(LeftSuffixType type)
-        {
-            var strategy = LeftSuffixFormatStrategyFactory.Make(type);
-            await this.markDownFormatter.AddFormattingSuffixesLeft(strategy);
-        }
-
+        private async Task AddFormattingSuffixesLeft(LeftSuffixType type) =>
+            await this.markDownFormatter.AddFormattingSuffixesLeft(type);
+        
         private async Task AddLinkBasedText(LinkBasedContentType type) =>
             await this.markDownFormatter.AddLinkBasedText(type);
 

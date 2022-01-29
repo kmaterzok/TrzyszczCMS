@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using TrzyszczCMS.Client.Data;
 using TrzyszczCMS.Client.Data.Model.JSInterop;
 using TrzyszczCMS.Client.Helpers;
+using TrzyszczCMS.Client.Other.MarkDown.Strategies;
 
 namespace TrzyszczCMS.Client.Other.MarkDown
 {
@@ -130,8 +131,11 @@ namespace TrzyszczCMS.Client.Other.MarkDown
             var selectionStartingIndex = range.Start + ((reverse ? -1 : 1) * suffix.Length);
             await this.SelectTextRangeAsync(selectionStartingIndex, selectionStartingIndex + range.GetLength());
         }
-        
-        public async Task AddFormattingSuffixesLeft([NotNull] Strategies.ILeftSuffixFormatStrategy strategy)
+
+        public async Task AddFormattingSuffixesLeft(LeftSuffixType type) =>
+            await this.AddFormattingSuffixesLeft(LeftSuffixFormatStrategyFactory.Make(type));
+
+        private async Task AddFormattingSuffixesLeft([NotNull] ILeftSuffixFormatStrategy strategy)
         {
             var range = await this.GetSelectionRangeAsync();
             if (!range.IsTextSelected())

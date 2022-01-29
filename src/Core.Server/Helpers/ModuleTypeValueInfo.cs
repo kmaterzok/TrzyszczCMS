@@ -4,7 +4,6 @@ using Core.Shared.Models.PageContent;
 using DAL.Models.Database;
 using Microsoft.EntityFrameworkCore;
 using System;
-using System.Linq;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 

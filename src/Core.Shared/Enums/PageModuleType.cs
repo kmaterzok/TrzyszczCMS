@@ -13,6 +13,10 @@
         /// The fullscreen / height limited box containing picture,
         /// centered heading, some text and horizontal menu.
         /// </summary>
-        HeadingBanner = 2
+        HeadingBanner = 2,
+        /// <summary>
+        /// The posts listing.
+        /// </summary>
+        PostListing = 3,
     }
 }

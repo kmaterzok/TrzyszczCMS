@@ -1,4 +1,6 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using System;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata;
 
 #nullable disable
 
@@ -25,9 +27,9 @@ namespace DAL.Models.Database
         public virtual DbSet<ContMenuItem> ContMenuItems { get; set; }
         public virtual DbSet<ContModule> ContModules { get; set; }
         public virtual DbSet<ContPage> ContPages { get; set; }
+        public virtual DbSet<ContPostListingModule> ContPostListingModules { get; set; }
         public virtual DbSet<ContTextWallModule> ContTextWallModules { get; set; }
         public virtual DbSet<VersionInfo> VersionInfos { get; set; }
-
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -213,6 +215,20 @@ namespace DAL.Models.Database
                 entity.Property(e => e.UriName)
                     .IsRequired()
                     .HasMaxLength(255);
+            });
+
+            modelBuilder.Entity<ContPostListingModule>(entity =>
+            {
+                entity.ToTable("ContPostListingModule");
+
+                entity.Property(e => e.Id).ValueGeneratedOnAdd();
+
+                entity.Property(e => e.Width).HasDefaultValueSql("800");
+
+                entity.HasOne(d => d.IdNavigation)
+                    .WithOne(p => p.ContPostListingModule)
+                    .HasForeignKey<ContPostListingModule>(d => d.Id)
+                    .HasConstraintName("ContPostListingModule_ContModule_AssignedModuleId");
             });
 
             modelBuilder.Entity<ContTextWallModule>(entity =>

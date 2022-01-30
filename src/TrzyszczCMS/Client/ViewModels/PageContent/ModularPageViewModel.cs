@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using TrzyszczCMS.Client.Helpers;
 using TrzyszczCMS.Client.ViewModels.Shared;
-using TrzyszczCMS.Client.ViewModels.PageContent.Modules;
 using TrzyszczCMS.Client.Views.PageContent;
 
 namespace TrzyszczCMS.Client.ViewModels.PageContent
@@ -19,11 +18,11 @@ namespace TrzyszczCMS.Client.ViewModels.PageContent
         #endregion
 
         #region Properties
-        private List<IModuleViewModel> _viewModelsOfModules;
+        private List<ViewModelBase> _viewModelsOfModules;
         /// <summary>
         /// List of viewmodels which are used by page modules that display its content
         /// </summary>
-        public List<IModuleViewModel> ViewModelsForModules
+        public List<ViewModelBase> ViewModelsForModules
         {
             get => _viewModelsOfModules;
             set => Set(ref _viewModelsOfModules, value, nameof(ViewModelsForModules));
@@ -45,7 +44,7 @@ namespace TrzyszczCMS.Client.ViewModels.PageContent
         public ModularPageViewModel(ILoadPageService loadPageService)
         {
             this._loadPageService = loadPageService;
-            this.ViewModelsForModules = new List<IModuleViewModel>();
+            this.ViewModelsForModules = new List<ViewModelBase>();
             this.ContentFound = null;
         }
         #endregion
@@ -60,7 +59,7 @@ namespace TrzyszczCMS.Client.ViewModels.PageContent
         public async Task PrepareModules(PageType type, string name)
         {
             this.ViewModelsForModules = (await this._loadPageService.GetPageContentAsync(type, name))
-                                                   .CreateViewModels();
+                                                   .CreateViewModels(this._loadPageService);
 
             this.ContentFound = this.ViewModelsForModules.Count > 0;
         }

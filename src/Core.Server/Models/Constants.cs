@@ -40,6 +40,10 @@
         /// The time between trials of revoking expored tokens.
         /// </summary>
         public const int REPETITIVE_CYCLE_PERIOD_FOR_ACCESS_TOKEN_REVOKE_MILLIS = 600000;
+        /// <summary>
+        /// The quantity of page info entries about public posts per single paginated page.
+        /// </summary>
+        public const int PAGINATION_PAGE_PUBLIC_POST_INFO_SIZE = 25;
 
     }
 }

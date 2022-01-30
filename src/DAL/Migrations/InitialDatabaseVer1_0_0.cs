@@ -157,6 +157,15 @@ namespace DAL.Migrations
                 .ToTable(  nameof(ContModule))                    .PrimaryColumn(nameof(ContModule.Id))
                 .OnDelete(System.Data.Rule.Cascade);
 
+            Create.Table(   nameof(ContPostListingModule))
+                .WithColumn(nameof(ContPostListingModule.Id))                          .AsInt32().NotNullable().PrimaryKey().Identity()
+                .WithColumn(nameof(ContPostListingModule.Width))                       .AsInt16().NotNullable().WithDefaultValue(800);
+
+            Create.ForeignKey(ForeignKeys.Current.CONTPOSTLISTINGMODULE_CONTMODULE_ASSIGNEDMODULEID)
+                .FromTable(nameof(ContPostListingModule))         .ForeignColumn(nameof(ContPostListingModule.Id))
+                .ToTable(  nameof(ContModule))                    .PrimaryColumn(nameof(ContModule.Id))
+                .OnDelete(System.Data.Rule.Cascade);
+
 
 
             Insert.IntoTable(nameof(ContPage)).Row(new

@@ -10,11 +10,9 @@ namespace TrzyszczCMS.Client.ViewModels.PageContent.Modules
     /// <summary>
     /// The viewmodel for a heading banner page module.
     /// </summary>
-    public class HeadingBannerModuleViewModel : ViewModelBase, IModuleViewModel
+    public class HeadingBannerModuleViewModel : ViewModelBase
     {
         #region Properties
-        public PageModuleType ModuleType { get; private set; }
-
         private HeadingBannerModuleContent _ModuleContent;
         /// <summary>
         /// Content of the module which the viewmodel gets data from.
@@ -53,11 +51,8 @@ namespace TrzyszczCMS.Client.ViewModels.PageContent.Modules
         #endregion
 
         #region Ctor
-        public HeadingBannerModuleViewModel(HeadingBannerModuleContent moduleContent)
-        {
+        public HeadingBannerModuleViewModel(HeadingBannerModuleContent moduleContent) =>
             this.ModuleContent = moduleContent;
-            this.ModuleType = PageModuleType.HeadingBanner;
-        }
         #endregion
     }
 }

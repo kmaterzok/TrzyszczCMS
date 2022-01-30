@@ -1,5 +1,4 @@
-﻿using Core.Shared.Enums;
-using Core.Shared.Models.PageContent;
+﻿using Core.Shared.Models.PageContent;
 using TrzyszczCMS.Client.ViewModels.Shared;
 
 namespace TrzyszczCMS.Client.ViewModels.PageContent.Modules
@@ -7,11 +6,9 @@ namespace TrzyszczCMS.Client.ViewModels.PageContent.Modules
     /// <summary>
     /// The viewmodel for text wall page module.
     /// </summary>
-    public class TextWallModuleViewModel : ViewModelBase, IModuleViewModel
+    public class TextWallModuleViewModel : ViewModelBase
     {
         #region Properties
-        public PageModuleType ModuleType { get; private set; }
-
         private TextWallModuleContent _ModuleContent;
         /// <summary>
         /// Content of the module which the viewmodel gets data from.
@@ -24,11 +21,8 @@ namespace TrzyszczCMS.Client.ViewModels.PageContent.Modules
         #endregion
 
         #region Ctor
-        public TextWallModuleViewModel(TextWallModuleContent moduleContent)
-        {
+        public TextWallModuleViewModel(TextWallModuleContent moduleContent) =>
             this.ModuleContent = moduleContent;
-            this.ModuleType = PageModuleType.TextWall;
-        }
         #endregion
     }
 }

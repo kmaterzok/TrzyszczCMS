@@ -71,6 +71,27 @@ namespace TrzyszczCMS.Client.ViewModels.Administering.Edit
                 return _currentlyEditedHeadingBannerVM;
             }
         }
+
+        private EditedPostListingModuleViewModel _currentlyEditedPostListingVM;
+        /// <summary>
+        /// The viewmodel accessing the currently edited post listing module data.
+        /// </summary>
+        public EditedPostListingModuleViewModel CurrentlyEditedPostListingVM
+        {
+            get
+            {
+                if (_currentlyEditedPostListingVM == null)
+                {
+                    var assignedModule = this.EditedPageDepositVM.ModuleContents[this.EditedPageDepositVM.EditedModuleListIndex]
+                                                                 .Data.PostListingModuleContent;
+                    _currentlyEditedPostListingVM = new EditedPostListingModuleViewModel(assignedModule);
+                    _currentlyEditedPostListingVM.PropertyChanged += (_, e) => this.NotifyPropertyChanged(e.PropertyName);
+                    _currentlyEditedPostListingVM.OnDataSet += (_, _e) => this._delayedDepositoryUpdateInvoker.DelayedInvoke();
+                    _currentlyEditedPostListingVM.OnExitingEditor += BackToLayoutComposer;
+                }
+                return _currentlyEditedPostListingVM;
+            }
+        }
         #endregion
 
 
@@ -244,6 +265,14 @@ namespace TrzyszczCMS.Client.ViewModels.Administering.Edit
                         SectionWidth = Constants.DEFAULT_TEXT_WALL_SECTION_WIDTH
                     });
                     nextTool = PageManagementTool.TextWallSectionEditor;
+                    break;
+
+                case PageModuleType.PostListing:
+                    module.SetModule(new PostListingModuleContent()
+                    {
+                        Width = PostListingWidth._800
+                    });
+                    nextTool = PageManagementTool.PostListingEditor;
                     break;
 
                 default:

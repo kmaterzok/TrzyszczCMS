@@ -1,0 +1,53 @@
+﻿@using Core.Shared.Helpers.Extensions
+@using System.ComponentModel
+@using TrzyszczCMS.Client.ViewModels.PageContent.Modules
+@using TrzyszczCMS.Client.Data.Enums.Extensions
+
+<div class="w-100 pb-3 mt-4">
+    <section class="mx-auto" style="max-width: @ViewModel.ModuleContent.Width.GetCssStylePixelWidth();">
+        <h1>Posts</h1>
+        @foreach (var post in ViewModel.Posts)
+        {
+            <h2><a href="@PrepareUriOfPost(post.UriName)">@post.Title</a></h2>
+            <p class="pb-4">
+                <div>
+                    <span>@post.PublishUtcTimestamp.ToGenericNotation()</span>
+                    @if (!string.IsNullOrEmpty(post.AuthorsInfo) && !string.IsNullOrWhiteSpace(post.AuthorsInfo))
+                    {
+                        <span>, Authors: @post.AuthorsInfo</span>
+                    }
+                </div>
+                @if (!string.IsNullOrEmpty(post.Description) && !string.IsNullOrWhiteSpace(post.Description))
+                {
+                    <div>@post.Description</div>
+                }
+            </p>
+        }
+        <button class="btn btn-sm btn-primary w-100 @ViewModel.CssClassForLoadMorePosts" @onclick="@ViewModel.FetchNextPageAsync">Load more</button>
+    </section>
+</div>
+
+@code {
+
+    [Parameter]
+    public PostListingModuleViewModel ViewModel { get; set; }
+
+    protected override void OnInitialized()
+    {
+        this.ViewModel.PropertyChanged += new PropertyChangedEventHandler(
+            async (s, e) => await this.InvokeAsync(() => this.StateHasChanged())
+        );
+        base.OnInitialized();
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        await base.OnAfterRenderAsync(firstRender);
+        if (firstRender)
+        {
+            await ViewModel.FetchFirstPageOfPostInfosAsync();
+        }
+    }
+
+    private string PrepareUriOfPost(string uriName) => $"/post/{uriName}";
+}

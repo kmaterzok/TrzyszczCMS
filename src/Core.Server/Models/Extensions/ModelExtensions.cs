@@ -32,7 +32,12 @@ namespace Core.Server.Models.Extensions
                 SectionMarkDownContent    = dbTextWallModule.SectionContent
             }
         };
-
+        /// <summary>
+        /// Create a complementary instance of <see cref="ModuleContent"/> basing on <see cref="ContHeadingBannerModule"/> instance.
+        /// </summary>
+        /// <param name="dbHeadingBannerModule">Input instance</param>
+        /// <param name="context">Database context</param>
+        /// <returns>Output instance</returns>
         public static async Task<ModuleContent> ToModuleContentAsync(this ContHeadingBannerModule dbHeadingBannerModule, CmsDbContext context)
         {
             var containingPage = await (from mod in context.ContModules
@@ -60,7 +65,18 @@ namespace Core.Server.Models.Extensions
                 }
             };
         }
-
+        /// <summary>
+        /// Create a complementary instance of <see cref="ModuleContent"/> basing on <see cref="ContPostListingModule"/> instance.
+        /// </summary>
+        /// <param name="dbTextWallModule">Input instance</param>
+        /// <returns>Output instance</returns>
+        public static ModuleContent ToModuleContent(this ContPostListingModule dbPostListingModule) => new ModuleContent()
+        {
+            PostListingModuleContent = new PostListingModuleContent()
+            {
+                Width = (PostListingWidth)dbPostListingModule.Width
+            }
+        };
         /// <summary>
         /// Create a complementary instance of <see cref="ContModule"/> basing on <see cref="ModuleContent"/> instance.
         /// </summary>
@@ -70,20 +86,21 @@ namespace Core.Server.Models.Extensions
         public static ContModule ToContModule(this ModuleContent source, CmsDbContext context)
         {
             var type = source.GetModuleType();
+            var desiredModule = new ContModule()
+            {
+                Type = (byte)type
+            };
             switch (type)
             {
                 case PageModuleType.TextWall:
-                    return new ContModule()
+                    desiredModule.ContTextWallModule = new ContTextWallModule()
                     {
-                        Type = (byte)PageModuleType.TextWall,
-                        ContTextWallModule = new ContTextWallModule()
-                        {
-                            SectionWidth      = (short)source.TextWallModuleContent.SectionWidth,
-                            LeftAsideContent  = source.TextWallModuleContent.LeftAsideMarkDownContent,
-                            RightAsideContent = source.TextWallModuleContent.RightAsideMarkDownContent,
-                            SectionContent    = source.TextWallModuleContent.SectionMarkDownContent
-                        }
+                        SectionWidth      = (short)source.TextWallModuleContent.SectionWidth,
+                        LeftAsideContent  = source.TextWallModuleContent.LeftAsideMarkDownContent,
+                        RightAsideContent = source.TextWallModuleContent.RightAsideMarkDownContent,
+                        SectionContent    = source.TextWallModuleContent.SectionMarkDownContent
                     };
+                    break;
                 case PageModuleType.HeadingBanner:
                     int? backgroundPictureId = null;
                     if (!string.IsNullOrEmpty(source.HeadingBannerModuleContent.BackgroundPictureAccessGuid))
@@ -91,23 +108,27 @@ namespace Core.Server.Models.Extensions
                         var pictureAccessId = Guid.Parse(source.HeadingBannerModuleContent.BackgroundPictureAccessGuid);
                         backgroundPictureId = context.ContFiles.AsNoTracking().First(i => i.AccessGuid == pictureAccessId).Id;
                     }
-                    return new ContModule()
+                    desiredModule.ContHeadingBannerModule = new ContHeadingBannerModule()
                     {
-                        Type = (byte)PageModuleType.HeadingBanner,
-                        ContHeadingBannerModule = new ContHeadingBannerModule()
-                        {
-                            BackgroundPictureId = backgroundPictureId,
-                            AttachLinkMenu      = source.HeadingBannerModuleContent.AttachLinkMenu,
-                            DarkDescription     = source.HeadingBannerModuleContent.DarkDescription,
-                            DisplayDescription  = source.HeadingBannerModuleContent.DisplayDescription,
-                            DisplayAuthorsInfo  = source.HeadingBannerModuleContent.DisplayAuthorsInfo,
-                            ViewportHeight      = (short)source.HeadingBannerModuleContent.ViewportHeight
-                        }
+                        BackgroundPictureId = backgroundPictureId,
+                        AttachLinkMenu = source.HeadingBannerModuleContent.AttachLinkMenu,
+                        DarkDescription = source.HeadingBannerModuleContent.DarkDescription,
+                        DisplayDescription = source.HeadingBannerModuleContent.DisplayDescription,
+                        DisplayAuthorsInfo = source.HeadingBannerModuleContent.DisplayAuthorsInfo,
+                        ViewportHeight = (short)source.HeadingBannerModuleContent.ViewportHeight
                     };
+                    break;
+                case PageModuleType.PostListing:
+                    desiredModule.ContPostListingModule = new ContPostListingModule()
+                    {
+                        Width = (short)source.PostListingModuleContent.Width
+                    };
+                    break;
 
                 default:
                     throw ExceptionMaker.Argument.Unsupported(type, $"{nameof(source)}.{nameof(source.GetModuleType)}()");
             }
+            return desiredModule;
         }
 
         /// <summary>

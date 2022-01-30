@@ -20,11 +20,15 @@ namespace Core.Shared.Models.PageContent
         /// If <c>null</c> - the module's type does not apply to the content.
         /// </summary>
         public HeadingBannerModuleContent HeadingBannerModuleContent { get; set; }
+        /// <summary>
+        /// Reference on the module content of type <see cref="PageModuleType.PostListing"/>.
+        /// If <c>null</c> - the module's type does not apply to the content.
+        /// </summary>
+        public PostListingModuleContent PostListingModuleContent { get; set; }
         #endregion
 
         #region Ctor
-        public ModuleContent() =>
-            this.NullifyContentHolders();
+        public ModuleContent() => this.NullifyContentHolders();
         #endregion
 
         #region Methods
@@ -36,6 +40,7 @@ namespace Core.Shared.Models.PageContent
         {
             if (     this.TextWallModuleContent      != null) { return PageModuleType.TextWall; }
             else if (this.HeadingBannerModuleContent != null) { return PageModuleType.HeadingBanner; }
+            else if (this.PostListingModuleContent   != null) { return PageModuleType.PostListing; }
             else
             {
                 throw new InvalidMemberException($"The page type is unknown.");
@@ -51,8 +56,9 @@ namespace Core.Shared.Models.PageContent
         {
             this.NullifyContentHolders();
 
-            if (     typeof(T) == typeof(TextWallModuleContent))      { this.TextWallModuleContent =      (TextWallModuleContent)(object)module; }
+            if (     typeof(T) == typeof(TextWallModuleContent))      { this.TextWallModuleContent      = (TextWallModuleContent)(object)module; }
             else if (typeof(T) == typeof(HeadingBannerModuleContent)) { this.HeadingBannerModuleContent = (HeadingBannerModuleContent)(object)module; }
+            else if (typeof(T) == typeof(PostListingModuleContent))   { this.PostListingModuleContent   = (PostListingModuleContent)(object)module; }
             else
             {
                 throw ExceptionMaker.Argument.Unsupported(module, nameof(module));
@@ -66,6 +72,7 @@ namespace Core.Shared.Models.PageContent
         {
             this.TextWallModuleContent = null;
             this.HeadingBannerModuleContent = null;
+            this.PostListingModuleContent = null;
         }
         #endregion
     }

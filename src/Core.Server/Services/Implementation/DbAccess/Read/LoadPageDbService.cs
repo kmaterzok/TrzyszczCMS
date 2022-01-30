@@ -9,6 +9,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Core.Server.Helpers;
+using Core.Shared.Models;
+using Core.Shared.Models.LoadPage;
+using Core.Server.Models;
 
 namespace Core.Server.Services.Implementation.DbAccess.Read
 {
@@ -47,6 +50,41 @@ namespace Core.Server.Services.Implementation.DbAccess.Read
                 return new ModularPageContentResponse()
                 {
                     ModuleContents = await moduleInfos.GetModuleContentsAsync(ctx)
+                };
+            }
+        }
+
+        public async Task<DataPage<SimplePublicPostInfo>> GetSimplePublicPostInfoPage(int desiredPageNumber = 1)
+        {
+            using (var ctx = _databaseStrategy.GetContext())
+            {
+                int allPagesCount = await ctx.ContPages.AsNoTracking()
+                                                       .Where(i => i.Type == (byte)PageType.Post && i.PublishUtcTimestamp < DateTime.UtcNow)
+                                                       .OrderByDescending(i => i.PublishUtcTimestamp)
+                                                       .CountAsync();
+
+                int skippedPages = (desiredPageNumber - 1) * Constants.PAGINATION_PAGE_PUBLIC_POST_INFO_SIZE;
+
+                var entries = await ctx.ContPages.AsNoTracking()
+                                                 .Where(i => i.Type == (byte)PageType.Post && i.PublishUtcTimestamp < DateTime.UtcNow)
+                                                 .OrderByDescending(i => i.PublishUtcTimestamp)
+                                                 .Skip(skippedPages)
+                                                 .Take(Constants.PAGINATION_PAGE_PUBLIC_POST_INFO_SIZE)
+                                                 .Select(i => new SimplePublicPostInfo()
+                                                 {
+                                                     Title               = i.Title,
+                                                     UriName             = i.UriName,
+                                                     PublishUtcTimestamp = i.PublishUtcTimestamp,
+                                                     AuthorsInfo         = i.AuthorsInfo,
+                                                     Description         = i.Description
+                                                 }).ToListAsync();
+
+                return new DataPage<SimplePublicPostInfo>()
+                {
+                    Entries = entries,
+                    PageNumber = desiredPageNumber,
+                    HasPreviousPage = desiredPageNumber > 1,
+                    HasNextPage = (skippedPages + entries.Count) < allPagesCount
                 };
             }
         }

@@ -168,6 +168,7 @@ namespace Core.Server.Services.Implementation.DbAccess.Modify
             {
                 using (var ts = await ctx.Database.BeginTransactionAsync())
                 {
+                    
                     var updatedData = await ctx.ContPages.SingleOrDefaultAsync(i => i.Id == page.Id);
                     if (updatedData == null)
                     {

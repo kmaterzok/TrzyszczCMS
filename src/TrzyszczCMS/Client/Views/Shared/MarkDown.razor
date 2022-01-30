@@ -12,10 +12,10 @@
     protected override void OnInitialized()
     {
         pipeline = new MarkdownPipelineBuilder().UseAdvancedExtensions()
-                                                    .UseSmartyPants()
-                                                    .UseBootstrap()
-                                                    .UseNoFollowLinks()
-                                                    .Build();
+                                                .UseSmartyPants()
+                                                .UseBootstrap()
+                                                .UseReferralLinks("nofollow")
+                                                .Build();
         base.OnInitialized();
     }
 

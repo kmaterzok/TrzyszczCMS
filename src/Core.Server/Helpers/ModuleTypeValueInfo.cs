@@ -53,6 +53,11 @@ namespace Core.Server.Helpers
                         moduleContents.Add(await headingBannerModule.ToModuleContentAsync(dbContext));
                         break;
 
+                    case PageModuleType.PostListing:
+                        var postListingModule = await dbContext.ContPostListingModules.AsNoTracking().FirstAsync(i => i.Id == moduleInfo.Id);
+                        moduleContents.Add(postListingModule.ToModuleContent());
+                        break;
+
                     default:
                         throw new ApplicationException($"Cannot process {nameof(PageModuleType)} of type {(byte)moduleInfo.Type}");
                 }

@@ -40,11 +40,27 @@ namespace TrzyszczCMS.Client.Data.Enums.Extensions
             $"{width.ToString()[1..]}px";
 
         /// <summary>
+        /// Get description about pixel size for Post listing module.
+        /// </summary>
+        /// <param name="width">Preferred width of a listing block</param>
+        /// <returns>Description of width in pixels</returns>
+        public static string GetWidthDescriptionAboutPixels(this PostListingWidth width) =>
+            $"{width.ToString()[1..]}px";
+
+        /// <summary>
         /// Get width of section for usage in the CSS style.
         /// </summary>
         /// <param name="width">Preferred width of a section block</param>
         /// <returns>Value of width for usage in the CSS style</returns>
         public static string GetCssStylePixelWidth(this TextWallSectionWidth width) =>
+            $"{width.ToString()[1..]}px";
+
+        /// <summary>
+        /// Get width of post listing for usage in the CSS style.
+        /// </summary>
+        /// <param name="width">Preferred width</param>
+        /// <returns>Value of width for usage in the CSS style</returns>
+        public static string GetCssStylePixelWidth(this PostListingWidth width) =>
             $"{width.ToString()[1..]}px";
 
         /// <summary>
@@ -74,6 +90,7 @@ namespace TrzyszczCMS.Client.Data.Enums.Extensions
             {
                 case PageModuleType.TextWall:      return "Text wall";
                 case PageModuleType.HeadingBanner: return "Heading banner";
+                case PageModuleType.PostListing:   return "Post listing";
                 default:
                     throw ExceptionMaker.Argument.Unsupported(type, nameof(type));
             }
@@ -160,6 +177,7 @@ namespace TrzyszczCMS.Client.Data.Enums.Extensions
             switch (moduleType)
             {
                 case PageModuleType.HeadingBanner: return PageManagementTool.HeadingBannerEditor;
+                case PageModuleType.PostListing:   return PageManagementTool.PostListingEditor;
                 case PageModuleType.TextWall:
                     throw ExceptionMaker.Argument.Invalid(moduleType, nameof(moduleType));
                 default:

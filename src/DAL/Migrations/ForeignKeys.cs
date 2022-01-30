@@ -38,6 +38,9 @@
             public const string CONTHEADINGBANNERMODULE_CONTMODULE_ASSIGNEDMODULEID
                 = "ContHeadingBannerModule_ContModule_AssignedModuleId";
 
+            public const string CONTPOSTLISTINGMODULE_CONTMODULE_ASSIGNEDMODULEID
+                = "ContPostListingModule_ContModule_AssignedModuleId";
+
             public const string CONTHEADINGBANNERMODULE_CONTFILE_ASSIGNEDPICTUREFILEID
                 = "ContHeadingBannerModule_ContFile_AssignedPictureFileId";
         }

@@ -9,6 +9,7 @@
         TextWallLeftAsideEditor,
         TextWallRightAsideEditor,
         TextWallSectionEditor,
-        HeadingBannerEditor
+        HeadingBannerEditor,
+        PostListingEditor
     }
 }

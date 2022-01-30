@@ -1,5 +1,7 @@
 ﻿using Core.Server.Services.Interfaces.DbAccess.Read;
 using Core.Shared.Enums;
+using Core.Shared.Models;
+using Core.Shared.Models.LoadPage;
 using Core.Shared.Models.Rest.Responses.PageContent;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
@@ -51,6 +53,20 @@ namespace TrzyszczCMS.Server.Controllers
             var pageContent = await this._loadPageService.GetPageContentAsync(pageType, name);
             return null != pageContent ? Ok(pageContent) : NotFound();
         }
+        /// <summary>
+        /// Get page of information about publicly available posts.
+        /// </summary>
+        /// <param name="pageNumber">Number of the desired page</param>
+        /// <returns>Page of data about posts</returns>
+        [HttpGet]
+        [Produces("application/json")]
+        [Route("[action]/{pageNumber}")]
+        public async Task<ActionResult<DataPage<SimplePublicPostInfo>>> PublicPostInfo(int pageNumber)
+        {
+            var pageContent = await this._loadPageService.GetSimplePublicPostInfoPage(pageNumber);
+            return pageContent.Entries != null && pageContent.Entries.Count > 0 ? Ok(pageContent) : NotFound();
+        }
+
         #endregion
     }
 }

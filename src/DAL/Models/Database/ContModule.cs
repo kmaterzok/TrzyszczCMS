@@ -13,6 +13,7 @@ namespace DAL.Models.Database
 
         public virtual ContPage ContPage { get; set; }
         public virtual ContHeadingBannerModule ContHeadingBannerModule { get; set; }
+        public virtual ContPostListingModule ContPostListingModule { get; set; }
         public virtual ContTextWallModule ContTextWallModule { get; set; }
     }
 }

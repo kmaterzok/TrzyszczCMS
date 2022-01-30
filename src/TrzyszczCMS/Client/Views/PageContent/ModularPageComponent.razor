@@ -7,11 +7,15 @@
 @inject ModularPageViewModel ViewModel
 @*--- This is an empty layout for most of the website pages visible for any user ---*@
 
-@if (ViewModel.ContentFound == false)
+@if (!ViewModel.ContentFound.HasValue)
+{
+    <CenterSpinner />
+}
+else if (!ViewModel.ContentFound.Value)
 {
     <ErrorPage />
 }
-else if (ViewModel.ContentFound == true)
+else
 {
     @foreach (var moduleVM in ViewModel.ViewModelsForModules)
     {
@@ -23,17 +27,17 @@ else if (ViewModel.ContentFound == true)
         {
             <HeadingBannerModule ViewModel="@headingBannerVM" PageType="@PageType" />
         }
+        else if (moduleVM is PostListingModuleViewModel postListingVM)
+        {
+            <PostListingModule ViewModel="@postListingVM" />
+        }
         else
         {
-            <section><strong>Error:</strong> There is a content type <em>(@moduleVM.GetType().Name)</em> that cannot be displayed.</section>
+            <section style="color: maroon;"><strong>Error:</strong> There is a content type <em>(@moduleVM.GetType().Name)</em> that cannot be displayed.</section>
         }
     }
 
     <CommonFooter />
-}
-else
-{
-    <CenterSpinner />
 }
 
 

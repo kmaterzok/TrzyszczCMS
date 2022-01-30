@@ -16,11 +16,12 @@
             {
                 @if (menuItem.SubItems != null && menuItem.SubItems.Count != 0 && DisplaySelects)
                 {
-                    <select class="form-select menu-item-control menu-item-control-light" style="@CssStyleHelper.CssMenuItemWidth(menuItem.Name)" aria-label="@menuItem.Name">
-                        <option disabled selected>@menuItem.Name</option>
+                    <select class="form-select menu-item-control menu-item-control-light" style="@CssStyleHelper.CssMenuItemWidth(menuItem.Name)" aria-label="@menuItem.Name"
+                            @bind="@SubItemDestinationUri">
+                        <option value="@DEFAULT_DROPDOWN_VALUE" disabled selected>@menuItem.Name</option>
                         @foreach (var subItem in menuItem.SubItems)
                         {
-                            <option @onclick="@(() => FollowLinkAsync(subItem.Uri, true))">@subItem.Name</option>
+                            <option value="@subItem.Uri">@subItem.Name</option>
                         }
                     </select>
                 }
@@ -47,6 +48,8 @@
 
 @code {
 
+    private const string DEFAULT_DROPDOWN_VALUE = "n/a";
+
     [Parameter]
     public HeadingBannerModuleViewModel ViewModel { get; set; }
 
@@ -70,8 +73,23 @@
         }
     }
 
+    private string _subItemDestinationUri;
+    private string SubItemDestinationUri
+    {
+        get => this._subItemDestinationUri;
+        set
+        {
+            if (value != DEFAULT_DROPDOWN_VALUE)
+            {
+                this.NavigationManager.NavigateTo(value);
+                this._subItemDestinationUri = DEFAULT_DROPDOWN_VALUE;
+            }
+        }
+    }
+
     protected override void OnInitialized()
     {
+        this._subItemDestinationUri = null;
         this.ViewModel.PropertyChanged += new PropertyChangedEventHandler(
             async (s, e) => await this.InvokeAsync(() => this.StateHasChanged())
         );
@@ -79,14 +97,9 @@
         base.OnInitialized();
     }
 
-    private async Task FollowLinkAsync(string uri, bool subitem)
+    protected override void OnParametersSet()
     {
-        if (subitem)
-        {
-            await this.InvokeAsync(() => this.DisplaySelects = false);
-            await Task.Delay(1);
-            await this.InvokeAsync(() => this.DisplaySelects = true);
-        }
-        NavigationManager.NavigateTo(uri);
+        base.OnParametersSet();
+        this._subItemDestinationUri = DEFAULT_DROPDOWN_VALUE;
     }
 }

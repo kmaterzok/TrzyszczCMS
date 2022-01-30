@@ -14,7 +14,7 @@
 
             @foreach (var menuItem in ViewModel.ModuleContent.MenuItems)
             {
-                @if (menuItem.SubItems != null && menuItem.SubItems.Count != 0 && DisplaySelects)
+                @if (menuItem.SubItems != null && menuItem.SubItems.Count != 0)
                 {
                     <select class="form-select menu-item-control menu-item-control-light" style="@CssStyleHelper.CssMenuItemWidth(menuItem.Name)" aria-label="@menuItem.Name"
                             @bind="@SubItemDestinationUri">
@@ -56,8 +56,6 @@
     [Parameter]
     public PageType PageType { get; set; }
 
-    private bool DisplaySelects;
-
     private string DateAndAuthorInfo
     {
         get
@@ -93,7 +91,6 @@
         this.ViewModel.PropertyChanged += new PropertyChangedEventHandler(
             async (s, e) => await this.InvokeAsync(() => this.StateHasChanged())
         );
-        this.DisplaySelects = true;
         base.OnInitialized();
     }
 

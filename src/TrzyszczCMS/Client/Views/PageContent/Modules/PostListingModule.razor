@@ -8,7 +8,9 @@
         <h1>Posts</h1>
         @foreach (var post in ViewModel.Posts)
         {
-            <h2><a href="@PrepareUriOfPost(post.UriName)">@post.Title</a></h2>
+            <h2>
+                <a href="@PrepareUriOfPost(post.UriName)">@post.Title</a>
+            </h2>
             <p class="pb-4">
                 <div>
                     <span>@post.PublishUtcTimestamp.ToGenericNotation()</span>

@@ -26,8 +26,8 @@
                 }
                 else
                 {
-                    <a class="btn btn-light menu-item-control" href="@menuItem.Uri"
-                             style="@CssStyleHelper.CssMenuItemWidth(menuItem.Name)">@menuItem.Name
+                    <a class="btn btn-light menu-item-control" href="@menuItem.Uri" style="@CssStyleHelper.CssMenuItemWidth(menuItem.Name)">
+                        @menuItem.Name
                     </a>
                 }
             }
@@ -87,6 +87,6 @@
             await Task.Delay(1);
             await this.InvokeAsync(() => this.DisplaySelects = true);
         }
-        NavigationManager.NavigateTo(uri, true);
+        NavigationManager.NavigateTo(uri);
     }
 }

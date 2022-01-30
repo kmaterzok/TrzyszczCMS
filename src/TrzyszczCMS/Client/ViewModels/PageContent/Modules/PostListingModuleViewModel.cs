@@ -15,6 +15,7 @@ namespace TrzyszczCMS.Client.ViewModels.PageContent.Modules
     public class PostListingModuleViewModel : ViewModelBase
     {
         #region Fields
+        private readonly ILoadPageService _loadPageService;
         private IPageFetcher<SimplePublicPostInfo> _postsFetcher;
         #endregion
 
@@ -48,7 +49,8 @@ namespace TrzyszczCMS.Client.ViewModels.PageContent.Modules
         #region Ctor
         public PostListingModuleViewModel(PostListingModuleContent moduleContent, ILoadPageService loadPageService)
         {
-            this._postsFetcher = loadPageService.GetSimplePublicPostInfos();
+            this._loadPageService = loadPageService;
+            this.ResetFetcher();
             this.Posts = new List<SimplePublicPostInfo>();
             this.ModuleContent = moduleContent;
         }
@@ -61,6 +63,7 @@ namespace TrzyszczCMS.Client.ViewModels.PageContent.Modules
         /// <returns>Task executing the operation</returns>
         public async Task FetchFirstPageOfPostInfosAsync()
         {
+            this.ResetFetcher();
             var datapage = await this._postsFetcher.GetCurrent();
             this.Posts = datapage.Entries;
             this.NotifyPropertyChanged(nameof(CssClassForLoadMorePosts));
@@ -77,6 +80,11 @@ namespace TrzyszczCMS.Client.ViewModels.PageContent.Modules
             this.NotifyPropertyChanged(nameof(this.Posts));
             this.NotifyPropertyChanged(nameof(CssClassForLoadMorePosts));
         }
+        #endregion
+
+        #region Helper methods
+        private void ResetFetcher() =>
+            this._postsFetcher = this._loadPageService.GetSimplePublicPostInfos();
         #endregion
     }
 }

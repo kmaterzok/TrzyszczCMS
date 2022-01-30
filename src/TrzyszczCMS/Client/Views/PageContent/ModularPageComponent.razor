@@ -36,7 +36,6 @@ else
             <section style="color: maroon;"><strong>Error:</strong> There is a content type <em>(@moduleVM.GetType().Name)</em> that cannot be displayed.</section>
         }
     }
-
     <CommonFooter />
 }
 
@@ -54,9 +53,16 @@ else
         this.ViewModel.PropertyChanged += new PropertyChangedEventHandler(
             async (s, e) => await this.InvokeAsync(() => this.StateHasChanged())
         );
-        await this.ViewModel.PrepareModules(this.PageType, this.PageName);
-
         await base.OnInitializedAsync();
     }
+
+    protected override async Task OnParametersSetAsync()
+    {
+        await base.OnParametersSetAsync();
+        await this.LoadPageContentAsync(this.PageType, this.PageName);
+    }
+
+    private async Task LoadPageContentAsync(PageType pageType, string pageName) =>
+        await this.ViewModel.PrepareModules(pageType, pageName);
 
 }

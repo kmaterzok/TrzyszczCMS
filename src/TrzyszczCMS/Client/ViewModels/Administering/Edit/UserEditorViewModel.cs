@@ -2,8 +2,6 @@
 using Core.Application.Models.Deposits;
 using Core.Application.Services.Interfaces.Rest;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using TrzyszczCMS.Client.Services.Interfaces;
 using TrzyszczCMS.Client.ViewModels.Shared;

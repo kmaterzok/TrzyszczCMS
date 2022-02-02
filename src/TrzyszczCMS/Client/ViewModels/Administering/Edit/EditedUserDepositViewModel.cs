@@ -6,8 +6,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using TrzyszczCMS.Client.Data.Model;
-using TrzyszczCMS.Client.Data.Model.Extensions;
 using TrzyszczCMS.Client.Helpers;
 using TrzyszczCMS.Client.ViewModels.Shared;
 

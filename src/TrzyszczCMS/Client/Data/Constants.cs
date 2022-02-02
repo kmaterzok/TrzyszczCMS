@@ -39,6 +39,9 @@ namespace TrzyszczCMS.Client.Data
         /// The URL of the page that must be displayed after successful password change.
         /// </summary>
         public const string AFTER_PASSWORD_CHANGE_IMMEDIATE_PAGE_URL = "/manage/users";
-
+        /// <summary>
+        /// HTML ID of the text area input that stores MarkDown code for editing.
+        /// </summary>
+        public const string MARKDOWN_TEXTAREA_ID = "txarMarkDownEditedText";
     }
 }

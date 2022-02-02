@@ -1,4 +1,5 @@
 ﻿@using Core.Shared.Enums
+@using TrzyszczCMS.Client.Data 
 @using TrzyszczCMS.Client.Data.Enums.Extensions 
 @using TrzyszczCMS.Client.Views.Shared
 @using TrzyszczCMS.Client.Services.Interfaces
@@ -55,7 +56,7 @@
     <div class="container-fluid pt-2 g-0">
         <div class="row g-0">
             <div class="@CssClassesForEditor" style="height: calc(100vh - 160px);" aria-label="Content editor">
-                <textarea id="txarMarkDownEditedText" class="form-control h-100" value="@MarkDownCode"
+                <textarea id="@Constants.MARKDOWN_TEXTAREA_ID" class="form-control h-100" value="@MarkDownCode"
                           style="font-family: Consolas, monospace; resize: none;" @oninput="@OnInputChanged"/>
             </div>
             <div class="@CssClassesForPreview overflow-auto" style="height: calc(100vh - 160px);" aria-label="Preview of changes">

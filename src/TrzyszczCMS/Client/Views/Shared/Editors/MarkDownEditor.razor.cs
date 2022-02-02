@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Components;
 using System;
 using System.Diagnostics.CodeAnalysis;
 using System.Threading.Tasks;
+using TrzyszczCMS.Client.Data;
 using TrzyszczCMS.Client.Data.Enums;
 using TrzyszczCMS.Client.Data.Enums.Extensions;
 using TrzyszczCMS.Client.Data.Model.JSInterop;
@@ -116,13 +117,13 @@ namespace TrzyszczCMS.Client.Views.Shared.Editors
 
         #region JSInterop
         private async Task<SelectionRange> GetSelectionRangeAsync() =>
-            await this.JSInterop.GetSelectionRangeAsync("txarMarkDownEditedText");
+            await this.JSInterop.GetSelectionRangeAsync(Constants.MARKDOWN_TEXTAREA_ID);
         
         private async Task SelectTextIndexAsync(int index) =>
-            await this.JSInterop.SelectTextIndexAsync("txarMarkDownEditedText", index, this.StateHasChanged);
+            await this.JSInterop.SelectTextIndexAsync(Constants.MARKDOWN_TEXTAREA_ID, index, this.StateHasChanged);
 
         private async Task SelectTextRangeAsync(int start, int end) =>
-            await this.JSInterop.SelectTextRangeAsync("txarMarkDownEditedText", start, end, this.StateHasChanged);
+            await this.JSInterop.SelectTextRangeAsync(Constants.MARKDOWN_TEXTAREA_ID, start, end, this.StateHasChanged);
         #endregion
     }
 }

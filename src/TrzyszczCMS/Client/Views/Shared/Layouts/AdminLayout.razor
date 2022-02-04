@@ -39,7 +39,7 @@
                                 @if (Popupper.PopupType == PopupType.Prompt || Popupper.PopupType == PopupType.CancellablePrompt)
                                 {
                                     <div class="my-2">
-                                        <input type="text" class="form-control" @bind-value="@Popupper.TypedInput" />
+                                        <input type="text" class="form-control" @bind-value="@Popupper.TypedInput" maxlength="@Popupper.MaxInputPromptLength" />
                                     </div>
                                 }
                                 else if (Popupper.PopupType == PopupType.Progress)

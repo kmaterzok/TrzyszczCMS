@@ -1,5 +1,6 @@
 ﻿using Core.Shared.Models;
 using Core.Shared.Models.ManageFiles;
+using DAL.Shared.Data;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Forms;
 using System;
@@ -84,7 +85,7 @@ namespace TrzyszczCMS.Client.Views.Administering
                         Popupper.ShowAlert("The directory with the specified name has been existed over there or the name is forbidden for use.");
                     }
                 }
-            }, true);
+            }, true, maxLength: Constraints.ContFile.NAME);
         }
         
         private void OnSelectedFiles(InputFileChangeEventArgs e)

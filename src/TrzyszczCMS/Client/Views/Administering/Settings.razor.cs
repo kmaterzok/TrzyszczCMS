@@ -1,9 +1,7 @@
 ﻿using Core.Shared.Models.ManageSettings;
+using DAL.Shared.Data;
 using Microsoft.AspNetCore.Components;
-using System;
-using System.Collections.Generic;
 using System.ComponentModel;
-using System.Linq;
 using System.Threading.Tasks;
 using TrzyszczCMS.Client.Data.Enums;
 using TrzyszczCMS.Client.Helpers;
@@ -58,9 +56,9 @@ namespace TrzyszczCMS.Client.Views.Administering
                                 ParentItemId = this.ViewModel.CurrentMenuItemsParentNodeId
                             });
                         }
-                    }, true);
+                    }, true, maxLength: Constraints.ContMenuItem.URI);
                 }
-            }, true);
+            }, true, maxLength: Constraints.ContMenuItem.NAME);
         }
 
         private void DeleteMenuItem(SimpleMenuItemInfo menuItem)

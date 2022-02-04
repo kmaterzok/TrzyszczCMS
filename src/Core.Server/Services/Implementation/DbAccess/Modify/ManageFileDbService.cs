@@ -6,11 +6,13 @@ using Core.Server.Models.Enums;
 using Core.Server.Services.Interfaces;
 using Core.Server.Services.Interfaces.DbAccess.Modify;
 using Core.Shared.Enums;
+using Core.Shared.Helpers.Extensions;
 using Core.Shared.Models;
 using Core.Shared.Models.ManageFiles;
 using DAL.Enums;
 using DAL.Helpers.Interfaces;
 using DAL.Models.Database;
+using DAL.Shared.Data;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -186,7 +188,7 @@ namespace Core.Server.Services.Implementation.DbAccess.Modify
                         var addedFile = await ctx.ContFiles.AddAsync(new ContFile()
                         {
                             CreationUtcTimestamp = DateTime.UtcNow,
-                            Name                 = file.FileName,
+                            Name                 = file.FileName.Truncate(Constraints.ContFile.NAME),
                             IsDirectory          = false,
                             ParentFileId         = currentParentNodeId,
                             AccessGuid           = newFileGuid,

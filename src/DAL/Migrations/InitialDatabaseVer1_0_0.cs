@@ -1,4 +1,5 @@
 ﻿using DAL.Models.Database;
+using DAL.Shared.Data;
 using FluentMigrator;
 using System;
 
@@ -16,8 +17,8 @@ namespace DAL.Migrations
             #region --- Auth tables ---
             Create.Table(   nameof(AuthUser))
                 .WithColumn(nameof(AuthUser.Id))                .AsInt32().NotNullable().PrimaryKey().Identity()
-                .WithColumn(nameof(AuthUser.Username))          .AsString(40).NotNullable().Unique()
-                .WithColumn(nameof(AuthUser.Description))       .AsString(250).Nullable().WithDefaultValue(null)
+                .WithColumn(nameof(AuthUser.Username))          .AsString(Constraints.AuthUser.USERNAME).NotNullable().Unique()
+                .WithColumn(nameof(AuthUser.Description))       .AsString(Constraints.AuthUser.DESCRIPTION).Nullable().WithDefaultValue(null)
                 .WithColumn(nameof(AuthUser.PasswordHash))      .AsBinary(128).NotNullable()
                 .WithColumn(nameof(AuthUser.PasswordSalt))      .AsBinary(32).NotNullable()
                 .WithColumn(nameof(AuthUser.Argon2Iterations))  .AsInt32().NotNullable()
@@ -99,8 +100,8 @@ namespace DAL.Migrations
             Create.Table(nameof(ContMenuItem))
                 .WithColumn(nameof(ContMenuItem.Id))           .AsInt32().NotNullable().PrimaryKey().Identity()
                 .WithColumn(nameof(ContMenuItem.ParentItemId)) .AsInt32().Nullable()
-                .WithColumn(nameof(ContMenuItem.Name))         .AsString(250).NotNullable()
-                .WithColumn(nameof(ContMenuItem.Uri))          .AsString(250).Nullable()
+                .WithColumn(nameof(ContMenuItem.Name))         .AsString(Constraints.ContMenuItem.NAME).NotNullable()
+                .WithColumn(nameof(ContMenuItem.Uri))          .AsString(Constraints.ContMenuItem.URI).Nullable()
                 .WithColumn(nameof(ContMenuItem.OrderNumber))  .AsInt32().NotNullable();
 
             Create.ForeignKey(ForeignKeys.Current.CONTMENUITEM_CONTMENUITEM_PARENTITEMID)
@@ -130,13 +131,13 @@ namespace DAL.Migrations
 
             Create.Table(   nameof(ContPage))
                 .WithColumn(nameof(ContPage.Id))                          .AsInt32().NotNullable().PrimaryKey().Identity()
-                .WithColumn(nameof(ContPage.UriName))                     .AsString(255).NotNullable().Unique()
-                .WithColumn(nameof(ContPage.Title))                       .AsString(255).NotNullable()
+                .WithColumn(nameof(ContPage.UriName))                     .AsString(Constraints.ContPage.URI_NAME).NotNullable().Unique()
+                .WithColumn(nameof(ContPage.Title))                       .AsString(Constraints.ContPage.TITLE).NotNullable()
                 .WithColumn(nameof(ContPage.Type))                        .AsByte().NotNullable().WithDefaultValue(3)
                 .WithColumn(nameof(ContPage.CreateUtcTimestamp))          .AsDateTime().NotNullable()
                 .WithColumn(nameof(ContPage.PublishUtcTimestamp))         .AsDateTime().NotNullable()
-                .WithColumn(nameof(ContPage.AuthorsInfo))                 .AsString(255).Nullable().WithDefaultValue(null)
-                .WithColumn(nameof(ContPage.Description))                 .AsString(255).Nullable().WithDefaultValue(null);
+                .WithColumn(nameof(ContPage.AuthorsInfo))                 .AsString(Constraints.ContPage.AUTHORS_INFO).Nullable().WithDefaultValue(null)
+                .WithColumn(nameof(ContPage.Description))                 .AsString(Constraints.ContPage.DESCRIPTION).Nullable().WithDefaultValue(null);
 
             Create.ForeignKey(ForeignKeys.Current.CONTMODULE_PAGE_ASSIGNEDID)
                 .FromTable(nameof(ContModule))   .ForeignColumn(nameof(ContModule.ContPageId))
@@ -231,7 +232,7 @@ namespace DAL.Migrations
                 .WithColumn(nameof(ContFile.ParentFileId))         .AsInt32().Nullable()
                 .WithColumn(nameof(ContFile.IsDirectory))          .AsBoolean().NotNullable()
                 .WithColumn(nameof(ContFile.CreationUtcTimestamp)) .AsDateTime().NotNullable()
-                .WithColumn(nameof(ContFile.Name))                 .AsString(250).NotNullable()
+                .WithColumn(nameof(ContFile.Name))                 .AsString(Constraints.ContFile.NAME).NotNullable()
                 .WithColumn(nameof(ContFile.AccessGuid))           .AsGuid().NotNullable().Unique()
                 .WithColumn(nameof(ContFile.MimeType))             .AsString(100).Nullable();
 

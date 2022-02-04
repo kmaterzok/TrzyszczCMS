@@ -86,6 +86,10 @@ namespace TrzyszczCMS.Client.Helpers
                 this.NotifyModelUpdated.Invoke(this, EventArgs.Empty);
             }
         }
+        /// <summary>
+        /// Max length of the input text.
+        /// </summary>
+        public int MaxInputPromptLength { get; set; }
         #endregion
 
         #region Ctor
@@ -96,6 +100,7 @@ namespace TrzyszczCMS.Client.Helpers
             this.PopupType             = PopupType.None;
             this.Message               = new MarkupString(string.Empty);
             this.TypedInput            = string.Empty;
+            this.MaxInputPromptLength  = 255;
         }
         #endregion
 
@@ -107,9 +112,10 @@ namespace TrzyszczCMS.Client.Helpers
         /// <param name="promptResultAction">The action executed after pressing OK button</param>
         /// <param name="cancellable">Is cancellation option displayed</param>
         /// <returns>Typed string</returns>
-        public void ShowPrompt(string message, Action<Result<string, object>> promptResultAction, bool cancellable)
+        public void ShowPrompt(string message, Action<Result<string, object>> promptResultAction, bool cancellable, int maxLength = 255)
         {
             this._promptStringResult = promptResultAction;
+            this.MaxInputPromptLength = maxLength;
             this.SetDisplayData(message, cancellable ? PopupType.CancellablePrompt : PopupType.Prompt);
         }
         /// <summary>

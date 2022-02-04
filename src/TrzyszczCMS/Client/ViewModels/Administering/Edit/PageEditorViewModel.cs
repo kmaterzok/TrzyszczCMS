@@ -4,6 +4,7 @@ using Core.Application.Models.Deposits;
 using Core.Application.Services.Interfaces.Rest;
 using Core.Shared.Enums;
 using Core.Shared.Helpers;
+using Core.Shared.Helpers.Extensions;
 using Core.Shared.Models.PageContent;
 using System;
 using System.Threading.Tasks;
@@ -381,9 +382,7 @@ namespace TrzyszczCMS.Client.ViewModels.Administering.Edit
         /// Make a URI part from entered title.
         /// </summary>
         public void CreateUriNameFromTitle() =>
-            this.EditedPageDepositVM.UriName = SanitiseHelper.GetStringReadyForUri(
-                this.EditedPageDepositVM.Title.Substring(0, NumberHelper.ValueOrMax(this.EditedPageDepositVM.Title.Length, 150))
-            );
+            this.EditedPageDepositVM.UriName = SanitiseHelper.GetStringReadyForUri(this.EditedPageDepositVM.Title.Truncate(150));
 
         public void ResetEditedModulesViewModels() =>
             this._currentlyEditedHeadingBannerVM = null;

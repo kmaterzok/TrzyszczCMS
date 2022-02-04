@@ -3,6 +3,7 @@
 
 @using Core.Application.Enums
 @using Core.Shared.Enums
+@using DAL.Shared.Data 
 @using TrzyszczCMS.Client.Data.Enums.Extensions
 @using TrzyszczCMS.Client.Views.Shared.Editors
 @using TrzyszczCMS.Client.Views.Shared.Grids
@@ -45,20 +46,20 @@
                             <td>
                                 <div class="input-group input-group-sm justify-content-end">
                                     @if (row.Data.GetModuleType() == PageModuleType.TextWall)
-                                                {
+                                    {
                                         <span class="input-group-text"><i class="fas fa-edit"></i></span>
                                         <select class="form-select form-select-sm" aria-label="Edit">
                                             <option disabled selected>Edit</option>
                                             @foreach (var sgType in Enum.GetValues(typeof(TextWallEditedPart)).Cast<TextWallEditedPart>())
-                                                        {
+                                            {
                                                 <option value="@sgType" @onclick="@(() => ViewModel.EditModule(row, sgType))">@sgType.GetTranslation()</option>
-                                                        }
+                                            }
                                         </select>
-                                                }
-                                                else
-                                                {
+                                    }
+                                    else
+                                    {
                                         <button class="btn btn-sm btn-primary" @onclick="@(() => ViewModel.EditModule(row))"><i class="fas fa-edit"></i>&nbsp;Edit</button>
-                                                }
+                                    }
                                     <button type="button" class="btn btn-sm btn-primary" @onclick="@(() => ViewModel.RemoveModule(row))"><i class="fas fa-minus"></i>&nbsp;Remove</button>
                                     <button type="button" class="btn btn-sm btn-primary" @onclick="@(() => ViewModel.MoveModuleItem(row, true))"><i class="fas fa-arrow-up"></i></button>
                                     <button type="button" class="btn btn-sm btn-primary" @onclick="@(() => ViewModel.MoveModuleItem(row, false))"><i class="fas fa-arrow-down"></i></button>
@@ -79,7 +80,7 @@
                                 <ErrorMessageBlock Message="@ViewModel.EditedPageDepositVM.TitleValidationMessage" />
                                 <div class="d-flex my-3">
                                     <div class="form-floating" style="@CopyTitleCssStyle">
-                                        <input type="text" id="titleName" class="form-control w-100" @bind="@ViewModel.EditedPageDepositVM.Title" />
+                                        <input type="text" id="titleName" class="form-control w-100" @bind="@ViewModel.EditedPageDepositVM.Title" maxlength="@Constraints.ContPage.TITLE" />
                                         <label for="titleName">Title</label>
                                     </div>
                                     @if (ViewModel.EditedPageDepositVM.PageType != PageType.HomePage)
@@ -96,7 +97,7 @@
                                 <div class="col">
                                     <ErrorMessageBlock Message="@ViewModel.EditedPageDepositVM.UriNameValidationMessage" />
                                     <div class="form-floating my-3">
-                                        <input type="text" id="uriName" class="form-control w-100" @bind="@ViewModel.EditedPageDepositVM.UriName" />
+                                        <input type="text" id="uriName" class="form-control w-100" @bind="@ViewModel.EditedPageDepositVM.UriName" maxlength="@Constraints.ContPage.URI_NAME" />
                                         <label for="uriName">URI name</label>
                                     </div>
                                 </div>
@@ -118,13 +119,13 @@
                             }
                             <div class="col">
                                 <div class="form-floating my-3">
-                                    <input type="text" id="authorsInfo" class="form-control w-100" @bind="@ViewModel.EditedPageDepositVM.AuthorsInfo" />
+                                    <input type="text" id="authorsInfo" class="form-control w-100" @bind="@ViewModel.EditedPageDepositVM.AuthorsInfo" maxlength="@Constraints.ContPage.AUTHORS_INFO" />
                                     <label for="authorsInfo">Authors info</label>
                                 </div>
                             </div>
                             <div class="col">
                                 <div class="form-floating my-3">
-                                    <input type="text" id="description" class="form-control w-100" @bind="@ViewModel.EditedPageDepositVM.Description" />
+                                    <input type="text" id="description" class="form-control w-100" @bind="@ViewModel.EditedPageDepositVM.Description" maxlength="@Constraints.ContPage.DESCRIPTION" />
                                     <label for="description">Description</label>
                                 </div>
                             </div>

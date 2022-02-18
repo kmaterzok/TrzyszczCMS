@@ -1,0 +1,24 @@
+﻿@page "/manage/sign-out"
+
+@using System.Threading.Tasks
+@using TrzyszczCMS.Client.Services.Interfaces
+
+@inject NavigationManager NavigationManager
+@inject IAuthService Auth
+
+@code {
+    protected override async Task OnInitializedAsync()
+    {
+        await base.OnInitializedAsync();
+        await this.SignOutAsync();
+    }
+
+    private async Task SignOutAsync()
+    {
+        if (await this.Auth.IsAuthenticated())
+        {
+            await this.Auth.RevokeAuthenticationAsync();
+        }
+        this.NavigationManager.NavigateTo("/sign-in");
+    }
+}

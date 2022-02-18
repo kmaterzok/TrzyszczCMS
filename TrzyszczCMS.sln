@@ -30,7 +30,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TrzyszczCMS.Client", "src\T
 		{F8EFA456-C8D8-45A3-B0A2-508C7265701E} = {F8EFA456-C8D8-45A3-B0A2-508C7265701E}
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DAL.Shared", "src\DAL.Shared\DAL.Shared.csproj", "{F8EFA456-C8D8-45A3-B0A2-508C7265701E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DAL.Shared", "src\DAL.Shared\DAL.Shared.csproj", "{F8EFA456-C8D8-45A3-B0A2-508C7265701E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

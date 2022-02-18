@@ -60,3 +60,7 @@
         display: block;
     }
 }
+
+.nav-link {
+    height: 42px;
+}

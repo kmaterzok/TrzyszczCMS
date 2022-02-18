@@ -54,6 +54,8 @@ namespace TrzyszczCMS.Client.Services.Implementations
             await this._tokenService.RevokeTokenAsync();
             await this._authStateProvider.NotifyAuthenticationStateChange();
         }
+        public async Task<bool> IsAuthenticated() =>
+            (await this._authStateProvider.GetAuthenticationStateAsync())?.User?.Identity?.IsAuthenticated ?? false;
         #endregion
     }
 }

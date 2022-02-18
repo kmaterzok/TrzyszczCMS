@@ -21,7 +21,12 @@ namespace TrzyszczCMS.Client.Services.Interfaces
         /// <summary>
         /// Sign out currently signed in user.
         /// </summary>
-        /// <returns></returns>
+        /// <returns>Task executing</returns>
         public Task RevokeAuthenticationAsync();
+        /// <summary>
+        /// Is the user authenticated (signed in) in the backend.
+        /// </summary>
+        /// <returns>Look at the summary.</returns>
+        Task<bool> IsAuthenticated();
     }
 }

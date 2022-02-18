@@ -1,43 +1,53 @@
-﻿<div class="top-row ps-4 navbar navbar-dark">
-    <a class="navbar-brand" href="">TrzyszczCMS</a>
-    <button class="navbar-toggler me-4" @onclick="ToggleNavMenu">
-        <span class="navbar-toggler-icon"></span>
-    </button>
-</div>
+﻿<AuthorizeView Context="AuthContext">
+    <Authorized>
+        <div class="top-row ps-4 navbar navbar-dark">
+            <a class="navbar-brand" href="">TrzyszczCMS</a>
+            <button class="navbar-toggler me-4" @onclick="ToggleNavMenu">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+        </div>
 
-<div class="@NavMenuCssClass" @onclick="ToggleNavMenu">
-    <ul class="nav flex-column">
-        <li class="nav-item px-3">
-            <NavLink class="nav-link" href="manage/pages" style="height: 42px;">
-                <i class="fas fa-book-open" aria-hidden="true"></i>&nbsp;Pages
-            </NavLink>
-        </li>
-        <li class="nav-item px-3">
-            <NavLink class="nav-link" href="manage/files" style="height: 42px;">
-                <i class="fas fa-file" aria-hidden="true"></i>&nbsp;Files
-            </NavLink>
-        </li>
+        <div class="@NavMenuCssClass" @onclick="ToggleNavMenu">
+            <ul class="nav flex-column">
+                <li class="nav-item px-3">
+                    <NavLink class="nav-link" href="manage/pages">
+                        <i class="fas fa-book-open" aria-hidden="true"></i>&nbsp;Pages
+                    </NavLink>
+                </li>
+                <li class="nav-item px-3">
+                    <NavLink class="nav-link" href="manage/files">
+                        <i class="fas fa-file" aria-hidden="true"></i>&nbsp;Files
+                    </NavLink>
+                </li>
 
-        <li class="nav-item px-3">
-            <NavLink class="nav-link" href="manage/users" style="height: 42px;">
-                <i class="fas fa-user" aria-hidden="true"></i>&nbsp;Users
-            </NavLink>
-        </li>
-        <li class="nav-item px-3">
-            <NavLink class="nav-link" href="manage/settings" style="height: 42px;">
-                <i class="fas fa-sliders-h" aria-hidden="true"></i>&nbsp;Settings
-            </NavLink>
-        </li>
-    </ul>
-</div>
+                <li class="nav-item px-3">
+                    <NavLink class="nav-link" href="manage/users">
+                        <i class="fas fa-user" aria-hidden="true"></i>&nbsp;Users
+                    </NavLink>
+                </li>
+                <li class="nav-item px-3">
+                    <NavLink class="nav-link" href="manage/settings">
+                        <i class="fas fa-sliders-h" aria-hidden="true"></i>&nbsp;Settings
+                    </NavLink>
+                </li>
+                <li class="nav-item px-3 mt-2">
+                    <NavLink class="nav-link" href="manage/sign-out">
+                        <i class="fas fa-sign-out-alt" aria-hidden="true"></i>&nbsp;Log out, @AuthContext?.User?.Identity?.Name
+                    </NavLink>
+                </li>
+            </ul>
+        </div>
+    </Authorized>
+    <NotAuthorized>
+    </NotAuthorized>
+</AuthorizeView>
 
 @code {
     private bool collapseNavMenu = true;
 
-    private string NavMenuCssClass => collapseNavMenu ? "collapse" : null;
+    private string NavMenuCssClass =>
+        collapseNavMenu ? "collapse" : null;
 
-    private void ToggleNavMenu()
-    {
+    private void ToggleNavMenu() =>
         collapseNavMenu = !collapseNavMenu;
-    }
 }

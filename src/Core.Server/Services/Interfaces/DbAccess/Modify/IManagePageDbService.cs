@@ -51,5 +51,12 @@ namespace Core.Server.Services.Interfaces.DbAccess.Modify
         /// <param name="pageIds">IDs of the deleted pages</param>
         /// <returns>Task returning if the deletion was successful</returns>
         Task<bool> DeletePagesAsync(IEnumerable<int> pageIds);
+        /// <summary>
+        /// Check if all sites represented by their IDs in <paramref name="pageIds"/> are of type <paramref name="expectedPageType"/>.
+        /// </summary>
+        /// <param name="expectedPageType">The tyupe of page that is expected</param>
+        /// <param name="pageIds">IDs of checked pages</param>
+        /// <returns>Task returning if all desired pages are of the specified type</returns>
+        Task<bool> AreAllPagesOfTypeAsync(PageType expectedPageType, params int[] pageIds);
     }
 }

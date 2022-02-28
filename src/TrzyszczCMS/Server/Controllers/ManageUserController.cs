@@ -4,6 +4,7 @@ using Core.Shared.Enums;
 using Core.Shared.Helpers;
 using Core.Shared.Models.ManageUser;
 using Core.Shared.Models.Rest.Requests.ManageUsers;
+using DAL.Shared.Data;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -48,6 +49,7 @@ namespace TrzyszczCMS.Server.Controllers
         [HttpDelete]
         [Produces("application/json")]
         [Route("[action]/{userId}")]
+        [Authorize(Policy = UserPolicies.ANY_USER_DELETING)]
         public async Task<ActionResult> DeleteUser(int userId)
         {
             var error = await this._manageUserService.DeleteUserAsync(userId);
@@ -90,6 +92,7 @@ namespace TrzyszczCMS.Server.Controllers
         [HttpPost]
         [Produces("application/json")]
         [Route("[action]")]
+        [Authorize(Policy = UserPolicies.ANY_USER_CREATING)]
         public async Task<ActionResult<string>> AddUser([FromBody][NotNull] DetailedUserInfo request) =>
             (await this._manageUserService.AddUserAsync(request)).GetValue(out string password, out Tuple<bool> _) ?
                 this.ObjectCreated(password) : Conflict("User name not compliant with specific rules.");
@@ -97,6 +100,7 @@ namespace TrzyszczCMS.Server.Controllers
         [HttpPost]
         [Produces("application/json")]
         [Route("[action]")]
+        [Authorize(Policy = UserPolicies.ANY_USER_EDITING)]
         public async Task<ActionResult> UpdateUser([FromBody][NotNull] DetailedUserInfo request) =>
             await this._manageUserService.UpdateUserAsync(request) ? Ok() : Conflict("Some invalid data specified.");
 

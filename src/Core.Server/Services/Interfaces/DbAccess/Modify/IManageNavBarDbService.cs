@@ -8,7 +8,7 @@ namespace Core.Server.Services.Interfaces.DbAccess.Modify
     /// <summary>
     /// The interface for managing website settings.
     /// </summary>
-    public interface IManageSettingsDbService
+    public interface IManageNavBarDbService
     {
         /// <summary>
         /// Get a list of items in the menu, assigned to a specific node.

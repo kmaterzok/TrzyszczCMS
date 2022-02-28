@@ -26,6 +26,7 @@ using Microsoft.Extensions.Hosting;
 using System.IO;
 using TrzyszczCMS.Server.Data;
 using TrzyszczCMS.Server.Handlers;
+using TrzyszczCMS.Server.Helpers.Extensions;
 
 namespace TrzyszczCMS.Server
 {
@@ -60,15 +61,15 @@ namespace TrzyszczCMS.Server
             services.AddSingleton<IDatabaseStrategyFactory, DatabaseStrategyFactory>();
             services.AddSingleton<IRepetitiveTaskService,   RepetitiveTaskService>();
 
-            services.AddScoped<ICryptoService,           CryptoService>();
-            services.AddScoped<IStorageService,          StorageService>();
-            services.AddScoped<ILoadFileDbService,       LoadFileDbService>();
-            services.AddScoped<IAuthDatabaseService,     AuthDatabaseService>();
-            services.AddScoped<ILoadPageDbService,       LoadPageDbService>();
-            services.AddScoped<IManagePageDbService,     ManagePageDbService>();
-            services.AddScoped<IManageUserDbService,     ManageUserDbService>();
-            services.AddScoped<IManageFileDbService,     ManageFileDbService>();
-            services.AddScoped<IManageSettingsDbService, ManageSettingsDbService>();
+            services.AddScoped<ICryptoService,         CryptoService>();
+            services.AddScoped<IStorageService,        StorageService>();
+            services.AddScoped<ILoadFileDbService,     LoadFileDbService>();
+            services.AddScoped<IAuthDatabaseService,   AuthDatabaseService>();
+            services.AddScoped<ILoadPageDbService,     LoadPageDbService>();
+            services.AddScoped<IManagePageDbService,   ManagePageDbService>();
+            services.AddScoped<IManageUserDbService,   ManageUserDbService>();
+            services.AddScoped<IManageFileDbService,   ManageFileDbService>();
+            services.AddScoped<IManageNavBarDbService, ManageNavBarDbService>();
         }
         #endregion
 
@@ -99,6 +100,8 @@ namespace TrzyszczCMS.Server
 
             services.AddAuthentication(Constants.DEFAULT_AUTHENTICATION_SCHEME_NAME)
                 .AddScheme<AuthenticationSchemeOptions, BasicAuthenticationHandler>(Constants.DEFAULT_AUTHENTICATION_SCHEME_NAME, null);
+
+            services.AddUserPolicyAuthorisation();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

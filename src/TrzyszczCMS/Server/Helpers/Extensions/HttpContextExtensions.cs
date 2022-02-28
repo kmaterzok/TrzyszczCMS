@@ -30,5 +30,13 @@ namespace TrzyszczCMS.Server.Helpers.Extensions
         /// <returns>Access token</returns>
         public static string GetAccessToken(this HttpContext httpContext) =>
             httpContext.Request.Headers[CommonConstants.HEADER_AUTHORIZATION_NAME].SingleOrDefault();
+        /// <summary>
+        /// Check if the user used in the <paramref name="httpContext"/> owns a role <paramref name="policyName"/>.
+        /// </summary>
+        /// <param name="httpContext">HTTP context from the request used for processing data</param>
+        /// <param name="policyName">Name of a policy to be checked for a user</param>
+        /// <returns>A verdict of the check</returns>
+        public static bool HasUserPolicy(this HttpContext httpContext, string policyName) =>
+            httpContext?.User?.HasClaim(i => i.Type == policyName && i.Value == true.ToString()) ?? false;
     }
 }

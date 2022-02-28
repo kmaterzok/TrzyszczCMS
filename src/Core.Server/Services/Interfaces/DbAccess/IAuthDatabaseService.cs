@@ -1,4 +1,5 @@
 ﻿using Core.Shared.Models.Auth;
+using DAL.Models.Database;
 using System.Threading.Tasks;
 
 namespace Core.Server.Services.Interfaces.DbAccess

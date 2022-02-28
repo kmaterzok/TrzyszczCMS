@@ -5,13 +5,13 @@ using Core.Shared.Helpers;
 using Core.Shared.Models;
 using Core.Shared.Models.ManageFiles;
 using Core.Shared.Models.Rest.Requests.ManageFiles;
+using DAL.Shared.Data;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
-using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using TrzyszczCMS.Server.Data.Adapters;
@@ -48,30 +48,35 @@ namespace TrzyszczCMS.Server.Controllers
         [HttpDelete]
         [Produces("application/json")]
         [Route("[action]/{fileId}")]
+        [Authorize(Policy = UserPolicies.FILE_DELETING)]
         public async Task<ActionResult> DeleteFile(int fileId) =>
             await this._manageFileService.DeleteFileAsync(fileId) ? Ok() : NotFound();
 
         [HttpGet]
         [Produces("application/json")]
         [Route("[action]/{directoryName}")]
+        [Authorize(Policy = UserPolicies.FILE_ADDING)]
         public async Task<ActionResult<SimpleFileInfo>> CreateDirectory(string directoryName) =>
             await CreateDirectoryAsync(directoryName, null);
 
         [HttpGet]
         [Produces("application/json")]
         [Route("[action]/{directoryName}/{parentNodeId}")]
+        [Authorize(Policy = UserPolicies.FILE_ADDING)]
         public async Task<ActionResult<SimpleFileInfo>> CreateDirectory(string directoryName, int parentNodeId) =>
             await CreateDirectoryAsync(directoryName, parentNodeId);
 
         [HttpPost]
         [Produces("application/json")]
         [Route("[action]")]
+        [Authorize(Policy = UserPolicies.FILE_ADDING)]
         public async Task<ActionResult<List<SimpleFileInfo>>> Upload(IFormCollection files) =>
             await UploadFilesAsync(files?.Files, null);
 
         [HttpPost]
         [Produces("application/json")]
         [Route("[action]/{parentNodeId}")]
+        [Authorize(Policy = UserPolicies.FILE_ADDING)]
         public async Task<ActionResult<List<SimpleFileInfo>>> Upload(IFormCollection files, int parentNodeId) =>
             await UploadFilesAsync(files?.Files, parentNodeId);
 

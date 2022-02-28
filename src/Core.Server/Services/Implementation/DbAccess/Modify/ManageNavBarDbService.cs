@@ -13,9 +13,9 @@ using System.Threading.Tasks;
 namespace Core.Server.Services.Implementation.DbAccess.Modify
 {
     /// <summary>
-    /// The implementation of <see cref="IManageSettingsDbService"/>.
+    /// The implementation of <see cref="IManageNavBarDbService"/>.
     /// </summary>
-    public class ManageSettingsDbService : IManageSettingsDbService
+    public class ManageNavBarDbService : IManageNavBarDbService
     {
         #region Fields
         /// <summary>
@@ -25,7 +25,7 @@ namespace Core.Server.Services.Implementation.DbAccess.Modify
         #endregion
 
         #region Ctor
-        public ManageSettingsDbService(IDatabaseStrategyFactory databaseStrategyFactory) =>
+        public ManageNavBarDbService(IDatabaseStrategyFactory databaseStrategyFactory) =>
             this._databaseStrategy = databaseStrategyFactory.GetStrategy(ConnectionStringDbType.Modify);
         #endregion
 

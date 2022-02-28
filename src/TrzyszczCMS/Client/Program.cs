@@ -60,7 +60,7 @@ namespace TrzyszczCMS.Client
             services.AddScoped<IManagePageService,     ManagePageService>();
             services.AddScoped<IManageUserService,     ManageUserService>();
             services.AddScoped<IManageFileService,     ManageFileService>();
-            services.AddScoped<IManageSettingsService, ManageSettingsService>();
+            services.AddScoped<IManageNavBarService, ManageNavBarService>();
 
             services.AddScoped<AuthenticationStateProvider, ApplicationAuthenticationStateProvider>();
         }

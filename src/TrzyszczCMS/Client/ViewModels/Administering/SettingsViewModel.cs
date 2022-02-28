@@ -12,13 +12,13 @@ namespace TrzyszczCMS.Client.ViewModels.Administering
     public class SettingsViewModel : ViewModelBase
     {
         #region Fields
-        private readonly IManageSettingsService _manageSettingsService;
+        private readonly IManageNavBarService _manageNavBarService;
         #endregion
 
         #region Ctor
-        public SettingsViewModel(IManageSettingsService manageSettingsService)
+        public SettingsViewModel(IManageNavBarService manageNavBarService)
         {
-            this._manageSettingsService = manageSettingsService;
+            this._manageNavBarService = manageNavBarService;
             this.MenuItems = new List<GridItem<SimpleMenuItemInfo>>();
             this.CurrentMenuItemsParentNodeId = null;
         }
@@ -43,20 +43,20 @@ namespace TrzyszczCMS.Client.ViewModels.Administering
         #region Methods
         public async Task DeleteMenuItemAsync(int itemId)
         {
-            await this._manageSettingsService.DeleteItem(itemId);
+            await this._manageNavBarService.DeleteItem(itemId);
             this.MenuItems.Remove(this.MenuItems.Single(i => i.Data.Id == itemId));
             this.NotifyPropertyChanged(nameof(MenuItems));
         }
 
         public async Task AddMenuItemAsync(SimpleMenuItemInfo addedItem)
         {
-            var newItem = await this._manageSettingsService.AddMenuItem(addedItem);
+            var newItem = await this._manageNavBarService.AddMenuItem(addedItem);
             this.MenuItems.AddAndPack(newItem);
             this.NotifyPropertyChanged(nameof(MenuItems));
         }
 
         public async Task LoadMenuItemsAsync() =>
-            this.MenuItems = (await this._manageSettingsService
+            this.MenuItems = (await this._manageNavBarService
                                         .GetSimpleMenuItemInfos(this.CurrentMenuItemsParentNodeId))
                                         .ToGridItemList();
 
@@ -91,7 +91,7 @@ namespace TrzyszczCMS.Client.ViewModels.Administering
                 secondItemIndex -= orderedItems.Count;
             }
 
-            await this._manageSettingsService.SwapOrderNumbers(menuItem.Id, orderedItems[secondItemIndex].Id);
+            await this._manageNavBarService.SwapOrderNumbers(menuItem.Id, orderedItems[secondItemIndex].Id);
             await this.LoadMenuItemsAsync();
 
         }

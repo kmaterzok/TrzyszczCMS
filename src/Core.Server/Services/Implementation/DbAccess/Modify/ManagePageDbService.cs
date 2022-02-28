@@ -127,6 +127,7 @@ namespace Core.Server.Services.Implementation.DbAccess.Modify
             {
                 return false;
             }
+            // TODO: Check if a second homepage is not added.
 
             using (var ctx = _databaseStrategy.GetContext())
             {
@@ -214,6 +215,7 @@ namespace Core.Server.Services.Implementation.DbAccess.Modify
             {
                 using (var ts = await ctx.Database.BeginTransactionAsync())
                 {
+                    // TODO: Check if homepage is not deleted.
                     var removedOnes = ctx.ContPages.Where(i => pageIds.Contains(i.Id));
                     if (await removedOnes.CountAsync() != pageIds.Count())
                     {
@@ -225,6 +227,14 @@ namespace Core.Server.Services.Implementation.DbAccess.Modify
                     await ts.CommitAsync();
                     return true;
                 }
+            }
+        }
+
+        public async Task<bool> AreAllPagesOfTypeAsync(PageType expectedPageType, params int[] pageIds)
+        {
+            using (var ctx = _databaseStrategy.GetContext())
+            {
+                return await ctx.ContPages.Where(i => pageIds.Contains(i.Id)).AllAsync(i => i.Type == (short)expectedPageType);
             }
         }
         #endregion

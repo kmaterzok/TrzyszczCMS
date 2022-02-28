@@ -2,6 +2,7 @@
 using DAL.Shared.Data;
 using FluentMigrator;
 using System;
+using System.Linq;
 
 namespace DAL.Migrations
 {
@@ -64,22 +65,38 @@ namespace DAL.Migrations
                 .ToTable(  nameof(AuthRole))             .PrimaryColumn(nameof(AuthRole.Id));
 
             
-            Insert.IntoTable(nameof(AuthPolicy)).Row(new { Id = 1, Name = "CreateBlogPost" })
-                                                .Row(new { Id = 2, Name = "EditBlogPost"   })
-                                                .Row(new { Id = 3, Name = "DeleteBlogPost" })
-                                                .Row(new { Id = 4, Name = "CreatePage" })
-                                                .Row(new { Id = 5, Name = "EditPage"   })
-                                                .Row(new { Id = 6, Name = "DeletePage" })
-                                                .Row(new { Id = 7, Name = "CreateAnyUser"   })
-                                                .Row(new { Id = 8, Name = "EditAnyUser"     })
-                                                .Row(new { Id = 9, Name = "DeleteAnyUser"   });
-                                                // TODO: Add more policies / permissions.
+            Insert.IntoTable(nameof(AuthPolicy)).Row(new { Id =  1, Name = UserPolicies.HOMEPAGE_EDITING      })
+                                                .Row(new { Id =  2, Name = UserPolicies.BLOG_POST_CREATING    })
+                                                .Row(new { Id =  3, Name = UserPolicies.BLOG_POST_EDITING     })
+                                                .Row(new { Id =  4, Name = UserPolicies.BLOG_POST_DELETING    })
+                                                .Row(new { Id =  5, Name = UserPolicies.ARTICLE_CREATING         })
+                                                .Row(new { Id =  6, Name = UserPolicies.ARTICLE_EDITING          })
+                                                .Row(new { Id =  7, Name = UserPolicies.ARTICLE_DELETING         })
+                                                .Row(new { Id =  8, Name = UserPolicies.ANY_USER_CREATING     })
+                                                .Row(new { Id =  9, Name = UserPolicies.ANY_USER_EDITING      })
+                                                .Row(new { Id = 10, Name = UserPolicies.ANY_USER_DELETING     })
+                                                .Row(new { Id = 11, Name = UserPolicies.MANAGE_NAVIGATION_BAR })
+                                                .Row(new { Id = 12, Name = UserPolicies.FILE_ADDING           })
+                                                .Row(new { Id = 13, Name = UserPolicies.FILE_DELETING         });
+
 
             Insert.IntoTable(nameof(AuthRole)).Row(new { FactoryRole = true, Name = "Admin" });
-            for (int i=1; i <= 9; ++i)
-            {
-                Insert.IntoTable(nameof(AuthRolePolicyAssign)).Row(new { AuthRoleId = 1, AuthPolicyId = i });
-            }
+            for (int i=1; i <= 13; ++i)
+                { Insert.IntoTable(nameof(AuthRolePolicyAssign)).Row(new { AuthRoleId = 1, AuthPolicyId = i }); }
+
+
+            Insert.IntoTable(nameof(AuthRole)).Row(new { FactoryRole = true, Name = "Editor" });
+            for (int i = 1; i <= 7; ++i)
+                { Insert.IntoTable(nameof(AuthRolePolicyAssign)).Row(new { AuthRoleId = 2, AuthPolicyId = i }); }
+            for (int i = 11; i <= 13; ++i)
+                { Insert.IntoTable(nameof(AuthRolePolicyAssign)).Row(new { AuthRoleId = 2, AuthPolicyId = i }); }
+
+
+            Insert.IntoTable(nameof(AuthRole)).Row(new { FactoryRole = true, Name = "Writer" });
+            foreach (var i in Enumerable.Range(2, 5).Where(v => v != 4))
+                { Insert.IntoTable(nameof(AuthRolePolicyAssign)).Row(new { AuthRoleId = 3, AuthPolicyId = i }); }
+            Insert.IntoTable(nameof(AuthRolePolicyAssign)).Row(new { AuthRoleId = 3, AuthPolicyId = 12 });
+
 
             Insert.IntoTable(nameof(AuthUser)).Row(new
             {

@@ -1,5 +1,4 @@
-﻿using TrzyszczCMS.Server.Data;
-using Core.Server.Services.Interfaces.DbAccess;
+﻿using Core.Server.Services.Interfaces.DbAccess;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
@@ -9,6 +8,9 @@ using System.Security.Claims;
 using System.Text.Encodings.Web;
 using System.Threading.Tasks;
 using Core.Shared.Models;
+using Core.Shared.Models.Auth;
+using System.Collections.Generic;
+using Core.Shared.Helpers;
 
 namespace TrzyszczCMS.Server.Handlers
 {
@@ -49,9 +51,7 @@ namespace TrzyszczCMS.Server.Handlers
                     return AuthenticateResult.Fail("The token is invalid or expired.");
                 }
 
-                var claims    = new[] { new Claim(ClaimTypes.Name, authUserInfo.Username),
-                                        new Claim(ClaimTypes.NameIdentifier, authUserInfo.UserId.ToString())
-                                      };
+                var claims    = ClaimsHelper.ResolveClaims(authUserInfo);
                 var identity  = new ClaimsIdentity(claims, Scheme.Name);
                 var principal = new ClaimsPrincipal(identity);
                 var ticket    = new AuthenticationTicket(principal, Scheme.Name);

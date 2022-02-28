@@ -7,7 +7,7 @@ namespace Core.Application.Services.Interfaces.Rest
     /// <summary>
     /// The interface for managing settings common for the whole system.
     /// </summary>
-    public interface IManageSettingsService
+    public interface IManageNavBarService
     {
         /// <summary>
         /// Get a list of items in the menu, assigned to a specific node.

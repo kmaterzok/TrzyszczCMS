@@ -122,6 +122,7 @@ namespace Core.Server.Services.Implementation.DbAccess
                     smp.SetValue(null);
                 });
                 this._accessTokenRevocationTimer = null;
+                GC.SuppressFinalize(this);
             }
         }
         #endregion

@@ -1,5 +1,6 @@
 ﻿using Core.Server.Services.Interfaces.DbAccess.Modify;
 using Core.Shared.Models.ManageSettings;
+using DAL.Shared.Data;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
@@ -9,17 +10,17 @@ using TrzyszczCMS.Server.Helpers.Extensions;
 namespace TrzyszczCMS.Server.Controllers
 {
     [ApiController]
-    [Route("ManageSettings")]
-    [Authorize]
-    public class ManageSettingsController : ControllerBase
+    [Route("ManageNavBar")]
+    [Authorize(Policy = UserPolicies.MANAGE_NAVIGATION_BAR)]
+    public class ManageNavBarController : ControllerBase
     {
         #region Fields
-        private readonly IManageSettingsDbService _manageSettingsService;
+        private readonly IManageNavBarDbService _manageNavBarService;
         #endregion
 
         #region Ctor
-        public ManageSettingsController(IManageSettingsDbService manageSettingsService) =>
-            this._manageSettingsService = manageSettingsService;
+        public ManageNavBarController(IManageNavBarDbService manageNavBarService) =>
+            this._manageNavBarService = manageNavBarService;
         #endregion
 
         #region Methods
@@ -39,7 +40,7 @@ namespace TrzyszczCMS.Server.Controllers
         [Produces("application/json")]
         [Route("[action]")]
         public async Task<ActionResult<SimpleMenuItemInfo>> AddMenuItem([FromBody] SimpleMenuItemInfo addedItem) =>
-            (await this._manageSettingsService.AddMenuItem(addedItem)).GetValue(out SimpleMenuItemInfo menuItem, out _) ?
+            (await this._manageNavBarService.AddMenuItem(addedItem)).GetValue(out SimpleMenuItemInfo menuItem, out _) ?
                 this.ObjectCreated(menuItem) :
                 Conflict("A new item cannot have a parent node that has another parent node. A new item cannot be named as ..");
 
@@ -47,19 +48,19 @@ namespace TrzyszczCMS.Server.Controllers
         [Produces("application/json")]
         [Route("[action]/{itemId}")]
         public async Task<ActionResult> DeleteMenuItem(int itemId) =>
-            (await this._manageSettingsService.DeleteItem(itemId)) ? Ok() : NotFound();
+            (await this._manageNavBarService.DeleteItem(itemId)) ? Ok() : NotFound();
 
         [HttpGet]
         [Produces("application/json")]
         [Route("[action]/{firstNodeId}/{secondNodeId}")]
         public async Task<ActionResult> SwapOrderNumbers(int firstNodeId, int secondNodeId) =>
-            (await this._manageSettingsService.SwapOrderNumbers(firstNodeId, secondNodeId)) ? Ok() : NotFound();
+            (await this._manageNavBarService.SwapOrderNumbers(firstNodeId, secondNodeId)) ? Ok() : NotFound();
         #endregion
 
         #region Helper methods
         private async Task<ActionResult<List<SimpleMenuItemInfo>>> GetSimpleMenuItemInfosAsync(int? parentItemId)
         {
-            var pageDetails = await this._manageSettingsService.GetSimpleMenuItemInfos(parentItemId);
+            var pageDetails = await this._manageNavBarService.GetSimpleMenuItemInfos(parentItemId);
             return null != pageDetails ? Ok(pageDetails) : NotFound();
         }
         #endregion

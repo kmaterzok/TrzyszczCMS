@@ -12,14 +12,14 @@ using System;
 using System.Net.Http;
 using System.Threading.Tasks;
 using TrzyszczCMS.Client.Other;
-using TrzyszczCMS.Client.Services.Implementations;
+using TrzyszczCMS.Client.Services.Implementation;
 using TrzyszczCMS.Client.Services.Interfaces;
 using TrzyszczCMS.Client.ViewModels.Administering;
 using TrzyszczCMS.Client.ViewModels.SignIn;
 using TrzyszczCMS.Client.ViewModels.PageContent;
 using TrzyszczCMS.Client.ViewModels.Administering.Edit;
-using TrzyszczCMS.Client.Services.Implementation;
 using TextCopy;
+using Core.Shared.Helpers.Extensions;
 
 namespace TrzyszczCMS.Client
 {
@@ -29,8 +29,13 @@ namespace TrzyszczCMS.Client
         {
             var builder = WebAssemblyHostBuilder.CreateDefault(args);
             builder.RootComponents.Add<App>("#app");
+
+            // --- Registration ---
             RegisterServices(builder.Services, builder.HostEnvironment.BaseAddress);
+            builder.Services.AddUserPolicyAuthorisation();
             RegisterViewModels(builder.Services);
+            // -------------------- 
+
             await builder.Build().RunAsync();
         }
 
@@ -50,16 +55,15 @@ namespace TrzyszczCMS.Client
             services.AddHttpClient(Core.Application.Models.Constants.HTTP_CLIENT_ANON_NAME, client => client.BaseAddress = new Uri(clientBaseAddress));
             services.AddHttpClient(Core.Application.Models.Constants.HTTP_CLIENT_AUTH_NAME, client => client.BaseAddress = new Uri(clientBaseAddress))
                 .AddHttpMessageHandler<TokenHeaderHandler>();
-            services.AddAuthorizationCore();
 
-            services.AddScoped<IDataDepository,        DataDepository>();
-            services.AddScoped<IJSInteropService,      JSInteropService>();
-            services.AddScoped<IAuthService,           AuthService>();
-            services.AddScoped<IRestAuthService,       RestAuthService>();
-            services.AddScoped<ILoadPageService,       LoadPageService>();
-            services.AddScoped<IManagePageService,     ManagePageService>();
-            services.AddScoped<IManageUserService,     ManageUserService>();
-            services.AddScoped<IManageFileService,     ManageFileService>();
+            services.AddScoped<IDataDepository,      DataDepository>();
+            services.AddScoped<IJSInteropService,    JSInteropService>();
+            services.AddScoped<IAuthService,         AuthService>();
+            services.AddScoped<IRestAuthService,     RestAuthService>();
+            services.AddScoped<ILoadPageService,     LoadPageService>();
+            services.AddScoped<IManagePageService,   ManagePageService>();
+            services.AddScoped<IManageUserService,   ManageUserService>();
+            services.AddScoped<IManageFileService,   ManageFileService>();
             services.AddScoped<IManageNavBarService, ManageNavBarService>();
 
             services.AddScoped<AuthenticationStateProvider, ApplicationAuthenticationStateProvider>();

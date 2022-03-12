@@ -1,4 +1,7 @@
-﻿<AuthorizeView Context="AuthContext">
+﻿@using TrzyszczCMS.Client.Services.Interfaces 
+@inject IAuthService AuthService
+
+<AuthorizeView Context="AuthContext">
     <Authorized>
         <div class="top-row ps-4 navbar navbar-dark">
             <a class="navbar-brand" href="">TrzyszczCMS</a>
@@ -25,11 +28,15 @@
                         <i class="fas fa-user" aria-hidden="true"></i>&nbsp;Users
                     </NavLink>
                 </li>
-                <li class="nav-item px-3">
-                    <NavLink class="nav-link" href="manage/settings">
-                        <i class="fas fa-sliders-h" aria-hidden="true"></i>&nbsp;Settings
-                    </NavLink>
-                </li>
+                @if (manageNavBarAllowed)
+                {
+                    <li class="nav-item px-3">
+                        <NavLink class="nav-link" href="manage/settings">
+                            <i class="fas fa-sliders-h" aria-hidden="true"></i>&nbsp;Settings
+                        </NavLink>
+                    </li>
+                } 
+
                 <li class="nav-item px-3 mt-2">
                     <NavLink class="nav-link" href="manage/sign-out">
                         <i class="fas fa-sign-out-alt" aria-hidden="true"></i>&nbsp;Log out, @AuthContext?.User?.Identity?.Name
@@ -50,4 +57,15 @@
 
     private void ToggleNavMenu() =>
         collapseNavMenu = !collapseNavMenu;
+
+    private bool manageNavBarAllowed;
+
+    #region Init
+    protected override async Task OnInitializedAsync()
+    {
+        this.manageNavBarAllowed = await AuthService.HasClearanceAsync(Data.Enums.PolicyClearance.AccessNavBarSettings);
+        await base.OnInitializedAsync();
+    }
+    #endregion
+
 }

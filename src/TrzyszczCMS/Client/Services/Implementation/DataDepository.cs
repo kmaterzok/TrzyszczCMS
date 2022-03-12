@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 using TrzyszczCMS.Client.Helpers;
 using TrzyszczCMS.Client.Services.Interfaces;
 
-namespace TrzyszczCMS.Client.Services.Implementations
+namespace TrzyszczCMS.Client.Services.Implementation
 {
     public class DataDepository : IDataDepository
     {

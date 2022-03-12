@@ -12,4 +12,14 @@
     <OutputPath>..\..\artifacts\Debug\</OutputPath>
   </PropertyGroup>
 
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Authorization" Version="5.0.15" />
+    <PackageReference Include="Microsoft.AspNetCore.Authorization.Policy" Version="2.2.0" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="5.0.2" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\DAL.Shared\DAL.Shared.csproj" />
+  </ItemGroup>
+
 </Project>

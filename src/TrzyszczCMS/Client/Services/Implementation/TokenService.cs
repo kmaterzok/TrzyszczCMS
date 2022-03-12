@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 using TrzyszczCMS.Client.Data;
 using Core.Application.Services.Interfaces;
 
-namespace TrzyszczCMS.Client.Services.Implementations
+namespace TrzyszczCMS.Client.Services.Implementation
 {
     public class TokenService : ITokenService
     {

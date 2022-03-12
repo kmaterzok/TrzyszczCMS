@@ -1,5 +1,6 @@
 ﻿using Core.Shared.Enums;
 using Core.Shared.Helpers;
+using Core.Shared.Helpers.Extensions;
 using TrzyszczCMS.Server.Data.Enums;
 
 namespace TrzyszczCMS.Server.Helpers.Extensions

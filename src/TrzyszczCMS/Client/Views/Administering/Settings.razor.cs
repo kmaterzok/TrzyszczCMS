@@ -10,23 +10,28 @@ namespace TrzyszczCMS.Client.Views.Administering
 {
     public partial class Settings
     {
+        #region Fields
+        private bool? manageNavBarAllowed = null;
+        #endregion
+
         #region Properties
         [CascadingParameter]
         private Popupper Popupper { get; set; }
         #endregion
 
         #region Init
-        protected override void OnInitialized()
+        protected override async Task OnInitializedAsync()
         {
             this.ViewModel.PropertyChanged += new PropertyChangedEventHandler(
                 async (s, e) => await this.InvokeAsync(() => this.StateHasChanged())
             );
-            base.OnInitialized();
+            this.manageNavBarAllowed = await AuthService.HasClearanceAsync(PolicyClearance.AccessNavBarSettings);
+            await base.OnInitializedAsync();
         }
         protected override async Task OnAfterRenderAsync(bool firstRender)
         {
             await base.OnAfterRenderAsync(firstRender);
-            if (firstRender)
+            if (firstRender && true == this.manageNavBarAllowed)
             {
                 await this.ViewModel.LoadMenuItemsAsync();
             }

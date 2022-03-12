@@ -1,11 +1,12 @@
 ﻿using Microsoft.AspNetCore.Components.Authorization;
 using System.Threading.Tasks;
+using TrzyszczCMS.Client.Data.Enums;
 
 namespace TrzyszczCMS.Client.Services.Interfaces
 {
     /// <summary>
     /// The interface for managing
-    /// authentication and authorisation of users.
+    /// authentication and authorisation of the user.
     /// </summary>
     public interface IAuthService
     {
@@ -28,5 +29,11 @@ namespace TrzyszczCMS.Client.Services.Interfaces
         /// </summary>
         /// <returns>Look at the summary.</returns>
         Task<bool> IsAuthenticated();
+        /// <summary>
+        /// Check if the user has a specific set of 
+        /// </summary>
+        /// <param name="clearance"></param>
+        /// <returns>Task returning if the user has a clearance</returns>
+        Task<bool> HasClearanceAsync(PolicyClearance clearance);
     }
 }

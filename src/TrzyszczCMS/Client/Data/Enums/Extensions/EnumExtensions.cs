@@ -84,17 +84,14 @@ namespace TrzyszczCMS.Client.Data.Enums.Extensions
         /// </summary>
         /// <param name="type">Selected module type</param>
         /// <returns>Human language translation (meaning)</returns>
-        public static string GetTranslation(this PageModuleType type)
+        public static string GetTranslation(this PageModuleType type) => type switch
         {
-            switch (type)
-            {
-                case PageModuleType.TextWall:      return "Text wall";
-                case PageModuleType.HeadingBanner: return "Heading banner";
-                case PageModuleType.PostListing:   return "Post listing";
-                default:
-                    throw ExceptionMaker.Argument.Unsupported(type, nameof(type));
-            }
-        }
+            PageModuleType.TextWall      => "Text wall",
+            PageModuleType.HeadingBanner => "Heading banner",
+            PageModuleType.PostListing   => "Post listing",
+            _ => throw ExceptionMaker.Argument.Unsupported(type, nameof(type))
+        };
+        
         /// <summary>
         /// Get human language translation of text wall part.
         /// </summary>

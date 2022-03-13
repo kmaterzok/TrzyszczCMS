@@ -100,40 +100,30 @@ namespace TrzyszczCMS.Client.Data.Enums.Extensions
         /// </summary>
         /// <param name="type">Selected part</param>
         /// <returns>Human language translation (meaning)</returns>
-        public static string GetTranslation(this TextWallEditedPart type)
+        public static string GetTranslation(this TextWallEditedPart type) => type switch
         {
-            switch (type)
-            {
-                case TextWallEditedPart.Section:    return "Section";
-                case TextWallEditedPart.LeftAside:  return "Left extra";
-                case TextWallEditedPart.RightAside: return "Right extra";
-                default:
-                    throw ExceptionMaker.Argument.Unsupported(type, nameof(type));
-            }
-        }
+            TextWallEditedPart.Section    => "Section",
+            TextWallEditedPart.LeftAside  => "Left extra",
+            TextWallEditedPart.RightAside => "Right extra",
+            _ => throw ExceptionMaker.Argument.Unsupported(type, nameof(type))
+        };
+        
         /// <summary>
         /// Get human language translation of fail reason.
         /// </summary>
         /// <param name="type">Selected fail reason</param>
         /// <returns>Human language translation (meaning)</returns>
-        public static string GetTranslation(this PasswordNotChangedReason reason)
+        public static string GetTranslation(this PasswordNotChangedReason reason) => reason switch
         {
-            switch (reason)
-            {
-                case PasswordNotChangedReason.NewPasswordEqualsOldPassword:
-                    return "The old password and the new password are same.";
-                case PasswordNotChangedReason.NewPasswordNotComplexEnough:
-                    return "The new password is not complex enough.";
-                case PasswordNotChangedReason.NotAllDataProvided:
-                    return "Not all necessary data has been provided.";
-                case PasswordNotChangedReason.OldPasswordInvalid:
-                    return "The old password is invalid.";
-                case PasswordNotChangedReason.RepeatedPasswordInvalid:
-                    return "The repeated password is invalid.";
-                default:
-                    throw ExceptionMaker.Argument.Unsupported(reason, nameof(reason));
-            }
-        }
+            PasswordNotChangedReason.NewPasswordEqualsOldPassword => "The old password and the new password are same.",
+            PasswordNotChangedReason.NewPasswordNotComplexEnough  => "The new password is not complex enough.",
+            PasswordNotChangedReason.NotAllDataProvided           => "Not all necessary data has been provided.",
+            PasswordNotChangedReason.OldPasswordInvalid           => "The old password is invalid.",
+            PasswordNotChangedReason.RepeatedPasswordInvalid      => "The repeated password is invalid.",
+
+            _ => throw ExceptionMaker.Argument.Unsupported(reason, nameof(reason))
+        };
+        
         /// <summary>
         /// Get value of next enum defined in <typeparamref name="T"/>.
         /// </summary>
@@ -156,33 +146,27 @@ namespace TrzyszczCMS.Client.Data.Enums.Extensions
         /// </summary>
         /// <param name="source">Type of the edited text wall part</param>
         /// <returns>Type of tool that handles managing the specified text wall's part.</returns>
-        public static PageManagementTool GetPageManagementTool(this TextWallEditedPart source)
+        public static PageManagementTool GetPageManagementTool(this TextWallEditedPart source) => source switch
         {
-            switch (source)
-            {
-                case TextWallEditedPart.LeftAside:  return PageManagementTool.TextWallLeftAsideEditor;
-                case TextWallEditedPart.RightAside: return PageManagementTool.TextWallRightAsideEditor;
-                case TextWallEditedPart.Section:    return PageManagementTool.TextWallSectionEditor;
-                default:
-                    throw ExceptionMaker.Argument.Unsupported(source, nameof(source));
-            }
-        }
+            TextWallEditedPart.LeftAside  => PageManagementTool.TextWallLeftAsideEditor,
+            TextWallEditedPart.RightAside => PageManagementTool.TextWallRightAsideEditor,
+            TextWallEditedPart.Section    => PageManagementTool.TextWallSectionEditor,
+
+            _ => throw ExceptionMaker.Argument.Unsupported(source, nameof(source))
+        };
+        
         /// <summary>
         /// Get <see cref="PageManagementTool"/> value based on a value of <see cref="PageModuleType"/>
         /// </summary>
         /// <param name="moduleType">Provided value to check</param>
         /// <returns>Value got by resolving input value</returns>
-        public static PageManagementTool GetPageManagementTool(this PageModuleType moduleType)
+        public static PageManagementTool GetPageManagementTool(this PageModuleType moduleType) => moduleType switch
         {
-            switch (moduleType)
-            {
-                case PageModuleType.HeadingBanner: return PageManagementTool.HeadingBannerEditor;
-                case PageModuleType.PostListing:   return PageManagementTool.PostListingEditor;
-                case PageModuleType.TextWall:
-                    throw ExceptionMaker.Argument.Invalid(moduleType, nameof(moduleType));
-                default:
-                    throw ExceptionMaker.NotImplemented.ForHandling(moduleType, nameof(moduleType));
-            }
-        }
+            PageModuleType.HeadingBanner => PageManagementTool.HeadingBannerEditor,
+            PageModuleType.PostListing   => PageManagementTool.PostListingEditor,
+            PageModuleType.TextWall      => throw ExceptionMaker.Argument.Invalid(moduleType, nameof(moduleType)),
+
+            _ => throw ExceptionMaker.NotImplemented.ForHandling(moduleType, nameof(moduleType))
+        };
     }
 }

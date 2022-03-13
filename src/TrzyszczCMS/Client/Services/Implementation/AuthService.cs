@@ -67,15 +67,13 @@ namespace TrzyszczCMS.Client.Services.Implementation
         public async Task<bool> IsAuthenticated() =>
             (await this._authStateProvider.GetAuthenticationStateAsync())?.User?.Identity?.IsAuthenticated ?? false;
 
-        public async Task<bool> HasClearanceAsync(PolicyClearance clearance)
+        public async Task<bool> HasClearanceAsync(PolicyClearance clearance) => clearance switch
         {
-            return clearance switch
-            {
-                PolicyClearance.AccessNavBarSettings => await this.HasAllPoliciesAsync(UserPolicies.MANAGE_NAVIGATION_BAR),
+            PolicyClearance.AccessNavBarSettings => await this.HasAllPoliciesAsync(UserPolicies.MANAGE_NAVIGATION_BAR),
 
-                _ => throw ExceptionMaker.NotImplemented.ForHandling(clearance, nameof(clearance)),
-            };
-        }
+            _ => throw ExceptionMaker.NotImplemented.ForHandling(clearance, nameof(clearance))
+        };
+        
         #endregion
 
         #region Helper methods

@@ -22,19 +22,13 @@ namespace DAL.Models.Config
         /// </summary>
         /// <param name="dbType">Desired database to handle</param>
         /// <returns>Desired connection string</returns>
-        public string GetConnectionString(ConnectionStringDbType dbType)
+        public string GetConnectionString(ConnectionStringDbType dbType) => dbType switch
         {
-            switch (dbType)
-            {
-                case ConnectionStringDbType.Modify:
-                    return ModifyDbSqlConnection;
+            ConnectionStringDbType.Modify => ModifyDbSqlConnection,
+            ConnectionStringDbType.Read   => ReadDbSqlConnection,
 
-                case ConnectionStringDbType.Read:
-                    return ReadDbSqlConnection;
-
-                default:
-                    throw new ArgumentException($"The type of {dbType} is not supported within this method.");
-            }
-        }
+            _ => throw new ArgumentException($"The type of {dbType} is not supported within this method.")
+        };
+        
     }
 }

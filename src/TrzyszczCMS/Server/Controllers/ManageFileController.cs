@@ -116,14 +116,11 @@ namespace TrzyszczCMS.Server.Controllers
             }
             else
             {
-                switch (error.Item1)
+                return error.Item1 switch
                 {
-                    case CreatingFileFailReason.FileSizeTooLarge:
-                        return BadRequest("At least one of the uploaded files is too large.");
-
-                    default:
-                        throw ExceptionMaker.NotImplemented.ForHandling(error, $"{nameof(error)}.{nameof(error.Item1)}");
-                }
+                    CreatingFileFailReason.FileSizeTooLarge => BadRequest("At least one of the uploaded files is too large."),
+                    _ => throw ExceptionMaker.NotImplemented.ForHandling(error, $"{nameof(error)}.{nameof(error.Item1)}"),
+                };
             }
         }
         /// <summary>
@@ -141,17 +138,12 @@ namespace TrzyszczCMS.Server.Controllers
             }
             else
             {
-                switch (error.Item1)
+                return error.Item1 switch
                 {
-                    case CreatingRowFailReason.AlreadyExisting:
-                        return Conflict("A directory with the specified name has already existed.");
-
-                    case CreatingRowFailReason.CreatingForbidden:
-                        return BadRequest("Cannot create a directory with the specified data.");
-
-                    default:
-                        throw ExceptionMaker.NotImplemented.ForHandling(error.Item1, $"{nameof(error)}.{nameof(error.Item1)}");
-                }
+                    CreatingRowFailReason.AlreadyExisting   => Conflict("A directory with the specified name has already existed."),
+                    CreatingRowFailReason.CreatingForbidden => BadRequest("Cannot create a directory with the specified data."),
+                    _ => throw ExceptionMaker.NotImplemented.ForHandling(error.Item1, $"{nameof(error)}.{nameof(error.Item1)}"),
+                };
             }
         }
         #endregion

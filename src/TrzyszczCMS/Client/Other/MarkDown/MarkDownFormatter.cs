@@ -225,27 +225,20 @@ namespace TrzyszczCMS.Client.Other.MarkDown
             return foundAsterisks;
         }
 
-        private int ResolveCountOfAsterisksToInsert(AsteriskSuffixFormat format, byte foundAsterisks)
+        private int ResolveCountOfAsterisksToInsert(AsteriskSuffixFormat format, byte foundAsterisks) => format switch
         {
-            switch (format)
-            {
-                case AsteriskSuffixFormat.Bold:   return 2 * ((foundAsterisks >> 1) % 2 == 0 ? 1 : -1);
-                case AsteriskSuffixFormat.Italic: return 1 * (foundAsterisks % 2 == 0 ? 1 : -1);
-                default: return 0;
-            }
-        }
+            AsteriskSuffixFormat.Bold   => 2 * ((foundAsterisks >> 1) % 2 == 0 ? 1 : -1),
+            AsteriskSuffixFormat.Italic => 1 * (foundAsterisks % 2 == 0 ? 1 : -1),
+            _ => 0,
+        };
 
-        private string GetLinkBasedFormatString(LinkBasedContentType type)
+        private string GetLinkBasedFormatString(LinkBasedContentType type) => type switch
         {
-            switch (type)
-            {
-                case LinkBasedContentType.Hyperlink:   return MarkDownConstants.HYPERLINK_FORMAT;
-                case LinkBasedContentType.ImageSource: return MarkDownConstants.IMAGE_SOURCE_FORMAT;
-                case LinkBasedContentType.Table:       return MarkDownConstants.TABLE_BLOCK_SAMPLE;
-                default:
-                    throw ExceptionMaker.Argument.Unsupported(type, nameof(type));
-            }
-        }
+            LinkBasedContentType.Hyperlink   => MarkDownConstants.HYPERLINK_FORMAT,
+            LinkBasedContentType.ImageSource => MarkDownConstants.IMAGE_SOURCE_FORMAT,
+            LinkBasedContentType.Table       => MarkDownConstants.TABLE_BLOCK_SAMPLE,
+            _ => throw ExceptionMaker.Argument.Unsupported(type, nameof(type)),
+        };
         #endregion
     }
 }

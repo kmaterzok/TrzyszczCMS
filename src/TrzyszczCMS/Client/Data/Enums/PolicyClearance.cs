@@ -9,6 +9,14 @@
         /// <summary>
         /// Possibility of accessing navigation bar settings.
         /// </summary>
-        AccessNavBarSettings
+        AccessNavBarSettings,
+        /// <summary>
+        /// Displaying managed users list. Only if there are any policies for managing users.
+        /// </summary>
+        DisplayUsersForManaging,
+        /// <summary>
+        /// Deleting users from the database.
+        /// </summary>
+        AllowUsersDeleting
     }
 }

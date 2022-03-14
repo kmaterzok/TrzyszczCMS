@@ -19,18 +19,13 @@ namespace TrzyszczCMS.Server.Helpers.Extensions
         public static string GetUserPolicyName(this PageType type, PageOperationType operation)
         {
             var availableTypes = typeof(DAL.Shared.Data.UserPolicies).GetConstants<string>();
-            string pageTypeString;
-            
-            switch (type)
+            string pageTypeString = type switch
             {
-                case PageType.Article:
-                case PageType.HomePage: pageTypeString = type.ToString().ToUpper();
-                    break;
-                case PageType.Post:     pageTypeString = "BLOG_POST";
-                    break;
-                default:
-                    throw ExceptionMaker.Argument.Unsupported(type, nameof(type));
-            }
+                PageType.Article
+                    or PageType.HomePage => type.ToString().ToUpper(),
+                PageType.Post            => "BLOG_POST",
+                _ => throw ExceptionMaker.Argument.Unsupported(type, nameof(type)),
+            };
             string operationString = operation.ToString().ToUpper();
 
             var constantName = $"{pageTypeString}_{operationString}";

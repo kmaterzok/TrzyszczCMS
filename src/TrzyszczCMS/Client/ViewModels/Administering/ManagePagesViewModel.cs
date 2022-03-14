@@ -255,16 +255,12 @@ namespace TrzyszczCMS.Client.ViewModels.Administering
         /// </summary>
         /// <param name="type">Type of retrieved pages</param>
         /// <returns>List of pages of certain type</returns>
-        public List<GridItem<SimplePageInfo>> GetPagesByType(PageType type)
+        public List<GridItem<SimplePageInfo>> GetPagesByType(PageType type) => type switch
         {
-            switch (type)
-            {
-                case PageType.Article: return this.Articles;
-                case PageType.Post: return this.Posts;
-                default:
-                    throw ExceptionMaker.Argument.Unsupported(type, nameof(type));
-            }
-        }
+            PageType.Article => this.Articles,
+            PageType.Post    => this.Posts,
+            _ => throw ExceptionMaker.Argument.Unsupported(type, nameof(type)),
+        };
         #endregion
 
         #region Helpers

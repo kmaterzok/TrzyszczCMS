@@ -57,15 +57,12 @@ namespace TrzyszczCMS.Server.Controllers
             {
                 return Ok();
             }
-            switch (error.Value)
+            return error.Value switch
             {
-                case DeleteRowFailReason.DeletingForbidden:
-                    return Forbid();
-                case DeleteRowFailReason.NotFound:
-                    return NotFound();
-                default:
-                    throw ExceptionMaker.NotImplemented.ForHandling(error.Value, nameof(error.Value));
-            }
+                DeleteRowFailReason.DeletingForbidden => Forbid(),
+                DeleteRowFailReason.NotFound          => NotFound(),
+                _ => throw ExceptionMaker.NotImplemented.ForHandling(error.Value, nameof(error.Value)),
+            };
         }
 
         [HttpGet]
@@ -124,17 +121,13 @@ namespace TrzyszczCMS.Server.Controllers
             {
                 return Ok();
             }
-            switch (error.Value)
+            return error.Value switch
             {
-                case DeleteRowFailReason.DeletingForbidden:
-                    return Forbid();
-                case DeleteRowFailReason.NotFound:
-                    return NotFound();
-                case DeleteRowFailReason.DeletingOwnStuff:
-                    return Conflict("Cannot delete token that is used for current session.");
-                default:
-                    throw ExceptionMaker.NotImplemented.ForHandling(error.Value, nameof(error.Value));
-            }
+                DeleteRowFailReason.DeletingForbidden => Forbid(),
+                DeleteRowFailReason.NotFound          => NotFound(),
+                DeleteRowFailReason.DeletingOwnStuff  => Conflict("Cannot delete token that is used for current session."),
+                _ => throw ExceptionMaker.NotImplemented.ForHandling(error.Value, nameof(error.Value)),
+            };
         }
 
         [HttpGet]

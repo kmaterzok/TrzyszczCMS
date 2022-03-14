@@ -105,19 +105,14 @@ namespace TrzyszczCMS.Client.ViewModels.Administering.Edit
             get
             {
                 var editedModuleListIndex = this.EditedPageDepositVM.EditedModuleListIndex;
-                switch (this.EditedPageDepositVM.CurrentManagementTool)
+                return this.EditedPageDepositVM.CurrentManagementTool switch
                 {
-                    case PageManagementTool.PageLayoutComposer:
-                        return string.Empty;
-                    case PageManagementTool.TextWallSectionEditor:
-                        return this.EditedPageDepositVM.ModuleContents[editedModuleListIndex].Data.TextWallModuleContent.SectionMarkDownContent;
-                    case PageManagementTool.TextWallLeftAsideEditor:
-                        return this.EditedPageDepositVM.ModuleContents[editedModuleListIndex].Data.TextWallModuleContent.LeftAsideMarkDownContent;
-                    case PageManagementTool.TextWallRightAsideEditor:
-                        return this.EditedPageDepositVM.ModuleContents[editedModuleListIndex].Data.TextWallModuleContent.RightAsideMarkDownContent;
-                    default:
-                        throw ExceptionMaker.Member.Invalid(this.EditedPageDepositVM.CurrentManagementTool, nameof(this.EditedPageDepositVM.CurrentManagementTool));
-                }
+                    PageManagementTool.PageLayoutComposer       => string.Empty,
+                    PageManagementTool.TextWallSectionEditor    => this.EditedPageDepositVM.ModuleContents[editedModuleListIndex].Data.TextWallModuleContent.SectionMarkDownContent,
+                    PageManagementTool.TextWallLeftAsideEditor  => this.EditedPageDepositVM.ModuleContents[editedModuleListIndex].Data.TextWallModuleContent.LeftAsideMarkDownContent,
+                    PageManagementTool.TextWallRightAsideEditor => this.EditedPageDepositVM.ModuleContents[editedModuleListIndex].Data.TextWallModuleContent.RightAsideMarkDownContent,
+                    _ => throw ExceptionMaker.Member.Invalid(this.EditedPageDepositVM.CurrentManagementTool, nameof(this.EditedPageDepositVM.CurrentManagementTool)),
+                };
             }
             set
             {
@@ -148,17 +143,15 @@ namespace TrzyszczCMS.Client.ViewModels.Administering.Edit
             get
             {
                 var editedModuleListIndex = this.EditedPageDepositVM.EditedModuleListIndex;
-                switch (this.EditedPageDepositVM.CurrentManagementTool)
+                return this.EditedPageDepositVM.CurrentManagementTool switch
                 {
-                    case PageManagementTool.PageLayoutComposer:
-                    case PageManagementTool.TextWallLeftAsideEditor:
-                    case PageManagementTool.TextWallRightAsideEditor:
-                        return null;
-                    case PageManagementTool.TextWallSectionEditor:
-                        return this.EditedPageDepositVM.ModuleContents[editedModuleListIndex].Data.TextWallModuleContent.SectionWidth;
-                    default:
-                        throw ExceptionMaker.Member.Invalid(this.EditedPageDepositVM.CurrentManagementTool, nameof(this.EditedPageDepositVM.CurrentManagementTool));
-                }
+                    PageManagementTool.PageLayoutComposer
+                        or PageManagementTool.TextWallLeftAsideEditor
+                        or PageManagementTool.TextWallRightAsideEditor => null,
+                    PageManagementTool.TextWallSectionEditor           => this.EditedPageDepositVM.ModuleContents[editedModuleListIndex].Data.TextWallModuleContent.SectionWidth,
+
+                    _ => throw ExceptionMaker.Member.Invalid(this.EditedPageDepositVM.CurrentManagementTool, nameof(this.EditedPageDepositVM.CurrentManagementTool)),
+                };
             }
             set
             {

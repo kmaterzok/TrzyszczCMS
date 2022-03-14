@@ -12,23 +12,14 @@ namespace TrzyszczCMS.Client.Other.MarkDown.Strategies
         /// </summary>
         /// <param name="type">Type of suffix to handle</param>
         /// <returns>Generated strategy</returns>
-        public static ILeftSuffixFormatStrategy Make(LeftSuffixType type)
+        public static ILeftSuffixFormatStrategy Make(LeftSuffixType type) => type switch
         {
-            switch(type)
-            {
-                case LeftSuffixType.Heading:
-                    return new LeftCharSuffixFormatStrategy(string.Empty, 6, MarkDownConstants.HEADING_SUFFIX);
-                case LeftSuffixType.OrderedList:
-                    return new LeftOrderedListSuffixFormatStrategy(MarkDownConstants.ORDERED_LIST_SAMPLE);
-                case LeftSuffixType.UnorderedList:
-                    return new LeftCharSuffixFormatStrategy(MarkDownConstants.UNORDERED_LIST_SAMPLE, 0, MarkDownConstants.UNORDERED_LIST_SUFFIX);
-                case LeftSuffixType.Checklist:
-                    return new LeftStringSuffixFormatStrategy(MarkDownConstants.CHECKLIST_SAMPLE, MarkDownConstants.CHECKLIST_SUFFIX);
-                case LeftSuffixType.QuoteBlock:
-                    return new LeftCharSuffixFormatStrategy(MarkDownConstants.QUOTE_BLOCK_SAMPLE, 0, MarkDownConstants.QUOTE_BLOCK_SUFFIX);
-                default:
-                    throw ExceptionMaker.Argument.Unsupported(type, nameof(type));
-            }
-        }
+            LeftSuffixType.Heading       => new LeftCharSuffixFormatStrategy(string.Empty, 6, MarkDownConstants.HEADING_SUFFIX),
+            LeftSuffixType.OrderedList   => new LeftOrderedListSuffixFormatStrategy(MarkDownConstants.ORDERED_LIST_SAMPLE),
+            LeftSuffixType.UnorderedList => new LeftCharSuffixFormatStrategy(MarkDownConstants.UNORDERED_LIST_SAMPLE, 0, MarkDownConstants.UNORDERED_LIST_SUFFIX),
+            LeftSuffixType.Checklist     => new LeftStringSuffixFormatStrategy(MarkDownConstants.CHECKLIST_SAMPLE, MarkDownConstants.CHECKLIST_SUFFIX),
+            LeftSuffixType.QuoteBlock    => new LeftCharSuffixFormatStrategy(MarkDownConstants.QUOTE_BLOCK_SAMPLE, 0, MarkDownConstants.QUOTE_BLOCK_SUFFIX),
+            _ => throw ExceptionMaker.Argument.Unsupported(type, nameof(type)),
+        };
     }
 }

@@ -22,29 +22,26 @@ namespace TrzyszczCMS.Client.Helpers
         /// </summary>
         /// <param name="mode">Mode of work of this editor</param>
         /// <returns>CSS classes set for editor and changes preview</returns>
-        public static SplittedEditorCssClasses ClassesForMarkDownEditor(ToggledMarkDownViewMode mode)
+        public static SplittedEditorCssClasses ClassesForMarkDownEditor(ToggledMarkDownViewMode mode) => mode switch
         {
-            switch (mode)
+            ToggledMarkDownViewMode.EditorWithPreview => new SplittedEditorCssClasses()
             {
-                case ToggledMarkDownViewMode.EditorWithPreview: return new SplittedEditorCssClasses()
-                {
-                    EditorCss = "col-6 pe-3",
-                    PreviewCss = "col-6 ps-3"
-                };
-                case ToggledMarkDownViewMode.Editor: return new SplittedEditorCssClasses()
-                {
-                    EditorCss = "col-12 px-0",
-                    PreviewCss = "collapse"
-                };
-                case ToggledMarkDownViewMode.Preview: return new SplittedEditorCssClasses()
-                {
-                    EditorCss = "collapse",
-                    PreviewCss = "col-12 px-0"
-                };
-                default:
-                    throw ExceptionMaker.Argument.Unsupported(mode, nameof(mode));
-            }
-        }
+                EditorCss = "col-6 pe-3",
+                PreviewCss = "col-6 ps-3"
+            },
+            ToggledMarkDownViewMode.Editor => new SplittedEditorCssClasses()
+            {
+                EditorCss = "col-12 px-0",
+                PreviewCss = "collapse"
+            },
+            ToggledMarkDownViewMode.Preview => new SplittedEditorCssClasses()
+            {
+                EditorCss = "collapse",
+                PreviewCss = "col-12 px-0"
+            },
+            _ => throw ExceptionMaker.Argument.Unsupported(mode, nameof(mode))
+        };
+        
         /// <summary>
         /// Get CSS class for collapsing an item
         /// </summary>

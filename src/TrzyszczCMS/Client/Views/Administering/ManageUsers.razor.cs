@@ -9,25 +9,37 @@ namespace TrzyszczCMS.Client.Views.Administering
 {
     public partial class ManageUsers
     {
+        #region Fields
+        private bool displayingUsersAllowed = false;
+        //private bool addingUsersAllowed     = false;
+        //private bool editingUsersAllowed    = false;
+        private bool deletingUsersAllowed   = false;
+        #endregion
+
         #region Properties
         [CascadingParameter]
         private Popupper Popupper { get; set; }
         #endregion
 
         #region Init
-        protected override void OnInitialized()
+        protected override async Task OnInitializedAsync()
         {
             this.ViewModel.PropertyChanged += new PropertyChangedEventHandler(
                 async (s, e) => await this.InvokeAsync(() => this.StateHasChanged())
             );
-            base.OnInitialized();
+            this.displayingUsersAllowed = await AuthService.HasClearanceAsync(PolicyClearance.DisplayUsersForManaging);
+            this.deletingUsersAllowed   = await AuthService.HasClearanceAsync(PolicyClearance.AllowUsersDeleting);
+            await base.OnInitializedAsync();
         }
         protected override async Task OnAfterRenderAsync(bool firstRender)
         {
             await base.OnAfterRenderAsync(firstRender);
             if (firstRender)
             {
-                await this.ViewModel.LoadUsersWithFilter();
+                if (await AuthService.HasClearanceAsync(PolicyClearance.DisplayUsersForManaging))
+                {
+                    await this.ViewModel.LoadUsersWithFilter();
+                }
                 await this.ViewModel.LoadSignedInUserTokens();
             }
         }

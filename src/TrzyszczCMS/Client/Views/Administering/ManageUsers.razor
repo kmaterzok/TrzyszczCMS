@@ -5,54 +5,61 @@
 @using Core.Shared.Helpers.Extensions
 @using Core.Shared.Models;
 @using TrzyszczCMS.Client.Data
+@using TrzyszczCMS.Client.Services.Interfaces
 @using TrzyszczCMS.Client.Views.Shared.Accordion
 @using TrzyszczCMS.Client.Views.Shared.Grids
 @using TrzyszczCMS.Client.ViewModels.Administering
 @inject ManageUsersViewModel ViewModel
 @inject NavigationManager NavigationManager
+@inject IAuthService AuthService
 
 
 <Accordion Id="MainAccordion">
     <Elements Context="actx">
-        <AccordionElement Header="Users" ContentClass="@Constants.ACCORDION_CONTENT_CLASS" ParentAccordionId="actx.AccordionId" CollapseId="UserCollapse">
-            <Content>
-                <nav class="d-flex">
-                    <div class="ms-auto">
-                        <div class="input-group input-group-sm">
-                            <button class="btn btn-primary btn-sm" @onclick="@ViewModel.LoadUsersWithFilter"><i class="fas fa-search"></i>&nbsp;Search</button>
-                            <button class="btn btn-primary btn-sm" @onclick="@GoToCreatingUserAsync"><i class="fas fa-plus"></i>&nbsp;Create...</button>
+
+        @if (displayingUsersAllowed)
+        {
+            <AccordionElement Header="Users" ContentClass="@Constants.ACCORDION_CONTENT_CLASS" ParentAccordionId="actx.AccordionId" CollapseId="UserCollapse">
+                <Content>
+                    <nav class="d-flex">
+                        <div class="ms-auto">
+                            <div class="input-group input-group-sm">
+                                <button class="btn btn-primary btn-sm" @onclick="@ViewModel.LoadUsersWithFilter"><i class="fas fa-search"></i>&nbsp;Search</button>
+                                <button class="btn btn-primary btn-sm" @onclick="@GoToCreatingUserAsync"><i class="fas fa-plus"></i>&nbsp;Create...</button>
+                            </div>
                         </div>
-                    </div>
-                </nav>
-                <section>
-                    <Grid Items="ViewModel.Users" MultiSelect="false">
-                        <Header>
-                            <GridColHeader Title="User name" OnSearchTextChanged="@(e => ViewModel.OnUsersSearch(e, FilteredGridField.ManageUsers_UserName))" />
-                            <GridColHeader Title="Description" OnSearchTextChanged="@(e => ViewModel.OnUsersSearch(e, FilteredGridField.ManageUsers_Description))" />
-                            <GridColHeader Title="Role" OnSearchTextChanged="@(e => ViewModel.OnUsersSearch(e, FilteredGridField.ManageUsers_Role))" />
-                            <GridColHeader Title="Actions" SearchBoxType="SearchBoxType.None" Width="200" />
-                        </Header>
-                        <RowTemplate Context="row">
-                            <td>@row.Data.UserName</td>
-                            <td>@row.Data.Description</td>
-                            <td>@row.Data.AssignedRoleName</td>
-                            <td>
-                                <div class="input-group input-group-sm">
-                                    <button class="btn btn-sm btn-primary" @onclick="@(() => GoToManagingUserAsync(row.Data.Id))"><i class="fas fa-edit"></i>&nbsp;Edit</button>
-                                    @if (row.Data.Id != CommonConstants.DEFAULT_ADMIN_ID)
-                                    {
-                                        <button class="btn btn-sm btn-primary" @onclick="@(() => DeleteUser(row.Data))"><i class="fas fa-trash"></i>&nbsp;Delete</button>
-                                    }
-                                </div>
-                            </td>
-                        </RowTemplate>
-                        <NoRowsTemplate>
-                            No data loaded.
-                        </NoRowsTemplate>
-                    </Grid>
-                </section>
-            </Content>
-        </AccordionElement>
+                    </nav>
+                    <section>
+                        <Grid Items="ViewModel.Users" MultiSelect="false">
+                            <Header>
+                                <GridColHeader Title="User name" OnSearchTextChanged="@(e => ViewModel.OnUsersSearch(e, FilteredGridField.ManageUsers_UserName))" />
+                                <GridColHeader Title="Description" OnSearchTextChanged="@(e => ViewModel.OnUsersSearch(e, FilteredGridField.ManageUsers_Description))" />
+                                <GridColHeader Title="Role" OnSearchTextChanged="@(e => ViewModel.OnUsersSearch(e, FilteredGridField.ManageUsers_Role))" />
+                                <GridColHeader Title="Actions" SearchBoxType="SearchBoxType.None" Width="200" />
+                            </Header>
+                            <RowTemplate Context="row">
+                                <td>@row.Data.UserName</td>
+                                <td>@row.Data.Description</td>
+                                <td>@row.Data.AssignedRoleName</td>
+                                <td>
+                                    <div class="input-group input-group-sm">
+                                        <button class="btn btn-sm btn-primary" @onclick="@(() => GoToManagingUserAsync(row.Data.Id))"><i class="fas fa-edit"></i>&nbsp;Edit</button>
+                                        @if (deletingUsersAllowed && row.Data.Id != CommonConstants.DEFAULT_ADMIN_ID)
+                                        {
+                                            <button class="btn btn-sm btn-primary" @onclick="@(() => DeleteUser(row.Data))"><i class="fas fa-trash"></i>&nbsp;Delete</button>
+                                        }
+                                    </div>
+                                </td>
+                            </RowTemplate>
+                            <NoRowsTemplate>
+                                No data loaded.
+                            </NoRowsTemplate>
+                        </Grid>
+                    </section>
+                </Content>
+            </AccordionElement>
+        }
+
 
         <AccordionElement Header="Your sessions" ContentClass="@Constants.ACCORDION_CONTENT_CLASS" ParentAccordionId="actx.AccordionId" CollapseId="SessionCollapse">
             <Content>

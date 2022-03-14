@@ -69,7 +69,9 @@ namespace TrzyszczCMS.Client.Services.Implementation
 
         public async Task<bool> HasClearanceAsync(PolicyClearance clearance) => clearance switch
         {
-            PolicyClearance.AccessNavBarSettings => await this.HasAllPoliciesAsync(UserPolicies.MANAGE_NAVIGATION_BAR),
+            PolicyClearance.AccessNavBarSettings    => await this.HasAllPoliciesAsync(UserPolicies.MANAGE_NAVIGATION_BAR),
+            PolicyClearance.DisplayUsersForManaging => await this.HasAnyPolicyAsync(UserPolicies.ANY_USER_CREATING, UserPolicies.ANY_USER_DELETING, UserPolicies.ANY_USER_EDITING),
+            PolicyClearance.AllowUsersDeleting      => await this.HasAllPoliciesAsync(UserPolicies.ANY_USER_DELETING),
 
             _ => throw ExceptionMaker.NotImplemented.ForHandling(clearance, nameof(clearance))
         };
@@ -92,24 +94,12 @@ namespace TrzyszczCMS.Client.Services.Implementation
 
             var user = (await this._authStateProvider.GetAuthenticationStateAsync()).User;
 
-            bool policiesMatch;
-            Func<bool, bool, bool> flagApplier;
-
-            switch (method)
+            (bool policiesMatch, Func<bool, bool, bool> flagApplier) = method switch
             {
-                case EnumerableItemsComplianceCheckMethod.All:
-                    policiesMatch = true;
-                    flagApplier = (i1, i2) => i1 && i2;
-                    break;
-
-                case EnumerableItemsComplianceCheckMethod.Any:
-                    policiesMatch = false;
-                    flagApplier = (i1, i2) => i1 || i2;
-                    break;
-
-                default:
-                    throw ExceptionMaker.Argument.Invalid(method, nameof(method));
-            }
+                EnumerableItemsComplianceCheckMethod.All => (true,  new Func<bool, bool, bool>((i1, i2) => i1 && i2)),
+                EnumerableItemsComplianceCheckMethod.Any => (false, new Func<bool, bool, bool>((i1, i2) => i1 || i2)),
+                _ => throw ExceptionMaker.Argument.Invalid(method, nameof(method))
+            };
 
             foreach (var policyName in policyNames)
             {

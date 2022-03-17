@@ -165,5 +165,17 @@ namespace TrzyszczCMS.Client.Data.Enums.Extensions
 
             _ => throw ExceptionMaker.NotImplemented.ForHandling(moduleType, nameof(moduleType))
         };
+
+        /// <summary>
+        /// Determine what clearance is needed to manage user data depending on <paramref name="editorMode"/>.
+        /// </summary>
+        /// <param name="editorMode">Work mode of user data editor</param>
+        /// <returns>Expected clearance for management</returns>
+        public static PolicyClearance GetClearanceOfUserManagement(this DataEditorMode editorMode) => editorMode switch
+        {
+            DataEditorMode.Create => PolicyClearance.AllowUsersAdding,
+            DataEditorMode.Edit   => PolicyClearance.AllowUsersEditing,
+            _ => throw ExceptionMaker.Argument.Invalid(editorMode, nameof(editorMode))
+        };
     }
 }

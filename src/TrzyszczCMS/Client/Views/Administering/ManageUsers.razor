@@ -16,7 +16,6 @@
 
 <Accordion Id="MainAccordion">
     <Elements Context="actx">
-
         @if (displayingUsersAllowed)
         {
             <AccordionElement Header="Users" ContentClass="@Constants.ACCORDION_CONTENT_CLASS" ParentAccordionId="actx.AccordionId" CollapseId="UserCollapse">
@@ -25,17 +24,20 @@
                         <div class="ms-auto">
                             <div class="input-group input-group-sm">
                                 <button class="btn btn-primary btn-sm" @onclick="@ViewModel.LoadUsersWithFilter"><i class="fas fa-search"></i>&nbsp;Search</button>
-                                <button class="btn btn-primary btn-sm" @onclick="@GoToCreatingUserAsync"><i class="fas fa-plus"></i>&nbsp;Create...</button>
+                                @if (addingUsersAllowed)
+                                {
+                                    <button class="btn btn-primary btn-sm" @onclick="@GoToCreatingUserAsync"><i class="fas fa-plus"></i>&nbsp;Create...</button>
+                                } 
                             </div>
                         </div>
                     </nav>
                     <section>
                         <Grid Items="ViewModel.Users" MultiSelect="false">
                             <Header>
-                                <GridColHeader Title="User name" OnSearchTextChanged="@(e => ViewModel.OnUsersSearch(e, FilteredGridField.ManageUsers_UserName))" />
+                                <GridColHeader Title="User name"   OnSearchTextChanged="@(e => ViewModel.OnUsersSearch(e, FilteredGridField.ManageUsers_UserName))" />
                                 <GridColHeader Title="Description" OnSearchTextChanged="@(e => ViewModel.OnUsersSearch(e, FilteredGridField.ManageUsers_Description))" />
-                                <GridColHeader Title="Role" OnSearchTextChanged="@(e => ViewModel.OnUsersSearch(e, FilteredGridField.ManageUsers_Role))" />
-                                <GridColHeader Title="Actions" SearchBoxType="SearchBoxType.None" Width="200" />
+                                <GridColHeader Title="Role"        OnSearchTextChanged="@(e => ViewModel.OnUsersSearch(e, FilteredGridField.ManageUsers_Role))" />
+                                <GridColHeader Title="Actions"     SearchBoxType="SearchBoxType.None" Width="200" />
                             </Header>
                             <RowTemplate Context="row">
                                 <td>@row.Data.UserName</td>
@@ -43,7 +45,10 @@
                                 <td>@row.Data.AssignedRoleName</td>
                                 <td>
                                     <div class="input-group input-group-sm">
-                                        <button class="btn btn-sm btn-primary" @onclick="@(() => GoToManagingUserAsync(row.Data.Id))"><i class="fas fa-edit"></i>&nbsp;Edit</button>
+                                        @if (editingUsersAllowed)
+                                        {
+                                            <button class="btn btn-sm btn-primary" @onclick="@(() => GoToManagingUserAsync(row.Data.Id))"><i class="fas fa-edit"></i>&nbsp;Edit</button>
+                                        } 
                                         @if (deletingUsersAllowed && row.Data.Id != CommonConstants.DEFAULT_ADMIN_ID)
                                         {
                                             <button class="btn btn-sm btn-primary" @onclick="@(() => DeleteUser(row.Data))"><i class="fas fa-trash"></i>&nbsp;Delete</button>
@@ -59,7 +64,6 @@
                 </Content>
             </AccordionElement>
         }
-
 
         <AccordionElement Header="Your sessions" ContentClass="@Constants.ACCORDION_CONTENT_CLASS" ParentAccordionId="actx.AccordionId" CollapseId="SessionCollapse">
             <Content>

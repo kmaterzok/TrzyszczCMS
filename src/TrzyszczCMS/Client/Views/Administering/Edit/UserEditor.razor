@@ -11,7 +11,7 @@
 @inject IClipboard Clipboard
 
 
-@if (this.ViewModel.IsManagingPossible)
+@if (this.ViewModel.ArePermissionsForSpecifiedManagementProvided && this.ViewModel.IsManagementInfoProvided)
 {
     @if (string.IsNullOrEmpty(ViewModel.GeneratedPassword))
     {

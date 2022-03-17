@@ -10,10 +10,10 @@ namespace TrzyszczCMS.Client.Views.Administering
     public partial class ManageUsers
     {
         #region Fields
-        private bool displayingUsersAllowed = false;
-        //private bool addingUsersAllowed     = false;
-        //private bool editingUsersAllowed    = false;
+        private bool addingUsersAllowed     = false;
+        private bool editingUsersAllowed    = false;
         private bool deletingUsersAllowed   = false;
+        private bool displayingUsersAllowed = false;
         #endregion
 
         #region Properties
@@ -27,8 +27,10 @@ namespace TrzyszczCMS.Client.Views.Administering
             this.ViewModel.PropertyChanged += new PropertyChangedEventHandler(
                 async (s, e) => await this.InvokeAsync(() => this.StateHasChanged())
             );
-            this.displayingUsersAllowed = await AuthService.HasClearanceAsync(PolicyClearance.DisplayUsersForManaging);
+            this.addingUsersAllowed     = await AuthService.HasClearanceAsync(PolicyClearance.AllowUsersAdding);
+            this.editingUsersAllowed    = await AuthService.HasClearanceAsync(PolicyClearance.AllowUsersEditing);
             this.deletingUsersAllowed   = await AuthService.HasClearanceAsync(PolicyClearance.AllowUsersDeleting);
+            this.displayingUsersAllowed = await AuthService.HasClearanceAsync(PolicyClearance.DisplayUsersForManaging);
             await base.OnInitializedAsync();
         }
         protected override async Task OnAfterRenderAsync(bool firstRender)

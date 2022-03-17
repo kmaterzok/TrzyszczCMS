@@ -1,8 +1,11 @@
 ﻿using Core.Application.Enums;
 using Core.Application.Models.Deposits;
 using Core.Application.Services.Interfaces.Rest;
+using Core.Shared.Helpers;
 using System;
 using System.Threading.Tasks;
+using TrzyszczCMS.Client.Data.Enums;
+using TrzyszczCMS.Client.Data.Enums.Extensions;
 using TrzyszczCMS.Client.Services.Interfaces;
 using TrzyszczCMS.Client.ViewModels.Shared;
 
@@ -13,6 +16,7 @@ namespace TrzyszczCMS.Client.ViewModels.Administering.Edit
         #region Fields
         private readonly IDataDepository _depository;
         private readonly IManageUserService _manageUserService;
+        private readonly IAuthService _authService;
         #endregion
 
         #region Properties
@@ -21,14 +25,25 @@ namespace TrzyszczCMS.Client.ViewModels.Administering.Edit
         /// </summary>
         public Action OnExitingView { get; set; }
 
-        private bool _isManagingPossible;
+        private bool _isManagementInfoProvided;
         /// <summary>
         /// It says whether there is data allowing to manage a page.
         /// </summary>
-        public bool IsManagingPossible
+        public bool IsManagementInfoProvided
         {
-            get => _isManagingPossible;
-            set => Set(ref _isManagingPossible, value, nameof(IsManagingPossible));
+            get => _isManagementInfoProvided;
+            set => Set(ref _isManagementInfoProvided, value, nameof(IsManagementInfoProvided));
+        }
+
+        private bool _arePermissionsForSpecifiedManagementProvided;
+        /// <summary>
+        /// It says whether the signed in user has sufficient policies
+        /// assigned to itself so it is able to manage user data.
+        /// </summary>
+        public  bool ArePermissionsForSpecifiedManagementProvided
+        {
+            get => _arePermissionsForSpecifiedManagementProvided;
+            set => Set(ref _arePermissionsForSpecifiedManagementProvided, value, nameof(ArePermissionsForSpecifiedManagementProvided));
         }
 
         private EditedUserDepositViewModel _editedUserDepositVM;
@@ -53,11 +68,12 @@ namespace TrzyszczCMS.Client.ViewModels.Administering.Edit
         #endregion
 
         #region Init
-        public UserEditorViewModel(IDataDepository depository, IManageUserService manageUserService)
+        public UserEditorViewModel(IDataDepository depository, IManageUserService manageUserService, IAuthService authService)
         {
             this.GeneratedPassword = null;
             this._depository = depository;
             this._manageUserService = manageUserService;
+            this._authService = authService;
         }
         public async Task LoadDataFromDeposit()
         {
@@ -68,8 +84,9 @@ namespace TrzyszczCMS.Client.ViewModels.Administering.Edit
             {
                 EditedUserDepositVM = new EditedUserDepositViewModel(gotDeposit, this._manageUserService);
                 EditedUserDepositVM.PropertyChanged += (_, e) => this.NotifyPropertyChanged(e.PropertyName);
+                await this.ResolveManagementClearancesAsync(gotDeposit.UserEditorMode);
             }
-            IsManagingPossible = managingPossible;
+            IsManagementInfoProvided = managingPossible;
         }
         #endregion
 
@@ -119,6 +136,18 @@ namespace TrzyszczCMS.Client.ViewModels.Administering.Edit
         /// <returns>Task returning if data is valid</returns>
         private async Task<bool> ValidateAndInform() =>
             await this.EditedUserDepositVM.ValidateAndInformAsync();
+
+        /// <summary>
+        /// Check if there are any policies that block creating or editing the user data
+        /// depending on the provided work settings.
+        /// </summary>
+        /// <param name="editorMode">Data editor work mode</param>
+        /// <returns>The executing task</returns>
+        private async Task ResolveManagementClearancesAsync(DataEditorMode editorMode)
+        {
+            var expectedClearance = editorMode.GetClearanceOfUserManagement();
+            this.ArePermissionsForSpecifiedManagementProvided = await this._authService.HasClearanceAsync(expectedClearance);
+        }
         #endregion
     }
 }

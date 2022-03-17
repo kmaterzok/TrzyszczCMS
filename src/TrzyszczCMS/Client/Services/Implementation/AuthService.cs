@@ -71,6 +71,8 @@ namespace TrzyszczCMS.Client.Services.Implementation
         {
             PolicyClearance.AccessNavBarSettings    => await this.HasAllPoliciesAsync(UserPolicies.MANAGE_NAVIGATION_BAR),
             PolicyClearance.DisplayUsersForManaging => await this.HasAnyPolicyAsync(UserPolicies.ANY_USER_CREATING, UserPolicies.ANY_USER_DELETING, UserPolicies.ANY_USER_EDITING),
+            PolicyClearance.AllowUsersAdding        => await this.HasAllPoliciesAsync(UserPolicies.ANY_USER_CREATING),
+            PolicyClearance.AllowUsersEditing       => await this.HasAllPoliciesAsync(UserPolicies.ANY_USER_EDITING),
             PolicyClearance.AllowUsersDeleting      => await this.HasAllPoliciesAsync(UserPolicies.ANY_USER_DELETING),
 
             _ => throw ExceptionMaker.NotImplemented.ForHandling(clearance, nameof(clearance))

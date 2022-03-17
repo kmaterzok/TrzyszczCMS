@@ -17,6 +17,14 @@
         /// <summary>
         /// Deleting users from the database.
         /// </summary>
-        AllowUsersDeleting
+        AllowUsersDeleting,
+        /// <summary>
+        /// Editing users and saving changes in the database.
+        /// </summary>
+        AllowUsersEditing,
+        /// <summary>
+        /// Adding users into the database.
+        /// </summary>
+        AllowUsersAdding,
     }
 }

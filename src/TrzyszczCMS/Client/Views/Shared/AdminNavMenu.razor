@@ -50,6 +50,7 @@
 </AuthorizeView>
 
 @code {
+    #region Collapsing menu members
     private bool collapseNavMenu = true;
 
     private string NavMenuCssClass =>
@@ -57,8 +58,11 @@
 
     private void ToggleNavMenu() =>
         collapseNavMenu = !collapseNavMenu;
+    #endregion
 
+    #region Fields
     private bool manageNavBarAllowed;
+    #endregion
 
     #region Init
     protected override async Task OnInitializedAsync()

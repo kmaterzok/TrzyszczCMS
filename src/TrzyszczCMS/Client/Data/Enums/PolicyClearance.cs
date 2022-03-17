@@ -26,5 +26,13 @@
         /// Adding users into the database.
         /// </summary>
         AllowUsersAdding,
+        /// <summary>
+        /// Uploading files and creating directories.
+        /// </summary>
+        AllowFilesAdding,
+        /// <summary>
+        /// Deleting files and directories.
+        /// </summary>
+        AllowFilesDeleting,
     }
 }

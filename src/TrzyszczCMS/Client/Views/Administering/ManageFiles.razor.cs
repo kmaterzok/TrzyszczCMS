@@ -16,6 +16,8 @@ namespace TrzyszczCMS.Client.Views.Administering
     {
         #region Fields
         private bool fileUploadVisible = false;
+        private bool addFilesAllowed = false;
+        private bool deleteFilesAllowed = false;
         #endregion
 
         #region Properties
@@ -23,16 +25,20 @@ namespace TrzyszczCMS.Client.Views.Administering
         private Popupper Popupper { get; set; }
 
         public string CssClassOfFileUploadVisibility =>
-            CssClassesHelper.ClassCollapsingElement(fileUploadVisible);
+            CssClassesHelper.ClassCollapsingElement(fileUploadVisible && addFilesAllowed);
         #endregion
 
         #region Init
-        protected override void OnInitialized()
+        protected override async Task OnInitializedAsync()
         {
-            base.OnInitialized();
+            await base.OnInitializedAsync();
             this.ViewModel.PropertyChanged += new PropertyChangedEventHandler(
                 async (s, e) => await this.InvokeAsync(() => this.StateHasChanged())
             );
+
+            this.addFilesAllowed    = await AuthService.HasClearanceAsync(PolicyClearance.AllowFilesAdding);
+            this.deleteFilesAllowed = await AuthService.HasClearanceAsync(PolicyClearance.AllowFilesDeleting);
+
             this.ViewModel.OnFilesUploadFailure = new ((s, failedFileUploads) =>
             {
                 this.Popupper.HideProgress();

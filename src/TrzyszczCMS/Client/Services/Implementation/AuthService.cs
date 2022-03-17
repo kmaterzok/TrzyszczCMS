@@ -74,6 +74,8 @@ namespace TrzyszczCMS.Client.Services.Implementation
             PolicyClearance.AllowUsersAdding        => await this.HasAllPoliciesAsync(UserPolicies.ANY_USER_CREATING),
             PolicyClearance.AllowUsersEditing       => await this.HasAllPoliciesAsync(UserPolicies.ANY_USER_EDITING),
             PolicyClearance.AllowUsersDeleting      => await this.HasAllPoliciesAsync(UserPolicies.ANY_USER_DELETING),
+            PolicyClearance.AllowFilesAdding        => await this.HasAllPoliciesAsync(UserPolicies.FILE_ADDING),
+            PolicyClearance.AllowFilesDeleting      => await this.HasAllPoliciesAsync(UserPolicies.FILE_DELETING),
 
             _ => throw ExceptionMaker.NotImplemented.ForHandling(clearance, nameof(clearance))
         };

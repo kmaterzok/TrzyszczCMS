@@ -89,6 +89,11 @@ namespace TrzyszczCMS.Client.Services.Implementation
             PolicyClearance.AllowPostsAdding           => await this.HasAllPoliciesAsync(UserPolicies.BLOG_POST_CREATING),
             PolicyClearance.AllowArticlesAdding        => await this.HasAllPoliciesAsync(UserPolicies.ARTICLE_CREATING),
 
+            PolicyClearance.AllowPostsEditing          => await this.HasAllPoliciesAsync(UserPolicies.BLOG_POST_EDITING),
+            PolicyClearance.AllowArticlesEditing       => await this.HasAllPoliciesAsync(UserPolicies.ARTICLE_EDITING),
+
+            PolicyClearance.AllowHomepageEditing       => await this.HasAllPoliciesAsync(UserPolicies.HOMEPAGE_EDITING),
+
             _ => throw ExceptionMaker.NotImplemented.ForHandling(clearance, nameof(clearance))
         };
         

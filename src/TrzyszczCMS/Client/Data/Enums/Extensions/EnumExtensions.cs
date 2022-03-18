@@ -202,5 +202,21 @@ namespace TrzyszczCMS.Client.Data.Enums.Extensions
             _ => throw ExceptionMaker.Argument.Invalid(pageType, nameof(pageType))
         };
 
+        /// <summary>
+        /// Determine what clearance is needed for managing page struucture and preferences.
+        /// </summary>
+        /// <param name="pageType">Type of the managed page</param>
+        /// <param name="editorMode">Work mode of page editor</param>
+        /// <returns>Expected clearance for management</returns>
+        public static PolicyClearance GetClearanceOfPageEditorUsage(PageType pageType, DataEditorMode editorMode) => (pageType, editorMode) switch
+        {
+            (PageType.Article,  DataEditorMode.Create) => PolicyClearance.AllowArticlesAdding,
+            (PageType.Article,  DataEditorMode.Edit)   => PolicyClearance.AllowArticlesEditing,
+            (PageType.Post,     DataEditorMode.Create) => PolicyClearance.AllowPostsAdding,
+            (PageType.Post,     DataEditorMode.Edit)   => PolicyClearance.AllowPostsEditing,
+            (PageType.HomePage, DataEditorMode.Edit)   => PolicyClearance.AllowHomepageEditing,
+            _ => throw ExceptionMaker.Argument.Invalid((pageType, editorMode), $"({nameof(pageType)}, {nameof(editorMode)})")
+        };
+
     }
 }

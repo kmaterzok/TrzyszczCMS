@@ -23,6 +23,11 @@ namespace TrzyszczCMS.Client.Views.Administering
 
         private bool bulkDeletePageButtonDisabled = false;
         private bool addPageButtonDisabled        = false;
+
+        private bool editingPostsDisallowed     = false;
+        private bool editingArticlesDisallowed  = false;
+        private bool deletingPostsDisallowed    = false;
+        private bool deletingArticlesDisallowed = false;
         #endregion
 
         #region Properties
@@ -63,9 +68,13 @@ namespace TrzyszczCMS.Client.Views.Administering
                 async (s, e) => await this.InvokeAsync(() => this.StateHasChanged())
             );
 
-            this.displayingHomepageAllowed = await AuthService.HasClearanceAsync(PolicyClearance.DisplayHomepageForManaging);
-            this.displayingArticlesAllowed = await AuthService.HasClearanceAsync(PolicyClearance.DisplayArticlesForManaging);
-            this.displayingPostsAllowed    = await AuthService.HasClearanceAsync(PolicyClearance.DisplayPostsForManaging);
+            this.displayingHomepageAllowed  = await AuthService.HasClearanceAsync(PolicyClearance.DisplayHomepageForManaging);
+            this.displayingArticlesAllowed  = await AuthService.HasClearanceAsync(PolicyClearance.DisplayArticlesForManaging);
+            this.displayingPostsAllowed     = await AuthService.HasClearanceAsync(PolicyClearance.DisplayPostsForManaging);
+            this.editingArticlesDisallowed  = !await AuthService.HasClearanceAsync(PolicyClearance.AllowArticlesEditing);
+            this.editingPostsDisallowed     = !await AuthService.HasClearanceAsync(PolicyClearance.AllowPostsEditing);
+            this.deletingArticlesDisallowed = !await AuthService.HasClearanceAsync(PolicyClearance.AllowArticlesDeleting);
+            this.deletingPostsDisallowed    = !await AuthService.HasClearanceAsync(PolicyClearance.AllowPostsDeleting);
         }
         protected override async Task OnAfterRenderAsync(bool firstRender)
         {

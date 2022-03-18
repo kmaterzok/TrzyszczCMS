@@ -22,6 +22,7 @@ namespace TrzyszczCMS.Client.ViewModels.Administering.Edit
         private readonly IDataDepository _depository;
         private readonly IManagePageService _managePageService;
         private readonly IManageFileService _manageFileService;
+        private readonly IAuthService _authService;
         private DelayedInvoker _delayedDepositoryUpdateInvoker;
         #endregion
 
@@ -32,14 +33,25 @@ namespace TrzyszczCMS.Client.ViewModels.Administering.Edit
         /// </summary>
         public Action OnExitingView { get; set; }
 
-        private bool _isManagingPossible;
+        private bool _isManagementInfoProvided;
         /// <summary>
         /// It says whether there is data allowing to manage a page.
         /// </summary>
-        public bool IsManagingPossible
+        public bool IsManagementInfoProvided
         {
-            get => _isManagingPossible;
-            set => Set(ref _isManagingPossible, value, nameof(IsManagingPossible));
+            get => _isManagementInfoProvided;
+            set => Set(ref _isManagementInfoProvided, value, nameof(IsManagementInfoProvided));
+        }
+
+        private bool _arePermissionsForSpecifiedManagementProvided;
+        /// <summary>
+        /// It says whether the signed in user has sufficient policies
+        /// assigned to itself so it is able to manage page data.
+        /// </summary>
+        public bool ArePermissionsForSpecifiedManagementProvided
+        {
+            get => _arePermissionsForSpecifiedManagementProvided;
+            set => Set(ref _arePermissionsForSpecifiedManagementProvided, value, nameof(ArePermissionsForSpecifiedManagementProvided));
         }
 
         private EditedPageDepositViewModel _editedPageDepositVM;
@@ -175,13 +187,15 @@ namespace TrzyszczCMS.Client.ViewModels.Administering.Edit
 
 
         #region Ctor & init
-        public PageEditorViewModel(IDataDepository depository, IManagePageService managePageService, IManageFileService manageFileService)
+        public PageEditorViewModel(IDataDepository depository, IAuthService authService, IManagePageService managePageService, IManageFileService manageFileService)
         {
-            this._depository = depository;
+            this._depository        = depository;
+            this._authService       = authService;
             this._managePageService = managePageService;
             this._manageFileService = manageFileService;
 
             this._currentlyEditedHeadingBannerVM = null;
+            this._arePermissionsForSpecifiedManagementProvided = true;
 
             this._delayedDepositoryUpdateInvoker = new DelayedInvoker(
                 Constants.MARKDOWN_EDITOR_DELAY_FOR_UPDATING_DEPOSITORY_MILLIS,
@@ -198,8 +212,10 @@ namespace TrzyszczCMS.Client.ViewModels.Administering.Edit
                 EditedPageDepositVM = new EditedPageDepositViewModel(gotDeposit, this._managePageService);
                 EditedPageDepositVM.PropertyChanged += (_, e) => this.NotifyPropertyChanged(e.PropertyName);
                 EditedPageDepositVM.OnDataSet += (_, _e) => this._delayedDepositoryUpdateInvoker.DelayedInvoke();
+
+                await this.ResolveManagementClearancesAsync(gotDeposit.PageDetails.PageType, gotDeposit.PageEditorMode);
             }
-            IsManagingPossible = managingPossible;
+            IsManagementInfoProvided = managingPossible;
         }
         #endregion
 
@@ -395,6 +411,18 @@ namespace TrzyszczCMS.Client.ViewModels.Administering.Edit
         /// </summary>
         private void UpdatePageDeposit() =>
             this._depository.AddOrUpdateAsync(this.EditedPageDepositVM.ToDeposit());
+
+        /// <summary>
+        /// Check if there are any policies that block creating or editing the page data
+        /// depending on the provided work settings.
+        /// </summary>
+        /// <param name="editorMode">Data editor work mode</param>
+        /// <returns>The executing task</returns>
+        private async Task ResolveManagementClearancesAsync(PageType pageType, DataEditorMode editorMode)
+        {
+            var expectedClearance = EnumExtensions.GetClearanceOfPageEditorUsage(pageType, editorMode);
+            this.ArePermissionsForSpecifiedManagementProvided = await this._authService.HasClearanceAsync(expectedClearance);
+        }
         #endregion
 
         #region Dispose

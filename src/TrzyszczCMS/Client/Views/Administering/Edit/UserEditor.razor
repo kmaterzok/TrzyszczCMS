@@ -3,15 +3,19 @@
 
 @using Core.Application.Enums
 @using Core.Shared.Models
-@using DAL.Shared.Data 
-@using TextCopy 
+@using DAL.Shared.Data
+@using TextCopy
 @using TrzyszczCMS.Client.ViewModels.Administering.Edit
 @inject UserEditorViewModel ViewModel
 @inject NavigationManager NavigationManager
 @inject IClipboard Clipboard
 
 
-@if (this.ViewModel.ArePermissionsForSpecifiedManagementProvided && this.ViewModel.IsManagementInfoProvided)
+@if (!this.ViewModel.ArePermissionsForSpecifiedManagementProvided)
+{
+    <NoAuthorisationMessage />
+}
+else if (this.ViewModel.IsManagementInfoProvided)
 {
     @if (string.IsNullOrEmpty(ViewModel.GeneratedPassword))
     {

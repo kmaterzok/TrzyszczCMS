@@ -71,6 +71,7 @@ namespace TrzyszczCMS.Client.ViewModels.Administering.Edit
         public UserEditorViewModel(IDataDepository depository, IManageUserService manageUserService, IAuthService authService)
         {
             this.GeneratedPassword = null;
+            this._arePermissionsForSpecifiedManagementProvided = true;
             this._depository = depository;
             this._manageUserService = manageUserService;
             this._authService = authService;

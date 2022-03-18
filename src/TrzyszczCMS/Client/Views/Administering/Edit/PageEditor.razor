@@ -3,7 +3,7 @@
 
 @using Core.Application.Enums
 @using Core.Shared.Enums
-@using DAL.Shared.Data 
+@using DAL.Shared.Data
 @using TrzyszczCMS.Client.Data.Enums.Extensions
 @using TrzyszczCMS.Client.Views.Shared.Editors
 @using TrzyszczCMS.Client.Views.Shared.Grids
@@ -13,7 +13,11 @@
 @inject NavigationManager NavigationManager
 
 
-@if (this.ViewModel.IsManagingPossible)
+@if (!this.ViewModel.ArePermissionsForSpecifiedManagementProvided)
+{
+    <NoAuthorisationMessage />
+}
+else if (this.ViewModel.IsManagementInfoProvided)
 {
     @switch (this.ViewModel.EditedPageDepositVM.CurrentManagementTool)
     {
@@ -46,20 +50,20 @@
                             <td>
                                 <div class="input-group input-group-sm justify-content-end">
                                     @if (row.Data.GetModuleType() == PageModuleType.TextWall)
-                                    {
+                                                {
                                         <span class="input-group-text"><i class="fas fa-edit"></i></span>
                                         <select class="form-select form-select-sm" aria-label="Edit">
                                             <option disabled selected>Edit</option>
                                             @foreach (var sgType in Enum.GetValues(typeof(TextWallEditedPart)).Cast<TextWallEditedPart>())
-                                            {
+                                                        {
                                                 <option value="@sgType" @onclick="@(() => ViewModel.EditModule(row, sgType))">@sgType.GetTranslation()</option>
-                                            }
+                                                        }
                                         </select>
-                                    }
-                                    else
-                                    {
+                                                }
+                                                else
+                                                {
                                         <button class="btn btn-sm btn-primary" @onclick="@(() => ViewModel.EditModule(row))"><i class="fas fa-edit"></i>&nbsp;Edit</button>
-                                    }
+                                                }
                                     <button type="button" class="btn btn-sm btn-primary" @onclick="@(() => ViewModel.RemoveModule(row))"><i class="fas fa-minus"></i>&nbsp;Remove</button>
                                     <button type="button" class="btn btn-sm btn-primary" @onclick="@(() => ViewModel.MoveModuleItem(row, true))"><i class="fas fa-arrow-up"></i></button>
                                     <button type="button" class="btn btn-sm btn-primary" @onclick="@(() => ViewModel.MoveModuleItem(row, false))"><i class="fas fa-arrow-down"></i></button>

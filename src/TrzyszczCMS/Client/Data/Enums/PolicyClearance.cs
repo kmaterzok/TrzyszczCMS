@@ -72,6 +72,18 @@
         /// Adding articles into the database.
         /// </summary>
         AllowArticlesAdding,
+        /// <summary>
+        /// Editing posts from the database.
+        /// </summary>
+        AllowPostsEditing,
+        /// <summary>
+        /// Editing articles from the database.
+        /// </summary>
+        AllowArticlesEditing,
+        /// <summary>
+        /// Editing the homepage.
+        /// </summary>
+        AllowHomepageEditing,
         #endregion
     }
 }

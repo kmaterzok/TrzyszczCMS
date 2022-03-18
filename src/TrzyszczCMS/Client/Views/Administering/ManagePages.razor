@@ -1,11 +1,13 @@
 ﻿@layout AdminLayout
 @page "/manage/pages"
 @using Core.Shared.Enums;
+@using TrzyszczCMS.Client.Services.Interfaces
 @using TrzyszczCMS.Client.Views.Shared.Grids
 @using TrzyszczCMS.Client.ViewModels.Administering
 @using Core.Shared.Helpers.Extensions
 @inject ManagePagesViewModel ViewModel
 @inject NavigationManager NavigationManager
+@inject IAuthService AuthService
 
 
 <nav class="d-flex">
@@ -14,73 +16,87 @@
         <div class="inline-gapper-50"></div>
         <a class="nav-manage-link @ArticlesButtonLinkEnableClasses" @onclick="@DisplayArticles" role="button">Articles</a>
         <div class="inline-gapper-50"></div>
-        <a class="nav-manage-link" @onclick="@GoToManagingHomepageAsync" role="button">Homepage</a>
+        <a class="nav-manage-link @HomepageButtonLinkPermitClasses" @onclick="@GoToManagingHomepageAsync" role="button">Homepage</a>
     </div>
     <div>
         <div class="input-group input-group-sm">
-            <button class="btn btn-primary btn-sm" @onclick="@DeleteSelectedPages"><i class="fas fa-trash"></i>&nbsp;Delete</button>
+            <button class="btn btn-primary btn-sm" disabled="@bulkDeletePageButtonDisabled" @onclick="@DeleteSelectedPages"><i class="fas fa-trash"></i>&nbsp;Delete</button>
             <button class="btn btn-primary btn-sm" @onclick="@ApplySearchAsync"><i class="fas fa-search"></i>&nbsp;Search</button>
-            <button class="btn btn-primary btn-sm" @onclick="@GoToCreatingPageAsync"><i class="fas fa-plus"></i>&nbsp;Create...</button>
+            <button class="btn btn-primary btn-sm" disabled="@addPageButtonDisabled" @onclick="@GoToCreatingPageAsync"><i class="fas fa-plus"></i>&nbsp;Create...</button>
         </div>
     </div>
 </nav>
 
 
 <section>
-    <div class="@(!this.postsButtonEnabled && this.articlesButtonEnabled ? string.Empty : "collapse")">
-        <Grid Items="ViewModel.Posts">
-            <Header>
-                <GridColHeader Title="Title" OnSearchTextChanged="@(e => ViewModel.OnPostsSearch(e, FilteredGridField.ManagePages_Posts_Title))" />
-                <GridColHeader Title="Created" OnSearchDateChanged="@(e => ViewModel.OnPostsSearch(e, FilteredGridField.ManagePages_Posts_Created))"
-                               SearchBoxType="SearchBoxType.DateInputs" />
-                <GridColHeader Title="Published" OnSearchDateChanged="@(e => ViewModel.OnPostsSearch(e, FilteredGridField.ManagePages_Posts_Published))"
-                               SearchBoxType="SearchBoxType.DateInputs" />
-                <GridColHeader Title="Actions" SearchBoxType="SearchBoxType.None" Width="200" />
-            </Header>
-            <RowTemplate Context="row">
-                <td><NavLink href="@string.Format("/post/{0}", row.Data.UriName)">@row.Data.Title</NavLink></td>
-                <td>@row.Data.CreateUtcTimestamp.ToGenericNotation()</td>
-                <td>@row.Data.PublishUtcTimestamp.ToGenericNotation()</td>
-                <td>
-                    <div class="input-group input-group-sm">
-                        <button class="btn btn-sm btn-primary" @onclick="@(() => GoToManagingPageAsync(PageType.Post, row.Data.Id))"><i class="fas fa-edit"></i>&nbsp;Edit</button>
-                        <button class="btn btn-sm btn-primary" @onclick="@(() => DeletePage(row.Data))"><i class="fas fa-trash"></i>&nbsp;Delete</button>
-                    </div>
-                </td>
-            </RowTemplate>
-            <NoRowsTemplate>
-                No data loaded.
-            </NoRowsTemplate>
-        </Grid>
-        <button class="btn btn-sm btn-primary w-100 @ViewModel.CssClassForLoadMorePosts" @onclick="@(() => ViewModel.FetchPageDataNextPage(PageType.Post))">Load more</button>
+    <div class="@(DisplayArticlesGrid ? string.Empty : "collapse")">
+        @if (true == displayingArticlesAllowed)
+        {
+            <Grid Items="ViewModel.Posts">
+                <Header>
+                    <GridColHeader Title="Title" OnSearchTextChanged="@(e => ViewModel.OnPostsSearch(e, FilteredGridField.ManagePages_Posts_Title))" />
+                    <GridColHeader Title="Created" OnSearchDateChanged="@(e => ViewModel.OnPostsSearch(e, FilteredGridField.ManagePages_Posts_Created))"
+                                   SearchBoxType="SearchBoxType.DateInputs" />
+                    <GridColHeader Title="Published" OnSearchDateChanged="@(e => ViewModel.OnPostsSearch(e, FilteredGridField.ManagePages_Posts_Published))"
+                                   SearchBoxType="SearchBoxType.DateInputs" />
+                    <GridColHeader Title="Actions" SearchBoxType="SearchBoxType.None" Width="200" />
+                </Header>
+                <RowTemplate Context="row">
+                    <td><NavLink href="@string.Format("/post/{0}", row.Data.UriName)">@row.Data.Title</NavLink></td>
+                    <td>@row.Data.CreateUtcTimestamp.ToGenericNotation()</td>
+                    <td>@row.Data.PublishUtcTimestamp.ToGenericNotation()</td>
+                    <td>
+                        <div class="input-group input-group-sm">
+                            <button class="btn btn-sm btn-primary" @onclick="@(() => GoToManagingPageAsync(PageType.Post, row.Data.Id))"><i class="fas fa-edit"></i>&nbsp;Edit</button>
+                            <button class="btn btn-sm btn-primary" @onclick="@(() => DeletePage(row.Data))"><i class="fas fa-trash"></i>&nbsp;Delete</button>
+                        </div>
+                    </td>
+                </RowTemplate>
+                <NoRowsTemplate>
+                    No data loaded.
+                </NoRowsTemplate>
+            </Grid>
+            <button class="btn btn-sm btn-primary w-100 @ViewModel.CssClassForLoadMorePosts" @onclick="@(() => ViewModel.FetchPageDataNextPage(PageType.Post))">Load more</button>
+        }
+        else if (false == displayingArticlesAllowed)
+        {
+            <NoAuthorisationMessage />
+        }
     </div>
 
 
-    <div class="@(this.postsButtonEnabled && !this.articlesButtonEnabled ? string.Empty : "collapse")">
-        <Grid Items="ViewModel.Articles">
-            <Header>
-                <GridColHeader Title="Title" OnSearchTextChanged="@(e => ViewModel.OnArticlesSearch(e, FilteredGridField.ManagePages_Articles_Title))" />
-                <GridColHeader Title="Created" OnSearchDateChanged="@(e => ViewModel.OnArticlesSearch(e, FilteredGridField.ManagePages_Articles_Created))"
-                               SearchBoxType="SearchBoxType.DateInputs" />
-                <GridColHeader Title="Published" OnSearchDateChanged="@(e => ViewModel.OnArticlesSearch(e, FilteredGridField.ManagePages_Articles_Published))"
-                               SearchBoxType="SearchBoxType.DateInputs" />
-                <GridColHeader Title="Actions" SearchBoxType="SearchBoxType.None" Width="200" />
-            </Header>
-            <RowTemplate Context="row">
-                <td><NavLink href="@string.Format("/article/{0}", row.Data.UriName)">@row.Data.Title</NavLink></td>
-                <td>@row.Data.CreateUtcTimestamp.ToGenericNotation()</td>
-                <td>@row.Data.PublishUtcTimestamp.ToGenericNotation()</td>
-                <td>
-                    <div class="input-group input-group-sm">
-                        <button class="btn btn-sm btn-primary" @onclick="@(() => GoToManagingPageAsync(PageType.Article, row.Data.Id))"><i class="fas fa-edit"></i>&nbsp;Edit</button>
-                        <button class="btn btn-sm btn-primary" @onclick="@(() => DeletePage(row.Data))"><i class="fas fa-trash"></i>&nbsp;Delete</button>
-                    </div>
-                </td>
-            </RowTemplate>
-            <NoRowsTemplate>
-                No data loaded.
-            </NoRowsTemplate>
-        </Grid>
-        <button class="btn btn-sm btn-primary w-100 @ViewModel.CssClassForLoadMoreArticles" @onclick="@(() => ViewModel.FetchPageDataNextPage(PageType.Article))">Load more</button>
+    <div class="@(DisplayPostsGrid ? string.Empty : "collapse")">
+        @if (true == displayingPostsAllowed)
+        {
+            <Grid Items="ViewModel.Articles">
+                <Header>
+                    <GridColHeader Title="Title" OnSearchTextChanged="@(e => ViewModel.OnArticlesSearch(e, FilteredGridField.ManagePages_Articles_Title))" />
+                    <GridColHeader Title="Created" OnSearchDateChanged="@(e => ViewModel.OnArticlesSearch(e, FilteredGridField.ManagePages_Articles_Created))"
+                                   SearchBoxType="SearchBoxType.DateInputs" />
+                    <GridColHeader Title="Published" OnSearchDateChanged="@(e => ViewModel.OnArticlesSearch(e, FilteredGridField.ManagePages_Articles_Published))"
+                                   SearchBoxType="SearchBoxType.DateInputs" />
+                    <GridColHeader Title="Actions" SearchBoxType="SearchBoxType.None" Width="200" />
+                </Header>
+                <RowTemplate Context="row">
+                    <td><NavLink href="@string.Format("/article/{0}", row.Data.UriName)">@row.Data.Title</NavLink></td>
+                    <td>@row.Data.CreateUtcTimestamp.ToGenericNotation()</td>
+                    <td>@row.Data.PublishUtcTimestamp.ToGenericNotation()</td>
+                    <td>
+                        <div class="input-group input-group-sm">
+                            <button class="btn btn-sm btn-primary" @onclick="@(() => GoToManagingPageAsync(PageType.Article, row.Data.Id))"><i class="fas fa-edit"></i>&nbsp;Edit</button>
+                            <button class="btn btn-sm btn-primary" @onclick="@(() => DeletePage(row.Data))"><i class="fas fa-trash"></i>&nbsp;Delete</button>
+                        </div>
+                    </td>
+                </RowTemplate>
+                <NoRowsTemplate>
+                    No data loaded.
+                </NoRowsTemplate>
+            </Grid>
+            <button class="btn btn-sm btn-primary w-100 @ViewModel.CssClassForLoadMoreArticles" @onclick="@(() => ViewModel.FetchPageDataNextPage(PageType.Article))">Load more</button>
+        }
+        else if (false == displayingPostsAllowed)
+        {
+            <NoAuthorisationMessage />
+        }
     </div>
 </section>

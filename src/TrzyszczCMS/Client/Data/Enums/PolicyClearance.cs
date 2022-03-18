@@ -6,10 +6,14 @@
     /// </summary>
     public enum PolicyClearance
     {
+        #region --- Navigation bar ---
         /// <summary>
         /// Possibility of accessing navigation bar settings.
         /// </summary>
         AccessNavBarSettings,
+        #endregion
+
+        #region --- Users ---
         /// <summary>
         /// Displaying managed users list. Only if there are any policies for managing users.
         /// </summary>
@@ -26,6 +30,9 @@
         /// Adding users into the database.
         /// </summary>
         AllowUsersAdding,
+        #endregion
+
+        #region --- Files ---
         /// <summary>
         /// Uploading files and creating directories.
         /// </summary>
@@ -34,5 +41,37 @@
         /// Deleting files and directories.
         /// </summary>
         AllowFilesDeleting,
+        #endregion
+
+        #region --- Pages ---
+        /// <summary>
+        /// Displaying managed posts list. Only if there are any policies for managing posts.
+        /// </summary>
+        DisplayPostsForManaging,
+        /// <summary>
+        /// Displaying managed articles list. Only if there are any policies for managing articles.
+        /// </summary>
+        DisplayArticlesForManaging,
+        /// <summary>
+        /// Displaying a link / view for homepage management.
+        /// </summary>
+        DisplayHomepageForManaging,
+        /// <summary>
+        /// Deleting posts from the database.
+        /// </summary>
+        AllowPostsDeleting,
+        /// <summary>
+        /// Deleting articles from the database.
+        /// </summary>
+        AllowArticlesDeleting,
+        /// <summary>
+        /// Adding posts into the database.
+        /// </summary>
+        AllowPostsAdding,
+        /// <summary>
+        /// Adding articles into the database.
+        /// </summary>
+        AllowArticlesAdding,
+        #endregion
     }
 }

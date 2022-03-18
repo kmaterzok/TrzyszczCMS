@@ -6,23 +6,38 @@ using System.ComponentModel;
 using System.Linq;
 using System.Threading.Tasks;
 using TrzyszczCMS.Client.Data.Enums;
+using TrzyszczCMS.Client.Data.Enums.Extensions;
 using TrzyszczCMS.Client.Helpers;
 
 namespace TrzyszczCMS.Client.Views.Administering
 {
     public partial class ManagePages
     {
-        #region Fields & properties
+        #region Fields
         private bool postsButtonEnabled;
         private bool articlesButtonEnabled;
 
+        private bool  displayingHomepageAllowed = false;
+        private bool? displayingArticlesAllowed = null;
+        private bool? displayingPostsAllowed    = null;
+
+        private bool bulkDeletePageButtonDisabled = false;
+        private bool addPageButtonDisabled        = false;
+        #endregion
+
+        #region Properties
         [CascadingParameter]
         private Popupper Popupper { get; set; }
 
         private string PostsButtonLinkEnableClasses =>
-            CssClassesHelper.ClassesForLink(this.postsButtonEnabled);
+            CssClassesHelper.ClassesForLink(this.postsButtonEnabled && true == this.displayingPostsAllowed);
+
         private string ArticlesButtonLinkEnableClasses =>
-            CssClassesHelper.ClassesForLink(this.articlesButtonEnabled);
+            CssClassesHelper.ClassesForLink(this.articlesButtonEnabled && true == this.displayingArticlesAllowed);
+
+        private string HomepageButtonLinkPermitClasses =>
+            CssClassesHelper.ClassesForLink(this.displayingHomepageAllowed);
+
         private PageType CurrentlyManagedPageType
         {
             get
@@ -32,15 +47,25 @@ namespace TrzyszczCMS.Client.Views.Administering
                 throw new InvalidOperationException("Current state of page does not let to tell the current type of managed pages.");
             }
         }
+
+        private bool DisplayArticlesGrid =>
+            !this.postsButtonEnabled && this.articlesButtonEnabled;
+
+        private bool DisplayPostsGrid =>
+            this.postsButtonEnabled && !this.articlesButtonEnabled;
         #endregion
 
         #region Init
-        protected override void OnInitialized()
+        protected override async Task OnInitializedAsync()
         {
-            base.OnInitialized();
+            await base.OnInitializedAsync();
             this.ViewModel.PropertyChanged += new PropertyChangedEventHandler(
                 async (s, e) => await this.InvokeAsync(() => this.StateHasChanged())
             );
+
+            this.displayingHomepageAllowed = await AuthService.HasClearanceAsync(PolicyClearance.DisplayHomepageForManaging);
+            this.displayingArticlesAllowed = await AuthService.HasClearanceAsync(PolicyClearance.DisplayArticlesForManaging);
+            this.displayingPostsAllowed    = await AuthService.HasClearanceAsync(PolicyClearance.DisplayPostsForManaging);
         }
         protected override async Task OnAfterRenderAsync(bool firstRender)
         {
@@ -63,12 +88,14 @@ namespace TrzyszczCMS.Client.Views.Administering
         {
             this.EnableButtons();
             postsButtonEnabled = false;
+            await this.RefreshButtonsDisableStatus();
             await this.ViewModel.LoadFirstPageOfPosts();
         }
         private async Task DisplayArticles()
         {
             this.EnableButtons();
             articlesButtonEnabled = false;
+            await this.RefreshButtonsDisableStatus();
             await this.ViewModel.LoadFirstPageOfArticles();
         }
         private async Task GoToManagingHomepageAsync()
@@ -89,6 +116,12 @@ namespace TrzyszczCMS.Client.Views.Administering
         #endregion
 
         #region Other methods
+        private async Task RefreshButtonsDisableStatus()
+        {
+            this.bulkDeletePageButtonDisabled = !await AuthService.HasClearanceAsync(this.CurrentlyManagedPageType.GetClearanceOfPageDeleting());
+            this.addPageButtonDisabled        = !await AuthService.HasClearanceAsync(this.CurrentlyManagedPageType.GetClearanceOfPageAdding());
+        }
+
         private async Task ApplySearchAsync() =>
             await this.ViewModel.ApplySearchAsync(this.CurrentlyManagedPageType);
 

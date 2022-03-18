@@ -177,5 +177,30 @@ namespace TrzyszczCMS.Client.Data.Enums.Extensions
             DataEditorMode.Edit   => PolicyClearance.AllowUsersEditing,
             _ => throw ExceptionMaker.Argument.Invalid(editorMode, nameof(editorMode))
         };
+
+        /// <summary>
+        /// Determine what clearance is needed to delete a page which type is <paramref name="pageType"/>.
+        /// </summary>
+        /// <param name="pageType">Type of the page</param>
+        /// <returns>Expected clearance for deleting</returns>
+        public static PolicyClearance GetClearanceOfPageDeleting(this PageType pageType) => pageType switch
+        {
+            PageType.Article => PolicyClearance.AllowArticlesDeleting,
+            PageType.Post    => PolicyClearance.AllowPostsDeleting,
+            _ => throw ExceptionMaker.Argument.Invalid(pageType, nameof(pageType))
+        };
+
+        /// <summary>
+        /// Determine what clearance is needed to add a page which type is <paramref name="pageType"/>.
+        /// </summary>
+        /// <param name="pageType">Type of the page</param>
+        /// <returns>Expected clearance for adding</returns>
+        public static PolicyClearance GetClearanceOfPageAdding(this PageType pageType) => pageType switch
+        {
+            PageType.Article => PolicyClearance.AllowArticlesAdding,
+            PageType.Post    => PolicyClearance.AllowPostsAdding,
+            _ => throw ExceptionMaker.Argument.Invalid(pageType, nameof(pageType))
+        };
+
     }
 }

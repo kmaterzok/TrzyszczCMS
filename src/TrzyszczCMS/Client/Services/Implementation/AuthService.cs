@@ -69,13 +69,25 @@ namespace TrzyszczCMS.Client.Services.Implementation
 
         public async Task<bool> HasClearanceAsync(PolicyClearance clearance) => clearance switch
         {
-            PolicyClearance.AccessNavBarSettings    => await this.HasAllPoliciesAsync(UserPolicies.MANAGE_NAVIGATION_BAR),
-            PolicyClearance.DisplayUsersForManaging => await this.HasAnyPolicyAsync(UserPolicies.ANY_USER_CREATING, UserPolicies.ANY_USER_DELETING, UserPolicies.ANY_USER_EDITING),
-            PolicyClearance.AllowUsersAdding        => await this.HasAllPoliciesAsync(UserPolicies.ANY_USER_CREATING),
-            PolicyClearance.AllowUsersEditing       => await this.HasAllPoliciesAsync(UserPolicies.ANY_USER_EDITING),
-            PolicyClearance.AllowUsersDeleting      => await this.HasAllPoliciesAsync(UserPolicies.ANY_USER_DELETING),
-            PolicyClearance.AllowFilesAdding        => await this.HasAllPoliciesAsync(UserPolicies.FILE_ADDING),
-            PolicyClearance.AllowFilesDeleting      => await this.HasAllPoliciesAsync(UserPolicies.FILE_DELETING),
+            PolicyClearance.AccessNavBarSettings       => await this.HasAllPoliciesAsync(UserPolicies.MANAGE_NAVIGATION_BAR),
+            
+            PolicyClearance.DisplayUsersForManaging    => await this.HasAnyPolicyAsync(UserPolicies.ANY_USER_CREATING, UserPolicies.ANY_USER_DELETING, UserPolicies.ANY_USER_EDITING),
+            PolicyClearance.AllowUsersAdding           => await this.HasAllPoliciesAsync(UserPolicies.ANY_USER_CREATING),
+            PolicyClearance.AllowUsersEditing          => await this.HasAllPoliciesAsync(UserPolicies.ANY_USER_EDITING),
+            PolicyClearance.AllowUsersDeleting         => await this.HasAllPoliciesAsync(UserPolicies.ANY_USER_DELETING),
+            
+            PolicyClearance.AllowFilesAdding           => await this.HasAllPoliciesAsync(UserPolicies.FILE_ADDING),
+            PolicyClearance.AllowFilesDeleting         => await this.HasAllPoliciesAsync(UserPolicies.FILE_DELETING),
+
+            PolicyClearance.DisplayPostsForManaging    => await this.HasAnyPolicyAsync(UserPolicies.BLOG_POST_CREATING, UserPolicies.BLOG_POST_DELETING, UserPolicies.BLOG_POST_EDITING),
+            PolicyClearance.DisplayArticlesForManaging => await this.HasAnyPolicyAsync(UserPolicies.ARTICLE_CREATING,   UserPolicies.ARTICLE_DELETING,   UserPolicies.ARTICLE_EDITING),
+            PolicyClearance.DisplayHomepageForManaging => await this.HasAllPoliciesAsync(UserPolicies.HOMEPAGE_EDITING),
+
+            PolicyClearance.AllowPostsDeleting         => await this.HasAllPoliciesAsync(UserPolicies.BLOG_POST_DELETING),
+            PolicyClearance.AllowArticlesDeleting      => await this.HasAllPoliciesAsync(UserPolicies.ARTICLE_DELETING),
+
+            PolicyClearance.AllowPostsAdding           => await this.HasAllPoliciesAsync(UserPolicies.BLOG_POST_CREATING),
+            PolicyClearance.AllowArticlesAdding        => await this.HasAllPoliciesAsync(UserPolicies.ARTICLE_CREATING),
 
             _ => throw ExceptionMaker.NotImplemented.ForHandling(clearance, nameof(clearance))
         };

@@ -7,7 +7,7 @@
         @Header
     </button>
 </h2>
-<div id="@CollapseId" class="accordion-collapse collapse @CssClassForContent" aria-labelledby="Content" data-bs-parent="#@ParentAccordionId">
+<div id="@CollapseId" class="accordion-collapse collapse @CssClassForContent" aria-labelledby="Content" data-bs-parent="#@ElementContext.AccordionId">
     <div class="accordion-body @ContentClass">
         @Content
     </div>
@@ -25,6 +25,11 @@
 
     #region Parameters
     /// <summary>
+    /// 
+    /// </summary>
+    [CascadingParameter]
+    public AccordionElementContext ElementContext { get; set; }
+    /// <summary>
     /// The header with a button for collapsing and showing the element.
     /// </summary>
     [Parameter]
@@ -40,11 +45,6 @@
     [Parameter]
     public string CollapseId { get; set; }
     /// <summary>
-    /// Used for ARIA markups.
-    /// </summary>
-    [Parameter]
-    public string ParentAccordionId { get; set; }
-    /// <summary>
     /// CSS classes for accordion body.
     /// </summary>
     [Parameter]
@@ -52,9 +52,9 @@
     #endregion
 
     #region Properties
-    private string CssClassForHeader  => showContent ? string.Empty : "collapsed";
-    private string CssClassForContent => showContent ? "show" : string.Empty;
-    private string AriaExpandedOfShowContent => showContent ? "true" : "false";
+    private string CssClassForHeader         => showContent ? string.Empty : "collapsed";
+    private string CssClassForContent        => showContent ? "show"       : string.Empty;
+    private string AriaExpandedOfShowContent => showContent ? "true"       : "false";
     #endregion
 
     #region Init

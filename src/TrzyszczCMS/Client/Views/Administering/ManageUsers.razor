@@ -15,10 +15,10 @@
 
 
 <Accordion Id="MainAccordion">
-    <Elements Context="actx">
+    <Elements>
         @if (displayingUsersAllowed)
         {
-            <AccordionElement Header="Users" ContentClass="@Constants.ACCORDION_CONTENT_CLASS" ParentAccordionId="actx.AccordionId" CollapseId="UserCollapse">
+            <AccordionElement Header="Users" ContentClass="@Constants.ACCORDION_CONTENT_CLASS" CollapseId="UserCollapse">
                 <Content>
                     <nav class="d-flex">
                         <div class="ms-auto">
@@ -65,7 +65,7 @@
             </AccordionElement>
         }
 
-        <AccordionElement Header="Your sessions" ContentClass="@Constants.ACCORDION_CONTENT_CLASS" ParentAccordionId="actx.AccordionId" CollapseId="SessionCollapse">
+        <AccordionElement Header="Your sessions" ContentClass="@Constants.ACCORDION_CONTENT_CLASS" CollapseId="SessionCollapse">
             <Content>
                 <section>
                     <Grid Items="ViewModel.Tokens" MultiSelect="false">
@@ -96,7 +96,7 @@
             </Content>
         </AccordionElement>
 
-        <AccordionElement Header="Security" ContentClass="@Constants.ACCORDION_CONTENT_CLASS" ParentAccordionId="actx.AccordionId" CollapseId="SecurityCollapse">
+        <AccordionElement Header="Security" ContentClass="@Constants.ACCORDION_CONTENT_CLASS" CollapseId="SecurityCollapse">
             <Content>
                 <section>
                     <NavLink class="btn btn-sm btn-danger ms-2 my-2" href="/manage/change-own-password">

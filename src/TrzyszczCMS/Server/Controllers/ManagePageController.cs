@@ -67,16 +67,12 @@ namespace TrzyszczCMS.Server.Controllers
         [Route("[action]")]
         public async Task<ActionResult> AddPage([FromBody][NotNull] DetailedPageInfo request)
         {
-            var pageType = (await this._managePageService.GetDetailedPageInfo(request.Id))?.PageType;
-            if (!pageType.HasValue)
-            {
-                throw ExceptionMaker.Argument.Unsupported(request.Id, $"{nameof(request)}.{nameof(request.Id)}");
-            }
-            var policyName = pageType.Value.GetUserPolicyName(PageOperationType.Creating);
+            var pageType = request.PageType;
+            var policyName = pageType.GetUserPolicyName(PageOperationType.Creating);
 
             return HttpContext.HasUserPolicy(policyName) ?
                 (await this._managePageService.AddPageAsync(request) ? this.ObjectCreated() : Conflict("Some invalid data specified.")) :
-                Forbid($"You have no permission to update the {pageType.Value.ToString().ToLower()}.");
+                Forbid($"You have no permission to update the {pageType.ToString().ToLower()}.");
         }
 
         [HttpPost]

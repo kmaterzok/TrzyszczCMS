@@ -7,6 +7,7 @@
     {
         NotFound,
         DeletingForbidden,
-        DeletingOwnStuff
+        DeletingOwnStuff,
+        DeletingRequiredStuff
     }
 }

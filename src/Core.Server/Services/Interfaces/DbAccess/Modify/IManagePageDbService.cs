@@ -1,4 +1,5 @@
-﻿using Core.Shared.Enums;
+﻿using Core.Server.Models.Enums;
+using Core.Shared.Enums;
 using Core.Shared.Models;
 using Core.Shared.Models.ManagePage;
 using System.Collections.Generic;
@@ -50,7 +51,7 @@ namespace Core.Server.Services.Interfaces.DbAccess.Modify
         /// </summary>
         /// <param name="pageIds">IDs of the deleted pages</param>
         /// <returns>Task returning if the deletion was successful</returns>
-        Task<bool> DeletePagesAsync(IEnumerable<int> pageIds);
+        Task<DeleteRowFailReason?> DeletePagesAsync(IEnumerable<int> pageIds);
         /// <summary>
         /// Check if all sites represented by their IDs in <paramref name="pageIds"/> are of type <paramref name="expectedPageType"/>.
         /// </summary>

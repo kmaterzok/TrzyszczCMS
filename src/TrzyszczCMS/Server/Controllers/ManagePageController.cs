@@ -1,4 +1,5 @@
-﻿using Core.Server.Services.Interfaces.DbAccess.Modify;
+﻿using Core.Server.Models.Enums;
+using Core.Server.Services.Interfaces.DbAccess.Modify;
 using Core.Shared.Enums;
 using Core.Shared.Helpers;
 using Core.Shared.Models;
@@ -105,20 +106,29 @@ namespace TrzyszczCMS.Server.Controllers
             var pageCheckForArticles = await this._managePageService.AreAllPagesOfTypeAsync(PageType.Article, pageIds);
             var pageCheckForPosts    = await this._managePageService.AreAllPagesOfTypeAsync(PageType.Post,    pageIds);
 
-            if (!pageCheckForArticles && pageCheckForPosts)
+            return (pageCheckForArticles, pageCheckForPosts) switch
             {
-                return HttpContext.HasUserPolicy(UserPolicies.BLOG_POST_DELETING) ?
-                    (await this._managePageService.DeletePagesAsync(pageIds) ? Ok() : NotFound()) :
-                    Forbid("You have no permission to delete any post.");
-            }
-            else if (pageCheckForArticles && !pageCheckForPosts)
-            {
-                return HttpContext.HasUserPolicy(UserPolicies.ARTICLE_DELETING) ?
-                    (await this._managePageService.DeletePagesAsync(pageIds) ? Ok() : NotFound()) :
-                    Forbid("You have no permission to delete any article.");
-            }
-            return Conflict("The deleted pages must be of one specific type - article or post.");
+                (false, true) => HttpContext.HasUserPolicy(UserPolicies.BLOG_POST_DELETING) ?
+                    this.ResolvePageDeletingVerdict(await this._managePageService.DeletePagesAsync(pageIds)) :
+                    Forbid("You have no permission to delete any post."),
+
+                (true, false) => HttpContext.HasUserPolicy(UserPolicies.ARTICLE_DELETING) ?
+                    this.ResolvePageDeletingVerdict(await this._managePageService.DeletePagesAsync(pageIds)) :
+                    Forbid("You have no permission to delete any article."),
+
+                _ => Conflict("The deleted pages must be of one specific type - article or post.")
+            };
         }
+        #endregion
+
+        #region Helper methods
+        private ActionResult ResolvePageDeletingVerdict(DeleteRowFailReason? reason) => reason switch
+        {
+            null => Ok(),
+            DeleteRowFailReason.NotFound => NotFound(),
+            DeleteRowFailReason.DeletingRequiredStuff => Conflict("Deleting the required page is not possible."),
+            _ => throw ExceptionMaker.Argument.Unsupported(reason, nameof(reason))
+        };
         #endregion
     }
 }

@@ -1,6 +1,7 @@
 ﻿using Core.Server.Helpers;
 using Core.Server.Helpers.Extensions;
 using Core.Server.Models;
+using Core.Server.Models.Enums;
 using Core.Server.Models.Extensions;
 using Core.Server.Services.Interfaces.DbAccess.Modify;
 using Core.Shared.Enums;
@@ -123,11 +124,11 @@ namespace Core.Server.Services.Implementation.DbAccess.Modify
 
         public async Task<bool> AddPageAsync(DetailedPageInfo page)
         {
-            if (!RegexHelper.IsValidPageUriName(page.UriName))
+            if (!RegexHelper.IsValidPageUriName(page.UriName) ||
+                page.PageType == PageType.HomePage)
             {
                 return false;
             }
-            // TODO: Check if a second homepage is not added.
 
             using (var ctx = _databaseStrategy.GetContext())
             {
@@ -209,23 +210,26 @@ namespace Core.Server.Services.Implementation.DbAccess.Modify
             }
         }
 
-        public async Task<bool> DeletePagesAsync(IEnumerable<int> pageIds)
+        public async Task<DeleteRowFailReason?> DeletePagesAsync(IEnumerable<int> pageIds)
         {
             using (var ctx = _databaseStrategy.GetContext())
             {
                 using (var ts = await ctx.Database.BeginTransactionAsync())
                 {
-                    // TODO: Check if homepage is not deleted.
                     var removedOnes = ctx.ContPages.Where(i => pageIds.Contains(i.Id));
                     if (await removedOnes.CountAsync() != pageIds.Count())
                     {
-                        return false;
+                        return DeleteRowFailReason.NotFound;
+                    }
+                    if (await removedOnes.AnyAsync(i => i.Type == (short)PageType.HomePage))
+                    {
+                        return DeleteRowFailReason.DeletingRequiredStuff;
                     }
                     ctx.ContPages.RemoveRange(removedOnes);
 
                     await ctx.SaveChangesAsync();
                     await ts.CommitAsync();
-                    return true;
+                    return null;
                 }
             }
         }

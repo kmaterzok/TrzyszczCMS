@@ -215,7 +215,6 @@ namespace TrzyszczCMS.Client.Other.MarkDown
             {
                 var rightAsterisks = (byte)MarkDownCode.Substring(range.End, testedCount).Count(i => i == '*');
                 var leftAsterisks = (byte)MarkDownCode.Substring(range.Start - testedCount, testedCount).Count(i => i == '*');
-                // TODO: Implement backward substring.
 
                 if (leftAsterisks == rightAsterisks)
                 {

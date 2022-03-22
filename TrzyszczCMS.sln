@@ -10,7 +10,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Core.Infrastructure", "src\
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TrzyszczCMS.Tests", "tests\TrzyszczCMS.Tests\TrzyszczCMS.Tests.csproj", "{7F61B344-8FCD-4B31-9D72-9898147684FF}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SolutionFolder", "SolutionFolder", "{4E4D8AA4-072B-49B5-8BB1-491A8B101A00}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Miscellaneous", "Miscellaneous", "{4E4D8AA4-072B-49B5-8BB1-491A8B101A00}"
 	ProjectSection(SolutionItems) = preProject
 		ADVICES.md = ADVICES.md
 		LICENSE.md = LICENSE.md

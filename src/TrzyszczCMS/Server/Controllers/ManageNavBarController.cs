@@ -1,6 +1,6 @@
-﻿using Core.Server.Services.Interfaces.DbAccess.Modify;
-using Core.Shared.Models.ManageSettings;
-using DAL.Shared.Data;
+﻿using TrzyszczCMS.Core.Server.Services.Interfaces.DbAccess.Modify;
+using TrzyszczCMS.Core.Shared.Models.ManageSettings;
+using TrzyszczCMS.Core.Infrastructure.Shared.Data;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;

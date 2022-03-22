@@ -1,13 +1,11 @@
 ﻿using NUnit.Framework;
-using Core.Application.Helpers;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
-using Core.Shared.Models;
+using TrzyszczCMS.Core.Shared.Models;
 
-namespace Core.Application.Helpers.Tests
+namespace TrzyszczCMS.Core.Application.Helpers.Tests
 {
     [TestFixture()]
     public class PageFetcherTests

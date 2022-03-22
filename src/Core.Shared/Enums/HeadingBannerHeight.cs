@@ -1,4 +1,4 @@
-﻿namespace Core.Shared.Enums
+﻿namespace TrzyszczCMS.Core.Shared.Enums
 {
     /// <summary>
     /// It determines the percentage viewport height of the banner.

@@ -1,5 +1,5 @@
-﻿using Core.Application.Services.Interfaces;
-using Core.Shared.Models;
+﻿using TrzyszczCMS.Core.Application.Services.Interfaces;
+using TrzyszczCMS.Core.Shared.Models;
 using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;

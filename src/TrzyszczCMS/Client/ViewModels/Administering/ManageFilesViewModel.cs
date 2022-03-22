@@ -1,10 +1,10 @@
-﻿using Core.Application.Helpers;
-using Core.Application.Helpers.Interfaces;
-using Core.Application.Services.Interfaces.Rest;
-using Core.Shared.Enums;
-using Core.Shared.Helpers.Extensions;
-using Core.Shared.Models;
-using Core.Shared.Models.ManageFiles;
+﻿using TrzyszczCMS.Core.Application.Helpers;
+using TrzyszczCMS.Core.Application.Helpers.Interfaces;
+using TrzyszczCMS.Core.Application.Services.Interfaces.Rest;
+using TrzyszczCMS.Core.Shared.Enums;
+using TrzyszczCMS.Core.Shared.Helpers.Extensions;
+using TrzyszczCMS.Core.Shared.Models;
+using TrzyszczCMS.Core.Shared.Models.ManageFiles;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Forms;
 using System;

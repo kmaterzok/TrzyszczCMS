@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Core.Shared.Models.ManageFiles
+namespace TrzyszczCMS.Core.Shared.Models.ManageFiles
 {
     /// <summary>
     /// The basic inforomation about an uploaded file or a logical directory.

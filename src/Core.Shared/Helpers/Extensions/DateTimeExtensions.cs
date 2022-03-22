@@ -1,7 +1,7 @@
-﻿using Core.Shared.Models;
+﻿using TrzyszczCMS.Core.Shared.Models;
 using System;
 
-namespace Core.Shared.Helpers.Extensions
+namespace TrzyszczCMS.Core.Shared.Helpers.Extensions
 {
     /// <summary>
     /// The class providing simplifying methods for <see cref="DateTime"/> usage.

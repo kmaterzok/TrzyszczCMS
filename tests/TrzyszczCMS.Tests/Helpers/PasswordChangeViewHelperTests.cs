@@ -1,5 +1,5 @@
 ﻿using NUnit.Framework;
-using Core.Shared.Enums;
+using TrzyszczCMS.Core.Shared.Enums;
 
 namespace TrzyszczCMS.Client.Helpers.Tests
 {

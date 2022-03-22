@@ -1,8 +1,8 @@
-﻿using Core.Server.Services.Interfaces.DbAccess.Read;
-using Core.Shared.Enums;
-using Core.Shared.Models;
-using Core.Shared.Models.LoadPage;
-using Core.Shared.Models.Rest.Responses.PageContent;
+﻿using TrzyszczCMS.Core.Server.Services.Interfaces.DbAccess.Read;
+using TrzyszczCMS.Core.Shared.Enums;
+using TrzyszczCMS.Core.Shared.Models;
+using TrzyszczCMS.Core.Shared.Models.LoadPage;
+using TrzyszczCMS.Core.Shared.Models.Rest.Responses.PageContent;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 

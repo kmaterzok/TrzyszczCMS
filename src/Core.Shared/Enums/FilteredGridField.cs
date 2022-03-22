@@ -1,4 +1,4 @@
-﻿namespace Core.Shared.Enums
+﻿namespace TrzyszczCMS.Core.Shared.Enums
 {
     /// <summary>
     /// Contains all grids' field names that can be used for filtering content.

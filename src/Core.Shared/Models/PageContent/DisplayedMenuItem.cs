@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace Core.Shared.Models.PageContent
+namespace TrzyszczCMS.Core.Shared.Models.PageContent
 {
     /// <summary>
     /// The most basic info of menu item used during presenting a page.

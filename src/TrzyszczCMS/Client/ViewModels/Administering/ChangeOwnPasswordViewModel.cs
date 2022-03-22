@@ -1,4 +1,4 @@
-﻿using Core.Application.Services.Interfaces.Rest;
+﻿using TrzyszczCMS.Core.Application.Services.Interfaces.Rest;
 using System;
 using System.Collections.Generic;
 using System.Linq;

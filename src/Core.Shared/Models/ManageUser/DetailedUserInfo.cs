@@ -2,7 +2,7 @@
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 
-namespace Core.Shared.Models.ManageUser
+namespace TrzyszczCMS.Core.Shared.Models.ManageUser
 {
     /// <summary>
     /// All necessary info for managing and editing.

@@ -1,6 +1,6 @@
 ﻿using System.Threading.Tasks;
 
-namespace Core.Server.Services.Interfaces.DbAccess
+namespace TrzyszczCMS.Core.Server.Services.Interfaces.DbAccess
 {
     /// <summary>
     /// Interface for service that repetitively

@@ -1,4 +1,4 @@
-﻿using Core.Shared.Enums;
+﻿using TrzyszczCMS.Core.Shared.Enums;
 using Microsoft.AspNetCore.Components;
 using System;
 using System.Diagnostics.CodeAnalysis;

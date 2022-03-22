@@ -1,8 +1,8 @@
-﻿using DAL.Shared.Data;
+﻿using TrzyszczCMS.Core.Infrastructure.Shared.Data;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace Core.Shared.Helpers.Extensions
+namespace TrzyszczCMS.Core.Shared.Helpers.Extensions
 {
     /// <summary>
     /// The extension methods for easy

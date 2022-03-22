@@ -2,7 +2,7 @@
 using System.Security.Cryptography;
 using System.Text;
 
-namespace Core.Server.Helpers
+namespace TrzyszczCMS.Core.Server.Helpers
 {
     /// <summary>
     /// The class containing cryptographic helper methods

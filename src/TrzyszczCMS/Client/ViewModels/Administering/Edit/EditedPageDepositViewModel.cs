@@ -1,9 +1,9 @@
-﻿using Core.Application.Enums;
-using Core.Application.Models.Deposits;
-using Core.Application.Services.Interfaces.Rest;
-using Core.Shared.Enums;
-using Core.Shared.Models.ManagePage;
-using Core.Shared.Models.PageContent;
+﻿using TrzyszczCMS.Core.Application.Enums;
+using TrzyszczCMS.Core.Application.Models.Deposits;
+using TrzyszczCMS.Core.Application.Services.Interfaces.Rest;
+using TrzyszczCMS.Core.Shared.Enums;
+using TrzyszczCMS.Core.Shared.Models.ManagePage;
+using TrzyszczCMS.Core.Shared.Models.PageContent;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;

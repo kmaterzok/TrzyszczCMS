@@ -1,8 +1,8 @@
 ﻿using NUnit.Framework;
-using Core.Server.Models.Settings;
+using TrzyszczCMS.Core.Server.Models.Settings;
 using Microsoft.Extensions.Options;
 
-namespace Core.Server.Services.Implementation.Tests
+namespace TrzyszczCMS.Core.Server.Services.Implementation.Tests
 {
     public class CryptoServiceTests
     {

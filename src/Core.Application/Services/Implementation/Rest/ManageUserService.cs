@@ -1,11 +1,11 @@
-﻿using Core.Application.Helpers.Extensions;
-using Core.Application.Models;
-using Core.Application.Services.Interfaces.Rest;
-using Core.Shared.Enums;
-using Core.Shared.Helpers;
-using Core.Shared.Models;
-using Core.Shared.Models.ManageUser;
-using Core.Shared.Models.Rest.Requests.ManageUsers;
+﻿using TrzyszczCMS.Core.Application.Helpers.Extensions;
+using TrzyszczCMS.Core.Application.Models;
+using TrzyszczCMS.Core.Application.Services.Interfaces.Rest;
+using TrzyszczCMS.Core.Shared.Enums;
+using TrzyszczCMS.Core.Shared.Helpers;
+using TrzyszczCMS.Core.Shared.Models;
+using TrzyszczCMS.Core.Shared.Models.ManageUser;
+using TrzyszczCMS.Core.Shared.Models.Rest.Requests.ManageUsers;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
@@ -13,7 +13,7 @@ using System.Net.Http;
 using System.Net.Http.Json;
 using System.Threading.Tasks;
 
-namespace Core.Application.Services.Implementation.Rest
+namespace TrzyszczCMS.Core.Application.Services.Implementation.Rest
 {
     public class ManageUserService : IManageUserService
     {

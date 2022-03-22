@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.31624.102
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DAL", "src\DAL\DAL.csproj", "{8F13A407-6237-40F5-9E68-D06C3F478FE6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Core.Infrastructure", "src\Core.Infrastructure\Core.Infrastructure.csproj", "{8F13A407-6237-40F5-9E68-D06C3F478FE6}"
 	ProjectSection(ProjectDependencies) = postProject
 		{F8EFA456-C8D8-45A3-B0A2-508C7265701E} = {F8EFA456-C8D8-45A3-B0A2-508C7265701E}
 	EndProjectSection
@@ -30,7 +30,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TrzyszczCMS.Client", "src\T
 		{F8EFA456-C8D8-45A3-B0A2-508C7265701E} = {F8EFA456-C8D8-45A3-B0A2-508C7265701E}
 	EndProjectSection
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DAL.Shared", "src\DAL.Shared\DAL.Shared.csproj", "{F8EFA456-C8D8-45A3-B0A2-508C7265701E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Core.Infrastructure.Shared", "src\Core.Infrastructure.Shared\Core.Infrastructure.Shared.csproj", "{F8EFA456-C8D8-45A3-B0A2-508C7265701E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

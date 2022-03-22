@@ -1,4 +1,4 @@
-﻿namespace Core.Shared.Models
+﻿namespace TrzyszczCMS.Core.Shared.Models
 {
     /// <summary>
     /// A simple struct for storing ranges of values for comparison or return.

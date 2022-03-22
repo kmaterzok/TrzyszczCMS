@@ -1,6 +1,6 @@
-﻿using Core.Shared.Models.Auth;
+﻿using TrzyszczCMS.Core.Shared.Models.Auth;
 
-namespace Core.Shared.Models.Rest.Responses.Auth
+namespace TrzyszczCMS.Core.Shared.Models.Rest.Responses.Auth
 {
     /// <summary>
     /// The response class for <see cref="Requests.GenerateAuthDataRequest"/>

@@ -1,7 +1,7 @@
-﻿using Core.Server.Models.Crypto;
-using Core.Server.Models.Settings;
+﻿using TrzyszczCMS.Core.Server.Models.Crypto;
+using TrzyszczCMS.Core.Server.Models.Settings;
 
-namespace Core.Server.Services.Interfaces
+namespace TrzyszczCMS.Core.Server.Services.Interfaces
 {
     /// <summary>
     /// The interface for instances providing cryptographic functions and handling in the backend.

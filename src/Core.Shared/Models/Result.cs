@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Diagnostics.CodeAnalysis;
 
-namespace Core.Shared.Models
+namespace TrzyszczCMS.Core.Shared.Models
 {
     /// <summary>
     /// The result of executing an operation

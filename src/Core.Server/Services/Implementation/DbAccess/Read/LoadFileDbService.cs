@@ -1,11 +1,11 @@
-﻿using Core.Server.Services.Interfaces.DbAccess.Read;
-using DAL.Enums;
-using DAL.Helpers.Interfaces;
+﻿using TrzyszczCMS.Core.Server.Services.Interfaces.DbAccess.Read;
+using TrzyszczCMS.Core.Infrastructure.Enums;
+using TrzyszczCMS.Core.Infrastructure.Helpers.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Threading.Tasks;
 
-namespace Core.Server.Services.Implementation.DbAccess.Read
+namespace TrzyszczCMS.Core.Server.Services.Implementation.DbAccess.Read
 {
     public class LoadFileDbService : ILoadFileDbService
     {

@@ -1,8 +1,8 @@
 using Blazored.LocalStorage;
 using Blazored.SessionStorage;
-using Core.Application.Services.Implementation.Rest;
-using Core.Application.Services.Interfaces;
-using Core.Application.Services.Interfaces.Rest;
+using TrzyszczCMS.Core.Application.Services.Implementation.Rest;
+using TrzyszczCMS.Core.Application.Services.Interfaces;
+using TrzyszczCMS.Core.Application.Services.Interfaces.Rest;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -19,7 +19,7 @@ using TrzyszczCMS.Client.ViewModels.SignIn;
 using TrzyszczCMS.Client.ViewModels.PageContent;
 using TrzyszczCMS.Client.ViewModels.Administering.Edit;
 using TextCopy;
-using Core.Shared.Helpers.Extensions;
+using TrzyszczCMS.Core.Shared.Helpers.Extensions;
 
 namespace TrzyszczCMS.Client
 {

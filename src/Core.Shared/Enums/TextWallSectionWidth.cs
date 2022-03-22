@@ -1,4 +1,4 @@
-﻿namespace Core.Shared.Enums
+﻿namespace TrzyszczCMS.Core.Shared.Enums
 {
     /// <summary>
     /// Max width of displayed text on the screen in pixels.

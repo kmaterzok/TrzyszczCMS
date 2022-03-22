@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace Core.Shared.Models
+namespace TrzyszczCMS.Core.Shared.Models
 {
     /// <summary>
     /// Paginated portion of data  to process.

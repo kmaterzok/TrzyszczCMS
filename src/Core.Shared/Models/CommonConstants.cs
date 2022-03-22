@@ -1,4 +1,4 @@
-﻿namespace Core.Shared.Models
+﻿namespace TrzyszczCMS.Core.Shared.Models
 {
     /// <summary>
     /// Constants used in backend and frontend.

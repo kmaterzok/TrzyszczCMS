@@ -1,9 +1,9 @@
-﻿using Core.Shared.Enums;
-using Core.Shared.Models.PageContent;
+﻿using TrzyszczCMS.Core.Shared.Enums;
+using TrzyszczCMS.Core.Shared.Models.PageContent;
 using System;
 using System.Collections.Generic;
 
-namespace Core.Shared.Models.ManagePage
+namespace TrzyszczCMS.Core.Shared.Models.ManagePage
 {
     /// <summary>
     /// All necessary info for managing and editing

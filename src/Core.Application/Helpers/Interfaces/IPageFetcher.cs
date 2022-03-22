@@ -1,7 +1,7 @@
-﻿using Core.Shared.Models;
+﻿using TrzyszczCMS.Core.Shared.Models;
 using System.Threading.Tasks;
 
-namespace Core.Application.Helpers.Interfaces
+namespace TrzyszczCMS.Core.Application.Helpers.Interfaces
 {
     /// <summary>
     /// Interface of abstraction for getting paginated data.

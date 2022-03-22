@@ -1,7 +1,7 @@
-﻿using Core.Shared.Exceptions;
+﻿using TrzyszczCMS.Core.Shared.Exceptions;
 using System;
 
-namespace Core.Shared.Helpers
+namespace TrzyszczCMS.Core.Shared.Helpers
 {
     /// <summary>
     /// Class preparing and throwing Exceptions with specified messages and info.

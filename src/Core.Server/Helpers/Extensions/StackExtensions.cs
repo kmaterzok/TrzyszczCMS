@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace Core.Server.Helpers.Extensions
+namespace TrzyszczCMS.Core.Server.Helpers.Extensions
 {
     /// <summary>
     /// The extension methods easing writing code and usage of structures.

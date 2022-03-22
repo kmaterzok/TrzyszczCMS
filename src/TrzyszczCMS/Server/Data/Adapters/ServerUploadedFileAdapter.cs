@@ -1,4 +1,4 @@
-﻿using Core.Server.Models.Adapters;
+﻿using TrzyszczCMS.Core.Server.Models.Adapters;
 using Microsoft.AspNetCore.Http;
 using System.IO;
 

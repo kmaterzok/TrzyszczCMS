@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using TrzyszczCMS.Client.Data;
-using Core.Shared.Models.Auth;
-using Core.Application.Services.Interfaces.Rest;
-using Core.Application.Services.Interfaces;
-using Core.Shared.Helpers;
+using TrzyszczCMS.Core.Shared.Models.Auth;
+using TrzyszczCMS.Core.Application.Services.Interfaces.Rest;
+using TrzyszczCMS.Core.Application.Services.Interfaces;
+using TrzyszczCMS.Core.Shared.Helpers;
 
 namespace TrzyszczCMS.Client.Other
 {

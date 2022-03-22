@@ -1,5 +1,5 @@
-﻿using Core.Server.Services.Interfaces;
-using Core.Server.Services.Interfaces.DbAccess.Read;
+﻿using TrzyszczCMS.Core.Server.Services.Interfaces;
+using TrzyszczCMS.Core.Server.Services.Interfaces.DbAccess.Read;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.IO;

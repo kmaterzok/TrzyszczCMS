@@ -1,5 +1,5 @@
-﻿using Core.Shared.Enums;
-using Core.Shared.Models.PageContent;
+﻿using TrzyszczCMS.Core.Shared.Enums;
+using TrzyszczCMS.Core.Shared.Models.PageContent;
 using System.Text;
 using TrzyszczCMS.Client.Data.Enums.Extensions;
 using TrzyszczCMS.Client.Helpers;

@@ -1,7 +1,7 @@
-﻿using Core.Application.Enums;
-using Core.Shared.Models.ManagePage;
+﻿using TrzyszczCMS.Core.Application.Enums;
+using TrzyszczCMS.Core.Shared.Models.ManagePage;
 
-namespace Core.Application.Models.Deposits
+namespace TrzyszczCMS.Core.Application.Models.Deposits
 {
     /// <summary>
     /// Message for depository and further processing during editing pages.

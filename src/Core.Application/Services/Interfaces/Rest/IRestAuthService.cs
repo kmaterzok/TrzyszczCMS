@@ -1,7 +1,7 @@
-﻿using Core.Shared.Models.Auth;
+﻿using TrzyszczCMS.Core.Shared.Models.Auth;
 using System.Threading.Tasks;
 
-namespace Core.Application.Services.Interfaces.Rest
+namespace TrzyszczCMS.Core.Application.Services.Interfaces.Rest
 {
     /// <summary>
     /// It provides basic authentication and authorisation

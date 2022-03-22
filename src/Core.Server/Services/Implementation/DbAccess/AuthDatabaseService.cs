@@ -1,10 +1,10 @@
-﻿using Core.Server.Models;
-using Core.Server.Services.Interfaces;
-using Core.Server.Services.Interfaces.DbAccess;
-using Core.Shared.Models.Auth;
-using DAL.Enums;
-using DAL.Helpers.Interfaces;
-using DAL.Models.Database;
+﻿using TrzyszczCMS.Core.Server.Models;
+using TrzyszczCMS.Core.Server.Services.Interfaces;
+using TrzyszczCMS.Core.Server.Services.Interfaces.DbAccess;
+using TrzyszczCMS.Core.Shared.Models.Auth;
+using TrzyszczCMS.Core.Infrastructure.Enums;
+using TrzyszczCMS.Core.Infrastructure.Helpers.Interfaces;
+using TrzyszczCMS.Core.Infrastructure.Models.Database;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -12,7 +12,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Core.Server.Services.Implementations.DbAccess
+namespace TrzyszczCMS.Core.Server.Services.Implementations.DbAccess
 {
     public class AuthDatabaseService : IAuthDatabaseService
     {

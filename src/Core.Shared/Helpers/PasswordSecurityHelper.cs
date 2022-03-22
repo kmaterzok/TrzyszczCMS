@@ -1,8 +1,8 @@
-﻿using Core.Shared.Enums;
-using Core.Shared.Models;
+﻿using TrzyszczCMS.Core.Shared.Enums;
+using TrzyszczCMS.Core.Shared.Models;
 using System.Linq;
 
-namespace Core.Shared.Helpers
+namespace TrzyszczCMS.Core.Shared.Helpers
 {
     /// <summary>
     /// The helper that lets check passwords for various criteria.

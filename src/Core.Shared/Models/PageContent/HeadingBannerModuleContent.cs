@@ -1,8 +1,8 @@
-﻿using Core.Shared.Enums;
+﻿using TrzyszczCMS.Core.Shared.Enums;
 using System;
 using System.Collections.Generic;
 
-namespace Core.Shared.Models.PageContent
+namespace TrzyszczCMS.Core.Shared.Models.PageContent
 {
     /// <summary>
     /// The class of a heading banner's content and properties.

@@ -1,6 +1,6 @@
-﻿using Core.Shared.Models;
-using Core.Shared.Models.ManageFiles;
-using DAL.Shared.Data;
+﻿using TrzyszczCMS.Core.Shared.Models;
+using TrzyszczCMS.Core.Shared.Models.ManageFiles;
+using TrzyszczCMS.Core.Infrastructure.Shared.Data;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Forms;
 using System;

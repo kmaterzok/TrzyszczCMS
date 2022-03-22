@@ -1,4 +1,4 @@
-﻿namespace Core.Application.Models
+﻿namespace TrzyszczCMS.Core.Application.Models
 {
     /// <summary>
     /// Constants used in the containing library.

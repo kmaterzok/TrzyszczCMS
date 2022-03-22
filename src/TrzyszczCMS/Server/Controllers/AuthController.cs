@@ -1,6 +1,6 @@
-﻿using Core.Server.Services.Interfaces.DbAccess;
-using Core.Shared.Models.Rest.Requests.Auth;
-using Core.Shared.Models.Rest.Responses.Auth;
+﻿using TrzyszczCMS.Core.Server.Services.Interfaces.DbAccess;
+using TrzyszczCMS.Core.Shared.Models.Rest.Requests.Auth;
+using TrzyszczCMS.Core.Shared.Models.Rest.Responses.Auth;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;

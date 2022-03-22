@@ -1,9 +1,9 @@
-﻿using Core.Application.Helpers;
-using Core.Application.Helpers.Interfaces;
-using Core.Application.Services.Interfaces.Rest;
-using Core.Shared.Enums;
-using Core.Shared.Models;
-using Core.Shared.Models.ManagePage;
+﻿using TrzyszczCMS.Core.Application.Helpers;
+using TrzyszczCMS.Core.Application.Helpers.Interfaces;
+using TrzyszczCMS.Core.Application.Services.Interfaces.Rest;
+using TrzyszczCMS.Core.Shared.Enums;
+using TrzyszczCMS.Core.Shared.Models;
+using TrzyszczCMS.Core.Shared.Models.ManagePage;
 using Microsoft.AspNetCore.Components;
 using System;
 using System.Collections.Generic;
@@ -13,12 +13,12 @@ using TrzyszczCMS.Client.Data.Model;
 using TrzyszczCMS.Client.Data.Model.Extensions;
 using TrzyszczCMS.Client.ViewModels.Shared;
 using TrzyszczCMS.Client.Views.Administering;
-using Core.Shared.Helpers.Extensions;
-using Core.Application.Models.Deposits;
-using Core.Application.Enums;
+using TrzyszczCMS.Core.Shared.Helpers.Extensions;
+using TrzyszczCMS.Core.Application.Models.Deposits;
+using TrzyszczCMS.Core.Application.Enums;
 using TrzyszczCMS.Client.Services.Interfaces;
 using TrzyszczCMS.Client.Helpers;
-using Core.Shared.Helpers;
+using TrzyszczCMS.Core.Shared.Helpers;
 
 namespace TrzyszczCMS.Client.ViewModels.Administering
 {

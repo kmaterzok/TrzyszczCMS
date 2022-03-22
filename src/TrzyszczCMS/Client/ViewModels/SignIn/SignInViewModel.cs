@@ -1,4 +1,4 @@
-﻿using Core.Application.Helpers;
+﻿using TrzyszczCMS.Core.Application.Helpers;
 using System;
 using System.Threading.Tasks;
 using TrzyszczCMS.Client.Services.Interfaces;

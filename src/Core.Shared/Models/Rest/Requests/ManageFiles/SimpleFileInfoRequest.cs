@@ -1,7 +1,7 @@
-﻿using Core.Shared.Enums;
+﻿using TrzyszczCMS.Core.Shared.Enums;
 using System.Collections.Generic;
 
-namespace Core.Shared.Models.Rest.Requests.ManageFiles
+namespace TrzyszczCMS.Core.Shared.Models.Rest.Requests.ManageFiles
 {
     public class SimpleFileInfoRequest
     {

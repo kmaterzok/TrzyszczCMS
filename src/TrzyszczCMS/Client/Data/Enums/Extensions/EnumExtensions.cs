@@ -1,6 +1,6 @@
-﻿using Core.Application.Enums;
-using Core.Shared.Enums;
-using Core.Shared.Helpers;
+﻿using TrzyszczCMS.Core.Application.Enums;
+using TrzyszczCMS.Core.Shared.Enums;
+using TrzyszczCMS.Core.Shared.Helpers;
 using System;
 using System.Linq;
 

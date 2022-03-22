@@ -1,6 +1,6 @@
 ﻿using System.Text.RegularExpressions;
 
-namespace Core.Application.Helpers
+namespace TrzyszczCMS.Core.Application.Helpers
 {
     /// <summary>
     /// Helper methods for sanitising and verifying content.

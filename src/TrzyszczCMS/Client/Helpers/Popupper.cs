@@ -1,5 +1,5 @@
-﻿using Core.Shared.Helpers;
-using Core.Shared.Models;
+﻿using TrzyszczCMS.Core.Shared.Helpers;
+using TrzyszczCMS.Core.Shared.Models;
 using Microsoft.AspNetCore.Components;
 using System;
 using TrzyszczCMS.Client.Data.Enums;

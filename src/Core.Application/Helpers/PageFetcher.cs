@@ -1,9 +1,9 @@
-﻿using Core.Application.Helpers.Interfaces;
-using Core.Shared.Models;
+﻿using TrzyszczCMS.Core.Application.Helpers.Interfaces;
+using TrzyszczCMS.Core.Shared.Models;
 using System;
 using System.Threading.Tasks;
 
-namespace Core.Application.Helpers
+namespace TrzyszczCMS.Core.Application.Helpers
 {
     /// <summary>
     /// Delegate for getting page of data for a given page number.

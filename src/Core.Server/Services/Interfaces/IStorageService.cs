@@ -1,10 +1,10 @@
-﻿using Core.Server.Models.Adapters;
-using Core.Shared.Models;
+﻿using TrzyszczCMS.Core.Server.Models.Adapters;
+using TrzyszczCMS.Core.Shared.Models;
 using System;
 using System.Collections.Generic;
 using System.IO;
 
-namespace Core.Server.Services.Interfaces
+namespace TrzyszczCMS.Core.Server.Services.Interfaces
 {
     /// <summary>
     /// The service interface for getting contents of files.

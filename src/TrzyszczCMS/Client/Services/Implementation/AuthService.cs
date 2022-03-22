@@ -1,14 +1,14 @@
-﻿using Core.Application.Services.Interfaces;
-using Core.Application.Services.Interfaces.Rest;
+﻿using TrzyszczCMS.Core.Application.Services.Interfaces;
+using TrzyszczCMS.Core.Application.Services.Interfaces.Rest;
 using TrzyszczCMS.Client.Services.Interfaces;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Components.Authorization;
 using TrzyszczCMS.Client.Other;
 using Microsoft.AspNetCore.Authorization;
 using TrzyszczCMS.Client.Data.Enums;
-using Core.Shared.Helpers;
+using TrzyszczCMS.Core.Shared.Helpers;
 using System;
-using DAL.Shared.Data;
+using TrzyszczCMS.Core.Infrastructure.Shared.Data;
 
 namespace TrzyszczCMS.Client.Services.Implementation
 {

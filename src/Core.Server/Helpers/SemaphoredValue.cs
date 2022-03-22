@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Threading;
 
-namespace Core.Server.Helpers
+namespace TrzyszczCMS.Core.Server.Helpers
 {
     /// <summary>
     /// The class that lets accessing a value in a synchronous way.

@@ -1,4 +1,4 @@
-﻿namespace Core.Shared.Helpers.Extensions
+﻿namespace TrzyszczCMS.Core.Shared.Helpers.Extensions
 {
     /// <summary>
     /// The class of methods extending <see cref="string"/> functionalities.

@@ -1,4 +1,4 @@
-﻿namespace Core.Server.Models.Settings
+﻿namespace TrzyszczCMS.Core.Server.Models.Settings
 {
     /// <summary>
     /// The configuration for file storage.

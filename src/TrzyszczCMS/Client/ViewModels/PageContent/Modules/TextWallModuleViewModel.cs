@@ -1,4 +1,4 @@
-﻿using Core.Shared.Models.PageContent;
+﻿using TrzyszczCMS.Core.Shared.Models.PageContent;
 using TrzyszczCMS.Client.ViewModels.Shared;
 
 namespace TrzyszczCMS.Client.ViewModels.PageContent.Modules

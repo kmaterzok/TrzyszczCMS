@@ -1,4 +1,4 @@
-﻿namespace Core.Server.Models
+﻿namespace TrzyszczCMS.Core.Server.Models
 {
     /// <summary>
     /// The class holding cosnatns for usage in the project.

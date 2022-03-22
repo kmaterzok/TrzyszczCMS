@@ -1,4 +1,4 @@
-﻿using Core.Shared.Models;
+﻿using TrzyszczCMS.Core.Shared.Models;
 using Microsoft.AspNetCore.Components;
 using System;
 using System.Threading.Tasks;

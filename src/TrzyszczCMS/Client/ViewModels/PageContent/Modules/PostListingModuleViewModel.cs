@@ -1,7 +1,7 @@
-﻿using Core.Application.Helpers.Interfaces;
-using Core.Application.Services.Interfaces.Rest;
-using Core.Shared.Models.LoadPage;
-using Core.Shared.Models.PageContent;
+﻿using TrzyszczCMS.Core.Application.Helpers.Interfaces;
+using TrzyszczCMS.Core.Application.Services.Interfaces.Rest;
+using TrzyszczCMS.Core.Shared.Models.LoadPage;
+using TrzyszczCMS.Core.Shared.Models.PageContent;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using TrzyszczCMS.Client.Helpers;

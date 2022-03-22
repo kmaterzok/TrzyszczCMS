@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
 
-namespace Core.Server.Services.Interfaces.DbAccess.Read
+namespace TrzyszczCMS.Core.Server.Services.Interfaces.DbAccess.Read
 {
     /// <summary>
     /// The service for getting data for files.

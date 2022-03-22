@@ -1,8 +1,8 @@
-﻿using Core.Shared.Models.Auth;
+﻿using TrzyszczCMS.Core.Shared.Models.Auth;
 using System.Collections.Generic;
 using System.Security.Claims;
 
-namespace Core.Shared.Helpers
+namespace TrzyszczCMS.Core.Shared.Helpers
 {
     /// <summary>
     /// It eases processeing data that relies on <see cref="Claim"/>

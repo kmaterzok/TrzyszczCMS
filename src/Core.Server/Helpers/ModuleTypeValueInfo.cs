@@ -1,13 +1,13 @@
-﻿using Core.Server.Models.Extensions;
-using Core.Shared.Enums;
-using Core.Shared.Models.PageContent;
-using DAL.Models.Database;
+﻿using TrzyszczCMS.Core.Server.Models.Extensions;
+using TrzyszczCMS.Core.Shared.Enums;
+using TrzyszczCMS.Core.Shared.Models.PageContent;
+using TrzyszczCMS.Core.Infrastructure.Models.Database;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace Core.Server.Helpers
+namespace TrzyszczCMS.Core.Server.Helpers
 {
     /// <summary>
     /// It describes assigning <see cref="Type"/> to the module represented by <see cref="Id"/>.

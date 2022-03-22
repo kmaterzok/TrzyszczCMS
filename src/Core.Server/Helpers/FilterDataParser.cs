@@ -1,8 +1,8 @@
-﻿using Core.Shared.Helpers.Extensions;
-using Core.Shared.Models;
+﻿using TrzyszczCMS.Core.Shared.Helpers.Extensions;
+using TrzyszczCMS.Core.Shared.Models;
 using System;
 
-namespace Core.Server.Helpers
+namespace TrzyszczCMS.Core.Server.Helpers
 {
     /// <summary>
     /// Helper parsing data for filtering.

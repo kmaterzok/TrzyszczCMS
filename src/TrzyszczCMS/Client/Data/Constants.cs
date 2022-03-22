@@ -1,4 +1,4 @@
-﻿using Core.Shared.Enums;
+﻿using TrzyszczCMS.Core.Shared.Enums;
 
 namespace TrzyszczCMS.Client.Data
 {

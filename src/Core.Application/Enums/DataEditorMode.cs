@@ -1,4 +1,4 @@
-﻿namespace Core.Application.Enums
+﻿namespace TrzyszczCMS.Core.Application.Enums
 {
     /// <summary>
     /// It tells the editor how it saves and handles edited data.

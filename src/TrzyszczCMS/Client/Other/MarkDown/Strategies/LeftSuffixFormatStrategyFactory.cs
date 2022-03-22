@@ -1,4 +1,4 @@
-﻿using Core.Shared.Helpers;
+﻿using TrzyszczCMS.Core.Shared.Helpers;
 
 namespace TrzyszczCMS.Client.Other.MarkDown.Strategies
 {

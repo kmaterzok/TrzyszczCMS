@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Core.Shared.Models.ManagePage
+namespace TrzyszczCMS.Core.Shared.Models.ManagePage
 {
     /// <summary>
     /// The simple information about page that will be displayed.

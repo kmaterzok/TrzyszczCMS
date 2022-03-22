@@ -1,4 +1,4 @@
-﻿using Core.Shared.Helpers;
+﻿using TrzyszczCMS.Core.Shared.Helpers;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;

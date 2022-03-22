@@ -1,6 +1,6 @@
-﻿using Core.Shared.Enums;
+﻿using TrzyszczCMS.Core.Shared.Enums;
 
-namespace Core.Shared.Models.PageContent
+namespace TrzyszczCMS.Core.Shared.Models.PageContent
 {
     /// <summary>
     /// The class of module's content.

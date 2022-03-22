@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Timers;
 
-namespace Core.Application.Helpers
+namespace TrzyszczCMS.Core.Application.Helpers
 {
     /// <summary>
     /// The Timer-based invoker for delayed invoke of action.

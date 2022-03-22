@@ -1,7 +1,7 @@
-﻿using Core.Application.Services.Interfaces.Rest;
-using Core.Shared.Enums;
-using Core.Shared.Helpers;
-using Core.Shared.Models.Rest.Responses.PageContent;
+﻿using TrzyszczCMS.Core.Application.Services.Interfaces.Rest;
+using TrzyszczCMS.Core.Shared.Enums;
+using TrzyszczCMS.Core.Shared.Helpers;
+using TrzyszczCMS.Core.Shared.Models.Rest.Responses.PageContent;
 using System.Collections.Generic;
 using TrzyszczCMS.Client.ViewModels.PageContent.Modules;
 using TrzyszczCMS.Client.ViewModels.Shared;

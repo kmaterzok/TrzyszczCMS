@@ -1,10 +1,10 @@
-﻿using Core.Application.Helpers.Interfaces;
-using Core.Shared.Enums;
-using Core.Shared.Models.LoadPage;
-using Core.Shared.Models.Rest.Responses.PageContent;
+﻿using TrzyszczCMS.Core.Application.Helpers.Interfaces;
+using TrzyszczCMS.Core.Shared.Enums;
+using TrzyszczCMS.Core.Shared.Models.LoadPage;
+using TrzyszczCMS.Core.Shared.Models.Rest.Responses.PageContent;
 using System.Threading.Tasks;
 
-namespace Core.Application.Services.Interfaces.Rest
+namespace TrzyszczCMS.Core.Application.Services.Interfaces.Rest
 {
     /// <summary>
     /// The service for getting data for pages.

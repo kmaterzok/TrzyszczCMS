@@ -1,6 +1,6 @@
 ﻿using NUnit.Framework;
 
-namespace Core.Shared.Helpers.Tests
+namespace TrzyszczCMS.Core.Shared.Helpers.Tests
 {
     [TestFixture]
     public class RegexHelperTests

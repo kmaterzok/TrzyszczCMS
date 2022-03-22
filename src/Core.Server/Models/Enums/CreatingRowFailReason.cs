@@ -1,4 +1,4 @@
-﻿namespace Core.Server.Models.Enums
+﻿namespace TrzyszczCMS.Core.Server.Models.Enums
 {
     /// <summary>
     /// It says what caused not executing the creation.

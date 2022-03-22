@@ -1,11 +1,11 @@
-﻿using Core.Application.Models;
-using Core.Application.Models.Adapters;
-using Core.Shared.Models;
+﻿using TrzyszczCMS.Core.Application.Models;
+using TrzyszczCMS.Core.Application.Models.Adapters;
+using TrzyszczCMS.Core.Shared.Models;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Threading.Tasks;
 
-namespace Core.Application.Helpers.Extensions
+namespace TrzyszczCMS.Core.Application.Helpers.Extensions
 {
     /// <summary>
     /// The class with methods that ease handling of content-oriented information,

@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Core.Shared.Models.LoadPage
+namespace TrzyszczCMS.Core.Shared.Models.LoadPage
 {
     /// <summary>
     /// The simple information about a post that may be accessed publicly.

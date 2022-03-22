@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Core.Shared.Exceptions
+namespace TrzyszczCMS.Core.Shared.Exceptions
 {
     /// <summary>
     /// The exception thrown when a member of a class does not have a valid value and it is noticed by a checker method.

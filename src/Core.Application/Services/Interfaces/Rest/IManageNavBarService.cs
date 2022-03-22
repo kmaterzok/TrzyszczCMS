@@ -1,8 +1,8 @@
-﻿using Core.Shared.Models.ManageSettings;
+﻿using TrzyszczCMS.Core.Shared.Models.ManageSettings;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace Core.Application.Services.Interfaces.Rest
+namespace TrzyszczCMS.Core.Application.Services.Interfaces.Rest
 {
     /// <summary>
     /// The interface for managing settings common for the whole system.

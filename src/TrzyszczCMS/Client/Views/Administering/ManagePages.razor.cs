@@ -1,5 +1,5 @@
-﻿using Core.Shared.Enums;
-using Core.Shared.Models.ManagePage;
+﻿using TrzyszczCMS.Core.Shared.Enums;
+using TrzyszczCMS.Core.Shared.Models.ManagePage;
 using Microsoft.AspNetCore.Components;
 using System;
 using System.ComponentModel;

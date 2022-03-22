@@ -2,7 +2,7 @@
 using System.Net.Http.Json;
 using System.Threading.Tasks;
 
-namespace Core.Application.Helpers.Extensions
+namespace TrzyszczCMS.Core.Application.Helpers.Extensions
 {
     /// <summary>
     /// The extensions methods for simpler <see cref="HttpResponseMessage"/>

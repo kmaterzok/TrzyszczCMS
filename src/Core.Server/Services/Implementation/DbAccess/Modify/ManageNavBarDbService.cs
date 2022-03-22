@@ -1,16 +1,16 @@
-﻿using Core.Server.Helpers.Extensions;
-using Core.Server.Services.Interfaces.DbAccess.Modify;
-using Core.Shared.Models;
-using Core.Shared.Models.ManageSettings;
-using DAL.Enums;
-using DAL.Helpers.Interfaces;
-using DAL.Models.Database;
+﻿using TrzyszczCMS.Core.Server.Helpers.Extensions;
+using TrzyszczCMS.Core.Server.Services.Interfaces.DbAccess.Modify;
+using TrzyszczCMS.Core.Shared.Models;
+using TrzyszczCMS.Core.Shared.Models.ManageSettings;
+using TrzyszczCMS.Core.Infrastructure.Enums;
+using TrzyszczCMS.Core.Infrastructure.Helpers.Interfaces;
+using TrzyszczCMS.Core.Infrastructure.Models.Database;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Core.Server.Services.Implementation.DbAccess.Modify
+namespace TrzyszczCMS.Core.Server.Services.Implementation.DbAccess.Modify
 {
     /// <summary>
     /// The implementation of <see cref="IManageNavBarDbService"/>.

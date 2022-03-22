@@ -1,6 +1,6 @@
 ﻿using System.Text.RegularExpressions;
 
-namespace Core.Shared.Helpers
+namespace TrzyszczCMS.Core.Shared.Helpers
 {
     public static class RegexHelper
     {

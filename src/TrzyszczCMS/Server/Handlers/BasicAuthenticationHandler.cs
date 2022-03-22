@@ -1,4 +1,4 @@
-﻿using Core.Server.Services.Interfaces.DbAccess;
+﻿using TrzyszczCMS.Core.Server.Services.Interfaces.DbAccess;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
@@ -7,10 +7,10 @@ using System.Net.Http.Headers;
 using System.Security.Claims;
 using System.Text.Encodings.Web;
 using System.Threading.Tasks;
-using Core.Shared.Models;
-using Core.Shared.Models.Auth;
+using TrzyszczCMS.Core.Shared.Models;
+using TrzyszczCMS.Core.Shared.Models.Auth;
 using System.Collections.Generic;
-using Core.Shared.Helpers;
+using TrzyszczCMS.Core.Shared.Helpers;
 
 namespace TrzyszczCMS.Server.Handlers
 {

@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace Core.Shared.Models.Auth
+namespace TrzyszczCMS.Core.Shared.Models.Auth
 {
     /// <summary>
     /// The class containing information about signed in user.

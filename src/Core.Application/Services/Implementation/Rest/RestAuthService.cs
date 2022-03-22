@@ -1,14 +1,14 @@
-﻿using Core.Application.Helpers.Extensions;
-using Core.Application.Models;
-using Core.Application.Services.Interfaces.Rest;
-using Core.Shared.Models.Auth;
-using Core.Shared.Models.Rest.Requests.Auth;
-using Core.Shared.Models.Rest.Responses.Auth;
+﻿using TrzyszczCMS.Core.Application.Helpers.Extensions;
+using TrzyszczCMS.Core.Application.Models;
+using TrzyszczCMS.Core.Application.Services.Interfaces.Rest;
+using TrzyszczCMS.Core.Shared.Models.Auth;
+using TrzyszczCMS.Core.Shared.Models.Rest.Requests.Auth;
+using TrzyszczCMS.Core.Shared.Models.Rest.Responses.Auth;
 using System.Net.Http;
 using System.Net.Http.Json;
 using System.Threading.Tasks;
 
-namespace Core.Application.Services.Implementation.Rest
+namespace TrzyszczCMS.Core.Application.Services.Implementation.Rest
 {
     public class RestAuthService : IRestAuthService
     {

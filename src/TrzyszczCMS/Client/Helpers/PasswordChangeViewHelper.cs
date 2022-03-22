@@ -1,5 +1,5 @@
-﻿using Core.Shared.Enums;
-using Core.Shared.Helpers;
+﻿using TrzyszczCMS.Core.Shared.Enums;
+using TrzyszczCMS.Core.Shared.Helpers;
 
 namespace TrzyszczCMS.Client.Helpers
 {

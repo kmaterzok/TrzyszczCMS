@@ -1,4 +1,4 @@
-﻿namespace Core.Shared.Models.Rest.Requests.ManageUsers
+﻿namespace TrzyszczCMS.Core.Shared.Models.Rest.Requests.ManageUsers
 {
     /// <summary>
     /// The request of the password change for the currently signed in user.

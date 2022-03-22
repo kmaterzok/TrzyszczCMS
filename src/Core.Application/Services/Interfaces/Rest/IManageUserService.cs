@@ -1,12 +1,12 @@
-﻿using Core.Shared.Enums;
-using Core.Shared.Models;
-using Core.Shared.Models.ManageUser;
+﻿using TrzyszczCMS.Core.Shared.Enums;
+using TrzyszczCMS.Core.Shared.Models;
+using TrzyszczCMS.Core.Shared.Models.ManageUser;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Threading.Tasks;
 
-namespace Core.Application.Services.Interfaces.Rest
+namespace TrzyszczCMS.Core.Application.Services.Interfaces.Rest
 {
     public interface IManageUserService
     {

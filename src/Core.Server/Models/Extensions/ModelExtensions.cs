@@ -1,16 +1,16 @@
-﻿using Core.Server.Helpers.Extensions;
-using Core.Shared.Enums;
-using Core.Shared.Helpers;
-using Core.Shared.Models;
-using Core.Shared.Models.PageContent;
-using DAL.Models.Database;
+﻿using TrzyszczCMS.Core.Server.Helpers.Extensions;
+using TrzyszczCMS.Core.Shared.Enums;
+using TrzyszczCMS.Core.Shared.Helpers;
+using TrzyszczCMS.Core.Shared.Models;
+using TrzyszczCMS.Core.Shared.Models.PageContent;
+using TrzyszczCMS.Core.Infrastructure.Models.Database;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Core.Server.Models.Extensions
+namespace TrzyszczCMS.Core.Server.Models.Extensions
 {
     /// <summary>
     /// Methods extending models functionality.

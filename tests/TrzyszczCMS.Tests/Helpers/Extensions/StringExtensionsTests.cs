@@ -1,6 +1,6 @@
 ﻿using NUnit.Framework;
 
-namespace Core.Shared.Helpers.Extensions.Tests
+namespace TrzyszczCMS.Core.Shared.Helpers.Extensions.Tests
 {
     [TestFixture()]
     public class StringExtensionsTests

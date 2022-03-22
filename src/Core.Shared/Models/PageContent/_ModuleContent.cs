@@ -1,8 +1,8 @@
-﻿using Core.Shared.Enums;
-using Core.Shared.Exceptions;
-using Core.Shared.Helpers;
+﻿using TrzyszczCMS.Core.Shared.Enums;
+using TrzyszczCMS.Core.Shared.Exceptions;
+using TrzyszczCMS.Core.Shared.Helpers;
 
-namespace Core.Shared.Models.PageContent
+namespace TrzyszczCMS.Core.Shared.Models.PageContent
 {
     /// <summary>
     /// The content of a single module that is embedded into the displayed page.

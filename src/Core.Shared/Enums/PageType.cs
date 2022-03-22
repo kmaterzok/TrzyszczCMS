@@ -1,4 +1,4 @@
-﻿namespace Core.Shared.Enums
+﻿namespace TrzyszczCMS.Core.Shared.Enums
 {
     /// <summary>
     /// The precised type of page to be presented

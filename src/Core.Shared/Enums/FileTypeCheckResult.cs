@@ -1,4 +1,4 @@
-﻿namespace Core.Shared.Enums
+﻿namespace TrzyszczCMS.Core.Shared.Enums
 {
     /// <summary>
     /// The type of file existence and type check result.

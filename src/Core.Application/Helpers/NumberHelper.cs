@@ -1,4 +1,4 @@
-﻿namespace Core.Application.Helpers
+﻿namespace TrzyszczCMS.Core.Application.Helpers
 {
     /// <summary>
     /// Methods for easing management of number types.

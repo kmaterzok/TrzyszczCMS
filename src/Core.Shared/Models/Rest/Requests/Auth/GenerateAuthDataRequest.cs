@@ -1,4 +1,4 @@
-﻿namespace Core.Shared.Models.Rest.Requests.Auth
+﻿namespace TrzyszczCMS.Core.Shared.Models.Rest.Requests.Auth
 {
     /// <summary>
     /// The request sent with signing in user's credentials.

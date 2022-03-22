@@ -1,4 +1,4 @@
-﻿namespace Core.Application.Enums
+﻿namespace TrzyszczCMS.Core.Application.Enums
 {
     /// <summary>
     /// The type of the displayed tool for managing a page.

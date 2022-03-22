@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace Core.Shared.Helpers.Extensions
+namespace TrzyszczCMS.Core.Shared.Helpers.Extensions
 {
     /// <summary>
     /// Extension methods for easy handling Dictionaries

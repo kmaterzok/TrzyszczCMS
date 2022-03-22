@@ -1,9 +1,9 @@
-﻿using Core.Shared.Models;
-using Core.Shared.Models.ManageSettings;
+﻿using TrzyszczCMS.Core.Shared.Models;
+using TrzyszczCMS.Core.Shared.Models.ManageSettings;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace Core.Server.Services.Interfaces.DbAccess.Modify
+namespace TrzyszczCMS.Core.Server.Services.Interfaces.DbAccess.Modify
 {
     /// <summary>
     /// The interface for managing website settings.

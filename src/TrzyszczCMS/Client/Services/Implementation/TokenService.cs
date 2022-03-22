@@ -1,7 +1,7 @@
 ﻿using Blazored.LocalStorage;
 using System.Threading.Tasks;
 using TrzyszczCMS.Client.Data;
-using Core.Application.Services.Interfaces;
+using TrzyszczCMS.Core.Application.Services.Interfaces;
 
 namespace TrzyszczCMS.Client.Services.Implementation
 {

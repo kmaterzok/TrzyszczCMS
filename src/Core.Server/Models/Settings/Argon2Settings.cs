@@ -1,6 +1,6 @@
-﻿using Core.Shared.Exceptions;
+﻿using TrzyszczCMS.Core.Shared.Exceptions;
 
-namespace Core.Server.Models.Settings
+namespace TrzyszczCMS.Core.Server.Models.Settings
 {
     /// <summary>
     ///  The settings for usage of cryptographic function Argon2 for storing passwords.

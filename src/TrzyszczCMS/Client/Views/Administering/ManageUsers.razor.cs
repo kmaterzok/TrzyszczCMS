@@ -1,4 +1,4 @@
-﻿using Core.Shared.Models.ManageUser;
+﻿using TrzyszczCMS.Core.Shared.Models.ManageUser;
 using Microsoft.AspNetCore.Components;
 using System.ComponentModel;
 using System.Threading.Tasks;

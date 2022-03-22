@@ -1,10 +1,10 @@
-﻿using Core.Server.Models.Adapters;
-using Core.Server.Models.Enums;
-using Core.Shared.Models;
+﻿using TrzyszczCMS.Core.Server.Models.Adapters;
+using TrzyszczCMS.Core.Server.Models.Enums;
+using TrzyszczCMS.Core.Shared.Models;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Core.Server.Helpers
+namespace TrzyszczCMS.Core.Server.Helpers
 {
     /// <summary>
     /// The helper for easing handling of file data.

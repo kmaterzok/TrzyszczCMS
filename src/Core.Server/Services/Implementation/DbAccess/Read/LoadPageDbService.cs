@@ -1,19 +1,19 @@
-﻿using Core.Server.Services.Interfaces.DbAccess.Read;
-using Core.Shared.Enums;
-using Core.Shared.Models.Rest.Responses.PageContent;
-using DAL.Enums;
-using DAL.Helpers.Interfaces;
+﻿using TrzyszczCMS.Core.Server.Services.Interfaces.DbAccess.Read;
+using TrzyszczCMS.Core.Shared.Enums;
+using TrzyszczCMS.Core.Shared.Models.Rest.Responses.PageContent;
+using TrzyszczCMS.Core.Infrastructure.Enums;
+using TrzyszczCMS.Core.Infrastructure.Helpers.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Core.Server.Helpers;
-using Core.Shared.Models;
-using Core.Shared.Models.LoadPage;
-using Core.Server.Models;
+using TrzyszczCMS.Core.Server.Helpers;
+using TrzyszczCMS.Core.Shared.Models;
+using TrzyszczCMS.Core.Shared.Models.LoadPage;
+using TrzyszczCMS.Core.Server.Models;
 
-namespace Core.Server.Services.Implementation.DbAccess.Read
+namespace TrzyszczCMS.Core.Server.Services.Implementation.DbAccess.Read
 {
     public class LoadPageDbService : ILoadPageDbService
     {

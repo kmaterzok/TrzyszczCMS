@@ -1,8 +1,8 @@
-﻿using Core.Shared.Models.Auth;
-using DAL.Models.Database;
+﻿using TrzyszczCMS.Core.Shared.Models.Auth;
+using TrzyszczCMS.Core.Infrastructure.Models.Database;
 using System.Threading.Tasks;
 
-namespace Core.Server.Services.Interfaces.DbAccess
+namespace TrzyszczCMS.Core.Server.Services.Interfaces.DbAccess
 {
     /// <summary>
     /// It provides basic authentication and authorisation checks and returns.

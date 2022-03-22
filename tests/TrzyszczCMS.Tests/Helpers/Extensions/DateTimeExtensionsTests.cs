@@ -1,7 +1,7 @@
 ﻿using NUnit.Framework;
 using System;
 
-namespace Core.Shared.Helpers.Extensions.Tests
+namespace TrzyszczCMS.Core.Shared.Helpers.Extensions.Tests
 {
     [TestFixture]
     public class DateTimeExtensionsTests

@@ -1,4 +1,4 @@
-﻿namespace Core.Server.Models.Enums
+﻿namespace TrzyszczCMS.Core.Server.Models.Enums
 {
     /// <summary>
     /// The reason of not uploading the file into the backend.

@@ -1,6 +1,6 @@
 ﻿using System.IO;
 
-namespace Core.Server.Models.Adapters
+namespace TrzyszczCMS.Core.Server.Models.Adapters
 {
     /// <summary>
     /// The file info interface for an uploaded file in the server side.

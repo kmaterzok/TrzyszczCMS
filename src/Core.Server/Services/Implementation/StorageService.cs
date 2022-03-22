@@ -1,14 +1,14 @@
-﻿using Core.Server.Models.Adapters;
-using Core.Server.Models.Settings;
-using Core.Server.Services.Interfaces;
-using Core.Shared.Models;
+﻿using TrzyszczCMS.Core.Server.Models.Adapters;
+using TrzyszczCMS.Core.Server.Models.Settings;
+using TrzyszczCMS.Core.Server.Services.Interfaces;
+using TrzyszczCMS.Core.Shared.Models;
 using Microsoft.Extensions.Options;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
 
-namespace Core.Server.Services.Implementation
+namespace TrzyszczCMS.Core.Server.Services.Implementation
 {
     /// <summary>
     /// The class for handling files.

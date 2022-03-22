@@ -1,7 +1,7 @@
-﻿using Core.Shared.Models.PageContent;
+﻿using TrzyszczCMS.Core.Shared.Models.PageContent;
 using System.Collections.Generic;
 
-namespace Core.Shared.Models.Rest.Responses.PageContent
+namespace TrzyszczCMS.Core.Shared.Models.Rest.Responses.PageContent
 {
     /// <summary>
     /// Content for the page to be displayed

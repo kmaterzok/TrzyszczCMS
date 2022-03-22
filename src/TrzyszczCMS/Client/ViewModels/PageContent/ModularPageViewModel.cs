@@ -1,5 +1,5 @@
-﻿using Core.Application.Services.Interfaces.Rest;
-using Core.Shared.Enums;
+﻿using TrzyszczCMS.Core.Application.Services.Interfaces.Rest;
+using TrzyszczCMS.Core.Shared.Enums;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using TrzyszczCMS.Client.Helpers;

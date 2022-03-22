@@ -1,15 +1,15 @@
-﻿using Core.Server.Helpers;
-using Core.Server.Models;
-using Core.Server.Services.Interfaces.DbAccess;
-using DAL.Enums;
-using DAL.Helpers.Interfaces;
+﻿using TrzyszczCMS.Core.Server.Helpers;
+using TrzyszczCMS.Core.Server.Models;
+using TrzyszczCMS.Core.Server.Services.Interfaces.DbAccess;
+using TrzyszczCMS.Core.Infrastructure.Enums;
+using TrzyszczCMS.Core.Infrastructure.Helpers.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Timers;
 
-namespace Core.Server.Services.Implementation.DbAccess
+namespace TrzyszczCMS.Core.Server.Services.Implementation.DbAccess
 {
     public class RepetitiveTaskService : IRepetitiveTaskService, IDisposable
     {

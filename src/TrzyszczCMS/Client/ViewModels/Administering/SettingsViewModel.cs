@@ -1,5 +1,5 @@
-﻿using Core.Application.Services.Interfaces.Rest;
-using Core.Shared.Models.ManageSettings;
+﻿using TrzyszczCMS.Core.Application.Services.Interfaces.Rest;
+using TrzyszczCMS.Core.Shared.Models.ManageSettings;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;

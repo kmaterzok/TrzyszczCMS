@@ -1,11 +1,11 @@
-﻿using Core.Shared.Models.ManageFiles;
-using Core.Shared.Models.ManageSettings;
-using Core.Shared.Models.ManageUser;
-using DAL.Models.Database;
+﻿using TrzyszczCMS.Core.Shared.Models.ManageFiles;
+using TrzyszczCMS.Core.Shared.Models.ManageSettings;
+using TrzyszczCMS.Core.Shared.Models.ManageUser;
+using TrzyszczCMS.Core.Infrastructure.Models.Database;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 using System.Linq;
 
-namespace Core.Server.Helpers.Extensions
+namespace TrzyszczCMS.Core.Server.Helpers.Extensions
 {
     /// <summary>
     /// The class of methods easing mapping of data between EF Core models and endpoints' models.

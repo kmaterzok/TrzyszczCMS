@@ -1,13 +1,13 @@
-﻿using Core.Application.Helpers;
-using Core.Application.Helpers.Extensions;
-using Core.Application.Helpers.Interfaces;
-using Core.Application.Models;
-using Core.Application.Models.Adapters;
-using Core.Application.Services.Interfaces.Rest;
-using Core.Shared.Enums;
-using Core.Shared.Models;
-using Core.Shared.Models.ManageFiles;
-using Core.Shared.Models.Rest.Requests.ManageFiles;
+﻿using TrzyszczCMS.Core.Application.Helpers;
+using TrzyszczCMS.Core.Application.Helpers.Extensions;
+using TrzyszczCMS.Core.Application.Helpers.Interfaces;
+using TrzyszczCMS.Core.Application.Models;
+using TrzyszczCMS.Core.Application.Models.Adapters;
+using TrzyszczCMS.Core.Application.Services.Interfaces.Rest;
+using TrzyszczCMS.Core.Shared.Enums;
+using TrzyszczCMS.Core.Shared.Models;
+using TrzyszczCMS.Core.Shared.Models.ManageFiles;
+using TrzyszczCMS.Core.Shared.Models.Rest.Requests.ManageFiles;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
@@ -16,7 +16,7 @@ using System.Net.Http;
 using System.Net.Http.Json;
 using System.Threading.Tasks;
 
-namespace Core.Application.Services.Implementation.Rest
+namespace TrzyszczCMS.Core.Application.Services.Implementation.Rest
 {
     public class ManageFileService : IManageFileService
     {

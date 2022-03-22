@@ -1,11 +1,11 @@
-﻿using Core.Server.Models.Enums;
-using Core.Shared.Enums;
-using Core.Shared.Models;
-using Core.Shared.Models.ManagePage;
+﻿using TrzyszczCMS.Core.Server.Models.Enums;
+using TrzyszczCMS.Core.Shared.Enums;
+using TrzyszczCMS.Core.Shared.Models;
+using TrzyszczCMS.Core.Shared.Models.ManagePage;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace Core.Server.Services.Interfaces.DbAccess.Modify
+namespace TrzyszczCMS.Core.Server.Services.Interfaces.DbAccess.Modify
 {
     public interface IManagePageDbService
     {

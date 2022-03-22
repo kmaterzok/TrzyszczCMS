@@ -1,12 +1,12 @@
-﻿using Core.Shared.Enums;
-using Core.Shared.Helpers;
-using DAL.Models.Database;
+﻿using TrzyszczCMS.Core.Shared.Enums;
+using TrzyszczCMS.Core.Shared.Helpers;
+using TrzyszczCMS.Core.Infrastructure.Models.Database;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 
-namespace Core.Server.Helpers.Extensions
+namespace TrzyszczCMS.Core.Server.Helpers.Extensions
 {
     /// <summary>
     /// The class providing easing methods for simpler management and usage

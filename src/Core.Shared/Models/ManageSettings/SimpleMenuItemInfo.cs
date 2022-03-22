@@ -1,4 +1,4 @@
-﻿namespace Core.Shared.Models.ManageSettings
+﻿namespace TrzyszczCMS.Core.Shared.Models.ManageSettings
 {
     /// <summary>
     /// The info about a single item

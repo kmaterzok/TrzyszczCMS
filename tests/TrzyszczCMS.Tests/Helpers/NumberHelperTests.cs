@@ -1,6 +1,6 @@
 ﻿using NUnit.Framework;
 
-namespace Core.Application.Helpers.Tests
+namespace TrzyszczCMS.Core.Application.Helpers.Tests
 {
     [TestFixture]
     public class NumberHelperTests

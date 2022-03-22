@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>net5.0</TargetFramework>
@@ -18,9 +18,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\src\Core.Application\Core.Application.csproj" />
-    <ProjectReference Include="..\..\src\Core.Server\Core.Server.csproj" />
-    <ProjectReference Include="..\..\src\Core.Shared\Core.Shared.csproj" />
     <ProjectReference Include="..\..\src\TrzyszczCMS\Client\TrzyszczCMS.Client.csproj" />
     <ProjectReference Include="..\..\src\TrzyszczCMS\Server\TrzyszczCMS.Server.csproj" />
   </ItemGroup>

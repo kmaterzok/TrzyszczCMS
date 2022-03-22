@@ -1,8 +1,8 @@
-﻿using Core.Server.Helpers;
-using Core.Server.Models;
-using Core.Server.Models.Crypto;
-using Core.Server.Models.Settings;
-using Core.Server.Services.Interfaces;
+﻿using TrzyszczCMS.Core.Server.Helpers;
+using TrzyszczCMS.Core.Server.Models;
+using TrzyszczCMS.Core.Server.Models.Crypto;
+using TrzyszczCMS.Core.Server.Models.Settings;
+using TrzyszczCMS.Core.Server.Services.Interfaces;
 using Konscious.Security.Cryptography;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
@@ -10,7 +10,7 @@ using System;
 using System.Linq;
 using System.Text;
 
-namespace Core.Server.Services.Implementation
+namespace TrzyszczCMS.Core.Server.Services.Implementation
 {
     /// <summary>
     /// The class implementing cryptographic handling of data for the backend.

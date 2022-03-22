@@ -1,7 +1,9 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>net5.0</TargetFramework>
+    <AssemblyName>TrzyszczCMS.TrzyszczCMS.Core.Shared</AssemblyName>
+    <RootNamespace>TrzyszczCMS.TrzyszczCMS.Core.Shared</RootNamespace>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
@@ -19,7 +21,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\DAL.Shared\DAL.Shared.csproj" />
+    <ProjectReference Include="..\Core.Infrastructure.Shared\Core.Infrastructure.Shared.csproj" />
   </ItemGroup>
 
 </Project>

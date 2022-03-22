@@ -1,4 +1,4 @@
-﻿namespace Core.Application.Enums
+﻿namespace TrzyszczCMS.Core.Application.Enums
 {
     /// <summary>
     /// It indicates the part of text wall.

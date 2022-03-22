@@ -1,7 +1,7 @@
-﻿using Core.Application.Enums;
-using Core.Application.Models.Deposits;
-using Core.Application.Services.Interfaces.Rest;
-using Core.Shared.Helpers;
+﻿using TrzyszczCMS.Core.Application.Enums;
+using TrzyszczCMS.Core.Application.Models.Deposits;
+using TrzyszczCMS.Core.Application.Services.Interfaces.Rest;
+using TrzyszczCMS.Core.Shared.Helpers;
 using System;
 using System.Threading.Tasks;
 using TrzyszczCMS.Client.Data.Enums;

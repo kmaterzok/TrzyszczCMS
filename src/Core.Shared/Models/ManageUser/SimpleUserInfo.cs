@@ -1,4 +1,4 @@
-﻿namespace Core.Shared.Models.ManageUser
+﻿namespace TrzyszczCMS.Core.Shared.Models.ManageUser
 {
     /// <summary>
     /// The simple information about a single user.

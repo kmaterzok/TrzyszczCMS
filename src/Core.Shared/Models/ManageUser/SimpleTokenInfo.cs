@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Core.Shared.Models.ManageUser
+namespace TrzyszczCMS.Core.Shared.Models.ManageUser
 {
     /// <summary>
     /// The information about token that is assigned to a user.

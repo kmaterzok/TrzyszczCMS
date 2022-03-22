@@ -1,10 +1,10 @@
-﻿using Core.Server.Models.Enums;
-using Core.Server.Services.Interfaces.DbAccess.Modify;
-using Core.Shared.Enums;
-using Core.Shared.Helpers;
-using Core.Shared.Models.ManageUser;
-using Core.Shared.Models.Rest.Requests.ManageUsers;
-using DAL.Shared.Data;
+﻿using TrzyszczCMS.Core.Server.Models.Enums;
+using TrzyszczCMS.Core.Server.Services.Interfaces.DbAccess.Modify;
+using TrzyszczCMS.Core.Shared.Enums;
+using TrzyszczCMS.Core.Shared.Helpers;
+using TrzyszczCMS.Core.Shared.Models.ManageUser;
+using TrzyszczCMS.Core.Shared.Models.Rest.Requests.ManageUsers;
+using TrzyszczCMS.Core.Infrastructure.Shared.Data;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;

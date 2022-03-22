@@ -1,12 +1,12 @@
-﻿using Core.Server.Models.Enums;
-using Core.Shared.Enums;
-using Core.Shared.Models;
-using Core.Shared.Models.ManageUser;
+﻿using TrzyszczCMS.Core.Server.Models.Enums;
+using TrzyszczCMS.Core.Shared.Enums;
+using TrzyszczCMS.Core.Shared.Models;
+using TrzyszczCMS.Core.Shared.Models.ManageUser;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace Core.Server.Services.Interfaces.DbAccess.Modify
+namespace TrzyszczCMS.Core.Server.Services.Interfaces.DbAccess.Modify
 {
     /// <summary>
     /// Interface for managing users.

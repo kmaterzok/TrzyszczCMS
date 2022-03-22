@@ -1,15 +1,15 @@
-﻿using Core.Application.Enums;
-using Core.Application.Helpers.Interfaces;
-using Core.Application.Models.Adapters;
-using Core.Shared.Enums;
-using Core.Shared.Models;
-using Core.Shared.Models.ManageFiles;
+﻿using TrzyszczCMS.Core.Application.Enums;
+using TrzyszczCMS.Core.Application.Helpers.Interfaces;
+using TrzyszczCMS.Core.Application.Models.Adapters;
+using TrzyszczCMS.Core.Shared.Enums;
+using TrzyszczCMS.Core.Shared.Models;
+using TrzyszczCMS.Core.Shared.Models.ManageFiles;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Threading.Tasks;
 
-namespace Core.Application.Services.Interfaces.Rest
+namespace TrzyszczCMS.Core.Application.Services.Interfaces.Rest
 {
     /// <summary>
     /// The interface used for manaigng files in the application.

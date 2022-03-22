@@ -1,6 +1,6 @@
 ﻿using System.Threading.Tasks;
 
-namespace Core.Application.Services.Interfaces
+namespace TrzyszczCMS.Core.Application.Services.Interfaces
 {
     /// <summary>
     /// Interface for managing of access token in the browser.

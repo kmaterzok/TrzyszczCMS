@@ -1,7 +1,7 @@
-﻿namespace Core.Shared.Models
+﻿namespace TrzyszczCMS.Core.Shared.Models
 {
     /// <summary>
-    /// Constants used in <see cref="Core.Shared"/> project only.
+    /// Constants used in <see cref="TrzyszczCMS.Core.Shared"/> project only.
     /// </summary>
     internal static class LocalConstants
     {

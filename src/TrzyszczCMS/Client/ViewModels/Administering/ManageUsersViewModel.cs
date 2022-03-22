@@ -1,9 +1,9 @@
-﻿using Core.Application.Enums;
-using Core.Application.Models.Deposits;
-using Core.Application.Services.Interfaces.Rest;
-using Core.Shared.Enums;
-using Core.Shared.Helpers.Extensions;
-using Core.Shared.Models.ManageUser;
+﻿using TrzyszczCMS.Core.Application.Enums;
+using TrzyszczCMS.Core.Application.Models.Deposits;
+using TrzyszczCMS.Core.Application.Services.Interfaces.Rest;
+using TrzyszczCMS.Core.Shared.Enums;
+using TrzyszczCMS.Core.Shared.Helpers.Extensions;
+using TrzyszczCMS.Core.Shared.Models.ManageUser;
 using Microsoft.AspNetCore.Components;
 using System.Collections.Generic;
 using System.Threading.Tasks;

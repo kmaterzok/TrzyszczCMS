@@ -1,5 +1,5 @@
-﻿using Core.Shared.Models.ManageSettings;
-using DAL.Shared.Data;
+﻿using TrzyszczCMS.Core.Shared.Models.ManageSettings;
+using TrzyszczCMS.Core.Infrastructure.Shared.Data;
 using Microsoft.AspNetCore.Components;
 using System.ComponentModel;
 using System.Threading.Tasks;

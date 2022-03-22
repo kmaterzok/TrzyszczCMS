@@ -1,6 +1,6 @@
 ﻿using Microsoft.IdentityModel.Tokens;
 
-namespace Core.Server.Models.Crypto
+namespace TrzyszczCMS.Core.Server.Models.Crypto
 {
     /// <summary>
     /// Data about token expressed in usable ways.

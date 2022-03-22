@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 
-namespace Core.Shared.Helpers.Extensions
+namespace TrzyszczCMS.Core.Shared.Helpers.Extensions
 {
     /// <summary>
     /// Eased usage of reflection mechanism.

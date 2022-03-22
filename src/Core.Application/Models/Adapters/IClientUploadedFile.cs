@@ -1,7 +1,7 @@
 ﻿using System.IO;
 using System.Threading;
 
-namespace Core.Application.Models.Adapters
+namespace TrzyszczCMS.Core.Application.Models.Adapters
 {
     /// <summary>
     /// The file info interface for an uploaded file in the client side.

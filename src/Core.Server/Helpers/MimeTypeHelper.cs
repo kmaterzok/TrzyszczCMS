@@ -1,4 +1,4 @@
-﻿namespace Core.Server.Helpers
+﻿namespace TrzyszczCMS.Core.Server.Helpers
 {
     /// <summary>
     /// The helper for handling MIME-oriented issues.

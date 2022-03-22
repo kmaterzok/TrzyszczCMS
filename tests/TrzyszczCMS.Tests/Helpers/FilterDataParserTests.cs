@@ -1,7 +1,7 @@
 ﻿using NUnit.Framework;
 using System;
 
-namespace Core.Server.Helpers.Tests
+namespace TrzyszczCMS.Core.Server.Helpers.Tests
 {
     [TestFixture()]
     public class FilterDataParserTests

@@ -1,6 +1,6 @@
-﻿using Core.Shared.Enums;
-using Core.Shared.Helpers;
-using Core.Shared.Helpers.Extensions;
+﻿using TrzyszczCMS.Core.Shared.Enums;
+using TrzyszczCMS.Core.Shared.Helpers;
+using TrzyszczCMS.Core.Shared.Helpers.Extensions;
 using TrzyszczCMS.Server.Data.Enums;
 
 namespace TrzyszczCMS.Server.Helpers.Extensions
@@ -18,7 +18,7 @@ namespace TrzyszczCMS.Server.Helpers.Extensions
         /// <returns>Name of the policy stored in the constant.</returns>
         public static string GetUserPolicyName(this PageType type, PageOperationType operation)
         {
-            var availableTypes = typeof(DAL.Shared.Data.UserPolicies).GetConstants<string>();
+            var availableTypes = typeof(TrzyszczCMS.Core.Infrastructure.Shared.Data.UserPolicies).GetConstants<string>();
             string pageTypeString = type switch
             {
                 PageType.Article

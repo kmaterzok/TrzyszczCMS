@@ -1,7 +1,7 @@
-﻿using Core.Shared.Models;
+﻿using TrzyszczCMS.Core.Shared.Models;
 using System;
 
-namespace Core.Application.Helpers
+namespace TrzyszczCMS.Core.Application.Helpers
 {
     /// <summary>
     /// Helper preparing data for filtering on the backend side.

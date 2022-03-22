@@ -1,18 +1,18 @@
-﻿using Core.Server.Helpers;
-using Core.Server.Helpers.Extensions;
-using Core.Server.Models;
-using Core.Server.Models.Adapters;
-using Core.Server.Models.Enums;
-using Core.Server.Services.Interfaces;
-using Core.Server.Services.Interfaces.DbAccess.Modify;
-using Core.Shared.Enums;
-using Core.Shared.Helpers.Extensions;
-using Core.Shared.Models;
-using Core.Shared.Models.ManageFiles;
-using DAL.Enums;
-using DAL.Helpers.Interfaces;
-using DAL.Models.Database;
-using DAL.Shared.Data;
+﻿using TrzyszczCMS.Core.Server.Helpers;
+using TrzyszczCMS.Core.Server.Helpers.Extensions;
+using TrzyszczCMS.Core.Server.Models;
+using TrzyszczCMS.Core.Server.Models.Adapters;
+using TrzyszczCMS.Core.Server.Models.Enums;
+using TrzyszczCMS.Core.Server.Services.Interfaces;
+using TrzyszczCMS.Core.Server.Services.Interfaces.DbAccess.Modify;
+using TrzyszczCMS.Core.Shared.Enums;
+using TrzyszczCMS.Core.Shared.Helpers.Extensions;
+using TrzyszczCMS.Core.Shared.Models;
+using TrzyszczCMS.Core.Shared.Models.ManageFiles;
+using TrzyszczCMS.Core.Infrastructure.Enums;
+using TrzyszczCMS.Core.Infrastructure.Helpers.Interfaces;
+using TrzyszczCMS.Core.Infrastructure.Models.Database;
+using TrzyszczCMS.Core.Infrastructure.Shared.Data;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -20,7 +20,7 @@ using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Core.Server.Services.Implementation.DbAccess.Modify
+namespace TrzyszczCMS.Core.Server.Services.Implementation.DbAccess.Modify
 {
     public class ManageFileDbService : IManageFileDbService
     {

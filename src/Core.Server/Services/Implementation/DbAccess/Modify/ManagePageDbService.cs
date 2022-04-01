@@ -17,6 +17,8 @@ using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.Extensions.Logging;
+using TrzyszczCMS.Core.Shared.Helpers.Extensions;
 
 namespace TrzyszczCMS.Core.Server.Services.Implementation.DbAccess.Modify
 {
@@ -27,11 +29,18 @@ namespace TrzyszczCMS.Core.Server.Services.Implementation.DbAccess.Modify
         /// Used for persisting data in the database.
         /// </summary>
         private readonly IDatabaseStrategy _databaseStrategy;
+        /// <summary>
+        /// The logger of actions in this service.
+        /// </summary>
+        private readonly ILogger<IManagePageDbService> _logger;
         #endregion
 
         #region Ctor
-        public ManagePageDbService(IDatabaseStrategyFactory databaseStrategyFactory) =>
+        public ManagePageDbService(IDatabaseStrategyFactory databaseStrategyFactory, ILogger<IManagePageDbService> logger)
+        {
             this._databaseStrategy = databaseStrategyFactory.GetStrategy(ConnectionStringDbType.Modify);
+            this._logger = logger;
+        }
         #endregion
 
         #region Methods
@@ -154,6 +163,8 @@ namespace TrzyszczCMS.Core.Server.Services.Implementation.DbAccess.Modify
 
                     await ctx.SaveChangesAsync();
                     await ts.CommitAsync();
+
+                    this._logger.LogInformation($"The new page of type {page.PageType} identified by URI name '{page.UriName}' was added.");
                     return true;
                 }
             }
@@ -205,6 +216,8 @@ namespace TrzyszczCMS.Core.Server.Services.Implementation.DbAccess.Modify
 
                     await ctx.SaveChangesAsync();
                     await ts.CommitAsync();
+
+                    this._logger.LogInformation($"The page of type {page.PageType} identified by ID {page.Id} and URI name '{page.UriName}' was updated.");
                     return true;
                 }
             }
@@ -229,6 +242,8 @@ namespace TrzyszczCMS.Core.Server.Services.Implementation.DbAccess.Modify
 
                     await ctx.SaveChangesAsync();
                     await ts.CommitAsync();
+
+                    this._logger.LogInformation($"Pages identified by IDs {pageIds.Select(i => i.ToString()).Aggregate(", ")} were deleted.");
                     return null;
                 }
             }

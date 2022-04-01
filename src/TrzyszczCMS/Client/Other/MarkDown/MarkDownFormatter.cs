@@ -8,6 +8,7 @@ using TrzyszczCMS.Client.Data;
 using TrzyszczCMS.Client.Data.Model.JSInterop;
 using TrzyszczCMS.Client.Helpers;
 using TrzyszczCMS.Client.Other.MarkDown.Strategies;
+using TrzyszczCMS.Core.Shared.Helpers.Extensions;
 
 namespace TrzyszczCMS.Client.Other.MarkDown
 {

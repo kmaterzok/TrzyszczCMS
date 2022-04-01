@@ -16,6 +16,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.Extensions.Logging;
 
 namespace TrzyszczCMS.Core.Server.Services.Implementation.DbAccess.Modify
 {
@@ -30,13 +31,18 @@ namespace TrzyszczCMS.Core.Server.Services.Implementation.DbAccess.Modify
         /// Used for generating passwords.
         /// </summary>
         private readonly ICryptoService _cryptoService;
+        /// <summary>
+        /// The logger of actions in this service.
+        /// </summary>
+        private readonly ILogger<IManageUserDbService> _logger;
         #endregion
 
         #region Ctor
-        public ManageUserDbService(IDatabaseStrategyFactory databaseStrategyFactory, ICryptoService cryptoService)
+        public ManageUserDbService(IDatabaseStrategyFactory databaseStrategyFactory, ICryptoService cryptoService, ILogger<IManageUserDbService> logger)
         {
             this._databaseStrategy = databaseStrategyFactory.GetStrategy(ConnectionStringDbType.Modify);
             this._cryptoService = cryptoService;
+            this._logger = logger;
         }
         #endregion
 
@@ -78,6 +84,7 @@ namespace TrzyszczCMS.Core.Server.Services.Implementation.DbAccess.Modify
                     await ctx.SaveChangesAsync();
                     await ts.CommitAsync();
 
+                    this._logger.LogInformation($"The user identified by ID {userId} and name '{removedOne.Username}' was deleted.");
                     return null;
                 }
             }
@@ -156,6 +163,7 @@ namespace TrzyszczCMS.Core.Server.Services.Implementation.DbAccess.Modify
                     });
                     await ctx.SaveChangesAsync();
                     await ts.CommitAsync();
+                    this._logger.LogInformation($"The new user identified by and name '{user.UserName}' was added.");
                     return Result<string, Tuple<bool>>.MakeSuccess(generatedPassword);
                 }
             }
@@ -182,6 +190,7 @@ namespace TrzyszczCMS.Core.Server.Services.Implementation.DbAccess.Modify
 
                     await ctx.SaveChangesAsync();
                     await ts.CommitAsync();
+                    this._logger.LogInformation($"The user identified by ID {user.Id} and name '{user.UserName}' was updated.");
                     return true;
                 }
             }
@@ -278,6 +287,7 @@ namespace TrzyszczCMS.Core.Server.Services.Implementation.DbAccess.Modify
 
                     await ctx.SaveChangesAsync();
                     await ts.CommitAsync();
+                    this._logger.LogInformation($"A new password was set to the user identified by ID {userId} and name '{user.Username}'.");
                 }
             }
         }

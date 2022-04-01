@@ -50,8 +50,7 @@ namespace TrzyszczCMS.Core.Application.Services.Implementation.Rest
         {
             if (!RegexHelper.IsValidUserName(username))
             {
-                // TODO: Move _PatternMismatch_ to constants.
-                return Result<Tuple<bool>, string>.MakeError("PatternMismatch");
+                return Result<Tuple<bool>, string>.MakeError(Constants.PATTERN_OF_NAME_MISMATCHED_NOTIFY_KEY);
             }
             var checkResponse = await this._authHttpClient.GetAsync($"/ManageUser/UserNameExists/{username}"); ;
             return Result<Tuple<bool>, string>.MakeSuccess(new Tuple<bool>(checkResponse.IsSuccessStatusCode));

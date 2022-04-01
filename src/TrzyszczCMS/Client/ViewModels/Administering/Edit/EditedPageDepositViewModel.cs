@@ -12,6 +12,7 @@ using TrzyszczCMS.Client.Data.Model.Extensions;
 using TrzyszczCMS.Client.Helpers;
 using TrzyszczCMS.Client.Helpers.Extensions;
 using TrzyszczCMS.Client.ViewModels.Shared;
+using TrzyszczCMS.Core.Application.Models;
 
 namespace TrzyszczCMS.Client.ViewModels.Administering.Edit
 {
@@ -256,7 +257,7 @@ namespace TrzyszczCMS.Client.ViewModels.Administering.Edit
             }
             else
             {
-                this.UriNameValidationMessage = error == "PatternMismatch" ?
+                this.UriNameValidationMessage = error == Constants.PATTERN_OF_NAME_MISMATCHED_NOTIFY_KEY ?
                     "Forbidden characters. Change it." :
                     "Incorrect data.";
                 

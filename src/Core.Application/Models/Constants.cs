@@ -17,5 +17,9 @@
         /// The disposition type for backend. Used during file upload.
         /// </summary>
         public const string FILE_UPLOAD_DISPOSITION_TYPE = "form-data";
+        /// <summary>
+        /// The string informing of name that does not match a specific pattern or expression.
+        /// </summary>
+        public const string PATTERN_OF_NAME_MISMATCHED_NOTIFY_KEY = "PatternMismatch";
     }
 }

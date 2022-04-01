@@ -60,6 +60,13 @@ namespace TrzyszczCMS.Client.Services.Implementation
                 return null;
             });
         }
+
+        public async Task FlushAsync()
+        {
+            this._deposits.Value.Clear();
+            // Caution! Session Storage stores depository items only. Hence the Clear method is invoked.
+            await this._sessionStorage.ClearAsync();
+        }
         #endregion
 
         #region Helper methods

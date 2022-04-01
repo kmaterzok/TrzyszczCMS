@@ -4,6 +4,7 @@
 @using TrzyszczCMS.Client.Services.Interfaces
 
 @inject NavigationManager NavigationManager
+@inject IDataDepository Depository
 @inject IAuthService Auth
 
 @code {
@@ -15,11 +16,11 @@
 
     private async Task SignOutAsync()
     {
-        // TODO: Remove unecessary and potentially fragile information from Data Depository, e.g. edited page data. Implement as separate dedicated method.
         if (await this.Auth.IsAuthenticated())
         {
             await this.Auth.RevokeAuthenticationAsync();
         }
+        await this.Depository.FlushAsync();
         this.NavigationManager.NavigateTo("/sign-in");
     }
 }

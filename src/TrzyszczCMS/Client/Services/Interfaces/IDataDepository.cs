@@ -30,5 +30,10 @@ namespace TrzyszczCMS.Client.Services.Interfaces
         /// <typeparam name="T">Returned data type</typeparam>
         /// <returns>Task returning the found object</returns>
         Task<T> GetAsync<T>() where T : class;
+        /// <summary>
+        /// Flush all stored objects.
+        /// </summary>
+        /// <returns>Task flushing the depository</returns>
+        Task FlushAsync();
     }
 }

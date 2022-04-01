@@ -6,7 +6,7 @@ using Microsoft.Extensions.Options;
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Threading.Tasks;
+using Microsoft.Extensions.Logging;
 
 namespace TrzyszczCMS.Core.Server.Services.Implementation
 {
@@ -17,11 +17,15 @@ namespace TrzyszczCMS.Core.Server.Services.Implementation
     {
         #region Fields
         private readonly StorageSettings _storageSettings;
+        private readonly ILogger<IStorageService> _logger;
         #endregion
 
         #region Ctor
-        public StorageService(IOptions<StorageSettings> storageSettings) =>
-            this._storageSettings  = storageSettings.Value;
+        public StorageService(IOptions<StorageSettings> storageSettings, ILogger<IStorageService> logger)
+        {
+            this._storageSettings = storageSettings.Value;
+            this._logger = logger;
+        }
         #endregion
 
         #region Methods
@@ -44,7 +48,7 @@ namespace TrzyszczCMS.Core.Server.Services.Implementation
             using (var writeStream = new FileStream(targetFilePath, FileMode.Create, FileAccess.Write))
             {
                 file.CopyTo(writeStream);
-                // TODO: Add logging in the catch.
+                this._logger.LogInformation($"File '{file.FileName}' of type {file.ContentType} and size {file.Length} was uploaded.");
             }
         }
         public void DeleteFile(Guid accessId)
@@ -53,6 +57,7 @@ namespace TrzyszczCMS.Core.Server.Services.Implementation
             if (File.Exists(targetFilePath))
             {
                 File.Delete(targetFilePath);
+                this._logger.LogInformation($"File identified by GUID {accessId} was deleted.");
             }
         }
 

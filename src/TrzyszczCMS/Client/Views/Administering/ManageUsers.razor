@@ -13,47 +13,79 @@
 @inject NavigationManager NavigationManager
 @inject IAuthService AuthService
 
-
-<Accordion Id="MainAccordion">
-    <Elements>
-        @if (displayingUsersAllowed)
-        {
-            <AccordionElement Header="Users" ContentClass="@Constants.ACCORDION_CONTENT_CLASS" CollapseId="UserCollapse">
-                <Content>
-                    <nav class="d-flex">
-                        <div class="ms-auto">
-                            <div class="input-group input-group-sm">
-                                <button class="btn btn-primary btn-sm" @onclick="@ViewModel.LoadUsersWithFilter"><i class="fas fa-search"></i>&nbsp;Search</button>
-                                @if (addingUsersAllowed)
-                                {
-                                    <button class="btn btn-primary btn-sm" @onclick="@GoToCreatingUserAsync"><i class="fas fa-plus"></i>&nbsp;Create...</button>
-                                } 
+<AuthorizeView Context="AuthContext"><Authorized>
+    <Accordion Id="MainAccordion">
+        <Elements>
+            @if (displayingUsersAllowed)
+            {
+                <AccordionElement Header="Users" ContentClass="@Constants.ACCORDION_CONTENT_CLASS" CollapseId="UserCollapse">
+                    <Content>
+                        <nav class="d-flex">
+                            <div class="ms-auto">
+                                <div class="input-group input-group-sm">
+                                    <button class="btn btn-primary btn-sm" @onclick="@ViewModel.LoadUsersWithFilter"><i class="fas fa-search"></i>&nbsp;Search</button>
+                                    @if (addingUsersAllowed)
+                                    {
+                                        <button class="btn btn-primary btn-sm" @onclick="@GoToCreatingUserAsync"><i class="fas fa-plus"></i>&nbsp;Create...</button>
+                                    }
+                                </div>
                             </div>
-                        </div>
-                    </nav>
+                        </nav>
+                        <section>
+                            <Grid Items="ViewModel.Users" MultiSelect="false">
+                                <Header>
+                                    <GridColHeader Title="User name" OnSearchTextChanged="@(e => ViewModel.OnUsersSearch(e, FilteredGridField.ManageUsers_UserName))" />
+                                    <GridColHeader Title="Description" OnSearchTextChanged="@(e => ViewModel.OnUsersSearch(e, FilteredGridField.ManageUsers_Description))" />
+                                    <GridColHeader Title="Role" OnSearchTextChanged="@(e => ViewModel.OnUsersSearch(e, FilteredGridField.ManageUsers_Role))" />
+                                    <GridColHeader Title="Actions" SearchBoxType="SearchBoxType.None" Width="200" />
+                                </Header>
+                                <RowTemplate Context="row">
+                                    <td>@row.Data.UserName</td>
+                                    <td>@row.Data.Description</td>
+                                    <td>@row.Data.AssignedRoleName</td>
+                                    <td>
+                                        <div class="input-group input-group-sm">
+                                            @if (editingUsersAllowed)
+                                            {
+                                                <button class="btn btn-sm btn-primary" @onclick="@(() => GoToManagingUserAsync(row.Data.Id))"><i class="fas fa-edit"></i>&nbsp;Edit</button>
+                                            }
+                                            @if (deletingUsersAllowed && row.Data.UserName != AuthContext.User.Identity.Name && row.Data.Id != CommonConstants.DEFAULT_ADMIN_ID)
+                                            {
+                                                <button class="btn btn-sm btn-primary" @onclick="@(() => DeleteUser(row.Data))"><i class="fas fa-trash"></i>&nbsp;Delete</button>
+                                            }
+                                        </div>
+                                    </td>
+                                </RowTemplate>
+                                <NoRowsTemplate>
+                                    No data loaded.
+                                </NoRowsTemplate>
+                            </Grid>
+                        </section>
+                    </Content>
+                </AccordionElement>
+            }
+
+            <AccordionElement Header="Your sessions" ContentClass="@Constants.ACCORDION_CONTENT_CLASS" CollapseId="SessionCollapse">
+                <Content>
                     <section>
-                        <Grid Items="ViewModel.Users" MultiSelect="false">
+                        <Grid Items="ViewModel.Tokens" MultiSelect="false">
                             <Header>
-                                <GridColHeader Title="User name"   OnSearchTextChanged="@(e => ViewModel.OnUsersSearch(e, FilteredGridField.ManageUsers_UserName))" />
-                                <GridColHeader Title="Description" OnSearchTextChanged="@(e => ViewModel.OnUsersSearch(e, FilteredGridField.ManageUsers_Description))" />
-                                <GridColHeader Title="Role"        OnSearchTextChanged="@(e => ViewModel.OnUsersSearch(e, FilteredGridField.ManageUsers_Role))" />
-                                <GridColHeader Title="Actions"     SearchBoxType="SearchBoxType.None" Width="200" />
+                                <GridColHeader Title="Created" SearchBoxType="SearchBoxType.None" />
+                                <GridColHeader Title="Expiring" SearchBoxType="SearchBoxType.None" />
+                                <GridColHeader Title="Actions" SearchBoxType="SearchBoxType.None" Width="200" />
                             </Header>
                             <RowTemplate Context="row">
-                                <td>@row.Data.UserName</td>
-                                <td>@row.Data.Description</td>
-                                <td>@row.Data.AssignedRoleName</td>
+                                <td>@row.Data.UtcCreateTime.ToGenericNotation()</td>
+                                <td>@row.Data.UtcExpiryTime.ToGenericNotation()</td>
                                 <td>
-                                    <div class="input-group input-group-sm">
-                                        @if (editingUsersAllowed)
-                                        {
-                                            <button class="btn btn-sm btn-primary" @onclick="@(() => GoToManagingUserAsync(row.Data.Id))"><i class="fas fa-edit"></i>&nbsp;Edit</button>
-                                        } 
-                                        @if (deletingUsersAllowed && row.Data.Id != CommonConstants.DEFAULT_ADMIN_ID)
-                                        {
-                                            <button class="btn btn-sm btn-primary" @onclick="@(() => DeleteUser(row.Data))"><i class="fas fa-trash"></i>&nbsp;Delete</button>
-                                        }
-                                    </div>
+                                    @if (row.Data.UsedForCurrentSession)
+                                    {
+                                        <span>Current session</span>
+                                    }
+                                    else
+                                    {
+                                        <button class="btn btn-sm btn-primary" @onclick="@(() => ViewModel.RevokeTokenAsync(row.Data.Id))"><i class="fas fa-trash"></i>&nbsp;Revoke</button>
+                                    }
                                 </td>
                             </RowTemplate>
                             <NoRowsTemplate>
@@ -63,47 +95,16 @@
                     </section>
                 </Content>
             </AccordionElement>
-        }
 
-        <AccordionElement Header="Your sessions" ContentClass="@Constants.ACCORDION_CONTENT_CLASS" CollapseId="SessionCollapse">
-            <Content>
-                <section>
-                    <Grid Items="ViewModel.Tokens" MultiSelect="false">
-                        <Header>
-                            <GridColHeader Title="Created" SearchBoxType="SearchBoxType.None" />
-                            <GridColHeader Title="Expiring" SearchBoxType="SearchBoxType.None" />
-                            <GridColHeader Title="Actions" SearchBoxType="SearchBoxType.None" Width="200" />
-                        </Header>
-                        <RowTemplate Context="row">
-                            <td>@row.Data.UtcCreateTime.ToGenericNotation()</td>
-                            <td>@row.Data.UtcExpiryTime.ToGenericNotation()</td>
-                            <td>
-                                @if (row.Data.UsedForCurrentSession)
-                                {
-                                    <span>Current session</span>
-                                }
-                                else
-                                {
-                                    <button class="btn btn-sm btn-primary" @onclick="@(() => ViewModel.RevokeTokenAsync(row.Data.Id))"><i class="fas fa-trash"></i>&nbsp;Revoke</button>
-                                }
-                            </td>
-                        </RowTemplate>
-                        <NoRowsTemplate>
-                            No data loaded.
-                        </NoRowsTemplate>
-                    </Grid>
-                </section>
-            </Content>
-        </AccordionElement>
-
-        <AccordionElement Header="Security" ContentClass="@Constants.ACCORDION_CONTENT_CLASS" CollapseId="SecurityCollapse">
-            <Content>
-                <section>
-                    <NavLink class="btn btn-sm btn-danger ms-2 my-2" href="/manage/change-own-password">
-                        <i class="fas fa-passport"></i>&nbsp;Change your password
-                    </NavLink>
-                </section>
-            </Content>
-        </AccordionElement>
-    </Elements>
-</Accordion>
+            <AccordionElement Header="Security" ContentClass="@Constants.ACCORDION_CONTENT_CLASS" CollapseId="SecurityCollapse">
+                <Content>
+                    <section>
+                        <NavLink class="btn btn-sm btn-danger ms-2 my-2" href="/manage/change-own-password">
+                            <i class="fas fa-passport"></i>&nbsp;Change your password
+                        </NavLink>
+                    </section>
+                </Content>
+            </AccordionElement>
+        </Elements>
+    </Accordion>
+</Authorized></AuthorizeView>

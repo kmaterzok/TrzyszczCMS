@@ -73,7 +73,6 @@ namespace TrzyszczCMS.Core.Server.Services.Implementation.DbAccess.Modify
                     {
                         return DeleteRowFailReason.DeletingForbidden;
                     }
-                    // TODO: Make sure the signed in user does not delete its own account.
 
                     ctx.AuthUsers.Remove(removedOne);
                     await ctx.SaveChangesAsync();

@@ -48,11 +48,21 @@ namespace TrzyszczCMS.Server.Controllers
         /// <returns>Task returning HTTP response</returns>
         [HttpDelete]
         [Produces("application/json")]
-        [Route("[action]/{userId}")]
+        [Route("[action]/{userIdForDeletion}")]
         [Authorize(Policy = UserPolicies.ANY_USER_DELETING)]
-        public async Task<ActionResult> DeleteUser(int userId)
+        public async Task<ActionResult> DeleteUser(int userIdForDeletion)
         {
-            var error = await this._manageUserService.DeleteUserAsync(userId);
+            var signedInUserId = HttpContext.GetUserIdByAccessToken();
+            if (!signedInUserId.HasValue)
+            {
+                return Forbid();
+            }
+            else if (userIdForDeletion == signedInUserId)
+            {
+                return Conflict("The signed in user cannot delete itself.");
+            }
+
+            var error = await this._manageUserService.DeleteUserAsync(userIdForDeletion);
             if (!error.HasValue)
             {
                 return Ok();

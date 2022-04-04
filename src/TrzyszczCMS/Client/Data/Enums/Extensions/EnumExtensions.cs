@@ -32,6 +32,14 @@ namespace TrzyszczCMS.Client.Data.Enums.Extensions
         }
 
         /// <summary>
+        /// Get complementary style class for an alert's <c>div</c> component.
+        /// </summary>
+        /// <param name="type">Type of the desired alert</param>
+        /// <returns>Desired class for usage</returns>
+        public static string GetAlertCssClass(this AlertType type) =>
+            $"alert-{type.ToString().ToLower()}";
+
+        /// <summary>
         /// Get description about pixel size for Text wall module.
         /// </summary>
         /// <param name="width">Preferred width of a section block</param>

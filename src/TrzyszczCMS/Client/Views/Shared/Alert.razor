@@ -1,0 +1,38 @@
+﻿@using Client.Data.Enums
+@using Client.Data.Enums.Extensions
+
+<div class="alert @CssClassOfAlertType @Class" role="alert"
+     style="text-align:left; font-weight:bold; visibility: @CssVisibility;">
+    <span class="col-12">@Message</span>
+</div>
+
+@code {
+    #region Properties :: Parameters
+    /// <summary>
+    /// The message displayed in the alert.
+    /// </summary>
+    [Parameter]
+    public string Message { get; set; } = string.Empty;
+    /// <summary>
+    /// Is the alert visible.
+    /// </summary>
+    [Parameter]
+    public bool Visible { get; set; } = true;
+    /// <summary>
+    /// The desired type of the alert component.
+    /// </summary>
+    [Parameter]
+    public AlertType AlertType { get; set; } = AlertType.Info;
+    /// <summary>
+    /// CSS classes for the component.
+    /// </summary>
+    [Parameter]
+    public string Class { get; set; } = string.Empty;
+    #endregion
+
+    #region Properties :: Other
+    private string CssVisibility => Visible ? "visible" : "collapse";
+
+    private string CssClassOfAlertType => AlertType.GetAlertCssClass();
+    #endregion
+}

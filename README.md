@@ -18,7 +18,8 @@ TODO: Screenshots here.
 
 # Requirements
 * Operating system: any supported by _.NET_ (Linux, macOS, Windows).
-* _.NET_ runtime.
+* _.NET5_ runtime.
+* PostgreSQL.
 
 # Default credentials
 * Login: ```admin```

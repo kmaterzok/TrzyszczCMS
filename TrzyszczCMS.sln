@@ -12,7 +12,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TrzyszczCMS.Tests", "tests\
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Miscellaneous", "Miscellaneous", "{4E4D8AA4-072B-49B5-8BB1-491A8B101A00}"
 	ProjectSection(SolutionItems) = preProject
-		ADVICES.md = ADVICES.md
+		CODE_OF_CONDUCT.md = CODE_OF_CONDUCT.md
 		LICENSE.md = LICENSE.md
 		README.md = README.md
 	EndProjectSection
@@ -31,6 +31,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TrzyszczCMS.Client", "src\T
 	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Core.Infrastructure.Shared", "src\Core.Infrastructure.Shared\Core.Infrastructure.Shared.csproj", "{F8EFA456-C8D8-45A3-B0A2-508C7265701E}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TrzyszczCMS.Docs", "docs\TrzyszczCMS.Docs\TrzyszczCMS.Docs.csproj", "{0D875193-6B67-4A59-9BC6-7ACAE270DA2A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -70,6 +72,10 @@ Global
 		{F8EFA456-C8D8-45A3-B0A2-508C7265701E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F8EFA456-C8D8-45A3-B0A2-508C7265701E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F8EFA456-C8D8-45A3-B0A2-508C7265701E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0D875193-6B67-4A59-9BC6-7ACAE270DA2A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0D875193-6B67-4A59-9BC6-7ACAE270DA2A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0D875193-6B67-4A59-9BC6-7ACAE270DA2A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0D875193-6B67-4A59-9BC6-7ACAE270DA2A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

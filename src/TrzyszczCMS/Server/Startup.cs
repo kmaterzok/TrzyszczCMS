@@ -19,15 +19,12 @@ using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http.Features;
-using Microsoft.AspNetCore.HttpsPolicy;
-using Microsoft.AspNetCore.ResponseCompression;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using System.IO;
 using TrzyszczCMS.Server.Data;
 using TrzyszczCMS.Server.Handlers;
-using TrzyszczCMS.Server.Helpers.Extensions;
 
 namespace TrzyszczCMS.Server
 {

@@ -18,6 +18,7 @@ The project's architecture and implementation implies the specific manners that 
 # General naming convention
 
 The convection for the following project is typical for _C#_ language but a few exceptions which trying to increase the code readability:
+
 * Constant values are expressed by upper snake case naming, e.g. ```public const int MAX_OVERALL_TIME_MINUTES = 3```,
 * Properties that express constant values in another way (e.g. by convertion) are expressed as above, e.g. ```public int MAX_OVERALL_TIME_HOURS => MAX_OVERALL_TIME_MINUTES * 60```,
 * Naming classes, enums, methods, properties, values of enums: PascalCase,
@@ -27,12 +28,14 @@ The convection for the following project is typical for _C#_ language but a few 
 
 # Git commits
 The name of commit consists of 2 parts: the type of commit and the description.
+
 Type of commits:
 * ```feat``` - feature,
 * ```fix``` - fix of a bug,
 * ```refact``` - refactoring of the code,
 * ```upgrade``` - upgrading or updating parts of libraries or versions,
 * ```misc``` - unclassified things.
+
 Examples:
 * refact: Optimised loading
 * feat: Changing page's data

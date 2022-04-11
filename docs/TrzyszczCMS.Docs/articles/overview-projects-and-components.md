@@ -1,23 +1,29 @@
 ﻿# Solution projects
+
 ## Frontend
 * ```Core.Application``` - it contains services, models and other components deployed in the frontend, in separation from the targeted platform. This project serves the main business logic for the frontend. Used ONLY by the frontend.
 * ```TrzyszczCMS.Client``` - Frontend. Its main purpose is presenting content obtained from backend by REST API. The architectural pattern deployed here is MVVM. Almost every view (page) has its own view model. For management of views (HTML and CSS manipulation, JavaScript invocation) the dedicated methods are used, implemented as static methods in static classes.
+
 ## Backend
 * ```Core.Infrastructure``` - Entity Framework Core, ORM generated entities, migrations by FluentMigrator. Used ONLY by the backend.
 * ```Core.Server``` - it contains services, models and other components deployed in the backend, in separation from the targeted platform. This project serves the main business logic for the backend. Used ONLY by the backend.
 * ```TrzyszczCMS.Server``` - The startup project, backend. It contains controllers handling REST requests.
+
 ## Common parts
 * ```Core.Infrastructure.Shared``` - tables' constraints and their values used in the whole application. Used by the frontend and by the backend.
 * ```Core.Shared``` - the elements common for the frontend and for the backend such as classes, constants and enums.
+
 ## Additional projects
 * ```TrzyszczCMS.Docs``` - The simplified documentation of the project.
 * ```TrzyszczCMS.Tests``` - Unit test approving that the crucial classes and functions are well projected and working without flaws.
 
 # Overview of ```Core.Shared```
+
 ## Models
 Models used for data download and management are placed in ```Models``` directory. The models contain in their names the following prefixes:
 * ```Simple``` - This model stores basic info data. It is used only for reading data by the frontend. It is not used for database data management.
 * ```Detailed``` - This model stores data used for modifying and persisting in the database by sending it to the backend by REST API. The model is utilised for database data management.
+
 ## Components
 * ```ModuleContent``` - stores a data object of specified type that is responsible for storing page module data. All supported objects have names with suffix _ModuleContent_.
 * ```Result<T,E>``` - it stores a result of operation execution, whether it is a success result object or an error result object.
@@ -26,21 +32,26 @@ Models used for data download and management are placed in ```Models``` director
 * ```LocalConstants``` - the static class of locally used constant values. Not used outside the project.
 
 # Overview of ```Core.Infrastructure```
+
 ## CQRS
 There is a separation between read-ready database server handling SELECT (loading page data) queries and the second one handling all the others (CRUD operations, page management). The settings are placed in class ```ConnectionStrings```.
+
 ## Entity models
 * Stored in ```/Models/Database```.
 * Meaning of prefixes used in the naming convention:
 	* ```Auth``` - authentication or authorisation
 	* ```Cont``` - page content
 * Convention for naming n:m relationship table entities: Prefix + table names without prefixes + ```Assign```, e.g. ```AuthRolePolicyAssign``` for ```AuthRole``` and ```AuthPolicy```.
+
 ## Migrations
 * All migrations are stored in ```/Migrations``` directory of the project.
 * Naming of migration classes is as follows: ```DatabaseVer``` + version with dots replaced with underscores, e.g. ```DatabaseVer_1_1_3``` for version 1.1.3.
 * ```Migration``` attribute contains a version number as follows: 3 digits of major + 3 digits of minor + 3 digits of patch, e.g. ```[Migration(1001003)]``` for version 1.1.3.
+
 ## Foreign keys
 * The class ```ForeignKeys``` contains all foreign keys' names for ones currently used (subclass ```Current```) and the obsolete ones (subclass ```Obsolete```).
 * Naming of the keys: primary key table + foreign key table + field in the table with the foreign key, e.g. ```AuthToken_AuthUser_AssignedUserId```.
+
 ## Creating connection
 The classes responsible for creating database connections are as follows:
 * ```DatabaseStrategyFactory : IDatabaseStrategyFactory``` - Creating objects implementing the interface ```IDatabaseStrategy```.
@@ -61,6 +72,7 @@ The following project contains all the business logic for the backend.
 * ```CryptoHelper``` - cryptographic methods used for secure data processing or creating,
 * ```MappingExtensions``` - contains static methods that remap data between instances of different classes,
 * ```FilterExtensions``` - contains static methods that filter data provided by ```Queryable``` instances of data delivered by Entity Framework Code.
+
 # Classes of models
 * _Adapters_ - adapters for classes utilised in this project,
 * _Crypto_ - cryptographically oriented models that store data for processing or usage in other classes,
@@ -68,6 +80,7 @@ The following project contains all the business logic for the backend.
 * _Extensions_ - model-oriented extension methods that return them,
 * _Settings_ - settings-oriented models for storing settings,
 * ```Constants``` - static class holding constants for usage in the backend.
+
 # Services
 The services are split into 4 different categories:
 * ```DbAccess/Modify``` - services that allow to modify data in the database (a part of CQRS), dedicated for usage with frontend during managing the system,
@@ -87,6 +100,7 @@ The startup project consisting of:
 * _Helpers_ - helper methods for usage in this project, e.g. ```HttpContext``` helpers for simplified data getting,
 * _appsettings.json_ and _appsettings.development.json_ - settings of the backend,
 * ```Startup``` - the class responsible for initialisation of the backend. It contains dedicated methods for registering of services and configuring. Services are registered as scoped ones.
+
 ## Controllers
 Every controller class must:
 * inherit ```ControllerBase``` class,
@@ -111,11 +125,14 @@ Additionally, controllers' methods must:
 
 # Overview of ```Core.Application```
 The following project is responsible for frontend's business logic.
+
 ## Classes of helpers
 * ```PageFetcher``` - the utility for loading paginated data page by page from a specified data source. Used for paginated tables.
 * ```DelayedInvoker``` - the utility for invoking methods after a specified time span. Used for saving changes.
+
 ## Classes of models
 * deposits - the classes used to store data for exchange between 2 or more other classes - the first one puts the deposit class in the depository (store for deposits), the other ones get it during instantiating (in a constructor) or during a method execution.
+
 ## Services
 All services are split into 2 types:
 * database data management - these have name beginning with ```Manage```,
@@ -145,6 +162,7 @@ The main frontend project consisting of:
 * To authenticate and/or authorise a user in the backend the client must set an authorisation header in the HTTP request. It is done by usage of ```TokenHeaderHandler``` class. There are 2 HTTP clients in use – the unauthenticated one not setting any authorisation header – and the second one that sets header if available in the Local Storage with use of the aforementioned handler. Services use them and to get the desired one the service does it during the instantiation. The clients are distinguished by its names stored in the constants – ```HTTP_CLIENT_ANON_NAME``` and ```HTTP_CLIENT_AUTH_NAME```.
 * To determine if a view has to display a certain data, the instance of ```ApplicationAuthenticationStateProvider``` is used. The view checks if a user is signed in.
 * To check if the signed-in user has assigned the sufficient permissions to do something, it is checked with usage of clearances. If there is possibility to allow doing something, there must be done a check of clearance – it is done using ```IAuthService``` (method ```HasClearanceAsync```). If the clearance (a predefined condition of checks of permissions) exists – the operation might be done with usage of a view.
+
 ## Views & view models
 * Every view model is always created as an adequate view is created and must access the view model.
 * View models inherit class ```ViewModelBase``` that contains basic method for notifying changes.

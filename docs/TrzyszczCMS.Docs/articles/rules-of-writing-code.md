@@ -27,9 +27,9 @@ The convection for the following project is typical for _C#_ language but a few 
 
 # Code indentation
 
-The indentation between pieces of code should be taken with care. Operation of the same type which are repeated line by line should be aligned to each other so readability of the code is achieved.
+The indentation between pieces of code should be taken with care. Operation of the same type which are repeated line by line should be aligned to each other, so readability of the code will be achieved.
 
-The example of its applying is presented below:
+The example of applying is presented below:
 
 ```
 Create.Table(nameof(AuthUser))
@@ -44,7 +44,7 @@ Create.Table(nameof(AuthUser))
  .WithColumn(nameof(AuthUser.AuthRoleId))        .AsInt32().NotNullable();
 ```
 
-The following example comes from the migration code. It applies aligning of lines and segregation of key words by its true use, e.g. column names of ```AuthUser``` table are in one line. It applies also to chains of methods apllied to all of the table rows. A similar approach can be taken for assigning values for properties or fields of any instance.
+The following example comes from the migration code. It applies aligning of lines and segregation of keywords by its true use, e.g. column names of ```AuthUser``` table are in one line. It also applies to chains of methods applied to all the table rows. A similar approach can be taken for assigning values for properties or fields of any instance.
 
 
 

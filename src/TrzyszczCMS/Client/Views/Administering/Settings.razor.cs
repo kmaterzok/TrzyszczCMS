@@ -25,15 +25,18 @@ namespace TrzyszczCMS.Client.Views.Administering
             this.ViewModel.PropertyChanged += new PropertyChangedEventHandler(
                 async (s, e) => await this.InvokeAsync(() => this.StateHasChanged())
             );
-            this.manageNavBarAllowed = await AuthService.HasClearanceAsync(PolicyClearance.AccessNavBarSettings);
             await base.OnInitializedAsync();
         }
         protected override async Task OnAfterRenderAsync(bool firstRender)
         {
             await base.OnAfterRenderAsync(firstRender);
-            if (firstRender && true == this.manageNavBarAllowed)
+            if (firstRender)
             {
-                await this.ViewModel.LoadMenuItemsAsync();
+                this.manageNavBarAllowed = await AuthService.HasClearanceAsync(PolicyClearance.AccessNavBarSettings);
+                if (true == this.manageNavBarAllowed)
+                {
+                    await this.ViewModel.LoadMenuItemsAsync();
+                }
             }
         }
         #endregion

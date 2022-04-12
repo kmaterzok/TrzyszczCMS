@@ -25,6 +25,28 @@ The convection for the following project is typical for _C#_ language but a few 
 * Naming properties and fields used in the _razor_ pages implemented directly in code-behind, local variables and local constants: camelCase,
 * Naming private fields of classes: camelCase name starting with underscore, e.g. ```private readonly IMyService _myService```.
 
+# Code indentation
+
+The indentation between pieces of code should be taken with care. Operation of the same type which are repeated line by line should be aligned to each other so readability of the code is achieved.
+
+The example of its applying is presented below:
+
+```
+Create.Table(nameof(AuthUser))
+ .WithColumn(nameof(AuthUser.Id))                .AsInt32().NotNullable().PrimaryKey().Identity()
+ .WithColumn(nameof(AuthUser.Username))          .AsString(Constraints.AuthUser.USERNAME).NotNullable().Unique()
+ .WithColumn(nameof(AuthUser.Description))       .AsString(Constraints.AuthUser.DESCRIPTION).Nullable().WithDefaultValue(null)
+ .WithColumn(nameof(AuthUser.PasswordHash))      .AsBinary(128).NotNullable()
+ .WithColumn(nameof(AuthUser.PasswordSalt))      .AsBinary(32).NotNullable()
+ .WithColumn(nameof(AuthUser.Argon2Iterations))  .AsInt32().NotNullable()
+ .WithColumn(nameof(AuthUser.Argon2MemoryCost))  .AsInt32().NotNullable()
+ .WithColumn(nameof(AuthUser.Argon2Parallelism)) .AsInt32().NotNullable()
+ .WithColumn(nameof(AuthUser.AuthRoleId))        .AsInt32().NotNullable();
+```
+
+The following example comes from the migration code. It applies aligning of lines and segregation of key words by its true use, e.g. column names of ```AuthUser``` table are in one line. It applies also to chains of methods apllied to all of the table rows. A similar approach can be taken for assigning values for properties or fields of any instance.
+
+
 
 # Git commits
 The name of commit consists of 2 parts: the type of commit and the description.

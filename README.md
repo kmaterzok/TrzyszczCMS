@@ -14,7 +14,15 @@ A simple content management system for creating and organising layout and conten
 * The client application runs as Progressive Web Application (PWA) and it is possible to installed it within a web browser.
 
 # Screenshots
-TODO: Screenshots here.
+|![Screenshot 1](docs/TrzyszczCMS.Docs/images/screen1.png)|![Screenshot 2](docs/TrzyszczCMS.Docs/images/screen2.png)|
+|--|--|
+|![Screenshot 3](docs/TrzyszczCMS.Docs/images/screen3.png)|![Screenshot 4](docs/TrzyszczCMS.Docs/images/screen4.png)|
+|![Screenshot 5](docs/TrzyszczCMS.Docs/images/screen5.png)|![Screenshot 6](docs/TrzyszczCMS.Docs/images/screen6.png)|
+
+Sources of pictures:
+* [Screenshot 1](https://unsplash.com/photos/rW-I87aPY5Y)
+* [Screenshot 2](https://unsplash.com/photos/uWNxBHCCQs4)
+
 
 # Requirements
 * Operating system: any supported by _.NET_ (Linux, macOS, Windows).

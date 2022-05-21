@@ -56,6 +56,7 @@ Type of commits:
 * ```fix``` - fix of a bug,
 * ```refact``` - refactoring of the code,
 * ```upgrade``` - upgrading or updating parts of libraries or versions,
+* ```docs``` - writing documentation,
 * ```misc``` - unclassified things.
 
 Examples:

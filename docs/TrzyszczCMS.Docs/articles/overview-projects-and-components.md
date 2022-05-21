@@ -71,7 +71,7 @@ The following project contains all the business logic for the backend.
 * ```FilterDataParser``` - parses filtering conditions for table data,
 * ```FilterExtensions``` - contains static methods that filter data provided by ```Queryable``` instances of data delivered by Entity Framework Code.
 * ```MappingExtensions``` - contains static methods that remap data between instances of different classes,
-* ```RepetitiveTask``` - utilised for invoking actions that must be run repetitively until some conditions occur and invoking stops.
+* ```RepetitiveTask``` - utilised for invoking actions that must be run repetitively until some conditions occur so invoking stops.
 * ```SemaphoredValue``` - utilised for synchronous invocation of methods for a specific value that must be guarded against data races,
 
 # Classes of models

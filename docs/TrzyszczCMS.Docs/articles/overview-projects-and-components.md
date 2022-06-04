@@ -91,7 +91,8 @@ The services are split into 4 different categories:
 	* ```RepetitiveTaskService``` - all task that must be executed cyclically or repetitively when the backend runs.
 * unclassified services:
 	* ```ICryptoService``` - cryptographically-oriented data handling with settings applied from the settings instance,
-	* ```IStorageService``` - reading and saving files used on all the pages created by authorised users.
+	* ```IStorageService``` - reading and saving files used on all the pages created by authorised users,
+	* ```IFileFacade``` - facade for handling files in the file system.
 
 # Overview of ```TrzyszczCMS.Server```
 The startup project consisting of:

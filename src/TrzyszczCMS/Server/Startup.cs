@@ -25,6 +25,8 @@ using Microsoft.Extensions.Hosting;
 using System.IO;
 using TrzyszczCMS.Server.Data;
 using TrzyszczCMS.Server.Handlers;
+using TrzyszczCMS.TrzyszczCMS.Core.Server.Services.Interfaces;
+using TrzyszczCMS.TrzyszczCMS.Core.Server.Services.Implementation;
 
 namespace TrzyszczCMS.Server
 {
@@ -56,6 +58,7 @@ namespace TrzyszczCMS.Server
                 throw new InvalidMemberException($"Path {storagePath} does not belong to an existing directory.");
             }
 
+            services.AddSingleton<IFileFacade,              FileHandler>();
             services.AddSingleton<IDatabaseStrategyFactory, DatabaseStrategyFactory>();
             services.AddSingleton<IRepetitiveTaskService,   RepetitiveTaskService>();
 

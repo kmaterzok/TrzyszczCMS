@@ -26,7 +26,7 @@ Sources of pictures:
 
 # Requirements
 * Operating system: any supported by _.NET_ (Linux, macOS, Windows).
-* _.NET5_ runtime.
+* _.NET6_ runtime.
 * PostgreSQL.
 
 # Default credentials

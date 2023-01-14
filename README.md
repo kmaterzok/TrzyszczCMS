@@ -1,10 +1,3 @@
-
-<div align="center">
-	<div>TrzyszczCMS</div>
-	<img src="docs/TrzyszczCMS.Docs/images/logo.gif" alt="Logo"/>
-</div>
-
-
 # About
 
 A simple content management system for creating and organising layout and content of the website. Written in _C#_ with usage of _Blazor WebAssembly_.

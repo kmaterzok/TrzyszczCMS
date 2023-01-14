@@ -1,7 +1,7 @@
 
 <div align="center">
+	<div>TrzyszczCMS</div>
 	<img src="docs/TrzyszczCMS.Docs/images/logo.gif" alt="Logo"/>
-	<div style="font-weight: bold; margin-bottom: 10px;">TrzyszczCMS</div>
 </div>
 
 
